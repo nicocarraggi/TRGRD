@@ -163,6 +163,7 @@ public class PebbleCommunicationService extends Service {
         IntentFilter filter = new IntentFilter(Pebble.PEBBLE_VIBRATE_ACTION);
         filter.addAction(Pebble.PEBBLE_SCREEN_TIME_ACTION);
         filter.addAction(Pebble.PEBBLE_SCREEN_ALARM_ACTION);
+        filter.addAction(Pebble.PEBBLE_SCREEN_CLEAN_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, filter);
         Log.d("TRGRD","PebbleCommunicationService mReceiver registered!");
     }

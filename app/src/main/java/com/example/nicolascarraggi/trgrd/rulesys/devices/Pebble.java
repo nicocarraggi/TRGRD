@@ -189,7 +189,7 @@ public class Pebble extends Wearable {
     }
 
     public void acScreenClean(){
-        System.out.println("[Pebble] shows alarm!");
+        System.out.println("[Pebble] cleans screen!");
         Intent newIntent = new Intent(PEBBLE_SCREEN_CLEAN_ACTION);
         LocalBroadcastManager.getInstance(mContext).sendBroadcast(newIntent);
         Toast.makeText(mContext, "Pebble Screen Clean triggered by TRGRD", Toast.LENGTH_SHORT).show();

@@ -26,6 +26,7 @@ public class Rule {
     }
 
     private void executeRule(){
+        System.out.println("[Rule "+this.name+"] executeRule()");
         if(!actions.isEmpty()) { // TODO error if no actions?
             for(Action a: actions){
                 try {
@@ -40,11 +41,14 @@ public class Rule {
     }
 
     public void checkRule(){
+        System.out.println("[Rule "+this.name+"] checkRule()");
         if(active){
             if(!states.isEmpty()){
+                System.out.println("[Rule "+this.name+"] checkRule() checking states");
                 // If event and states, check if all states are true !
                 boolean isRuleTrue = true;
                 for(State s: states){
+                    System.out.println("[Rule "+this.name+"] checkRule() state: "+s.getName()+" isState= "+s.isState());
                     // If 1 state is false, stop the loop!
                     if(!s.isState()){
                         isRuleTrue = false;
@@ -53,6 +57,7 @@ public class Rule {
                 }
                 if (isRuleTrue) executeRule();
             } else {
+                System.out.println("[Rule "+this.name+"] checkRule() no states");
                 // If event and no states, rule is executed !
                 executeRule();
             }
@@ -60,12 +65,12 @@ public class Rule {
     }
 
     public void eventTriggered(Event e){
-        System.out.println("[Rule] Event "+e.getName()+" triggered!");
+        System.out.println("[Rule "+this.name+"] Event "+e.getName()+" triggered!");
         checkRule();
     }
 
     public void stateChanged(State s){
-        System.out.println("[Rule] State "+s.getName()+" triggered with state "+s.isState()+"!");
+        System.out.println("[Rule "+this.name+"] State "+s.getName()+" triggered with state "+s.isState()+"!");
         // If there isn't an event, check rule !
         if(events.isEmpty()) checkRule();
     }
