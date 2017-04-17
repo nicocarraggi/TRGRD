@@ -6,11 +6,17 @@ package com.example.nicolascarraggi.trgrd.rulesys;
 
 public class State extends Event {
 
+    private StateType stateType;
     private boolean state = false;
 
-    public State(String name, Device device, boolean state) {
-        super(name, device);
+    public State(String name, Device device, StateType stateType, boolean state) {
+        super(name, device, null);
+        this.stateType = stateType;
         this.state = state;
+    }
+
+    public StateType getStateType() {
+        return stateType;
     }
 
     public boolean isState() {

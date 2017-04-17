@@ -8,9 +8,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.nicolascarraggi.trgrd.rulesys.Action;
+import com.example.nicolascarraggi.trgrd.rulesys.ActionType;
 import com.example.nicolascarraggi.trgrd.rulesys.Device;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
+import com.example.nicolascarraggi.trgrd.rulesys.EventType;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
+import com.example.nicolascarraggi.trgrd.rulesys.StateType;
 
 import java.util.concurrent.Callable;
 
@@ -62,25 +65,34 @@ public class AndroidPhone extends Device {
     private State mStAlarmGoing, mStCallIncGoing;
     private Action mAcAlarmDismiss, mAcAlarmSnooze;
 
-    public AndroidPhone(Context context) {
+    public AndroidPhone(Context context, EventType evAlarmAlert, EventType evAlarmSnooze, EventType evAlarmDismiss, EventType evAlarmDone, EventType evCallInc, StateType stAlarmGoing, StateType stCallIncGoing, ActionType acAlarmSnooze, ActionType acAlarmDismiss) {
         super("Phone", "Google", "Android");
         this.mContext = context;
-        this.mEvAlarmStart = new Event("Phone Alarm Start", this);
-        this.mEvAlarmSnooze = new Event("Phone Alarm Snooze", this);
-        this.mEvAlarmDismiss = new Event("Phone Alarm Dismiss", this);
-        this.mEvAlarmDone = new Event("Phone Alarm Done", this);
-        this.mEvCallIncStart = new Event("Phone Call Incoming Start", this);
-        this.mEvCallIncStop = new Event("Phone Call Incoming Stop", this);
-        this.mStAlarmGoing = new State("Phone Alarm Going", this, false);
-        this.mStCallIncGoing = new State("Phone Call Incoming Going", this, false);
-        this.mAcAlarmDismiss = new Action("Phone Alarm Dismiss", this, new Callable<String>() {
+        this.eventTypes.add(evAlarmAlert);
+        this.eventTypes.add(evAlarmSnooze);
+        this.eventTypes.add(evAlarmDismiss);
+        this.eventTypes.add(evAlarmDone);
+        this.eventTypes.add(evCallInc);
+        this.stateTypes.add(stAlarmGoing);
+        this.stateTypes.add(stCallIncGoing);
+        this.actionTypes.add(acAlarmSnooze);
+        this.actionTypes.add(acAlarmDismiss);
+        this.mEvAlarmStart = new Event("Phone Alarm Start", this, evAlarmAlert);
+        this.mEvAlarmSnooze = new Event("Phone Alarm Snooze", this, evAlarmSnooze);
+        this.mEvAlarmDismiss = new Event("Phone Alarm Dismiss", this, evAlarmDismiss);
+        this.mEvAlarmDone = new Event("Phone Alarm Done", this, evAlarmDone);
+        this.mEvCallIncStart = new Event("Phone Call Incoming Start", this, evCallInc);
+        this.mEvCallIncStop = new Event("Phone Call Incoming Stop", this, evCallInc);
+        this.mStAlarmGoing = new State("Phone Alarm Going", this, stAlarmGoing, false);
+        this.mStCallIncGoing = new State("Phone Call Incoming Going", this, stCallIncGoing, false);
+        this.mAcAlarmDismiss = new Action("Phone Alarm Dismiss", this, acAlarmDismiss, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acAlarmDismiss();
                 return null;
             }
         });
-        this.mAcAlarmSnooze = new Action("Phone Alarm Snooze", this, new Callable<String>(){
+        this.mAcAlarmSnooze = new Action("Phone Alarm Snooze", this, acAlarmSnooze, new Callable<String>(){
             @Override
             public String call() throws Exception {
                 acAlarmSnooze();
@@ -144,7 +156,7 @@ public class AndroidPhone extends Device {
     // FOR SIMULATION TESTS:
 
     public Action getSimAcAlarmDismiss(){
-        Action alarmDismiss = new Action("Phone Alarm Dismiss", this, new Callable<String>() {
+        Action alarmDismiss = new Action("Phone Alarm Dismiss", this, null, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 evAlarmDismiss();
@@ -155,7 +167,7 @@ public class AndroidPhone extends Device {
     }
 
     public Action getSimAcAlarmSnooze(){
-        Action alarmSnooze = new Action("Phone Alarm Snooze", this, new Callable<String>() {
+        Action alarmSnooze = new Action("Phone Alarm Snooze", this, null, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 evAlarmSnooze();

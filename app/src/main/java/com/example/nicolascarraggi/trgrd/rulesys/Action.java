@@ -12,13 +12,15 @@ public class Action {
 
     private String name;
     private Device device;
+    private ActionType actionType;
     private Callable callable;
     private boolean usedInRule;
     private Set<Rule> rules;
 
-    public Action(String name, Device device, Callable callable) {
+    public Action(String name, Device device, ActionType actionType, Callable callable) {
         this.name = name;
         this.device = device;
+        this.actionType = actionType;
         this.callable = callable;
         this.usedInRule = false;
         this.rules = new HashSet<>();
@@ -34,6 +36,14 @@ public class Action {
 
     public Device getDevice() {
         return device;
+    }
+
+    public ActionType getActionType() {
+        return actionType;
+    }
+
+    public Set<Rule> getRules() {
+        return rules;
     }
 
     public boolean isUsedInRule() {

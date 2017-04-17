@@ -13,6 +13,9 @@ public class Device {
     protected Set<Event> events;
     protected Set<State> states;
     protected Set<Action> actions;
+    protected Set<EventType> eventTypes;
+    protected Set<StateType> stateTypes;
+    protected Set<ActionType> actionTypes;
 
     public Device(String name, String manufacturer, String platform) {
         this.name = name;
@@ -21,6 +24,9 @@ public class Device {
         this.events = new HashSet<>();
         this.states = new HashSet<>();
         this.actions = new HashSet<>();
+        this.eventTypes = new HashSet<>();
+        this.stateTypes = new HashSet<>();
+        this.actionTypes = new HashSet<>();
     }
 
     public String getName() {
@@ -59,4 +65,15 @@ public class Device {
         return actions;
     }
 
+    public Set<EventType> getEventTypes() {
+        return eventTypes;
+    }
+
+    public Set<StateType> getStateTypes() {
+        return stateTypes;
+    }
+
+    public Set<ActionType> getActionTypes() {
+        return actionTypes;
+    }
 }

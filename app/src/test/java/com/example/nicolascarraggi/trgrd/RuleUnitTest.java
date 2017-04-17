@@ -17,11 +17,11 @@ public class RuleUnitTest {
     public void newRule_isCorrect() throws Exception {
         Rule r = new Rule("testRule");
         Device d = null; // not really used in this test case!
-        Event e1 = new Event("testEvent1", d);
+        Event e1 = new Event("testEvent1", d, null);
         //Event e2 = new Event("testEvent2", d);
-        State s1 = new State("testState1", d, false);
-        State s2 = new State("testState2", d, false);
-        Action a = new Action("testAction", d, new Callable() {
+        State s1 = new State("testState1", d, null, false);
+        State s2 = new State("testState2", d, null, false);
+        Action a = new Action("testAction", d, null, new Callable() {
             @Override
             public Object call() throws Exception {
                 return null;

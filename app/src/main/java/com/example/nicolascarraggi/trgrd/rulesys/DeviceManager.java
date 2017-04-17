@@ -14,6 +14,7 @@ import java.util.Set;
 
 public class DeviceManager {
 
+    private Set<Device> devices;
     private Set<EventType> eventTypes;
     private Set<StateType> stateTypes;
     private Set<ActionType> actionTypes;
@@ -23,39 +24,48 @@ public class DeviceManager {
     private EventType evAlarmSnooze = new EventType("alarm snooze");
     private EventType evAlarmDismiss = new EventType("alarm dismiss");
     private EventType evAlarmDone = new EventType("alarm done");
-    private EventType evButtonPress = new EventType("button press");
+    private EventType evCallInc = new EventType("call incoming");
+    private EventType evButtonPress = new EventType("button press"); // change to evOneInput? too restrictive now, could also be a gesture from myo?
     private EventType evHeartRateReading = new EventType("heart rate reading");
 
     // StateTypes
     private StateType stAlarmGoing = new StateType("alarm going");
+    private StateType stCallIncGoing = new StateType("call incoming going");
 
     // ActionTypes
     private ActionType acAlarmSnooze = new ActionType("alarm snooze");
     private ActionType acAlarmDismiss = new ActionType("alarm dismiss");
-    private ActionType acAlarmVibrate = new ActionType(("alarm vibrate");
-    private ActionType acAlarmDisplay = new ActionType(("alarm display");
+    private ActionType acAlarmVibrate = new ActionType("alarm vibrate");
+    private ActionType acAlarmDisplay = new ActionType("alarm display");
+    private ActionType acTimeDisplay = new ActionType("time display");
 
     // Devices
     private AndroidPhone mAndroidPhone;
     private Pebble mPebble;
 
     public DeviceManager(Context mContext) {
-        this.mAndroidPhone = new AndroidPhone(mContext);
-        this.mPebble = new Pebble(mContext);
+        this.devices = new HashSet<>();
+        this.devices.add(mAndroidPhone);
+        this.devices.add(mPebble);
         this.eventTypes = new HashSet<>();
         this.stateTypes = new HashSet<>();
         this.actionTypes = new HashSet<>();
-        eventTypes.add(evAlarmAlert);
-        eventTypes.add(evAlarmSnooze);
-        eventTypes.add(evAlarmDismiss);
-        eventTypes.add(evAlarmDone);
-        eventTypes.add(evButtonPress);
-        eventTypes.add(evHeartRateReading;
-        stateTypes.add(stAlarmGoing);
-        actionTypes.add(acAlarmSnooze);
-        actionTypes.add(acAlarmDismiss);
-        actionTypes.add(acAlarmVibrate);
-        actionTypes.add(acAlarmDisplay);
+        this.eventTypes.add(evAlarmAlert);
+        this.eventTypes.add(evAlarmSnooze);
+        this.eventTypes.add(evAlarmDismiss);
+        this.eventTypes.add(evAlarmDone);
+        this.eventTypes.add(evCallInc);
+        this.eventTypes.add(evButtonPress);
+        this.eventTypes.add(evHeartRateReading);
+        this.stateTypes.add(stAlarmGoing);
+        this.stateTypes.add(stCallIncGoing);
+        this.actionTypes.add(acAlarmSnooze);
+        this.actionTypes.add(acAlarmDismiss);
+        this.actionTypes.add(acAlarmVibrate);
+        this.actionTypes.add(acAlarmDisplay);
+        this.actionTypes.add(acTimeDisplay);
+        this.mAndroidPhone = new AndroidPhone(mContext, evAlarmAlert, evAlarmSnooze, evAlarmDismiss, evAlarmDone, evCallInc, stAlarmGoing, stCallIncGoing, acAlarmSnooze, acAlarmDismiss);
+        this.mPebble = new Pebble(mContext, evButtonPress, evHeartRateReading, acAlarmVibrate, acAlarmDisplay, acTimeDisplay);
     }
 
     public AndroidPhone getAndroidPhone() {
@@ -76,6 +86,10 @@ public class DeviceManager {
 
     public Set<ActionType> getActionTypes() {
         return actionTypes;
+    }
+
+    public Set<Device> getDevices(){
+        return devices;
     }
 
     // Start & Stop Devices:

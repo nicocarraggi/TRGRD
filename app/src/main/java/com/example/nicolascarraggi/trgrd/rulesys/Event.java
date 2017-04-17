@@ -9,14 +9,16 @@ import java.util.Set;
 
 public class Event {
 
+    private EventType eventType;
     protected String name;
     protected Device device;
     protected boolean usedInRule;
     protected Set<Rule> rules; // = listeners
 
-    public Event(String name, Device device) {
+    public Event(String name, Device device, EventType eventType) {
         this.name = name;
         this.device = device;
+        this.eventType = eventType;
         this.usedInRule = false;
         this.rules = new HashSet<Rule>();
     }
@@ -31,6 +33,14 @@ public class Event {
 
     public Device getDevice() {
         return device;
+    }
+
+    public EventType getEventType() {
+        return eventType;
+    }
+
+    public Set<Rule> getRules() {
+        return rules;
     }
 
     public boolean isUsedInRule() {

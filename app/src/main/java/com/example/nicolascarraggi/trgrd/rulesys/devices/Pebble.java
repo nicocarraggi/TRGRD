@@ -9,7 +9,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.nicolascarraggi.trgrd.rulesys.Action;
+import com.example.nicolascarraggi.trgrd.rulesys.ActionType;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
+import com.example.nicolascarraggi.trgrd.rulesys.EventType;
 
 import java.util.concurrent.Callable;
 
@@ -49,34 +51,39 @@ public class Pebble extends Wearable {
     private Event mEvBtnUp, mEvBtnSelect, mEvBtnDown;
     private Action mAcVibrate, mAcScreenTime, mAcScreenAlarm, mAcScreenClean;
 
-    public Pebble(Context context) {
+    public Pebble(Context context, EventType evButtonPress, EventType evHeartRateReading, ActionType acAlarmVibrate, ActionType acAlarmDisplay, ActionType acTimeDisplay) {
         super("Pebble Steel", "Pebble", "Pebble OS", "Watch", "Wrist");
         this.mContext = context;
-        mEvBtnUp = new Event("Pebble Button Up", this);
-        mEvBtnSelect = new Event("Pebble Button Select", this);
-        mEvBtnDown = new Event("Pebble Button Down", this);
-        mAcVibrate = new Action("Pebble Vibrate", this, new Callable<String>() {
+        this.eventTypes.add(evButtonPress);
+        this.eventTypes.add(evHeartRateReading);
+        this.actionTypes.add(acAlarmVibrate);
+        this.actionTypes.add(acAlarmDisplay);
+        this.actionTypes.add(acTimeDisplay);
+        mEvBtnUp = new Event("Pebble Button Up", this, evButtonPress);
+        mEvBtnSelect = new Event("Pebble Button Select", this, evButtonPress);
+        mEvBtnDown = new Event("Pebble Button Down", this, evButtonPress);
+        mAcVibrate = new Action("Pebble Vibrate", this, acAlarmVibrate, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acVibrate();
                 return null;
             }
         });
-        mAcScreenTime = new Action("Pebble Watch Mode Time", this, new Callable<String>() {
+        mAcScreenTime = new Action("Pebble Watch Mode Time", this, acTimeDisplay, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acScreenTime();
                 return null;
             }
         });
-        mAcScreenAlarm = new Action("Pebble Watch Mode Alarm", this, new Callable<String>() {
+        mAcScreenAlarm = new Action("Pebble Watch Mode Alarm", this, acAlarmDisplay, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acScreenAlarm();
                 return null;
             }
         });
-        mAcScreenClean = new Action("Pebble Watch Mode Clean", this, new Callable<String>() {
+        mAcScreenClean = new Action("Pebble Watch Mode Clean", this, acTimeDisplay, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acScreenClean();
@@ -123,7 +130,7 @@ public class Pebble extends Wearable {
     }
 
     public Action getSimVibrate() {
-        Action simVibrate = new Action("Pebble Vibrate", this, new Callable<String>() {
+        Action simVibrate = new Action("Pebble Vibrate", this, null, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 simulateActionVibrate();
@@ -134,7 +141,7 @@ public class Pebble extends Wearable {
     }
 
     public Action getSimScreenTime() {
-        Action simScreenTime = new Action("Pebble Watch Mode Time", this, new Callable<String>() {
+        Action simScreenTime = new Action("Pebble Watch Mode Time", this, null, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 simulateActionScreenTime();
