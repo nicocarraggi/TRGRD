@@ -7,4 +7,10 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/rulesystem_on"
+        android:title="Rulesystem ON"/>
+    <item
+        android:id="@+id/rulesystem_off"
+        android:title="Rulesystem OFF"/>
 </menu>

@@ -1,6 +1,14 @@
 package com.example.nicolascarraggi.trgrd;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,6 +20,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,8 +28,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
+import com.example.nicolascarraggi.trgrd.rulesys.Rule;
+import com.example.nicolascarraggi.trgrd.rulesys.RuleSystemService;
+
+import java.util.List;
+import java.util.Set;
+
+public class MainActivity extends AppCompatActivity implements TrgrdFragment.OnFragmentInteractionListener{
+
+    private RuleSystemService ruleSystemService;
+    private boolean isServiceStarted = false;
+    private boolean isServiceBound = false;
+    private DeviceManager deviceManager;
+    private MenuItem miRulesystemOn, miRulesystemOff;
+
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -55,22 +79,56 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.isServiceStarted = isMyServiceRunning(RuleSystemService.class);
+
+        if(isServiceStarted){
+            bindWithService();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(isServiceBound) {
+            unbindService(mConnection);
+            this.isServiceBound = false;
+            notifyFragmentsServiceBoundChange();
+        }
+    }
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            RuleSystemService.RuleSystemBinder b = (RuleSystemService.RuleSystemBinder) iBinder;
+            MainActivity.this.ruleSystemService = b.getService();
+            Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
+            MainActivity.this.isServiceBound = true;
+            MainActivity.this.notifyFragmentsServiceBoundChange();
+            MainActivity.this.deviceManager = b.getService().getDeviceManager();
+            Set<Rule> rules = b.getService().getRules();
+            Log.d("TRGRD","MainActivity: rules from service size = "+rules.size());
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            MainActivity.this.isServiceBound = false;
+            MainActivity.this.ruleSystemService = null;
+            Log.d("TRGRD","MainActivity: onServiceDisconnect");
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        this.miRulesystemOn = menu.findItem(R.id.rulesystem_on);
+        this.miRulesystemOff = menu.findItem(R.id.rulesystem_off);
+        showOnOff(this.isServiceStarted);
         return true;
     }
 
@@ -86,50 +144,37 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
             return true;
+        } else if (id == R.id.rulesystem_on) {
+            startRuleSystemService();
+            //showOnOff(true);
+        } else if (id == R.id.rulesystem_off) {
+            stopRuleSystemService();
+            //showOnOff(false);
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
+    @Override
+    public boolean getIsServiceStarted() {
+        return isServiceStarted;
     }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
+    @Override
+    public boolean getIsServiceBound() {
+        return isServiceBound;
+    }
+
+    @Override
+    public DeviceManager getDeviceManager() {
+        return deviceManager;
+    }
+
+    @Override
+    public RuleSystemService getRuleSystemService() {
+        return ruleSystemService;
+    }
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -138,9 +183,18 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            switch (position){
+                case 0:
+                    RulesFragment rulesFragment = new RulesFragment();
+                    return rulesFragment;
+                case 1:
+                    DevicesFragment devicesFragment = new DevicesFragment();
+                    return devicesFragment;
+                case 2:
+                    LocationsFragment locationsFragment = new LocationsFragment();
+                    return locationsFragment;
+            }
+            return null;
         }
 
         @Override
@@ -161,5 +215,83 @@ public class MainActivity extends AppCompatActivity {
             }
             return null;
         }
+    }
+
+    private void notifyFragmentsServiceStartedChange(){
+        FragmentManager manager = getSupportFragmentManager();
+        List<Fragment> fragments = manager.getFragments();
+        TrgrdFragment tempTrgrdFragment;
+        for (Fragment f:fragments){
+            tempTrgrdFragment = (TrgrdFragment) f;
+            tempTrgrdFragment.notifyIsServiceStartedChanged(isServiceStarted);
+        }
+    }
+
+    private void notifyFragmentsServiceBoundChange(){
+        FragmentManager manager = getSupportFragmentManager();
+        List<Fragment> fragments = manager.getFragments();
+        TrgrdFragment tempTrgrdFragment;
+        for (Fragment f:fragments){
+            tempTrgrdFragment = (TrgrdFragment) f;
+            tempTrgrdFragment.notifyIsServiceBoundChanged(isServiceBound);
+        }
+    }
+
+    private boolean isAdmin(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isAdminPref = prefs.getBoolean("admin_switch", true);
+        return isAdminPref;
+    }
+
+    private void showOnOff(boolean isOn){
+        if(isAdmin()){
+            if(isOn){
+                miRulesystemOn.setVisible(false);
+                miRulesystemOff.setVisible(true);
+            } else {
+                miRulesystemOn.setVisible(true);
+                miRulesystemOff.setVisible(false);
+            }
+        } else {
+            miRulesystemOn.setVisible(false);
+            miRulesystemOff.setVisible(false);
+        }
+
+    }
+
+    private void startRuleSystemService(){
+        Intent pebbleService = new Intent(MainActivity.this, RuleSystemService.class);
+        startService(pebbleService);
+        showOnOff(true);
+        this.isServiceStarted = true;
+        bindWithService();
+        notifyFragmentsServiceStartedChange();
+    }
+
+    private void stopRuleSystemService(){
+        Intent pebbleService = new Intent(MainActivity.this, RuleSystemService.class);
+        stopService(pebbleService);
+        showOnOff(false);
+        this.isServiceStarted = false;
+        notifyFragmentsServiceStartedChange();
+    }
+
+    private void bindWithService(){
+        // BIND this activity to the service to communicate with it!
+        Intent intent= new Intent(this, RuleSystemService.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    // Solution from StackOverflow (http://stackoverflow.com/questions/600207/how-to-check-if-a-service-is-running-on-android)
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                Log.d("TRGRD", "isMyServiceRunning TRUE");
+                return true;
+            }
+        }
+        Log.d("TRGRD", "isMyServiceRunning FALSE");
+        return false;
     }
 }

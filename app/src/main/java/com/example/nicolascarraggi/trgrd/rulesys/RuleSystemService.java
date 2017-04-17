@@ -21,9 +21,9 @@ public class RuleSystemService extends Service {
     public RuleSystemService() {
         this.mDeviceManager = new DeviceManager(this);
         this.rules = new HashSet<>();
-        this.mTestRuleAlarmStartPebble = new Rule("testRuleAlarmStartPebble");
-        this.mTestRuleAlarmDismissPebble = new Rule("testRuleAlarmDismissPebble");
-        this.mTestRuleAlarmDonePebble = new Rule("testRuleAlarmDonePebble");
+        this.mTestRuleAlarmStartPebble = new Rule("Phone alarm alert on Pebble");
+        this.mTestRuleAlarmDismissPebble = new Rule("Dismiss phone alarm on Pebble");
+        this.mTestRuleAlarmDonePebble = new Rule("Phone alarm done to Pebble");
         this.rules.add(mTestRuleAlarmStartPebble);
         this.rules.add(mTestRuleAlarmDismissPebble);
         this.rules.add(mTestRuleAlarmDonePebble);
