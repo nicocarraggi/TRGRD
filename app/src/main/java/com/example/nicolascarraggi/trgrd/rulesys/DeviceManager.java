@@ -1,6 +1,7 @@
 package com.example.nicolascarraggi.trgrd.rulesys;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.nicolascarraggi.trgrd.rulesys.devices.AndroidPhone;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Pebble;
@@ -45,8 +46,6 @@ public class DeviceManager {
 
     public DeviceManager(Context mContext) {
         this.devices = new HashSet<>();
-        this.devices.add(mAndroidPhone);
-        this.devices.add(mPebble);
         this.eventTypes = new HashSet<>();
         this.stateTypes = new HashSet<>();
         this.actionTypes = new HashSet<>();
@@ -66,6 +65,8 @@ public class DeviceManager {
         this.actionTypes.add(acTimeDisplay);
         this.mAndroidPhone = new AndroidPhone(mContext, evAlarmAlert, evAlarmSnooze, evAlarmDismiss, evAlarmDone, evCallInc, stAlarmGoing, stCallIncGoing, acAlarmSnooze, acAlarmDismiss);
         this.mPebble = new Pebble(mContext, evButtonPress, evHeartRateReading, acAlarmVibrate, acAlarmDisplay, acTimeDisplay);
+        this.devices.add(mAndroidPhone);
+        this.devices.add(mPebble);
     }
 
     public AndroidPhone getAndroidPhone() {

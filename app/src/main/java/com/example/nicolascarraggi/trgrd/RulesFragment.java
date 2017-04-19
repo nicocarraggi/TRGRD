@@ -39,13 +39,6 @@ public class RulesFragment extends TrgrdFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_rules, container, false);
 
-        this.rules = new HashSet<>();
-
-        if (mListener != null) {
-            Log.d("TRGRD","RulesFragment test isServiceStarted = "+mListener.getIsServiceStarted());
-            if (isServiceBound) this.rules = mListener.getRuleSystemService().getRules();
-        }
-
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewRules);
 
         // use this setting to improve performance if you know that changes
@@ -56,11 +49,18 @@ public class RulesFragment extends TrgrdFragment {
         mLayoutManager = new LinearLayoutManager(this.getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // specify an adapter (see also next example)
-        mAdapter = new RulesAdapter(rules);
-        mRecyclerView.setAdapter(mAdapter);
+        if (mListener != null) {
+            Log.d("TRGRD","RulesFragment test isServiceStarted = "+mListener.getIsServiceStarted());
+            if (isServiceBound) showRules();
+        }
 
         return view;
+    }
+
+    private void showRules(){
+        this.rules = mListener.getRuleSystemService().getRules();
+        mAdapter = new RulesAdapter(rules);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -73,10 +73,6 @@ public class RulesFragment extends TrgrdFragment {
     public void notifyIsServiceBoundChanged(boolean isServiceBound) {
         super.notifyIsServiceBoundChanged(isServiceBound);
         Log.d("TRGRD","RulesFragment notify isServiceBound = " + isServiceBound);
-        if (isServiceBound) {
-            this.rules = mListener.getRuleSystemService().getRules();
-            this.mAdapter = new RulesAdapter(rules);
-            this.mRecyclerView.setAdapter(mAdapter);
-        }
+        if (isServiceBound) showRules();
     }
 }

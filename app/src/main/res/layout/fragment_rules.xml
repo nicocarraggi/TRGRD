@@ -3,12 +3,21 @@
     android:id="@+id/fragment_rules"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.nicolascarraggi.trgrd.RulesFragment">
     
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewRules"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="80dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabRules"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_add_white_24dp" />
 
 </FrameLayout>

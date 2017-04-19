@@ -1,15 +1,26 @@
 package com.example.nicolascarraggi.trgrd;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.nicolascarraggi.trgrd.rulesys.Device;
 import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
+import com.example.nicolascarraggi.trgrd.rulesys.DevicesAdapter;
 import com.example.nicolascarraggi.trgrd.rulesys.RuleSystemService;
 
+import java.util.Set;
+
 public class DevicesFragment extends TrgrdFragment {
+
+    private Set<Device> devices;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     public DevicesFragment() {
         // Required empty public constructor
@@ -19,7 +30,31 @@ public class DevicesFragment extends TrgrdFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_devices, container, false);
+        View view = inflater.inflate(R.layout.fragment_devices, container, false);
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewDevices);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(this.getContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        if (mListener != null) {
+            Log.d("TRGRD","DevicesFragment test isServiceStarted = "+mListener.getIsServiceStarted());
+            if (isServiceBound) showDevices();
+        }
+
+        return view;
+
+    }
+
+    private void showDevices(){
+        this.devices = mListener.getDeviceManager().getDevices();
+        mAdapter = new DevicesAdapter(devices);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
@@ -32,5 +67,6 @@ public class DevicesFragment extends TrgrdFragment {
     public void notifyIsServiceBoundChanged(boolean isServiceBound) {
         super.notifyIsServiceBoundChanged(isServiceBound);
         Log.d("TRGRD","DevicesFragment notify isServiceBound = " + isServiceBound);
+        if (isServiceBound) showDevices();
     }
 }

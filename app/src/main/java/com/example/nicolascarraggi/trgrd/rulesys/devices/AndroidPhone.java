@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.nicolascarraggi.trgrd.R;
 import com.example.nicolascarraggi.trgrd.rulesys.Action;
 import com.example.nicolascarraggi.trgrd.rulesys.ActionType;
 import com.example.nicolascarraggi.trgrd.rulesys.Device;
@@ -66,7 +67,7 @@ public class AndroidPhone extends Device {
     private Action mAcAlarmDismiss, mAcAlarmSnooze;
 
     public AndroidPhone(Context context, EventType evAlarmAlert, EventType evAlarmSnooze, EventType evAlarmDismiss, EventType evAlarmDone, EventType evCallInc, StateType stAlarmGoing, StateType stCallIncGoing, ActionType acAlarmSnooze, ActionType acAlarmDismiss) {
-        super("Phone", "Google", "Android");
+        super("Phone", "Google", "Android", R.drawable.ic_phone_android_black_24dp);
         this.mContext = context;
         this.eventTypes.add(evAlarmAlert);
         this.eventTypes.add(evAlarmSnooze);

@@ -85,7 +85,6 @@ public class MainActivity extends AppCompatActivity implements TrgrdFragment.OnF
     protected void onResume() {
         super.onResume();
         this.isServiceStarted = isMyServiceRunning(RuleSystemService.class);
-
         if(isServiceStarted){
             bindWithService();
         }
@@ -102,14 +101,15 @@ public class MainActivity extends AppCompatActivity implements TrgrdFragment.OnF
     }
 
     private ServiceConnection mConnection = new ServiceConnection() {
+
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             RuleSystemService.RuleSystemBinder b = (RuleSystemService.RuleSystemBinder) iBinder;
             MainActivity.this.ruleSystemService = b.getService();
+            MainActivity.this.deviceManager = b.getService().getDeviceManager();
             Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
             MainActivity.this.isServiceBound = true;
             MainActivity.this.notifyFragmentsServiceBoundChange();
-            MainActivity.this.deviceManager = b.getService().getDeviceManager();
             Set<Rule> rules = b.getService().getRules();
             Log.d("TRGRD","MainActivity: rules from service size = "+rules.size());
         }
@@ -126,10 +126,18 @@ public class MainActivity extends AppCompatActivity implements TrgrdFragment.OnF
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        this.miRulesystemOn = menu.findItem(R.id.rulesystem_on);
-        this.miRulesystemOff = menu.findItem(R.id.rulesystem_off);
-        showOnOff(this.isServiceStarted);
         return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        boolean temp = super.onPrepareOptionsMenu(menu);
+        if (temp) {
+            this.miRulesystemOn = menu.findItem(R.id.rulesystem_on);
+            this.miRulesystemOff = menu.findItem(R.id.rulesystem_off);
+            showOnOff(this.isServiceStarted);
+        }
+        return temp;
     }
 
     @Override
@@ -146,14 +154,14 @@ public class MainActivity extends AppCompatActivity implements TrgrdFragment.OnF
             return true;
         } else if (id == R.id.rulesystem_on) {
             startRuleSystemService();
-            //showOnOff(true);
         } else if (id == R.id.rulesystem_off) {
             stopRuleSystemService();
-            //showOnOff(false);
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    // Fragment communication interface implementation!
 
     @Override
     public boolean getIsServiceStarted() {
@@ -230,10 +238,12 @@ public class MainActivity extends AppCompatActivity implements TrgrdFragment.OnF
     private void notifyFragmentsServiceBoundChange(){
         FragmentManager manager = getSupportFragmentManager();
         List<Fragment> fragments = manager.getFragments();
-        TrgrdFragment tempTrgrdFragment;
-        for (Fragment f:fragments){
-            tempTrgrdFragment = (TrgrdFragment) f;
-            tempTrgrdFragment.notifyIsServiceBoundChanged(isServiceBound);
+        if (fragments != null) {
+            TrgrdFragment tempTrgrdFragment;
+            for (Fragment f:fragments){
+                tempTrgrdFragment = (TrgrdFragment) f;
+                tempTrgrdFragment.notifyIsServiceBoundChanged(isServiceBound);
+            }
         }
     }
 

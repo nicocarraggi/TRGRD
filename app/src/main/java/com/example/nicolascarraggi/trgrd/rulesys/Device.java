@@ -10,6 +10,7 @@ import java.util.Set;
 public class Device {
 
     protected String name, manufacturer, platform;
+    protected int iconResource;
     protected Set<Event> events;
     protected Set<State> states;
     protected Set<Action> actions;
@@ -17,10 +18,11 @@ public class Device {
     protected Set<StateType> stateTypes;
     protected Set<ActionType> actionTypes;
 
-    public Device(String name, String manufacturer, String platform) {
+    public Device(String name, String manufacturer, String platform, int iconResource) {
         this.name = name;
         this.manufacturer = manufacturer;
         this.platform = platform;
+        this.iconResource = iconResource;
         this.events = new HashSet<>();
         this.states = new HashSet<>();
         this.actions = new HashSet<>();
@@ -51,6 +53,14 @@ public class Device {
 
     public void setPlatform(String platform) {
         this.platform = platform;
+    }
+
+    public int getIconResource() {
+        return iconResource;
+    }
+
+    public void setIconResource(int iconResource) {
+        this.iconResource = iconResource;
     }
 
     public Set<Event> getEvents() {

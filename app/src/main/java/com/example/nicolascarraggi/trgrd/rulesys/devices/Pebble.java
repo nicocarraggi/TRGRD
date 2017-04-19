@@ -8,6 +8,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.nicolascarraggi.trgrd.R;
 import com.example.nicolascarraggi.trgrd.rulesys.Action;
 import com.example.nicolascarraggi.trgrd.rulesys.ActionType;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
@@ -52,7 +53,7 @@ public class Pebble extends Wearable {
     private Action mAcVibrate, mAcScreenTime, mAcScreenAlarm, mAcScreenClean;
 
     public Pebble(Context context, EventType evButtonPress, EventType evHeartRateReading, ActionType acAlarmVibrate, ActionType acAlarmDisplay, ActionType acTimeDisplay) {
-        super("Pebble Steel", "Pebble", "Pebble OS", "Watch", "Wrist");
+        super("Pebble Steel", "Pebble", "Pebble OS", "Watch", "Wrist", R.drawable.ic_watch_black_24dp);
         this.mContext = context;
         this.eventTypes.add(evButtonPress);
         this.eventTypes.add(evHeartRateReading);

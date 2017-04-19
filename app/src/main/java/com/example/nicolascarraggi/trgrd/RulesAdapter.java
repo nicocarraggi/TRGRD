@@ -61,7 +61,6 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
 
     public class RuleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        // each data item is just a string in this case
         public ImageView ivRule;
         public TextView tvRuleName;
         public SwitchCompat switchRuleActive;
