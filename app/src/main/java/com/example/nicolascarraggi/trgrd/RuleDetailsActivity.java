@@ -31,11 +31,9 @@ import com.example.nicolascarraggi.trgrd.rulesys.State;
 
 import java.util.Set;
 
-public class RuleDetailsActivity extends AppCompatActivity implements MyEventOnItemClickListener,
+public class RuleDetailsActivity extends RuleSystemBindingActivity implements MyEventOnItemClickListener,
         MyStateOnItemClickListener, MyActionOnItemClickListener {
 
-    private RuleSystemService ruleSystemService;
-    private boolean isServiceBound = false;
     private int id;
     private Rule rule;
     private EventsAdapter eventsAdapter;
@@ -72,21 +70,8 @@ public class RuleDetailsActivity extends AppCompatActivity implements MyEventOnI
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        bindWithService();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if(isServiceBound) {
-            unbindService(mConnection);
-            this.isServiceBound = false;
-        }
-    }
-
-    private void onBound(){
+    protected void onBound(){
+        super.onBound();
         rule = ruleSystemService.getRule(id);
 
         tvRuleDetailsName.setText(rule.getName());
@@ -128,30 +113,5 @@ public class RuleDetailsActivity extends AppCompatActivity implements MyEventOnI
     @Override
     public void onItemClick(Action item) {
         Toast.makeText(RuleDetailsActivity.this, "Action Clicked: "+item.getId(), Toast.LENGTH_SHORT).show();
-    }
-
-    private ServiceConnection mConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            RuleSystemService.RuleSystemBinder b = (RuleSystemService.RuleSystemBinder) iBinder;
-            RuleDetailsActivity.this.ruleSystemService = b.getService();
-            //Toast.makeText(RuleDetailsActivity.this, "Connected", Toast.LENGTH_SHORT).show();
-            RuleDetailsActivity.this.isServiceBound = true;
-            RuleDetailsActivity.this.onBound();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-            RuleDetailsActivity.this.isServiceBound = false;
-            RuleDetailsActivity.this.ruleSystemService = null;
-            Log.d("TRGRD","RuleDetailsActivity: onServiceDisconnect");
-        }
-    };
-
-    private void bindWithService(){
-        // BIND this activity to the service to communicate with it!
-        Intent intent= new Intent(this, RuleSystemService.class);
-        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
 }
