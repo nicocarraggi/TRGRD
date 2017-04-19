@@ -21,8 +21,9 @@
         <TextView
             android:id="@+id/tvDeviceName"
             android:layout_marginLeft="4dp"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Device name"
             android:textAppearance="?android:attr/textAppearanceMedium"/>
 
     </LinearLayout>

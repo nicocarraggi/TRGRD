@@ -11,12 +11,14 @@ public class Event {
 
     private EventType eventType;
     protected String name;
+    protected int iconResource;
     protected Device device;
     protected boolean usedInRule;
     protected Set<Rule> rules; // = listeners
 
-    public Event(String name, Device device, EventType eventType) {
+    public Event(String name, int iconResource, Device device, EventType eventType) {
         this.name = name;
+        this.iconResource = iconResource;
         this.device = device;
         this.eventType = eventType;
         this.usedInRule = false;
@@ -29,6 +31,14 @@ public class Event {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getIconResource() {
+        return iconResource;
+    }
+
+    public void setIconResource(int iconResource) {
+        this.iconResource = iconResource;
     }
 
     public Device getDevice() {

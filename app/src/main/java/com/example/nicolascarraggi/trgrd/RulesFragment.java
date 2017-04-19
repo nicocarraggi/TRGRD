@@ -1,11 +1,6 @@
 package com.example.nicolascarraggi.trgrd;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,13 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
+import com.example.nicolascarraggi.trgrd.adapters.RulesAdapter;
 import com.example.nicolascarraggi.trgrd.rulesys.Rule;
-import com.example.nicolascarraggi.trgrd.rulesys.RuleSystemService;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Set;
 
 public class RulesFragment extends TrgrdFragment {
@@ -39,7 +30,7 @@ public class RulesFragment extends TrgrdFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_rules, container, false);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewRules);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.rvRules);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -59,7 +50,7 @@ public class RulesFragment extends TrgrdFragment {
 
     private void showRules(){
         this.rules = mListener.getRuleSystemService().getRules();
-        mAdapter = new RulesAdapter(rules);
+        mAdapter = new RulesAdapter(this.getContext(),rules);
         mRecyclerView.setAdapter(mAdapter);
     }
 

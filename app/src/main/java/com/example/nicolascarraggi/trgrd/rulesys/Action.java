@@ -11,14 +11,16 @@ import java.util.concurrent.Callable;
 public class Action {
 
     private String name;
+    private int iconResource;
     private Device device;
     private ActionType actionType;
     private Callable callable;
     private boolean usedInRule;
     private Set<Rule> rules;
 
-    public Action(String name, Device device, ActionType actionType, Callable callable) {
+    public Action(String name, int iconResource, Device device, ActionType actionType, Callable callable) {
         this.name = name;
+        this.iconResource = iconResource;
         this.device = device;
         this.actionType = actionType;
         this.callable = callable;
@@ -32,6 +34,14 @@ public class Action {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getIconResource() {
+        return iconResource;
+    }
+
+    public void setIconResource(int iconResource) {
+        this.iconResource = iconResource;
     }
 
     public Device getDevice() {

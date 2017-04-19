@@ -5,7 +5,7 @@
     tools:context="com.example.nicolascarraggi.trgrd.LocationsFragment">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerViewLocations"
+        android:id="@+id/rvLocations"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"

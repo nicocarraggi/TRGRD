@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements TrgrdFragment.OnF
     private boolean isServiceBound = false;
     private DeviceManager deviceManager;
     private MenuItem miRulesystemOn, miRulesystemOff;
+    private boolean isOptionsMenuCreated = false;
 
 
     /**
@@ -79,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements TrgrdFragment.OnF
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+        startRuleSystemService();
+
     }
 
     @Override
@@ -107,11 +110,9 @@ public class MainActivity extends AppCompatActivity implements TrgrdFragment.OnF
             RuleSystemService.RuleSystemBinder b = (RuleSystemService.RuleSystemBinder) iBinder;
             MainActivity.this.ruleSystemService = b.getService();
             MainActivity.this.deviceManager = b.getService().getDeviceManager();
-            Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
             MainActivity.this.isServiceBound = true;
             MainActivity.this.notifyFragmentsServiceBoundChange();
-            Set<Rule> rules = b.getService().getRules();
-            Log.d("TRGRD","MainActivity: rules from service size = "+rules.size());
         }
 
         @Override
@@ -132,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements TrgrdFragment.OnF
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         boolean temp = super.onPrepareOptionsMenu(menu);
+        this.isOptionsMenuCreated = true;
         if (temp) {
             this.miRulesystemOn = menu.findItem(R.id.rulesystem_on);
             this.miRulesystemOff = menu.findItem(R.id.rulesystem_off);
@@ -228,10 +230,12 @@ public class MainActivity extends AppCompatActivity implements TrgrdFragment.OnF
     private void notifyFragmentsServiceStartedChange(){
         FragmentManager manager = getSupportFragmentManager();
         List<Fragment> fragments = manager.getFragments();
-        TrgrdFragment tempTrgrdFragment;
-        for (Fragment f:fragments){
-            tempTrgrdFragment = (TrgrdFragment) f;
-            tempTrgrdFragment.notifyIsServiceStartedChanged(isServiceStarted);
+        if (fragments != null) {
+            TrgrdFragment tempTrgrdFragment;
+            for (Fragment f : fragments) {
+                tempTrgrdFragment = (TrgrdFragment) f;
+                tempTrgrdFragment.notifyIsServiceStartedChanged(isServiceStarted);
+            }
         }
     }
 
@@ -254,19 +258,20 @@ public class MainActivity extends AppCompatActivity implements TrgrdFragment.OnF
     }
 
     private void showOnOff(boolean isOn){
-        if(isAdmin()){
-            if(isOn){
-                miRulesystemOn.setVisible(false);
-                miRulesystemOff.setVisible(true);
+        if(isOptionsMenuCreated) {
+            if (isAdmin()) {
+                if (isOn) {
+                    miRulesystemOn.setVisible(false);
+                    miRulesystemOff.setVisible(true);
+                } else {
+                    miRulesystemOn.setVisible(true);
+                    miRulesystemOff.setVisible(false);
+                }
             } else {
-                miRulesystemOn.setVisible(true);
+                miRulesystemOn.setVisible(false);
                 miRulesystemOff.setVisible(false);
             }
-        } else {
-            miRulesystemOn.setVisible(false);
-            miRulesystemOff.setVisible(false);
         }
-
     }
 
     private void startRuleSystemService(){

@@ -1,5 +1,8 @@
-package com.example.nicolascarraggi.trgrd;
+package com.example.nicolascarraggi.trgrd.adapters;
 
+import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
@@ -8,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.nicolascarraggi.trgrd.R;
+import com.example.nicolascarraggi.trgrd.RuleDetailsActivity;
 import com.example.nicolascarraggi.trgrd.rulesys.Rule;
 
 import java.util.ArrayList;
@@ -21,9 +26,11 @@ import java.util.Set;
 
 public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHolder> {
 
+    private Context mContext;
     private ArrayList<Rule> mDataset;
 
-    public RulesAdapter(Set<Rule> mDataset) {
+    public RulesAdapter(Context context, Set<Rule> mDataset) {
+        this.mContext = context;
         this.mDataset = new ArrayList<>();
         this.mDataset.addAll(mDataset);
         // Sorting on name ... TODO other filters?
@@ -70,16 +77,19 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
             this.ivRule = (ImageView) itemView.findViewById(R.id.ivRule);
             this.tvRuleName = (TextView) itemView.findViewById(R.id.tvRuleName);
             this.switchRuleActive = (SwitchCompat) itemView.findViewById(R.id.switchRuleActive);
+            tvRuleName.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
             // example
-            /*switch(view.getId()) {
-                case R.id.ivPersonDelete:
-                    delete(getPosition());
+            switch(view.getId()) {
+                case R.id.tvRuleName:
+                    Intent intent = new Intent(mContext, RuleDetailsActivity.class);
+                    intent.putExtra("id",mDataset.get(getAdapterPosition()).getId());
+                    mContext.startActivity(intent);
                     break;
-            }*/
+            }
         }
     }
 }

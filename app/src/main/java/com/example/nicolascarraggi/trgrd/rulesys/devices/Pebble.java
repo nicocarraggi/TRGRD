@@ -60,31 +60,32 @@ public class Pebble extends Wearable {
         this.actionTypes.add(acAlarmVibrate);
         this.actionTypes.add(acAlarmDisplay);
         this.actionTypes.add(acTimeDisplay);
-        mEvBtnUp = new Event("Pebble Button Up", this, evButtonPress);
-        mEvBtnSelect = new Event("Pebble Button Select", this, evButtonPress);
-        mEvBtnDown = new Event("Pebble Button Down", this, evButtonPress);
-        mAcVibrate = new Action("Pebble Vibrate", this, acAlarmVibrate, new Callable<String>() {
+        mEvBtnUp = new Event("Pebble Button Up", R.drawable.ic_keyboard_arrow_up_black_24dp, this, evButtonPress);
+        mEvBtnSelect = new Event("Pebble Button Select", R.drawable.ic_keyboard_arrow_right_black_24dp, this, evButtonPress);
+        mEvBtnDown = new Event("Pebble Button Down", R.drawable.ic_keyboard_arrow_down_black_24dp, this, evButtonPress);
+        mAcVibrate = new Action("Pebble Vibrate", R.drawable.ic_vibration_black_24dp, this, acAlarmVibrate, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acVibrate();
                 return null;
             }
         });
-        mAcScreenTime = new Action("Pebble Watch Mode Time", this, acTimeDisplay, new Callable<String>() {
+        mAcScreenTime = new Action("Pebble Watch Mode Time", R.drawable.ic_access_time_black_24dp, this, acTimeDisplay, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acScreenTime();
                 return null;
             }
         });
-        mAcScreenAlarm = new Action("Pebble Watch Mode Alarm", this, acAlarmDisplay, new Callable<String>() {
+        mAcScreenAlarm = new Action("Pebble Watch Mode Alarm", R.drawable.ic_alarm_black_24dp, this, acAlarmDisplay, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acScreenAlarm();
                 return null;
             }
         });
-        mAcScreenClean = new Action("Pebble Watch Mode Clean", this, acTimeDisplay, new Callable<String>() {
+        // TODO remove ScreenClean!
+        mAcScreenClean = new Action("Pebble Watch Mode Clean", R.drawable.ic_watch_black_24dp, this, acTimeDisplay, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acScreenClean();
@@ -131,7 +132,7 @@ public class Pebble extends Wearable {
     }
 
     public Action getSimVibrate() {
-        Action simVibrate = new Action("Pebble Vibrate", this, null, new Callable<String>() {
+        Action simVibrate = new Action("Pebble Vibrate",0, this, null, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 simulateActionVibrate();
@@ -142,7 +143,7 @@ public class Pebble extends Wearable {
     }
 
     public Action getSimScreenTime() {
-        Action simScreenTime = new Action("Pebble Watch Mode Time", this, null, new Callable<String>() {
+        Action simScreenTime = new Action("Pebble Watch Mode Time",0, this, null, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 simulateActionScreenTime();

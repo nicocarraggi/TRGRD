@@ -9,9 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.nicolascarraggi.trgrd.rulesys.Device;
-import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
-import com.example.nicolascarraggi.trgrd.rulesys.DevicesAdapter;
-import com.example.nicolascarraggi.trgrd.rulesys.RuleSystemService;
+import com.example.nicolascarraggi.trgrd.adapters.DevicesAdapter;
 
 import java.util.Set;
 
@@ -32,7 +30,7 @@ public class DevicesFragment extends TrgrdFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_devices, container, false);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewDevices);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.rvDevices);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView

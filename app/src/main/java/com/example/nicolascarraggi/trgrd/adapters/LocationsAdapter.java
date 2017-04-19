@@ -1,4 +1,4 @@
-package com.example.nicolascarraggi.trgrd;
+package com.example.nicolascarraggi.trgrd.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

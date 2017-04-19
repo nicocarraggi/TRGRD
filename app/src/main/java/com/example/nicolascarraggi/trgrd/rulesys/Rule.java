@@ -9,6 +9,7 @@ import java.util.Set;
 
 public class Rule {
 
+    private int id;
     private String name;
     private boolean active;
     private Set<Event> events;
@@ -16,7 +17,8 @@ public class Rule {
     private Set<Action> actions;
     private int times;
 
-    public Rule(String name) {
+    public Rule(int id, String name) {
+        this.id = id;
         this.name = name;
         this.active = false;
         this.events = new HashSet<>();
@@ -105,6 +107,14 @@ public class Rule {
         actions.remove(a);
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -127,5 +137,17 @@ public class Rule {
 
     public void setTimes(int times) {
         this.times = times;
+    }
+
+    public Set<Event> getEvents() {
+        return events;
+    }
+
+    public Set<State> getStates() {
+        return states;
+    }
+
+    public Set<Action> getActions() {
+        return actions;
     }
 }
