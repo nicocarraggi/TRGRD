@@ -10,6 +10,7 @@ import java.util.concurrent.Callable;
 
 public class Action {
 
+    private int id;
     private String name;
     private int iconResource;
     private Device device;
@@ -18,7 +19,8 @@ public class Action {
     private boolean usedInRule;
     private Set<Rule> rules;
 
-    public Action(String name, int iconResource, Device device, ActionType actionType, Callable callable) {
+    public Action(int id, String name, int iconResource, Device device, ActionType actionType, Callable callable) {
+        this.id = id;
         this.name = name;
         this.iconResource = iconResource;
         this.device = device;
@@ -26,6 +28,14 @@ public class Action {
         this.callable = callable;
         this.usedInRule = false;
         this.rules = new HashSet<>();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

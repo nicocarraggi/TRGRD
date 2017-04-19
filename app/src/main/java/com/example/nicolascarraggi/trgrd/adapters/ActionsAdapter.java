@@ -21,9 +21,11 @@ import java.util.Set;
 
 public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionViewHolder> {
 
+    private MyActionOnItemClickListener mListener;
     private ArrayList<Action> mDataset;
 
-    public ActionsAdapter(Set<Action> mDataset) {
+    public ActionsAdapter(MyActionOnItemClickListener listener, Set<Action> mDataset) {
+        this.mListener = listener;
         this.mDataset = new ArrayList<>();
         this.mDataset.addAll(mDataset);
         // Sorting on name ... TODO other filters?
@@ -49,10 +51,8 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
 
     @Override
     public void onBindViewHolder(ActionViewHolder holder, int position) {
-        final Action action = mDataset.get(position);
-        holder.ivActionDevice.setImageResource(action.getDevice().getIconResource());
-        holder.ivAction.setImageResource(action.getIconResource());
-        holder.tvActionName.setText(action.getName());
+        holder.bind(mDataset.get(position),mListener);
+
     }
 
     @Override
@@ -62,19 +62,32 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
 
     public class ActionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public ImageView ivActionDevice, ivAction;
-        public TextView tvActionName;
+        private MyActionOnItemClickListener myActionOnItemClickListener;
+        private ImageView ivActionDevice, ivAction;
+        private TextView tvActionName;
 
         public ActionViewHolder(View itemView) {
             super(itemView);
             this.ivActionDevice = (ImageView) itemView.findViewById(R.id.ivActionDevice);
             this.ivAction = (ImageView) itemView.findViewById(R.id.ivAction);
             this.tvActionName = (TextView) itemView.findViewById(R.id.tvActionName);
+            tvActionName.setOnClickListener(this);
+        }
+
+        public void bind(Action action, MyActionOnItemClickListener listener){
+            this.myActionOnItemClickListener = listener;
+            this.ivActionDevice.setImageResource(action.getDevice().getIconResource());
+            this.ivAction.setImageResource(action.getIconResource());
+            this.tvActionName.setText(action.getName());
         }
 
         @Override
         public void onClick(View view) {
-
+            switch(view.getId()) {
+                case R.id.tvActionName:
+                    myActionOnItemClickListener.onItemClick(mDataset.get(getAdapterPosition()));
+                    break;
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ package com.example.nicolascarraggi.trgrd.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.example.nicolascarraggi.trgrd.rulesys.Device;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Set;
 
 /**
@@ -22,12 +24,13 @@ import java.util.Set;
 
 public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DeviceViewHolder> {
 
-
+    MyOnItemClickListener<Device> mListener;
     private ArrayList<Device> mDataset;
 
-    public DevicesAdapter(Set<Device> mDataset) {
+    public DevicesAdapter(MyOnItemClickListener<Device> listener, HashMap<Integer,Device> mDataset) {
+        this.mListener = listener;
         this.mDataset = new ArrayList<>();
-        this.mDataset.addAll(mDataset);
+        this.mDataset.addAll(mDataset.values());
         // Sorting on name ... TODO other filters?
         Collections.sort(this.mDataset, new Comparator<Device>() {
             @Override
@@ -51,10 +54,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DeviceVi
 
     @Override
     public void onBindViewHolder(DeviceViewHolder holder, int position) {
-        final Device device = mDataset.get(position);
-        holder.ivDevice.setImageResource(device.getIconResource());
-        holder.tvDeviceName.setText(device.getName());
-        //holder.switchDeviceActive.setChecked(device.isActive());
+        holder.bind(mDataset.get(position), mListener);
     }
 
     @Override
@@ -64,9 +64,10 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DeviceVi
 
     public class DeviceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public ImageView ivDevice;
-        public TextView tvDeviceName;
-        public SwitchCompat switchDeviceActive;
+        private MyOnItemClickListener<Device> myOnItemClickListener;
+        private ImageView ivDevice;
+        private TextView tvDeviceName;
+        private SwitchCompat switchDeviceActive;
 
         public DeviceViewHolder(View itemView) {
             super(itemView);
@@ -75,9 +76,20 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DeviceVi
             this.switchDeviceActive = (SwitchCompat) itemView.findViewById(R.id.switchDeviceActive);
         }
 
+        public void bind(Device device, MyOnItemClickListener<Device> listener){
+            this.myOnItemClickListener = listener;
+            this.ivDevice.setImageResource(device.getIconResource());
+            this.tvDeviceName.setText(device.getName());
+            //holder.switchDeviceActive.setChecked(device.isActive());
+        }
+
         @Override
         public void onClick(View view) {
-
+            switch(view.getId()) {
+                case R.id.tvDeviceName:
+                    myOnItemClickListener.onItemClick(mDataset.get(getAdapterPosition()));
+                    break;
+            }
         }
     }
 }

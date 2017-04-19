@@ -53,31 +53,31 @@ public class Pebble extends Wearable {
     private Action mAcVibrate, mAcScreenTime, mAcScreenAlarm, mAcScreenClean;
 
     public Pebble(Context context, EventType evButtonPress, EventType evHeartRateReading, ActionType acAlarmVibrate, ActionType acAlarmDisplay, ActionType acTimeDisplay) {
-        super("Pebble Steel", "Pebble", "Pebble OS", "Watch", "Wrist", R.drawable.ic_watch_black_24dp);
+        super(2, "Pebble Steel", "Pebble", "Pebble OS", "Watch", "Wrist", R.drawable.ic_watch_black_24dp);
         this.mContext = context;
-        this.eventTypes.add(evButtonPress);
-        this.eventTypes.add(evHeartRateReading);
-        this.actionTypes.add(acAlarmVibrate);
-        this.actionTypes.add(acAlarmDisplay);
-        this.actionTypes.add(acTimeDisplay);
-        mEvBtnUp = new Event("Pebble Button Up", R.drawable.ic_keyboard_arrow_up_black_24dp, this, evButtonPress);
-        mEvBtnSelect = new Event("Pebble Button Select", R.drawable.ic_keyboard_arrow_right_black_24dp, this, evButtonPress);
-        mEvBtnDown = new Event("Pebble Button Down", R.drawable.ic_keyboard_arrow_down_black_24dp, this, evButtonPress);
-        mAcVibrate = new Action("Pebble Vibrate", R.drawable.ic_vibration_black_24dp, this, acAlarmVibrate, new Callable<String>() {
+        this.eventTypes.put(evButtonPress.getId(),evButtonPress);
+        this.eventTypes.put(evHeartRateReading.getId(),evHeartRateReading);
+        this.actionTypes.put(acAlarmVibrate.getId(),acAlarmVibrate);
+        this.actionTypes.put(acAlarmDisplay.getId(),acAlarmDisplay);
+        this.actionTypes.put(acTimeDisplay.getId(),acTimeDisplay);
+        mEvBtnUp = new Event(11,"Pebble Button Up", R.drawable.ic_keyboard_arrow_up_black_24dp, this, evButtonPress);
+        mEvBtnSelect = new Event(12,"Pebble Button Select", R.drawable.ic_keyboard_arrow_right_black_24dp, this, evButtonPress);
+        mEvBtnDown = new Event(13,"Pebble Button Down", R.drawable.ic_keyboard_arrow_down_black_24dp, this, evButtonPress);
+        mAcVibrate = new Action(14,"Pebble Vibrate", R.drawable.ic_vibration_black_24dp, this, acAlarmVibrate, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acVibrate();
                 return null;
             }
         });
-        mAcScreenTime = new Action("Pebble Watch Mode Time", R.drawable.ic_access_time_black_24dp, this, acTimeDisplay, new Callable<String>() {
+        mAcScreenTime = new Action(15,"Pebble Watch Mode Time", R.drawable.ic_access_time_black_24dp, this, acTimeDisplay, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acScreenTime();
                 return null;
             }
         });
-        mAcScreenAlarm = new Action("Pebble Watch Mode Alarm", R.drawable.ic_alarm_black_24dp, this, acAlarmDisplay, new Callable<String>() {
+        mAcScreenAlarm = new Action(16,"Pebble Watch Mode Alarm", R.drawable.ic_alarm_black_24dp, this, acAlarmDisplay, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acScreenAlarm();
@@ -85,20 +85,20 @@ public class Pebble extends Wearable {
             }
         });
         // TODO remove ScreenClean!
-        mAcScreenClean = new Action("Pebble Watch Mode Clean", R.drawable.ic_watch_black_24dp, this, acTimeDisplay, new Callable<String>() {
+        mAcScreenClean = new Action(17,"Pebble Watch Mode Clean", R.drawable.ic_cancel_black_24dp, this, acTimeDisplay, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acScreenClean();
                 return null;
             }
         });
-        this.events.add(mEvBtnUp);
-        this.events.add(mEvBtnSelect);
-        this.events.add(mEvBtnDown);
-        this.actions.add(mAcVibrate);
-        this.actions.add(mAcScreenTime);
-        this.actions.add(mAcScreenAlarm);
-        this.actions.add(mAcScreenClean);
+        this.events.put(mEvBtnUp.getId(),mEvBtnUp);
+        this.events.put(mEvBtnSelect.getId(),mEvBtnSelect);
+        this.events.put(mEvBtnDown.getId(),mEvBtnDown);
+        this.actions.put(mAcVibrate.getId(),mAcVibrate);
+        this.actions.put(mAcScreenTime.getId(),mAcScreenTime);
+        this.actions.put(mAcScreenAlarm.getId(),mAcScreenAlarm);
+        this.actions.put(mAcScreenClean.getId(),mAcScreenClean);
     }
 
     // These getters only needed for testing!
@@ -132,7 +132,7 @@ public class Pebble extends Wearable {
     }
 
     public Action getSimVibrate() {
-        Action simVibrate = new Action("Pebble Vibrate",0, this, null, new Callable<String>() {
+        Action simVibrate = new Action(0,"Pebble Vibrate",0, this, null, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 simulateActionVibrate();
@@ -143,7 +143,7 @@ public class Pebble extends Wearable {
     }
 
     public Action getSimScreenTime() {
-        Action simScreenTime = new Action("Pebble Watch Mode Time",0, this, null, new Callable<String>() {
+        Action simScreenTime = new Action(0,"Pebble Watch Mode Time",0, this, null, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 simulateActionScreenTime();

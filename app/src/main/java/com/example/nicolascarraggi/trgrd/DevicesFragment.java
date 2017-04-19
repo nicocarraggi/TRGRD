@@ -8,14 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.nicolascarraggi.trgrd.adapters.MyOnItemClickListener;
 import com.example.nicolascarraggi.trgrd.rulesys.Device;
 import com.example.nicolascarraggi.trgrd.adapters.DevicesAdapter;
 
+import java.util.HashMap;
 import java.util.Set;
 
-public class DevicesFragment extends TrgrdFragment {
+public class DevicesFragment extends TrgrdFragment implements MyOnItemClickListener<Device>{
 
-    private Set<Device> devices;
+    private HashMap<Integer,Device> devices;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -51,8 +53,13 @@ public class DevicesFragment extends TrgrdFragment {
 
     private void showDevices(){
         this.devices = mListener.getDeviceManager().getDevices();
-        mAdapter = new DevicesAdapter(devices);
+        mAdapter = new DevicesAdapter(this, devices);
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onItemClick(Device item) {
+
     }
 
     @Override

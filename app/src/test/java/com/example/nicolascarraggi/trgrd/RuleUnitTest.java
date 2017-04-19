@@ -15,13 +15,13 @@ import static org.junit.Assert.assertEquals;
 public class RuleUnitTest {
     @Test
     public void newRule_isCorrect() throws Exception {
-        Rule r = new Rule("testRule");
+        Rule r = new Rule(1,"testRule");
         Device d = null; // not really used in this test case!
-        Event e1 = new Event("testEvent1",0, d, null);
+        Event e1 = new Event(1,"testEvent1",0, d, null);
         //Event e2 = new Event("testEvent2", d);
-        State s1 = new State("testState1",0, d, null, false);
-        State s2 = new State("testState2",0, d, null, false);
-        Action a = new Action("testAction",0, d, null, new Callable() {
+        State s1 = new State(2,"testState1",0, d, null, false);
+        State s2 = new State(3,"testState2",0, d, null, false);
+        Action a = new Action(4,"testAction",0, d, null, new Callable() {
             @Override
             public Object call() throws Exception {
                 return null;

@@ -1,5 +1,6 @@
 package com.example.nicolascarraggi.trgrd;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,12 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.nicolascarraggi.trgrd.adapters.MyOnItemClickListener;
 import com.example.nicolascarraggi.trgrd.adapters.RulesAdapter;
 import com.example.nicolascarraggi.trgrd.rulesys.Rule;
 
 import java.util.Set;
 
-public class RulesFragment extends TrgrdFragment {
+public class RulesFragment extends TrgrdFragment  implements MyOnItemClickListener<Rule> {
 
     private Set<Rule> rules;
     private RecyclerView mRecyclerView;
@@ -50,8 +52,15 @@ public class RulesFragment extends TrgrdFragment {
 
     private void showRules(){
         this.rules = mListener.getRuleSystemService().getRules();
-        mAdapter = new RulesAdapter(this.getContext(),rules);
+        mAdapter = new RulesAdapter(this,rules);
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onItemClick(Rule rule) {
+        Intent intent = new Intent(this.getContext(), RuleDetailsActivity.class);
+        intent.putExtra("id",rule.getId());
+        startActivity(intent);
     }
 
     @Override

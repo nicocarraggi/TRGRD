@@ -11,8 +11,8 @@ public class Wearable extends Device {
     protected String wearType;
     protected String wearLocation;
 
-    public Wearable(String name, String manufacturer, String platform, String wearType, String wearLocation, int iconResource) {
-        super(name, manufacturer, platform, iconResource);
+    public Wearable(int id, String name, String manufacturer, String platform, String wearType, String wearLocation, int iconResource) {
+        super(id, name, manufacturer, platform, iconResource);
         this.wearType = wearType;
         this.wearLocation = wearLocation;
     }

@@ -1,13 +1,11 @@
 package com.example.nicolascarraggi.trgrd.rulesys;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.nicolascarraggi.trgrd.rulesys.devices.AndroidPhone;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Pebble;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
 
 /**
  * Created by nicolascarraggi on 11/04/17.
@@ -15,58 +13,58 @@ import java.util.Set;
 
 public class DeviceManager {
 
-    private Set<Device> devices;
-    private Set<EventType> eventTypes;
-    private Set<StateType> stateTypes;
-    private Set<ActionType> actionTypes;
+    private HashMap<Integer,Device> devices;
+    private HashMap<Integer,EventType> eventTypes;
+    private HashMap<Integer,StateType> stateTypes;
+    private HashMap<Integer,ActionType> actionTypes;
 
     // EventTypes
-    private EventType evAlarmAlert = new EventType("alarm alert");
-    private EventType evAlarmSnooze = new EventType("alarm snooze");
-    private EventType evAlarmDismiss = new EventType("alarm dismiss");
-    private EventType evAlarmDone = new EventType("alarm done");
-    private EventType evCallInc = new EventType("call incoming");
-    private EventType evButtonPress = new EventType("button press"); // change to evOneInput? too restrictive now, could also be a gesture from myo?
-    private EventType evHeartRateReading = new EventType("heart rate reading");
+    private EventType evAlarmAlert = new EventType(1,"alarm alert");
+    private EventType evAlarmSnooze = new EventType(2,"alarm snooze");
+    private EventType evAlarmDismiss = new EventType(3,"alarm dismiss");
+    private EventType evAlarmDone = new EventType(4,"alarm done");
+    private EventType evCallInc = new EventType(5,"call incoming");
+    private EventType evButtonPress = new EventType(6,"button press"); // change to evOneInput? too restrictive now, could also be a gesture from myo?
+    private EventType evHeartRateReading = new EventType(7,"heart rate reading");
 
     // StateTypes
-    private StateType stAlarmGoing = new StateType("alarm going");
-    private StateType stCallIncGoing = new StateType("call incoming going");
+    private StateType stAlarmGoing = new StateType(8,"alarm going");
+    private StateType stCallIncGoing = new StateType(9,"call incoming going");
 
     // ActionTypes
-    private ActionType acAlarmSnooze = new ActionType("alarm snooze");
-    private ActionType acAlarmDismiss = new ActionType("alarm dismiss");
-    private ActionType acAlarmVibrate = new ActionType("alarm vibrate");
-    private ActionType acAlarmDisplay = new ActionType("alarm display");
-    private ActionType acTimeDisplay = new ActionType("time display");
+    private ActionType acAlarmSnooze = new ActionType(10,"alarm snooze");
+    private ActionType acAlarmDismiss = new ActionType(11,"alarm dismiss");
+    private ActionType acAlarmVibrate = new ActionType(12,"alarm vibrate");
+    private ActionType acAlarmDisplay = new ActionType(13,"alarm display");
+    private ActionType acTimeDisplay = new ActionType(14,"time display");
 
     // Devices
     private AndroidPhone mAndroidPhone;
     private Pebble mPebble;
 
     public DeviceManager(Context mContext) {
-        this.devices = new HashSet<>();
-        this.eventTypes = new HashSet<>();
-        this.stateTypes = new HashSet<>();
-        this.actionTypes = new HashSet<>();
-        this.eventTypes.add(evAlarmAlert);
-        this.eventTypes.add(evAlarmSnooze);
-        this.eventTypes.add(evAlarmDismiss);
-        this.eventTypes.add(evAlarmDone);
-        this.eventTypes.add(evCallInc);
-        this.eventTypes.add(evButtonPress);
-        this.eventTypes.add(evHeartRateReading);
-        this.stateTypes.add(stAlarmGoing);
-        this.stateTypes.add(stCallIncGoing);
-        this.actionTypes.add(acAlarmSnooze);
-        this.actionTypes.add(acAlarmDismiss);
-        this.actionTypes.add(acAlarmVibrate);
-        this.actionTypes.add(acAlarmDisplay);
-        this.actionTypes.add(acTimeDisplay);
+        this.devices = new HashMap<>();
+        this.eventTypes = new HashMap<>();
+        this.stateTypes = new HashMap<>();
+        this.actionTypes = new HashMap<>();
+        this.eventTypes.put(evAlarmAlert.getId(),evAlarmAlert);
+        this.eventTypes.put(evAlarmSnooze.getId(),evAlarmSnooze);
+        this.eventTypes.put(evAlarmDismiss.getId(),evAlarmDismiss);
+        this.eventTypes.put(evAlarmDone.getId(),evAlarmDone);
+        this.eventTypes.put(evCallInc.getId(),evCallInc);
+        this.eventTypes.put(evButtonPress.getId(),evButtonPress);
+        this.eventTypes.put(evHeartRateReading.getId(),evHeartRateReading);
+        this.stateTypes.put(stAlarmGoing.getId(),stAlarmGoing);
+        this.stateTypes.put(stCallIncGoing.getId(),stCallIncGoing);
+        this.actionTypes.put(acAlarmSnooze.getId(),acAlarmSnooze);
+        this.actionTypes.put(acAlarmDismiss.getId(),acAlarmDismiss);
+        this.actionTypes.put(acAlarmVibrate.getId(),acAlarmVibrate);
+        this.actionTypes.put(acAlarmDisplay.getId(),acAlarmDisplay);
+        this.actionTypes.put(acTimeDisplay.getId(),acTimeDisplay);
         this.mAndroidPhone = new AndroidPhone(mContext, evAlarmAlert, evAlarmSnooze, evAlarmDismiss, evAlarmDone, evCallInc, stAlarmGoing, stCallIncGoing, acAlarmSnooze, acAlarmDismiss);
         this.mPebble = new Pebble(mContext, evButtonPress, evHeartRateReading, acAlarmVibrate, acAlarmDisplay, acTimeDisplay);
-        this.devices.add(mAndroidPhone);
-        this.devices.add(mPebble);
+        this.devices.put(mAndroidPhone.getId(),mAndroidPhone);
+        this.devices.put(mPebble.getId(),mPebble);
     }
 
     public AndroidPhone getAndroidPhone() {
@@ -77,23 +75,39 @@ public class DeviceManager {
         return mPebble;
     }
 
-    public Set<EventType> getEventTypes() {
-        return eventTypes;
-    }
-
-    public Set<StateType> getStateTypes() {
-        return stateTypes;
-    }
-
-    public Set<ActionType> getActionTypes() {
-        return actionTypes;
-    }
-
-    public Set<Device> getDevices(){
+    public HashMap<Integer, Device> getDevices() {
         return devices;
     }
 
-    // Start & Stop Devices:
+    public Device getDevice(int id){
+        return devices.get(id);
+    }
+
+    public HashMap<Integer, EventType> getEventTypes() {
+        return eventTypes;
+    }
+
+    public EventType getEventType(int id){
+        return eventTypes.get(id);
+    }
+
+    public HashMap<Integer, StateType> getStateTypes() {
+        return stateTypes;
+    }
+
+    public StateType getStateType(int id){
+        return stateTypes.get(id);
+    }
+
+    public HashMap<Integer, ActionType> getActionTypes() {
+        return actionTypes;
+    }
+
+    public ActionType getActionType(int id){
+        return actionTypes.get(id);
+    }
+
+// Start & Stop Devices:
     // Start & Stop Services from all devices!!!
     // Register & unRegister Receivers from all devices!!!
     // startDevices must be called in onResume method of Activity OR onCreate of Service

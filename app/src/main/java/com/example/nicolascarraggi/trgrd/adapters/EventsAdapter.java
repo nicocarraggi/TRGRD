@@ -22,8 +22,10 @@ import java.util.Set;
 public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewHolder> {
 
     private ArrayList<Event> mDataset;
+    private MyEventOnItemClickListener mListener;
 
-    public EventsAdapter(Set<Event> mDataset) {
+    public EventsAdapter(MyEventOnItemClickListener listener, Set<Event> mDataset) {
+        this.mListener = listener;
         this.mDataset = new ArrayList<>();
         this.mDataset.addAll(mDataset);
         // Sorting on name ... TODO other filters?
@@ -49,10 +51,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
 
     @Override
     public void onBindViewHolder(EventViewHolder holder, int position) {
-        final Event event = mDataset.get(position);
-        holder.ivEventDevice.setImageResource(event.getDevice().getIconResource());
-        holder.ivEvent.setImageResource(event.getIconResource());
-        holder.tvEventName.setText(event.getName());
+        holder.bind(mDataset.get(position), mListener);
     }
 
     @Override
@@ -62,19 +61,32 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
 
     public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public ImageView ivEventDevice, ivEvent;
-        public TextView tvEventName;
+        private MyEventOnItemClickListener myOnItemClickListener;
+        private ImageView ivEventDevice, ivEvent;
+        private TextView tvEventName;
 
         public EventViewHolder(View itemView) {
             super(itemView);
             this.ivEventDevice = (ImageView) itemView.findViewById(R.id.ivEventDevice);
             this.ivEvent = (ImageView) itemView.findViewById(R.id.ivEvent);
             this.tvEventName = (TextView) itemView.findViewById(R.id.tvEventName);
+            tvEventName.setOnClickListener(this);
+        }
+
+        public void bind(Event event, MyEventOnItemClickListener listener){
+            this.myOnItemClickListener = listener;
+            this.ivEventDevice.setImageResource(event.getDevice().getIconResource());
+            this.ivEvent.setImageResource(event.getIconResource());
+            this.tvEventName.setText(event.getName());
         }
 
         @Override
         public void onClick(View view) {
-
+            switch(view.getId()) {
+                case R.id.tvEventName:
+                    myOnItemClickListener.onItemClick(mDataset.get(getAdapterPosition()));
+                    break;
+            }
         }
     }
 }

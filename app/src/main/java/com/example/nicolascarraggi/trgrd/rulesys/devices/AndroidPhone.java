@@ -67,49 +67,49 @@ public class AndroidPhone extends Device {
     private Action mAcAlarmDismiss, mAcAlarmSnooze;
 
     public AndroidPhone(Context context, EventType evAlarmAlert, EventType evAlarmSnooze, EventType evAlarmDismiss, EventType evAlarmDone, EventType evCallInc, StateType stAlarmGoing, StateType stCallIncGoing, ActionType acAlarmSnooze, ActionType acAlarmDismiss) {
-        super("Phone", "Google", "Android", R.drawable.ic_phone_android_black_24dp);
+        super(1, "Phone", "Google", "Android", R.drawable.ic_phone_android_black_24dp);
         this.mContext = context;
-        this.eventTypes.add(evAlarmAlert);
-        this.eventTypes.add(evAlarmSnooze);
-        this.eventTypes.add(evAlarmDismiss);
-        this.eventTypes.add(evAlarmDone);
-        this.eventTypes.add(evCallInc);
-        this.stateTypes.add(stAlarmGoing);
-        this.stateTypes.add(stCallIncGoing);
-        this.actionTypes.add(acAlarmSnooze);
-        this.actionTypes.add(acAlarmDismiss);
-        this.mEvAlarmStart = new Event("Phone Alarm Start", R.drawable.ic_alarm_black_24dp, this, evAlarmAlert);
-        this.mEvAlarmSnooze = new Event("Phone Alarm Snooze", R.drawable.ic_alarm_off_black_24dp, this, evAlarmSnooze);
-        this.mEvAlarmDismiss = new Event("Phone Alarm Dismiss", R.drawable.ic_alarm_off_black_24dp, this, evAlarmDismiss);
-        this.mEvAlarmDone = new Event("Phone Alarm Done", R.drawable.ic_alarm_off_black_24dp, this, evAlarmDone);
-        this.mEvCallIncStart = new Event("Phone Call Incoming Start", R.drawable.ic_call_black_24dp, this, evCallInc);
-        this.mEvCallIncStop = new Event("Phone Call Incoming Stop", R.drawable.ic_call_end_black_24dp, this, evCallInc);
-        this.mStAlarmGoing = new State("Phone Alarm Going", R.drawable.ic_alarm_black_24dp, this, stAlarmGoing, false);
-        this.mStCallIncGoing = new State("Phone Call Incoming Going", R.drawable.ic_call_black_24dp, this, stCallIncGoing, false);
-        this.mAcAlarmDismiss = new Action("Phone Alarm Dismiss", R.drawable.ic_alarm_off_black_24dp, this, acAlarmDismiss, new Callable<String>() {
+        this.eventTypes.put(evAlarmAlert.getId(),evAlarmAlert);
+        this.eventTypes.put(evAlarmSnooze.getId(),evAlarmSnooze);
+        this.eventTypes.put(evAlarmDismiss.getId(),evAlarmDismiss);
+        this.eventTypes.put(evAlarmDone.getId(),evAlarmDone);
+        this.eventTypes.put(evCallInc.getId(),evCallInc);
+        this.stateTypes.put(stAlarmGoing.getId(),stAlarmGoing);
+        this.stateTypes.put(stCallIncGoing.getId(),stCallIncGoing);
+        this.actionTypes.put(acAlarmSnooze.getId(),acAlarmSnooze);
+        this.actionTypes.put(acAlarmDismiss.getId(),acAlarmDismiss);
+        this.mEvAlarmStart = new Event(1,"Phone Alarm Start", R.drawable.ic_alarm_black_24dp, this, evAlarmAlert);
+        this.mEvAlarmSnooze = new Event(2,"Phone Alarm Snooze", R.drawable.ic_alarm_off_black_24dp, this, evAlarmSnooze);
+        this.mEvAlarmDismiss = new Event(3,"Phone Alarm Dismiss", R.drawable.ic_alarm_off_black_24dp, this, evAlarmDismiss);
+        this.mEvAlarmDone = new Event(4,"Phone Alarm Done", R.drawable.ic_alarm_off_black_24dp, this, evAlarmDone);
+        this.mEvCallIncStart = new Event(5,"Phone Call Incoming Start", R.drawable.ic_call_black_24dp, this, evCallInc);
+        this.mEvCallIncStop = new Event(6,"Phone Call Incoming Stop", R.drawable.ic_call_end_black_24dp, this, evCallInc);
+        this.mStAlarmGoing = new State(7,"Phone Alarm Going", R.drawable.ic_alarm_black_24dp, this, stAlarmGoing, false);
+        this.mStCallIncGoing = new State(8,"Phone Call Incoming Going", R.drawable.ic_call_black_24dp, this, stCallIncGoing, false);
+        this.mAcAlarmDismiss = new Action(9,"Phone Alarm Dismiss", R.drawable.ic_alarm_off_black_24dp, this, acAlarmDismiss, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acAlarmDismiss();
                 return null;
             }
         });
-        this.mAcAlarmSnooze = new Action("Phone Alarm Snooze", R.drawable.ic_alarm_off_black_24dp, this, acAlarmSnooze, new Callable<String>(){
+        this.mAcAlarmSnooze = new Action(10,"Phone Alarm Snooze", R.drawable.ic_alarm_off_black_24dp, this, acAlarmSnooze, new Callable<String>(){
             @Override
             public String call() throws Exception {
                 acAlarmSnooze();
                 return null;
             }
         });
-        this.events.add(mEvAlarmStart);
-        this.events.add(mEvAlarmSnooze);
-        this.events.add(mEvAlarmDismiss);
-        this.events.add(mEvAlarmDone);
-        this.events.add(mEvCallIncStart);
-        this.events.add(mEvCallIncStop);
-        this.states.add(mStAlarmGoing);
-        this.states.add(mStCallIncGoing);
-        this.actions.add(mAcAlarmDismiss);
-        this.actions.add(mAcAlarmSnooze);
+        this.events.put(mEvAlarmStart.getId(),mEvAlarmStart);
+        this.events.put(mEvAlarmSnooze.getId(),mEvAlarmSnooze);
+        this.events.put(mEvAlarmDismiss.getId(),mEvAlarmDismiss);
+        this.events.put(mEvAlarmDone.getId(),mEvAlarmDone);
+        this.events.put(mEvCallIncStart.getId(),mEvCallIncStart);
+        this.events.put(mEvCallIncStop.getId(),mEvCallIncStop);
+        this.states.put(mStAlarmGoing.getId(),mStAlarmGoing);
+        this.states.put(mStCallIncGoing.getId(),mStCallIncGoing);
+        this.actions.put(mAcAlarmDismiss.getId(),mAcAlarmDismiss);
+        this.actions.put(mAcAlarmSnooze.getId(),mAcAlarmSnooze);
     }
 
     // These getters only needed for testing!
@@ -157,7 +157,7 @@ public class AndroidPhone extends Device {
     // FOR SIMULATION TESTS:
 
     public Action getSimAcAlarmDismiss(){
-        Action alarmDismiss = new Action("Phone Alarm Dismiss", 0, this, null, new Callable<String>() {
+        Action alarmDismiss = new Action(0,"Phone Alarm Dismiss", 0, this, null, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 evAlarmDismiss();
@@ -168,7 +168,7 @@ public class AndroidPhone extends Device {
     }
 
     public Action getSimAcAlarmSnooze(){
-        Action alarmSnooze = new Action("Phone Alarm Snooze", 0, this, null, new Callable<String>() {
+        Action alarmSnooze = new Action(0,"Phone Alarm Snooze", 0, this, null, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 evAlarmSnooze();

@@ -10,8 +10,8 @@ public class EventType extends Type {
 
     private Set<Event> events;
 
-    public EventType(String name) {
-        super(name);
+    public EventType(int id, String name) {
+        super(id, name);
     }
 
     public Set<Event> getEvents() {

@@ -9,8 +9,8 @@ public class State extends Event {
     private StateType stateType;
     private boolean state = false;
 
-    public State(String name, int iconResource, Device device, StateType stateType, boolean state) {
-        super(name, iconResource, device, null);
+    public State(int id, String name, int iconResource, Device device, StateType stateType, boolean state) {
+        super(id, name, iconResource, device, null);
         this.stateType = stateType;
         this.state = state;
     }

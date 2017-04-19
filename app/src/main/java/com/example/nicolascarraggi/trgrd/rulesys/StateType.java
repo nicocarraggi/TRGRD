@@ -10,8 +10,8 @@ public class StateType extends Type {
 
     private Set<State> states;
 
-    public StateType(String name) {
-        super(name);
+    public StateType(int id, String name) {
+        super(id, name);
     }
 
     public Set<State> getEvents() {

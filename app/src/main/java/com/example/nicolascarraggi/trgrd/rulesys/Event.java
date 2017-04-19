@@ -9,6 +9,7 @@ import java.util.Set;
 
 public class Event {
 
+    protected int id;
     private EventType eventType;
     protected String name;
     protected int iconResource;
@@ -16,13 +17,22 @@ public class Event {
     protected boolean usedInRule;
     protected Set<Rule> rules; // = listeners
 
-    public Event(String name, int iconResource, Device device, EventType eventType) {
+    public Event(int id, String name, int iconResource, Device device, EventType eventType) {
+        this.id = id;
         this.name = name;
         this.iconResource = iconResource;
         this.device = device;
         this.eventType = eventType;
         this.usedInRule = false;
         this.rules = new HashSet<Rule>();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

@@ -20,23 +20,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--
-        <activity
-            android:name=".HomeActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
-        -->
-
         <service
             android:name=".rulesys.RuleSystemService"
             android:enabled="true"
@@ -45,7 +28,6 @@
             android:name=".rulesys.devices.PebbleCommunicationService"
             android:enabled="true"
             android:exported="true" />
-
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -54,7 +36,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.nicolascarraggi.trgrd.MainActivity" />
         </activity>
-        <activity android:name=".RuleDetailsActivity"></activity>
+        <activity android:name=".RuleDetailsActivity"
+            android:parentActivityName="com.example.nicolascarraggi.trgrd.MainActivity">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.nicolascarraggi.trgrd.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

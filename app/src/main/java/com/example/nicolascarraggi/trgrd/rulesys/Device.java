@@ -1,5 +1,6 @@
 package com.example.nicolascarraggi.trgrd.rulesys;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,26 +10,36 @@ import java.util.Set;
 
 public class Device {
 
+    protected int id;
     protected String name, manufacturer, platform;
     protected int iconResource;
-    protected Set<Event> events;
-    protected Set<State> states;
-    protected Set<Action> actions;
-    protected Set<EventType> eventTypes;
-    protected Set<StateType> stateTypes;
-    protected Set<ActionType> actionTypes;
+    protected HashMap<Integer, Event> events;
+    protected HashMap<Integer, State> states;
+    protected HashMap<Integer, Action> actions;
+    protected HashMap<Integer, EventType> eventTypes;
+    protected HashMap<Integer, StateType> stateTypes;
+    protected HashMap<Integer, ActionType> actionTypes;
 
-    public Device(String name, String manufacturer, String platform, int iconResource) {
+    public Device(int id, String name, String manufacturer, String platform, int iconResource) {
+        this.id = id;
         this.name = name;
         this.manufacturer = manufacturer;
         this.platform = platform;
         this.iconResource = iconResource;
-        this.events = new HashSet<>();
-        this.states = new HashSet<>();
-        this.actions = new HashSet<>();
-        this.eventTypes = new HashSet<>();
-        this.stateTypes = new HashSet<>();
-        this.actionTypes = new HashSet<>();
+        this.events = new HashMap<>();
+        this.states = new HashMap<>();
+        this.actions = new HashMap<>();
+        this.eventTypes = new HashMap<>();
+        this.stateTypes = new HashMap<>();
+        this.actionTypes = new HashMap<>();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -63,27 +74,28 @@ public class Device {
         this.iconResource = iconResource;
     }
 
-    public Set<Event> getEvents() {
+    public HashMap<Integer, Event> getEvents() {
         return events;
     }
 
-    public Set<State> getStates() {
+    public HashMap<Integer, State> getStates() {
         return states;
     }
 
-    public Set<Action> getActions() {
+    public HashMap<Integer, Action> getActions() {
         return actions;
     }
 
-    public Set<EventType> getEventTypes() {
+    public HashMap<Integer, EventType> getEventTypes() {
         return eventTypes;
     }
 
-    public Set<StateType> getStateTypes() {
+    public HashMap<Integer, StateType> getStateTypes() {
         return stateTypes;
     }
 
-    public Set<ActionType> getActionTypes() {
+    public HashMap<Integer, ActionType> getActionTypes() {
         return actionTypes;
     }
+
 }

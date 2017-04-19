@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 public class RuleAlarmUnitTest {
     @Test
     public void newRule_isCorrect() throws Exception {
-        Rule ruleAlarmStop = new Rule("testRuleAlarmStop");
+        Rule ruleAlarmStop = new Rule(0, "testRuleAlarmStop");
         //Rule ruleAlarmSnooze = new Rule("testRuleAlarmSnooze");
         AndroidPhone androidPhone = new AndroidPhone(null, null, null, null, null, null, null, null, null, null);
         Pebble pebble = new Pebble(null, null, null, null, null, null);

@@ -20,17 +20,17 @@ public class RuleSystemService extends Service {
 
     private Rule mTestRuleAlarmStartPebble,mTestRuleAlarmDismissPebble,mTestRuleAlarmDonePebble;
 
-    private HashMap<Integer,Rule> hmRules;
+    private HashMap<Integer,Rule> rules;
 
     public RuleSystemService() {
         this.mDeviceManager = new DeviceManager(this);
-        this.hmRules = new HashMap<>();
+        this.rules = new HashMap<>();
         this.mTestRuleAlarmStartPebble = new Rule(0,"Phone alarm alert on Pebble");
         this.mTestRuleAlarmDismissPebble = new Rule(1,"Dismiss phone alarm on Pebble");
         this.mTestRuleAlarmDonePebble = new Rule(2,"Phone alarm done to Pebble");
-        this.hmRules.put(mTestRuleAlarmStartPebble.getId(),mTestRuleAlarmStartPebble);
-        this.hmRules.put(mTestRuleAlarmDismissPebble.getId(),mTestRuleAlarmDismissPebble);
-        this.hmRules.put(mTestRuleAlarmDonePebble.getId(),mTestRuleAlarmDonePebble);
+        this.rules.put(mTestRuleAlarmStartPebble.getId(),mTestRuleAlarmStartPebble);
+        this.rules.put(mTestRuleAlarmDismissPebble.getId(),mTestRuleAlarmDismissPebble);
+        this.rules.put(mTestRuleAlarmDonePebble.getId(),mTestRuleAlarmDonePebble);
     }
 
     @Override
@@ -65,11 +65,11 @@ public class RuleSystemService extends Service {
     }
 
     public Set<Rule> getRules(){
-        return new HashSet(hmRules.values());
+        return new HashSet(rules.values());
     }
 
     public Rule getRule(int id){
-        return hmRules.get(id);
+        return rules.get(id);
     }
 
     // RULE TESTS

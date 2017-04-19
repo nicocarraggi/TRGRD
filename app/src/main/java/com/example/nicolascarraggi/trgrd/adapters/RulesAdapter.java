@@ -1,6 +1,5 @@
 package com.example.nicolascarraggi.trgrd.adapters;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -26,11 +25,11 @@ import java.util.Set;
 
 public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHolder> {
 
-    private Context mContext;
     private ArrayList<Rule> mDataset;
+    private MyOnItemClickListener<Rule> mListener;
 
-    public RulesAdapter(Context context, Set<Rule> mDataset) {
-        this.mContext = context;
+    public RulesAdapter(MyOnItemClickListener<Rule> listener, Set<Rule> mDataset) {
+        this.mListener = listener;
         this.mDataset = new ArrayList<>();
         this.mDataset.addAll(mDataset);
         // Sorting on name ... TODO other filters?
@@ -56,9 +55,7 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
 
     @Override
     public void onBindViewHolder(RuleViewHolder holder, int position) {
-        final Rule rule = mDataset.get(position);
-        holder.tvRuleName.setText(rule.getName());
-        holder.switchRuleActive.setChecked(rule.isActive());
+        holder.bind(mDataset.get(position), mListener);
     }
 
     @Override
@@ -68,9 +65,10 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
 
     public class RuleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public ImageView ivRule;
-        public TextView tvRuleName;
-        public SwitchCompat switchRuleActive;
+        private MyOnItemClickListener myOnItemClickListener;
+        private ImageView ivRule;
+        private TextView tvRuleName;
+        private SwitchCompat switchRuleActive;
 
         public RuleViewHolder(View itemView) {
             super(itemView);
@@ -80,14 +78,18 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
             tvRuleName.setOnClickListener(this);
         }
 
+        public void bind(Rule rule, MyOnItemClickListener listener){
+            this.myOnItemClickListener = listener;
+            this.tvRuleName.setText(rule.getName());
+            this.switchRuleActive.setChecked(rule.isActive());
+        }
+
         @Override
         public void onClick(View view) {
             // example
             switch(view.getId()) {
                 case R.id.tvRuleName:
-                    Intent intent = new Intent(mContext, RuleDetailsActivity.class);
-                    intent.putExtra("id",mDataset.get(getAdapterPosition()).getId());
-                    mContext.startActivity(intent);
+                    myOnItemClickListener.onItemClick(mDataset.get(getAdapterPosition()));
                     break;
             }
         }
