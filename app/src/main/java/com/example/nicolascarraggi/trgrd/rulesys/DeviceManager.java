@@ -6,6 +6,8 @@ import com.example.nicolascarraggi.trgrd.rulesys.devices.AndroidPhone;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Pebble;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by nicolascarraggi on 11/04/17.
@@ -105,6 +107,30 @@ public class DeviceManager {
 
     public ActionType getActionType(int id){
         return actionTypes.get(id);
+    }
+
+    public Set<Event> getAllEvents(){
+        Set<Event> events = new HashSet<>();
+        for (Device d: devices.values()){
+            events.addAll(d.getEvents().values());
+        }
+        return events;
+    }
+
+    public Set<State> getAllStates(){
+        Set<State> states = new HashSet<>();
+        for (Device d: devices.values()){
+            states.addAll(d.getStates().values());
+        }
+        return states;
+    }
+
+    public Set<Action> getAllActions(){
+        Set<Action> actions = new HashSet<>();
+        for (Device d: devices.values()){
+            actions.addAll(d.getActions().values());
+        }
+        return actions;
     }
 
 // Start & Stop Devices:

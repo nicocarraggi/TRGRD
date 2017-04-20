@@ -38,6 +38,12 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
         });
     }
 
+    public void updateData(Set<Action> mDataset) {
+        this.mDataset.clear();
+        this.mDataset.addAll(mDataset);
+        notifyDataSetChanged();
+    }
+
     @Override
     public ActionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view

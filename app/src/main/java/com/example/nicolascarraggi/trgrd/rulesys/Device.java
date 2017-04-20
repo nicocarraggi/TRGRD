@@ -98,4 +98,16 @@ public class Device {
         return actionTypes;
     }
 
+    public Event getEvent(int id){
+        return events.get(id);
+    }
+
+    public State getState(int id){
+        return states.get(id);
+    }
+
+    public Action getAction(int id){
+        return actions.get(id);
+    }
+
 }

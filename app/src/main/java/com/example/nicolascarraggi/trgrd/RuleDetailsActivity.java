@@ -52,11 +52,9 @@ public class RuleDetailsActivity extends RuleSystemBindingActivity implements My
 
         // Get a support ActionBar corresponding to this toolbar
         ActionBar ab = getSupportActionBar();
-
         ab.setTitle("Rule");
-
         // Enable the Up button
-        ab.setDisplayHomeAsUpEnabled(true);
+        //ab.setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
         this.id = intent.getIntExtra("id",0);

@@ -8,8 +8,79 @@
     android:layout_marginBottom="@dimen/activity_vertical_margin"
     android:layout_marginLeft="@dimen/activity_horizontal_margin"
     android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:orientation="vertical"
     tools:context="com.example.nicolascarraggi.trgrd.CreateRuleOpenActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rule name: "/>
+
+        <EditText
+            android:id="@+id/etCreateRuleOpenName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter a name for the rule..."/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Triggers: "/>
+
+        <Button
+            android:id="@+id/bCreateRuleOpenAddTrigger"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add trigger"/>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvCreateRuleOpenEvents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvCreateRuleOpenStates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Actions: "/>
+
+        <Button
+            android:id="@+id/bCreateRuleOpenAddAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add action"/>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvCreateRuleOpenActions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/bCreateRuleOpen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create rule"/>
 
 </LinearLayout>

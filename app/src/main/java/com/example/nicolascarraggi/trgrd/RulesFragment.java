@@ -1,7 +1,10 @@
 package com.example.nicolascarraggi.trgrd;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,6 +17,8 @@ import com.example.nicolascarraggi.trgrd.adapters.RulesAdapter;
 import com.example.nicolascarraggi.trgrd.rulesys.Rule;
 
 import java.util.Set;
+
+import static java.lang.Integer.getInteger;
 
 public class RulesFragment extends TrgrdFragment  implements MyOnItemClickListener<Rule> {
 
@@ -46,6 +51,21 @@ public class RulesFragment extends TrgrdFragment  implements MyOnItemClickListen
             Log.d("TRGRD","RulesFragment test isServiceStarted = "+mListener.getIsServiceStarted());
             if (isServiceBound) showRules();
         }
+
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fabRules);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = null;
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(RulesFragment.this.getContext());
+                String rulesMethodology = prefs.getString("rule_methodology_list", "2");
+                Log.d("TRGRD","RulesFragment rulesMethodology = "+rulesMethodology);
+                if (rulesMethodology.equals("2")){
+                    intent = new Intent(RulesFragment.this.getContext(), CreateRuleOpenActivity.class);
+                }
+                if(intent != null) startActivity(intent);
+            }
+        });
 
         return view;
     }

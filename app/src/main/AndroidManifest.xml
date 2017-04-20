@@ -47,7 +47,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.nicolascarraggi.trgrd.MainActivity" />
         </activity>
-        <activity android:name=".CreateRuleOpenActivity"></activity>
+        <activity android:name=".CreateRuleOpenActivity" />
+        <activity android:name=".AddTriggerActivity" />
+        <activity android:name=".AddActionActivity"></activity>
     </application>
 
 </manifest>

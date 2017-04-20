@@ -38,6 +38,12 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
         });
     }
 
+    public void updateData(Set<Event> mDataset) {
+        this.mDataset.clear();
+        this.mDataset.addAll(mDataset);
+        notifyDataSetChanged();
+    }
+
     @Override
     public EventViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view

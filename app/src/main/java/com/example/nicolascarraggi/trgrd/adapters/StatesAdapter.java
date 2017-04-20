@@ -38,6 +38,12 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
         });
     }
 
+    public void updateData(Set<State> mDataset) {
+        this.mDataset.clear();
+        this.mDataset.addAll(mDataset);
+        notifyDataSetChanged();
+    }
+
     @Override
     public StateViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
