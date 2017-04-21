@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,6 +13,7 @@ import java.util.Set;
 public class RuleSystemService extends Service {
 
     // TODO add rule ID system
+    private int newId = 3;
     // TODO get and write rules from and to database?
 
     private final IBinder ruleSystemBinder = new RuleSystemBinder();
@@ -70,6 +72,15 @@ public class RuleSystemService extends Service {
 
     public Rule getRule(int id){
         return rules.get(id);
+    }
+
+    public void addRule(Rule rule){
+        this.rules.put(rule.getId(),rule);
+    }
+
+    public int getNewId(){
+        Log.d("TRGRD","RuleSystemService getNewId id = "+newId);
+        return this.newId++;
     }
 
     // RULE TESTS

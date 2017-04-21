@@ -46,12 +46,12 @@
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvCreateRuleOpenEvents"
+        android:id="@+id/rvCreateRuleOpenStates"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvCreateRuleOpenStates"
+        android:id="@+id/rvCreateRuleOpenEvents"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -81,6 +81,6 @@
         android:id="@+id/bCreateRuleOpen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Create rule"/>
+        android:text="Create"/>
 
 </LinearLayout>

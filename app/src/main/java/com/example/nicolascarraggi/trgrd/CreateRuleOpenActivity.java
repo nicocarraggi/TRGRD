@@ -26,8 +26,11 @@ import java.util.Set;
 public class CreateRuleOpenActivity extends RuleSystemBindingActivity
         implements MyEventOnItemClickListener,
         MyStateOnItemClickListener,
-        MyActionOnItemClickListener{
+        MyActionOnItemClickListener,
+        View.OnClickListener{
 
+    private int id;
+    private boolean isCreate;
     private Rule rule;
     private Set<Event> events;
     private Set<State> states;
@@ -45,8 +48,9 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_rule_open);
 
-        ActionBar ab = getSupportActionBar();
-        ab.setTitle("Create Rule");
+        // Get extra int ID! IF real id (>=0), edit rule!!!
+        this.isCreate = getIntent().getBooleanExtra("iscreate",true);
+        this.id = getIntent().getIntExtra("ruleid",2);
 
         etName = (EditText) findViewById(R.id.etCreateRuleOpenName);
         bAddAction = (Button) findViewById(R.id.bCreateRuleOpenAddAction);
@@ -65,6 +69,19 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
     @Override
     protected void onBound() {
         super.onBound();
+
+        ActionBar ab = getSupportActionBar();
+        if(isCreate){
+            ab.setTitle("Create rule");
+        } else {
+            ab.setTitle("Edit rule");
+            bCreateRule.setText("Save");
+            rule = ruleSystemService.getRule(id);
+            events = rule.getEvents();
+            states = rule.getStates();
+            actions = rule.getActions();
+            etName.setText(rule.getName());
+        }
 
         eventsAdapter = new EventsAdapter(this,events);
         statesAdapter = new StatesAdapter(this,states);
@@ -88,23 +105,10 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
         rvStates.setAdapter(statesAdapter);
         rvActions.setAdapter(actionsAdapter);
 
-        bAddTrigger.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(CreateRuleOpenActivity.this, AddTriggerActivity.class);
-                boolean hasEvent = (!events.isEmpty());
-                i.putExtra("hasevent",hasEvent);
-                startActivityForResult(i, 1);
-            }
-        });
+        bAddTrigger.setOnClickListener(this);
+        bAddAction.setOnClickListener(this);
+        bCreateRule.setOnClickListener(this);
 
-        bAddAction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(CreateRuleOpenActivity.this, AddActionActivity.class);
-                startActivityForResult(i, 2);
-            }
-        });
 
     }
 
@@ -136,18 +140,53 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
         }
     }
 
+    // Check if rule name is not empty AND that the rule contains at least 1 trigger and 1 action!
+    private boolean isRuleValid(){
+        // show explanation message
+        return (!etName.getText().toString().isEmpty() && (!actions.isEmpty() && (!events.isEmpty() || !states.isEmpty())));
+    }
+
+    // onClick for the buttons in activity
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()) {
+            case R.id.bCreateRuleOpenAddTrigger:
+                Intent iTriggers = new Intent(CreateRuleOpenActivity.this, AddTriggerActivity.class);
+                boolean hasEvent = (!events.isEmpty());
+                iTriggers.putExtra("hasevent",hasEvent);
+                startActivityForResult(iTriggers, 1);
+                break;
+            case R.id.bCreateRuleOpenAddAction:
+                Intent iActions = new Intent(CreateRuleOpenActivity.this, AddActionActivity.class);
+                startActivityForResult(iActions, 2);
+                break;
+            case R.id.bCreateRuleOpen:
+                if(isRuleValid()) {
+                    int id = ruleSystemService.getNewId();
+                    Rule rule = new Rule(id, etName.getText().toString(), events, states, actions);
+                    ruleSystemService.addRule(rule);
+                    finish();
+                }
+                break;
+        }
+    }
+
+    // onItemClick for 1 Event item
     @Override
     public void onItemClick(Event item) {
 
     }
 
+    // onItemClick for 1 State item
     @Override
     public void onItemClick(State item) {
 
     }
 
+    // onItemClick for 1 Action item
     @Override
     public void onItemClick(Action item) {
 
     }
+
 }

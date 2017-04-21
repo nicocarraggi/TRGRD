@@ -27,6 +27,16 @@ public class Rule {
         this.times = 0;
     }
 
+    public Rule(int id, String name, Set<Event> events, Set<State> states, Set<Action> actions) {
+        this.id = id;
+        this.name = name;
+        this.active = false;
+        this.events = events;
+        this.states = states;
+        this.actions = actions;
+        this.times = 0;
+    }
+
     private void executeRule(){
         System.out.println("[Rule "+this.name+"] executeRule()");
         if(!actions.isEmpty()) { // TODO error if no actions?
