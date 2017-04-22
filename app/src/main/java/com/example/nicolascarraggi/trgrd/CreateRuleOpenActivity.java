@@ -162,9 +162,16 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                 break;
             case R.id.bCreateRuleOpen:
                 if(isRuleValid()) {
-                    int id = ruleSystemService.getNewId();
-                    Rule rule = new Rule(id, etName.getText().toString(), events, states, actions);
-                    ruleSystemService.addRule(rule);
+                    if(isCreate) {
+                        int id = ruleSystemService.getNewId();
+                        this.rule = new Rule(id, etName.getText().toString(), events, states, actions);
+                        ruleSystemService.addRule(rule);
+                    } else {
+                        this.rule.setName(etName.getText().toString());
+                        this.rule.setEvents(events);
+                        this.rule.setStates(states);
+                        this.rule.setActions(actions);
+                    }
                     finish();
                 }
                 break;

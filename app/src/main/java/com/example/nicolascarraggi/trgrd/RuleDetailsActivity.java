@@ -1,40 +1,33 @@
 package com.example.nicolascarraggi.trgrd;
 
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.example.nicolascarraggi.trgrd.adapters.ActionsAdapter;
 import com.example.nicolascarraggi.trgrd.adapters.EventsAdapter;
 import com.example.nicolascarraggi.trgrd.adapters.MyActionOnItemClickListener;
 import com.example.nicolascarraggi.trgrd.adapters.MyEventOnItemClickListener;
-import com.example.nicolascarraggi.trgrd.adapters.MyOnItemClickListener;
 import com.example.nicolascarraggi.trgrd.adapters.MyStateOnItemClickListener;
 import com.example.nicolascarraggi.trgrd.adapters.StatesAdapter;
 import com.example.nicolascarraggi.trgrd.rulesys.Action;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
 import com.example.nicolascarraggi.trgrd.rulesys.Rule;
-import com.example.nicolascarraggi.trgrd.rulesys.RuleSystemService;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
-
-import java.util.Set;
 
 public class RuleDetailsActivity extends RuleSystemBindingActivity implements MyEventOnItemClickListener,
         MyStateOnItemClickListener, MyActionOnItemClickListener {
 
-    private int id;
+    private int ruleId;
     private Rule rule;
     private EventsAdapter eventsAdapter;
     private StatesAdapter statesAdapter;
@@ -57,7 +50,7 @@ public class RuleDetailsActivity extends RuleSystemBindingActivity implements My
         //ab.setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        this.id = intent.getIntExtra("id",0);
+        this.ruleId = intent.getIntExtra("ruleId",0);
 
         tvRuleDetailsName = (TextView) findViewById(R.id.tvRuleDetailsName);
         rvRuleDetailsEvents = (RecyclerView) findViewById(R.id.rvRuleDetailsEvents);
@@ -70,7 +63,7 @@ public class RuleDetailsActivity extends RuleSystemBindingActivity implements My
     @Override
     protected void onBound(){
         super.onBound();
-        rule = ruleSystemService.getRule(id);
+        rule = ruleSystemService.getRule(ruleId);
 
         tvRuleDetailsName.setText(rule.getName());
         switchRuleDetailsActive.setChecked(rule.isActive());
@@ -96,6 +89,34 @@ public class RuleDetailsActivity extends RuleSystemBindingActivity implements My
         rvRuleDetailsEvents.setAdapter(eventsAdapter);
         rvRuleDetailsStates.setAdapter(statesAdapter);
         rvRuleDetailsActions.setAdapter(actionsAdapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_rule_details, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_edit) {
+            Intent intent = null;
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(RuleDetailsActivity.this);
+            String rulesMethodology = prefs.getString("rule_methodology_list", "2");
+            if (rulesMethodology.equals("2")){
+                intent = new Intent(RuleDetailsActivity.this, CreateRuleOpenActivity.class);
+                intent.putExtra("iscreate",false);
+                intent.putExtra("ruleid",ruleId);
+            }
+            if(intent != null) startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

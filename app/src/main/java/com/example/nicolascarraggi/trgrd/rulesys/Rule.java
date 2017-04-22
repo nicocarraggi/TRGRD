@@ -160,4 +160,16 @@ public class Rule {
     public Set<Action> getActions() {
         return actions;
     }
+
+    public void setEvents(Set<Event> events) {
+        this.events = events;
+    }
+
+    public void setStates(Set<State> states) {
+        this.states = states;
+    }
+
+    public void setActions(Set<Action> actions) {
+        this.actions = actions;
+    }
 }
