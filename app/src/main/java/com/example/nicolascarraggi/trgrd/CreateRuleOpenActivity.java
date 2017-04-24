@@ -2,12 +2,16 @@ package com.example.nicolascarraggi.trgrd;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +38,7 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
         View.OnClickListener{
 
     private int id;
-    private boolean isCreate;
+    private boolean isCreate, isBoundOnce;
     private Rule rule;
     private Set<Event> events;
     private Set<State> states;
@@ -45,7 +49,7 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
     private RecyclerView.LayoutManager mLayoutManagerEvents, mLayoutManagerStates, mLayoutManagerActions;
     private RecyclerView rvEvents, rvStates, rvActions;
     private EditText etName;
-    private Button bAddTrigger, bAddAction, bCreateRule;
+    private Button bAddTrigger, bAddAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,64 +60,101 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
         this.isCreate = getIntent().getBooleanExtra("iscreate",true);
         this.id = getIntent().getIntExtra("ruleid",2);
 
-        etName = (EditText) findViewById(R.id.etCreateRuleOpenName);
-        bAddAction = (Button) findViewById(R.id.bCreateRuleOpenAddAction);
-        bAddTrigger = (Button) findViewById(R.id.bCreateRuleOpenAddTrigger);
-        bCreateRule = (Button) findViewById(R.id.bCreateRuleOpen);
-        rvEvents = (RecyclerView) findViewById(R.id.rvCreateRuleOpenEvents);
-        rvStates = (RecyclerView) findViewById(R.id.rvCreateRuleOpenStates);
-        rvActions = (RecyclerView) findViewById(R.id.rvCreateRuleOpenActions);
+        this.etName = (EditText) findViewById(R.id.etCreateRuleOpenName);
+        this.bAddAction = (Button) findViewById(R.id.bCreateRuleOpenAddAction);
+        this.bAddTrigger = (Button) findViewById(R.id.bCreateRuleOpenAddTrigger);
+        this.rvEvents = (RecyclerView) findViewById(R.id.rvCreateRuleOpenEvents);
+        this.rvStates = (RecyclerView) findViewById(R.id.rvCreateRuleOpenStates);
+        this.rvActions = (RecyclerView) findViewById(R.id.rvCreateRuleOpenActions);
 
-        events = new HashSet<>();
-        states = new HashSet<>();
-        actions = new HashSet<>();
+        this.events = new HashSet<>();
+        this.states = new HashSet<>();
+        this.actions = new HashSet<>();
 
+        this.isBoundOnce = false;
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_rule_create, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_save) {
+            if(isRuleValid()) {
+                if(isCreate) {
+                    int newId = ruleSystemService.getNewId();
+                    this.rule = new Rule(newId, etName.getText().toString(), events, states, actions);
+                    ruleSystemService.addRule(rule);
+                } else {
+                    this.rule.setName(etName.getText().toString());
+                    this.rule.setEvents(events);
+                    this.rule.setStates(states);
+                    this.rule.setActions(actions);
+                }
+                finish();
+            } else {
+                Toast.makeText(CreateRuleOpenActivity.this, "A rule requires a name, 1 or more triggers and 1 or more actions!", Toast.LENGTH_LONG).show();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onBound() {
         super.onBound();
 
-        ActionBar ab = getSupportActionBar();
-        if(isCreate){
-            ab.setTitle("Create rule");
-        } else {
-            ab.setTitle("Edit rule");
-            bCreateRule.setText("Save");
-            rule = ruleSystemService.getRule(id);
-            this.events.addAll(rule.getEvents());
-            this.states.addAll(rule.getStates());
-            this.actions.addAll(rule.getActions());
-            etName.setText(rule.getName());
+        // In this case, avoid refreshing the adapters when returning from the Add Trigger or Add Action!
+        // Because when items were deleted from the rule (but not saved yet) and something is added, these will be shown again!
+        if(!isBoundOnce) {
+            ActionBar ab = getSupportActionBar();
+            if (isCreate) {
+                ab.setTitle("Create rule");
+            } else {
+                ab.setTitle("Edit rule");
+                rule = ruleSystemService.getRule(id);
+                this.events.addAll(rule.getEvents());
+                this.states.addAll(rule.getStates());
+                this.actions.addAll(rule.getActions());
+                etName.setText(rule.getName());
+            }
+
+            eventsAdapter = new EventsAdapter(this, events, true);
+            statesAdapter = new StatesAdapter(this, states, true);
+            actionsAdapter = new ActionsAdapter(this, actions, true);
+
+            // use this setting to improve performance if you know that changes
+            // in content do not change the layout size of the RecyclerView
+            rvEvents.setHasFixedSize(true);
+            rvStates.setHasFixedSize(true);
+            rvActions.setHasFixedSize(true);
+
+            // use a linear layout manager
+            mLayoutManagerEvents = new LinearLayoutManager(getApplicationContext());
+            mLayoutManagerStates = new LinearLayoutManager(getApplicationContext());
+            mLayoutManagerActions = new LinearLayoutManager(getApplicationContext());
+            rvEvents.setLayoutManager(mLayoutManagerEvents);
+            rvStates.setLayoutManager(mLayoutManagerStates);
+            rvActions.setLayoutManager(mLayoutManagerActions);
+
+            rvEvents.setAdapter(eventsAdapter);
+            rvStates.setAdapter(statesAdapter);
+            rvActions.setAdapter(actionsAdapter);
+
+            bAddTrigger.setOnClickListener(this);
+            bAddAction.setOnClickListener(this);
+
+            this.isBoundOnce = true;
         }
-
-        eventsAdapter = new EventsAdapter(this,events,true);
-        statesAdapter = new StatesAdapter(this,states,true);
-        actionsAdapter = new ActionsAdapter(this,actions,true);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        rvEvents.setHasFixedSize(true);
-        rvStates.setHasFixedSize(true);
-        rvActions.setHasFixedSize(true);
-
-        // use a linear layout manager
-        mLayoutManagerEvents = new LinearLayoutManager(getApplicationContext());
-        mLayoutManagerStates = new LinearLayoutManager(getApplicationContext());
-        mLayoutManagerActions = new LinearLayoutManager(getApplicationContext());
-        rvEvents.setLayoutManager(mLayoutManagerEvents);
-        rvStates.setLayoutManager(mLayoutManagerStates);
-        rvActions.setLayoutManager(mLayoutManagerActions);
-
-        rvEvents.setAdapter(eventsAdapter);
-        rvStates.setAdapter(statesAdapter);
-        rvActions.setAdapter(actionsAdapter);
-
-        bAddTrigger.setOnClickListener(this);
-        bAddAction.setOnClickListener(this);
-        bCreateRule.setOnClickListener(this);
-
-
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -164,29 +205,21 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                 Intent iActions = new Intent(CreateRuleOpenActivity.this, AddActionActivity.class);
                 startActivityForResult(iActions, 2);
                 break;
-            case R.id.bCreateRuleOpen:
-                if(isRuleValid()) {
-                    if(isCreate) {
-                        int id = ruleSystemService.getNewId();
-                        this.rule = new Rule(id, etName.getText().toString(), events, states, actions);
-                        ruleSystemService.addRule(rule);
-                    } else {
-                        this.rule.setName(etName.getText().toString());
-                        this.rule.setEvents(events);
-                        this.rule.setStates(states);
-                        this.rule.setActions(actions);
-                    }
-                    finish();
-                } else {
-                    Toast.makeText(CreateRuleOpenActivity.this, "A rule requires a name, 1 or more triggers and 1 or more actions!", Toast.LENGTH_LONG).show();
-                }
-                break;
         }
     }
 
     private void alertDelete(final String type, final Event event, final State state, final Action action){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        String name = "";
+        if(type.equals("event")){
+            name = event.getName();
+        } else if (type.equals("state")){
+            name = state.getName();
+        } else if (type.equals("action")){
+            name = action.getName();
+        }
         builder.setMessage("Are you sure you want to delete this "+type+"?")
+                .setTitle("Delete "+name)
                 .setPositiveButton("delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (type.equals("event") && (event != null)){

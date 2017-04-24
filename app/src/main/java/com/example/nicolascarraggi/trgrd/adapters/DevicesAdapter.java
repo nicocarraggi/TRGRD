@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -27,18 +28,29 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DeviceVi
     MyOnItemClickListener<Device> mListener;
     private ArrayList<Device> mDataset;
 
-    public DevicesAdapter(MyOnItemClickListener<Device> listener, HashMap<Integer,Device> mDataset) {
+    public DevicesAdapter(MyOnItemClickListener<Device> listener, HashSet<Device> mDataset) {
         this.mListener = listener;
         this.mDataset = new ArrayList<>();
-        this.mDataset.addAll(mDataset.values());
+        this.mDataset.addAll(mDataset);
+        sort();
+    }
+
+    private void sort(){
         // Sorting on name ... TODO other filters?
         Collections.sort(this.mDataset, new Comparator<Device>() {
             @Override
             public int compare(Device device2, Device device1)
             {
-                return  device1.getName().compareTo(device2.getName());
+                return  device2.getName().compareTo(device1.getName());
             }
         });
+    }
+
+    public void updateData(Set<Device> mDataset) {
+        this.mDataset.clear();
+        this.mDataset.addAll(mDataset);
+        sort();
+        notifyDataSetChanged();
     }
 
     @Override

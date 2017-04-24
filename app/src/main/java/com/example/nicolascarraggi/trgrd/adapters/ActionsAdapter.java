@@ -31,12 +31,16 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
         this.mDataset = new ArrayList<>();
         this.mShowDelete = showDelete;
         this.mDataset.addAll(mDataset);
+        sort();
+    }
+
+    private void sort(){
         // Sorting on name ... TODO other filters?
         Collections.sort(this.mDataset, new Comparator<Action>() {
             @Override
             public int compare(Action action2, Action action1)
             {
-                return  action1.getName().compareTo(action2.getName());
+                return  action2.getName().compareTo(action1.getName());
             }
         });
     }
@@ -44,6 +48,7 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
     public void updateData(Set<Action> mDataset) {
         this.mDataset.clear();
         this.mDataset.addAll(mDataset);
+        sort();
         notifyDataSetChanged();
     }
 
@@ -91,10 +96,7 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
             this.ivAction.setImageResource(action.getIconResource());
             this.tvActionName.setText(action.getName());
             if(!mShowDelete && ivActionDelete != null){
-                ViewManager parent = (ViewManager)ivActionDelete.getParent();
-                if (parent != null){
-                    parent.removeView(ivActionDelete);
-                }
+                ivActionDelete.setVisibility(View.GONE);
             }
         }
 

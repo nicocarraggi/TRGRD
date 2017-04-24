@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements TrgrdFragment.OnF
             MainActivity.this.deviceManager = b.getService().getDeviceManager();
             //Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
             MainActivity.this.isServiceBound = true;
+            MainActivity.this.notifyFragmentsServiceStartedChange();
             MainActivity.this.notifyFragmentsServiceBoundChange();
         }
 
@@ -275,8 +276,8 @@ public class MainActivity extends AppCompatActivity implements TrgrdFragment.OnF
     }
 
     private void startRuleSystemService(){
-        Intent pebbleService = new Intent(MainActivity.this, RuleSystemService.class);
-        startService(pebbleService);
+        Intent ruleSystemService = new Intent(MainActivity.this, RuleSystemService.class);
+        startService(ruleSystemService);
         showOnOff(true);
         this.isServiceStarted = true;
         bindWithService();

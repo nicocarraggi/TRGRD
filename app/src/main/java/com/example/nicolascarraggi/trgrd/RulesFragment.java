@@ -16,6 +16,7 @@ import com.example.nicolascarraggi.trgrd.adapters.MyOnItemClickListener;
 import com.example.nicolascarraggi.trgrd.adapters.RulesAdapter;
 import com.example.nicolascarraggi.trgrd.rulesys.Rule;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import static java.lang.Integer.getInteger;
@@ -24,7 +25,7 @@ public class RulesFragment extends TrgrdFragment  implements MyOnItemClickListen
 
     private Set<Rule> rules;
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private RulesAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     public RulesFragment() {
@@ -47,10 +48,17 @@ public class RulesFragment extends TrgrdFragment  implements MyOnItemClickListen
         mLayoutManager = new LinearLayoutManager(this.getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        this.rules = new HashSet<>();
+
         if (mListener != null) {
-            Log.d("TRGRD","RulesFragment test isServiceStarted = "+mListener.getIsServiceStarted());
-            if (isServiceBound) showRules();
+            Log.d("TRGRD","RulesFragment test isServiceStarted = "+mListener.getIsServiceStarted() + " & isServiceBound = "+isServiceBound);
+            if (mListener.getIsServiceStarted() && mListener.getIsServiceBound()){
+                this.rules = mListener.getRuleSystemService().getRules();
+            }
         }
+
+        this.mAdapter = new RulesAdapter(this,rules);
+        mRecyclerView.setAdapter(mAdapter);
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fabRules);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -72,8 +80,7 @@ public class RulesFragment extends TrgrdFragment  implements MyOnItemClickListen
 
     private void showRules(){
         this.rules = mListener.getRuleSystemService().getRules();
-        mAdapter = new RulesAdapter(this,rules);
-        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.updateData(rules);
     }
 
     @Override
@@ -87,12 +94,18 @@ public class RulesFragment extends TrgrdFragment  implements MyOnItemClickListen
     public void notifyIsServiceStartedChanged(boolean isServiceStarted) {
         super.notifyIsServiceStartedChanged(isServiceStarted);
         Log.d("TRGRD","RulesFragment notify isServiceStarted = " + isServiceStarted);
+        if(!isServiceStarted){
+            this.rules = new HashSet<>();
+            this.mAdapter.updateData(rules);
+        } else {
+            // TODO also check if service is bound?
+            showRules();
+        }
     }
 
     @Override
     public void notifyIsServiceBoundChanged(boolean isServiceBound) {
         super.notifyIsServiceBoundChanged(isServiceBound);
         Log.d("TRGRD","RulesFragment notify isServiceBound = " + isServiceBound);
-        if (isServiceBound) showRules();
     }
 }

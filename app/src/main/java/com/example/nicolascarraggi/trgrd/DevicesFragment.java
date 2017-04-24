@@ -13,13 +13,14 @@ import com.example.nicolascarraggi.trgrd.rulesys.Device;
 import com.example.nicolascarraggi.trgrd.adapters.DevicesAdapter;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 public class DevicesFragment extends TrgrdFragment implements MyOnItemClickListener<Device>{
 
-    private HashMap<Integer,Device> devices;
+    private HashSet<Device> devices;
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private DevicesAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     public DevicesFragment() {
@@ -42,19 +43,25 @@ public class DevicesFragment extends TrgrdFragment implements MyOnItemClickListe
         mLayoutManager = new LinearLayoutManager(this.getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        this.devices = new HashSet<>();
+
         if (mListener != null) {
             Log.d("TRGRD","DevicesFragment test isServiceStarted = "+mListener.getIsServiceStarted());
-            if (isServiceBound) showDevices();
+            if(mListener.getIsServiceStarted() && mListener.getIsServiceBound()){
+                this.devices = mListener.getRuleSystemService().getDeviceManager().getDevices();
+            }
         }
+
+        mAdapter = new DevicesAdapter(this, devices);
+        mRecyclerView.setAdapter(mAdapter);
 
         return view;
 
     }
 
     private void showDevices(){
-        this.devices = mListener.getDeviceManager().getDevices();
-        mAdapter = new DevicesAdapter(this, devices);
-        mRecyclerView.setAdapter(mAdapter);
+        this.devices = mListener.getRuleSystemService().getDeviceManager().getDevices();
+        mAdapter.updateData(devices);
     }
 
     @Override
@@ -66,12 +73,18 @@ public class DevicesFragment extends TrgrdFragment implements MyOnItemClickListe
     public void notifyIsServiceStartedChanged(boolean isServiceStarted) {
         super.notifyIsServiceStartedChanged(isServiceStarted);
         Log.d("TRGRD","DevicesFragment notify isServiceStarted = " + isServiceStarted);
+        if(!isServiceStarted){
+            this.devices = new HashSet<>();
+            this.mAdapter.updateData(devices);
+        } else {
+            // TODO also check if service is bound?
+            showDevices();
+        }
     }
 
     @Override
     public void notifyIsServiceBoundChanged(boolean isServiceBound) {
         super.notifyIsServiceBoundChanged(isServiceBound);
         Log.d("TRGRD","DevicesFragment notify isServiceBound = " + isServiceBound);
-        if (isServiceBound) showDevices();
     }
 }

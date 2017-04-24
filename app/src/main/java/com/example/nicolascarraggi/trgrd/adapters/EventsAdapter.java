@@ -31,12 +31,16 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
         this.mDataset = new ArrayList<>();
         this.mShowDelete = showDelete;
         this.mDataset.addAll(mDataset);
+        sort();
+    }
+
+    private void sort(){
         // Sorting on name ... TODO other filters?
         Collections.sort(this.mDataset, new Comparator<Event>() {
             @Override
             public int compare(Event event2, Event event1)
             {
-                return  event1.getName().compareTo(event2.getName());
+                return  event2.getName().compareTo(event1.getName());
             }
         });
     }
@@ -44,6 +48,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
     public void updateData(Set<Event> mDataset) {
         this.mDataset.clear();
         this.mDataset.addAll(mDataset);
+        sort();
         notifyDataSetChanged();
     }
 
@@ -90,10 +95,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
             this.ivEvent.setImageResource(event.getIconResource());
             this.tvEventName.setText(event.getName());
             if(!mShowDelete && ivEventDelete != null){
-                ViewManager parent = (ViewManager)ivEventDelete.getParent();
-                if (parent != null){
-                    parent.removeView(ivEventDelete);
-                }
+                ivEventDelete.setVisibility(View.GONE);
             }
         }
 

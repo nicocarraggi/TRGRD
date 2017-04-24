@@ -14,7 +14,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="10dp">
 
         <TextView
             android:layout_width="76dp"
@@ -32,13 +32,13 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="7dp">
 
         <TextView
             android:layout_width="76dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_marginBottom="7dp"
             android:text="Triggers "/>
 
         <Button
@@ -58,17 +58,17 @@
         android:id="@+id/rvCreateRuleOpenEvents"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="10dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="7dp">
 
         <TextView
             android:layout_width="76dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_marginBottom="7dp"
             android:text="Actions "/>
 
         <Button
@@ -84,11 +84,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp" />
-
-    <Button
-        android:id="@+id/bCreateRuleOpen"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Create"/>
 
 </LinearLayout>

@@ -33,14 +33,25 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
         this.mListener = listener;
         this.mDataset = new ArrayList<>();
         this.mDataset.addAll(mDataset);
+        sort();
+    }
+
+    private void sort(){
         // Sorting on name ... TODO other filters?
         Collections.sort(this.mDataset, new Comparator<Rule>() {
             @Override
             public int compare(Rule rule2, Rule rule1)
             {
-                return  rule1.getName().compareTo(rule2.getName());
+                return  rule2.getName().compareTo(rule1.getName());
             }
         });
+    }
+
+    public void updateData(Set<Rule> mDataset) {
+        this.mDataset.clear();
+        this.mDataset.addAll(mDataset);
+        sort();
+        notifyDataSetChanged();
     }
 
     @Override

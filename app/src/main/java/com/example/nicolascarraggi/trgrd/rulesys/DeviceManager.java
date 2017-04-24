@@ -77,8 +77,8 @@ public class DeviceManager {
         return mPebble;
     }
 
-    public HashMap<Integer, Device> getDevices() {
-        return devices;
+    public HashSet<Device> getDevices() {
+        return new HashSet(devices.values());
     }
 
     public Device getDevice(int id){

@@ -31,12 +31,16 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
         this.mDataset = new ArrayList<>();
         this.mShowDelete = mShowDelete;
         this.mDataset.addAll(mDataset);
+        sort();
+    }
+
+    private void sort(){
         // Sorting on name ... TODO other filters?
         Collections.sort(this.mDataset, new Comparator<State>() {
             @Override
             public int compare(State state2, State state1)
             {
-                return  state1.getName().compareTo(state2.getName());
+                return  state2.getName().compareTo(state1.getName());
             }
         });
     }
@@ -44,6 +48,7 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
     public void updateData(Set<State> mDataset) {
         this.mDataset.clear();
         this.mDataset.addAll(mDataset);
+        sort();
         notifyDataSetChanged();
     }
 
@@ -90,10 +95,7 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
             this.ivState.setImageResource(state.getIconResource());
             this.tvStateName.setText(state.getName());
             if(!mShowDelete && ivStateDelete != null){
-                ViewManager parent = (ViewManager)ivStateDelete.getParent();
-                if (parent != null){
-                    parent.removeView(ivStateDelete);
-                }
+                ivStateDelete.setVisibility(View.GONE);
             }
         }
 

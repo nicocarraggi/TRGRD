@@ -38,6 +38,8 @@ public class TrgrdFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
+            this.isServiceStarted = mListener.getIsServiceStarted();
+            this.isServiceBound = mListener.getIsServiceBound();
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
