@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,10 +24,12 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
 
     private ArrayList<Event> mDataset;
     private MyEventOnItemClickListener mListener;
+    boolean mShowDelete;
 
-    public EventsAdapter(MyEventOnItemClickListener listener, Set<Event> mDataset) {
+    public EventsAdapter(MyEventOnItemClickListener listener, Set<Event> mDataset, boolean showDelete) {
         this.mListener = listener;
         this.mDataset = new ArrayList<>();
+        this.mShowDelete = showDelete;
         this.mDataset.addAll(mDataset);
         // Sorting on name ... TODO other filters?
         Collections.sort(this.mDataset, new Comparator<Event>() {
@@ -68,15 +71,17 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
     public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private MyEventOnItemClickListener myOnItemClickListener;
-        private ImageView ivEventDevice, ivEvent;
+        private ImageView ivEventDevice, ivEvent, ivEventDelete;
         private TextView tvEventName;
 
         public EventViewHolder(View itemView) {
             super(itemView);
             this.ivEventDevice = (ImageView) itemView.findViewById(R.id.ivEventDevice);
             this.ivEvent = (ImageView) itemView.findViewById(R.id.ivEvent);
+            this.ivEventDelete = (ImageView) itemView.findViewById(R.id.ivEventDelete);
             this.tvEventName = (TextView) itemView.findViewById(R.id.tvEventName);
             tvEventName.setOnClickListener(this);
+            ivEventDelete.setOnClickListener(this);
         }
 
         public void bind(Event event, MyEventOnItemClickListener listener){
@@ -84,6 +89,12 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
             this.ivEventDevice.setImageResource(event.getDevice().getIconResource());
             this.ivEvent.setImageResource(event.getIconResource());
             this.tvEventName.setText(event.getName());
+            if(!mShowDelete && ivEventDelete != null){
+                ViewManager parent = (ViewManager)ivEventDelete.getParent();
+                if (parent != null){
+                    parent.removeView(ivEventDelete);
+                }
+            }
         }
 
         @Override
@@ -91,6 +102,9 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
             switch(view.getId()) {
                 case R.id.tvEventName:
                     myOnItemClickListener.onItemClick(mDataset.get(getAdapterPosition()));
+                    break;
+                case R.id.ivEventDelete:
+                    myOnItemClickListener.onItemDeleteClick(mDataset.get(getAdapterPosition()));
                     break;
             }
         }

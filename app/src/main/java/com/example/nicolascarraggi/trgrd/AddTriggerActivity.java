@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -15,6 +16,8 @@ import com.example.nicolascarraggi.trgrd.adapters.StatesAdapter;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
 
+import org.w3c.dom.Text;
+
 public class AddTriggerActivity extends RuleSystemBindingActivity
     implements MyEventOnItemClickListener, MyStateOnItemClickListener {
 
@@ -23,7 +26,7 @@ public class AddTriggerActivity extends RuleSystemBindingActivity
     private StatesAdapter statesAdapter;
     private RecyclerView.LayoutManager mLayoutManagerEvents, mLayoutManagerStates;
     private RecyclerView rvEvents, rvStates;
-    private TextView tvEvents;
+    private TextView tvEvents, tvAddTriggerEventsRed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +39,12 @@ public class AddTriggerActivity extends RuleSystemBindingActivity
         this.showEvents = !getIntent().getBooleanExtra("hasevent",false);
 
         tvEvents = (TextView) findViewById(R.id.tvAddTriggerEvents);
+        tvAddTriggerEventsRed = (TextView) findViewById(R.id.tvAddTriggerEventsRed);
         rvEvents = (RecyclerView) findViewById(R.id.rvAddTriggerEvents);
         rvStates = (RecyclerView) findViewById(R.id.rvAddTriggerStates);
 
         if(!showEvents){
-            tvEvents.setText("Events\n\nOne event has already been selected!\n");
+            tvAddTriggerEventsRed.setVisibility(View.VISIBLE);
             ((ViewGroup) rvEvents.getParent()).removeView(rvEvents);
         }
 
@@ -51,14 +55,14 @@ public class AddTriggerActivity extends RuleSystemBindingActivity
         super.onBound();
 
         if(showEvents) {
-            eventsAdapter = new EventsAdapter(this, ruleSystemService.getDeviceManager().getAllEvents());
+            eventsAdapter = new EventsAdapter(this, ruleSystemService.getDeviceManager().getAllEvents(),false);
             rvEvents.setHasFixedSize(true);
             mLayoutManagerEvents = new LinearLayoutManager(getApplicationContext());
             rvEvents.setLayoutManager(mLayoutManagerEvents);
             rvEvents.setAdapter(eventsAdapter);
         }
 
-        statesAdapter = new StatesAdapter(this,ruleSystemService.getDeviceManager().getAllStates());
+        statesAdapter = new StatesAdapter(this,ruleSystemService.getDeviceManager().getAllStates(),false);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -78,8 +82,18 @@ public class AddTriggerActivity extends RuleSystemBindingActivity
     }
 
     @Override
+    public void onItemDeleteClick(Event item) {
+        // DO NOTHING because events can't be deleted here!
+    }
+
+    @Override
     public void onItemClick(State item) {
         returnClickedItemId("state",item.getDevice().getId(),item.getId());
+    }
+
+    @Override
+    public void onItemDeleteClick(State item) {
+        // DO NOTHING because states can't be deleted here!
     }
 
     public void returnClickedItemId(String type, int devId, int id){

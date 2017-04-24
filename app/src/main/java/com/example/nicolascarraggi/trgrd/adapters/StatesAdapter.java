@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,10 +24,12 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
     
     private ArrayList<State> mDataset;
     private MyStateOnItemClickListener mListener;
+    private boolean mShowDelete;
 
-    public StatesAdapter(MyStateOnItemClickListener listener, Set<State> mDataset) {
+    public StatesAdapter(MyStateOnItemClickListener listener, Set<State> mDataset, boolean mShowDelete) {
         this.mListener = listener;
         this.mDataset = new ArrayList<>();
+        this.mShowDelete = mShowDelete;
         this.mDataset.addAll(mDataset);
         // Sorting on name ... TODO other filters?
         Collections.sort(this.mDataset, new Comparator<State>() {
@@ -68,15 +71,17 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
     public class StateViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private MyStateOnItemClickListener myStateOnItemClickListener;
-        private ImageView ivStateDevice, ivState;
+        private ImageView ivStateDevice, ivState, ivStateDelete;
         private TextView tvStateName;
 
         public StateViewHolder(View itemView) {
             super(itemView);
             this.ivStateDevice = (ImageView) itemView.findViewById(R.id.ivStateDevice);
             this.ivState = (ImageView) itemView.findViewById(R.id.ivState);
+            this.ivStateDelete = (ImageView) itemView.findViewById(R.id.ivStateDelete);
             this.tvStateName = (TextView) itemView.findViewById(R.id.tvStateName);
             tvStateName.setOnClickListener(this);
+            ivStateDelete.setOnClickListener(this);
         }
 
         public void bind(State state, MyStateOnItemClickListener listener){
@@ -84,6 +89,12 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
             this.ivStateDevice.setImageResource(state.getDevice().getIconResource());
             this.ivState.setImageResource(state.getIconResource());
             this.tvStateName.setText(state.getName());
+            if(!mShowDelete && ivStateDelete != null){
+                ViewManager parent = (ViewManager)ivStateDelete.getParent();
+                if (parent != null){
+                    parent.removeView(ivStateDelete);
+                }
+            }
         }
 
         @Override
@@ -91,6 +102,9 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
             switch(view.getId()) {
                 case R.id.tvStateName:
                     myStateOnItemClickListener.onItemClick(mDataset.get(getAdapterPosition()));
+                    break;
+                case R.id.ivStateDelete:
+                    myStateOnItemClickListener.onItemDeleteClick(mDataset.get(getAdapterPosition()));
                     break;
             }
         }

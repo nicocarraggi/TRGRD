@@ -7,6 +7,7 @@ import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -63,7 +64,7 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
         return mDataset.size();
     }
 
-    public class RuleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class RuleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
         private MyOnItemClickListener myOnItemClickListener;
         private ImageView ivRule;
@@ -76,6 +77,7 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
             this.tvRuleName = (TextView) itemView.findViewById(R.id.tvRuleName);
             this.switchRuleActive = (SwitchCompat) itemView.findViewById(R.id.switchRuleActive);
             tvRuleName.setOnClickListener(this);
+            switchRuleActive.setOnCheckedChangeListener(this);
         }
 
         public void bind(Rule rule, MyOnItemClickListener listener){
@@ -86,10 +88,24 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
 
         @Override
         public void onClick(View view) {
-            // example
             switch(view.getId()) {
                 case R.id.tvRuleName:
                     myOnItemClickListener.onItemClick(mDataset.get(getAdapterPosition()));
+                    break;
+            }
+        }
+
+        private void switchRuleActive(Rule rule, boolean b) {
+            if(rule.isActive()!=b){
+                rule.setActive(b);
+            }
+        }
+
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            switch(compoundButton.getId()) {
+                case R.id.switchRuleActive:
+                    switchRuleActive(mDataset.get(getAdapterPosition()), b);
                     break;
             }
         }

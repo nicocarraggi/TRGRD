@@ -8,4 +8,5 @@ import com.example.nicolascarraggi.trgrd.rulesys.State;
 
 public interface MyStateOnItemClickListener {
     void onItemClick(State item);
+    void onItemDeleteClick(State item);
 }

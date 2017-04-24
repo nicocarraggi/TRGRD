@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,17 +7,20 @@
     android:layout_marginBottom="@dimen/activity_vertical_margin"
     android:layout_marginLeft="@dimen/activity_horizontal_margin"
     android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:focusableInTouchMode="true"
     android:orientation="vertical"
     tools:context="com.example.nicolascarraggi.trgrd.CreateRuleOpenActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="76dp"
             android:layout_height="wrap_content"
-            android:text="Rule name: "/>
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Name "/>
 
         <EditText
             android:id="@+id/etCreateRuleOpenName"
@@ -33,9 +35,11 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="76dp"
             android:layout_height="wrap_content"
-            android:text="Triggers: "/>
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginBottom="7dp"
+            android:text="Triggers "/>
 
         <Button
             android:id="@+id/bCreateRuleOpenAddTrigger"
@@ -53,16 +57,19 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvCreateRuleOpenEvents"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="76dp"
             android:layout_height="wrap_content"
-            android:text="Actions: "/>
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginBottom="7dp"
+            android:text="Actions "/>
 
         <Button
             android:id="@+id/bCreateRuleOpenAddAction"
@@ -75,7 +82,8 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvCreateRuleOpenActions"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp" />
 
     <Button
         android:id="@+id/bCreateRuleOpen"

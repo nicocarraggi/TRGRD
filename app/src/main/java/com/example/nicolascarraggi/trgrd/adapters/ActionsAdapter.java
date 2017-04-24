@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,10 +24,12 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
 
     private MyActionOnItemClickListener mListener;
     private ArrayList<Action> mDataset;
+    private boolean mShowDelete;
 
-    public ActionsAdapter(MyActionOnItemClickListener listener, Set<Action> mDataset) {
+    public ActionsAdapter(MyActionOnItemClickListener listener, Set<Action> mDataset, boolean showDelete) {
         this.mListener = listener;
         this.mDataset = new ArrayList<>();
+        this.mShowDelete = showDelete;
         this.mDataset.addAll(mDataset);
         // Sorting on name ... TODO other filters?
         Collections.sort(this.mDataset, new Comparator<Action>() {
@@ -69,15 +72,17 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
     public class ActionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private MyActionOnItemClickListener myActionOnItemClickListener;
-        private ImageView ivActionDevice, ivAction;
+        private ImageView ivActionDevice, ivAction, ivActionDelete;
         private TextView tvActionName;
 
         public ActionViewHolder(View itemView) {
             super(itemView);
             this.ivActionDevice = (ImageView) itemView.findViewById(R.id.ivActionDevice);
             this.ivAction = (ImageView) itemView.findViewById(R.id.ivAction);
+            this.ivActionDelete = (ImageView) itemView.findViewById(R.id.ivActionDelete);
             this.tvActionName = (TextView) itemView.findViewById(R.id.tvActionName);
             tvActionName.setOnClickListener(this);
+            ivActionDelete.setOnClickListener(this);
         }
 
         public void bind(Action action, MyActionOnItemClickListener listener){
@@ -85,6 +90,12 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
             this.ivActionDevice.setImageResource(action.getDevice().getIconResource());
             this.ivAction.setImageResource(action.getIconResource());
             this.tvActionName.setText(action.getName());
+            if(!mShowDelete && ivActionDelete != null){
+                ViewManager parent = (ViewManager)ivActionDelete.getParent();
+                if (parent != null){
+                    parent.removeView(ivActionDelete);
+                }
+            }
         }
 
         @Override
@@ -92,6 +103,9 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
             switch(view.getId()) {
                 case R.id.tvActionName:
                     myActionOnItemClickListener.onItemClick(mDataset.get(getAdapterPosition()));
+                    break;
+                case R.id.ivActionDelete:
+                    myActionOnItemClickListener.onItemDeleteClick(mDataset.get(getAdapterPosition()));
                     break;
             }
         }

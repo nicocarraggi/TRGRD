@@ -33,7 +33,7 @@ public class AddActionActivity extends RuleSystemBindingActivity implements MyAc
     protected void onBound() {
         super.onBound();
 
-        actionsAdapter = new ActionsAdapter(this, ruleSystemService.getDeviceManager().getAllActions());
+        actionsAdapter = new ActionsAdapter(this, ruleSystemService.getDeviceManager().getAllActions(),false);
         rvActions.setHasFixedSize(true);
         mLayoutManagerActions = new LinearLayoutManager(this);
         rvActions.setLayoutManager(mLayoutManagerActions);
@@ -48,5 +48,10 @@ public class AddActionActivity extends RuleSystemBindingActivity implements MyAc
         intent.putExtra("id", item.getId());
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    @Override
+    public void onItemDeleteClick(Action item) {
+        // DO NOTHING because actions can't be deleted here!
     }
 }

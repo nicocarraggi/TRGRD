@@ -20,9 +20,22 @@
         android:layout_marginLeft="5dp"
         android:text="Events"/>
 
+    <TextView
+        android:id="@+id/tvAddTriggerEventsRed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginBottom="7dp"
+        android:layout_marginLeft="5dp"
+        android:visibility="gone"
+        android:textColor="#FF0000"
+        android:text="One event has already been selected!\nA rule can contain maximum 1 event, but multiple states can be added."/>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvAddTriggerEvents"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="false"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="20dp"
@@ -40,6 +53,8 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvAddTriggerStates"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

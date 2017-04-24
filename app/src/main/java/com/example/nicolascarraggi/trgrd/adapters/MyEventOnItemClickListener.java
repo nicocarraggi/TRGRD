@@ -8,4 +8,5 @@ import com.example.nicolascarraggi.trgrd.rulesys.Event;
 
 public interface MyEventOnItemClickListener {
     void onItemClick(Event item);
+    void onItemDeleteClick(Event item);
 }

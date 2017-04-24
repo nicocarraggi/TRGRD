@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +27,7 @@ import com.example.nicolascarraggi.trgrd.rulesys.Rule;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
 
 public class RuleDetailsActivity extends RuleSystemBindingActivity implements MyEventOnItemClickListener,
-        MyStateOnItemClickListener, MyActionOnItemClickListener {
+        MyStateOnItemClickListener, MyActionOnItemClickListener, CompoundButton.OnCheckedChangeListener {
 
     private int ruleId;
     private Rule rule;
@@ -46,17 +48,17 @@ public class RuleDetailsActivity extends RuleSystemBindingActivity implements My
         // Get a support ActionBar corresponding to this toolbar
         ActionBar ab = getSupportActionBar();
         ab.setTitle("Rule");
-        // Enable the Up button
-        //ab.setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        this.ruleId = intent.getIntExtra("ruleId",0);
+        this.ruleId = intent.getIntExtra("ruleid",0);
 
         tvRuleDetailsName = (TextView) findViewById(R.id.tvRuleDetailsName);
         rvRuleDetailsEvents = (RecyclerView) findViewById(R.id.rvRuleDetailsEvents);
         rvRuleDetailsStates = (RecyclerView) findViewById(R.id.rvRuleDetailsStates);
         rvRuleDetailsActions = (RecyclerView) findViewById(R.id.rvRuleDetailsActions);
         switchRuleDetailsActive = (SwitchCompat) findViewById(R.id.switchRuleDetailsActive);
+
+        switchRuleDetailsActive.setOnCheckedChangeListener(this);
 
     }
 
@@ -68,9 +70,9 @@ public class RuleDetailsActivity extends RuleSystemBindingActivity implements My
         tvRuleDetailsName.setText(rule.getName());
         switchRuleDetailsActive.setChecked(rule.isActive());
 
-        eventsAdapter = new EventsAdapter(this,rule.getEvents());
-        statesAdapter = new StatesAdapter(this,rule.getStates());
-        actionsAdapter = new ActionsAdapter(this,rule.getActions());
+        eventsAdapter = new EventsAdapter(this,rule.getEvents(),false);
+        statesAdapter = new StatesAdapter(this,rule.getStates(),false);
+        actionsAdapter = new ActionsAdapter(this,rule.getActions(),false);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -125,12 +127,44 @@ public class RuleDetailsActivity extends RuleSystemBindingActivity implements My
     }
 
     @Override
+    public void onItemDeleteClick(Event item) {
+
+    }
+
+    @Override
     public void onItemClick(State item) {
         Toast.makeText(RuleDetailsActivity.this, "State Clicked: "+item.getId(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
+    public void onItemDeleteClick(State item) {
+
+    }
+
+    @Override
     public void onItemClick(Action item) {
         Toast.makeText(RuleDetailsActivity.this, "Action Clicked: "+item.getId(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onItemDeleteClick(Action item) {
+
+    }
+
+    private void switchRuleActive(boolean b) {
+        if(isServiceBound){
+            if(rule.isActive()!=b){
+                rule.setActive(b);
+            }
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        switch (compoundButton.getId()){
+            case R.id.switchRuleDetailsActive:
+                switchRuleActive(b);
+                break;
+        }
     }
 }

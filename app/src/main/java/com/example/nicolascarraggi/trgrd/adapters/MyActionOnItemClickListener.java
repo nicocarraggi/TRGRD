@@ -8,4 +8,5 @@ import com.example.nicolascarraggi.trgrd.rulesys.Action;
 
 public interface MyActionOnItemClickListener {
     void onItemClick(Action item);
+    void onItemDeleteClick(Action item);
 }

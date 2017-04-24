@@ -79,7 +79,7 @@ public class RulesFragment extends TrgrdFragment  implements MyOnItemClickListen
     @Override
     public void onItemClick(Rule rule) {
         Intent intent = new Intent(this.getContext(), RuleDetailsActivity.class);
-        intent.putExtra("id",rule.getId());
+        intent.putExtra("ruleid",rule.getId());
         startActivity(intent);
     }
 
