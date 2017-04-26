@@ -94,6 +94,9 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                     int newId = ruleSystemService.getNewId();
                     this.rule = new Rule(newId, etName.getText().toString(), events, states, actions);
                     ruleSystemService.addRule(rule);
+                    Intent intent = new Intent(this, RuleDetailsActivity.class);
+                    intent.putExtra("ruleid",rule.getId());
+                    startActivity(intent);
                 } else {
                     this.rule.setName(etName.getText().toString());
                     this.rule.setEvents(events);

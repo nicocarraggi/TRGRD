@@ -6,13 +6,15 @@ package com.example.nicolascarraggi.trgrd.rulesys;
 
 public class State extends Event {
 
-    private StateType stateType;
-    private boolean state = false;
+    protected StateType stateType;
+    protected boolean state = false;
+    protected StateValueType stateValueType;
 
     public State(int id, String name, int iconResource, Device device, StateType stateType, boolean state) {
         super(id, name, iconResource, device, null);
         this.stateType = stateType;
         this.state = state;
+        this.stateValueType = State.StateValueType.NONE;
     }
 
     public StateType getStateType() {
@@ -36,10 +38,18 @@ public class State extends Event {
         }
     }
 
+    public StateValueType getStateValueType() {
+        return stateValueType;
+    }
+
     @Override
     public synchronized void trigger() {
         this.state = !state;
         stateChanged();
+    }
+
+    public enum StateValueType {
+        NONE, VALUE, TIME, CALENDAR, LOCATION
     }
 
 }

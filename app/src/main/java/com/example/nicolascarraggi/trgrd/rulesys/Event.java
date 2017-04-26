@@ -13,6 +13,7 @@ public class Event {
     private EventType eventType;
     protected String name;
     protected int iconResource;
+    protected EventValueType eventValueType;
     protected Device device;
     protected boolean usedInRule;
     protected Set<Rule> rules; // = listeners
@@ -24,6 +25,7 @@ public class Event {
         this.device = device;
         this.eventType = eventType;
         this.usedInRule = false;
+        this.eventValueType = EventValueType.NONE;
         this.rules = new HashSet<Rule>();
     }
 
@@ -59,6 +61,10 @@ public class Event {
         return eventType;
     }
 
+    public EventValueType getEventValueType() {
+        return eventValueType;
+    }
+
     public Set<Rule> getRules() {
         return rules;
     }
@@ -81,5 +87,9 @@ public class Event {
         for (Rule rule : rules){
             rule.eventTriggered(this);
         }
+    }
+
+    public enum EventValueType {
+        NONE, VALUE, TIME, LOCATION
     }
 }

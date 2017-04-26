@@ -234,6 +234,4 @@ public class AndroidPhone extends Device {
         Log.d("TRGRD","AndroidPhone mReceiver unRegistered!");
     }
 
-
-
 }
