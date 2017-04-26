@@ -27,6 +27,14 @@ public class TimeState extends State {
         this.timeTo = timeTo;
     }
 
+    // copy constructor
+    public TimeState(int id, TimeState timeState, Date timeFrom, Date timeTo){
+        super(id, timeState.getName(), timeState.getIconResource(), timeState.getDevice(), timeState.getStateType(), timeState.isState());
+        this.stateValueType = StateValueType.TIME;
+        this.timeFrom = timeFrom;
+        this.timeTo = timeTo;
+    }
+
     public Date getTimeFrom() {
         return timeFrom;
     }

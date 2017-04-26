@@ -1,6 +1,7 @@
 package com.example.nicolascarraggi.trgrd.rulesys.devices;
 
 import com.example.nicolascarraggi.trgrd.rulesys.Device;
+import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
 
 /**
  * Created by nicolascarraggi on 5/04/17.
@@ -11,8 +12,8 @@ public class Wearable extends Device {
     protected String wearType;
     protected String wearLocation;
 
-    public Wearable(int id, String name, String manufacturer, String platform, String wearType, String wearLocation, int iconResource) {
-        super(id, name, manufacturer, platform, iconResource);
+    public Wearable(int id, String name, String manufacturer, String platform, String wearType, String wearLocation, int iconResource, DeviceManager deviceManager) {
+        super(id, name, manufacturer, platform, iconResource, deviceManager);
         this.wearType = wearType;
         this.wearLocation = wearLocation;
     }

@@ -25,6 +25,13 @@ public class TimeEvent extends Event {
         this.time = time;
     }
 
+    // copy constructor
+    public TimeEvent(int id, TimeEvent timeEvent, Date time){
+        super(id, timeEvent.getName(),timeEvent.getIconResource(),timeEvent.getDevice(),timeEvent.getEventType());
+        this.eventValueType = EventValueType.TIME;
+        this.time = time;
+    }
+
     public Date getTime() {
         return time;
     }

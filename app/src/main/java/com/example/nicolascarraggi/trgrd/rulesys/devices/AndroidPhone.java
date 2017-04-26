@@ -11,6 +11,7 @@ import com.example.nicolascarraggi.trgrd.R;
 import com.example.nicolascarraggi.trgrd.rulesys.Action;
 import com.example.nicolascarraggi.trgrd.rulesys.ActionType;
 import com.example.nicolascarraggi.trgrd.rulesys.Device;
+import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
 import com.example.nicolascarraggi.trgrd.rulesys.EventType;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
@@ -66,8 +67,8 @@ public class AndroidPhone extends Device {
     private State mStAlarmGoing, mStCallIncGoing;
     private Action mAcAlarmDismiss, mAcAlarmSnooze;
 
-    public AndroidPhone(Context context, EventType evAlarmAlert, EventType evAlarmSnooze, EventType evAlarmDismiss, EventType evAlarmDone, EventType evCallInc, StateType stAlarmGoing, StateType stCallIncGoing, ActionType acAlarmSnooze, ActionType acAlarmDismiss) {
-        super(1, "Phone", "Google", "Android", R.drawable.ic_phone_android_black_24dp);
+    public AndroidPhone(Context context, EventType evAlarmAlert, EventType evAlarmSnooze, EventType evAlarmDismiss, EventType evAlarmDone, EventType evCallInc, StateType stAlarmGoing, StateType stCallIncGoing, ActionType acAlarmSnooze, ActionType acAlarmDismiss, DeviceManager deviceManager) {
+        super(1, "Phone", "Google", "Android", R.drawable.ic_phone_android_black_24dp, deviceManager);
         this.mContext = context;
         this.eventTypes.put(evAlarmAlert.getId(),evAlarmAlert);
         this.eventTypes.put(evAlarmSnooze.getId(),evAlarmSnooze);
@@ -78,22 +79,22 @@ public class AndroidPhone extends Device {
         this.stateTypes.put(stCallIncGoing.getId(),stCallIncGoing);
         this.actionTypes.put(acAlarmSnooze.getId(),acAlarmSnooze);
         this.actionTypes.put(acAlarmDismiss.getId(),acAlarmDismiss);
-        this.mEvAlarmStart = new Event(1,"Phone Alarm Start", R.drawable.ic_alarm_black_24dp, this, evAlarmAlert);
-        this.mEvAlarmSnooze = new Event(2,"Phone Alarm Snooze", R.drawable.ic_alarm_off_black_24dp, this, evAlarmSnooze);
-        this.mEvAlarmDismiss = new Event(3,"Phone Alarm Dismiss", R.drawable.ic_alarm_off_black_24dp, this, evAlarmDismiss);
-        this.mEvAlarmDone = new Event(4,"Phone Alarm Done", R.drawable.ic_alarm_off_black_24dp, this, evAlarmDone);
-        this.mEvCallIncStart = new Event(5,"Phone Call Incoming Start", R.drawable.ic_call_black_24dp, this, evCallInc);
-        this.mEvCallIncStop = new Event(6,"Phone Call Incoming Stop", R.drawable.ic_call_end_black_24dp, this, evCallInc);
-        this.mStAlarmGoing = new State(7,"Phone Alarm Going", R.drawable.ic_alarm_black_24dp, this, stAlarmGoing, false);
-        this.mStCallIncGoing = new State(8,"Phone Call Incoming Going", R.drawable.ic_call_black_24dp, this, stCallIncGoing, false);
-        this.mAcAlarmDismiss = new Action(9,"Phone Alarm Dismiss", R.drawable.ic_alarm_off_black_24dp, this, acAlarmDismiss, new Callable<String>() {
+        this.mEvAlarmStart = new Event(deviceManager.getNewId(),"Phone Alarm Start", R.drawable.ic_alarm_black_24dp, this, evAlarmAlert);
+        this.mEvAlarmSnooze = new Event(deviceManager.getNewId(),"Phone Alarm Snooze", R.drawable.ic_alarm_off_black_24dp, this, evAlarmSnooze);
+        this.mEvAlarmDismiss = new Event(deviceManager.getNewId(),"Phone Alarm Dismiss", R.drawable.ic_alarm_off_black_24dp, this, evAlarmDismiss);
+        this.mEvAlarmDone = new Event(deviceManager.getNewId(),"Phone Alarm Done", R.drawable.ic_alarm_off_black_24dp, this, evAlarmDone);
+        this.mEvCallIncStart = new Event(deviceManager.getNewId(),"Phone Call Incoming Start", R.drawable.ic_call_black_24dp, this, evCallInc);
+        this.mEvCallIncStop = new Event(deviceManager.getNewId(),"Phone Call Incoming Stop", R.drawable.ic_call_end_black_24dp, this, evCallInc);
+        this.mStAlarmGoing = new State(deviceManager.getNewId(),"Phone Alarm Going", R.drawable.ic_alarm_black_24dp, this, stAlarmGoing, false);
+        this.mStCallIncGoing = new State(deviceManager.getNewId(),"Phone Call Incoming Going", R.drawable.ic_call_black_24dp, this, stCallIncGoing, false);
+        this.mAcAlarmDismiss = new Action(deviceManager.getNewId(),"Phone Alarm Dismiss", R.drawable.ic_alarm_off_black_24dp, this, acAlarmDismiss, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acAlarmDismiss();
                 return null;
             }
         });
-        this.mAcAlarmSnooze = new Action(10,"Phone Alarm Snooze", R.drawable.ic_alarm_off_black_24dp, this, acAlarmSnooze, new Callable<String>(){
+        this.mAcAlarmSnooze = new Action(deviceManager.getNewId(),"Phone Alarm Snooze", R.drawable.ic_alarm_off_black_24dp, this, acAlarmSnooze, new Callable<String>(){
             @Override
             public String call() throws Exception {
                 acAlarmSnooze();

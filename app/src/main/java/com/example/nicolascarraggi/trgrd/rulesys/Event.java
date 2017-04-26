@@ -89,6 +89,24 @@ public class Event {
         }
     }
 
+    public boolean isNormalEvent(){
+        return eventValueType == EventValueType.NONE;
+    }
+
+    public boolean isValueEvent(){
+        return eventValueType == EventValueType.VALUE;
+    }
+
+
+    public boolean isTimeEvent(){
+        return eventValueType == EventValueType.TIME;
+    }
+
+
+    public boolean isLocationEvent(){
+        return eventValueType == EventValueType.LOCATION;
+    }
+
     public enum EventValueType {
         NONE, VALUE, TIME, LOCATION
     }

@@ -8,11 +8,14 @@ import android.util.Log;
 
 import com.example.nicolascarraggi.trgrd.R;
 import com.example.nicolascarraggi.trgrd.rulesys.Device;
-import com.example.nicolascarraggi.trgrd.rulesys.Event;
+import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
 import com.example.nicolascarraggi.trgrd.rulesys.EventType;
 import com.example.nicolascarraggi.trgrd.rulesys.StateType;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeState;
+
+import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Created by nicolascarraggi on 26/04/17.
@@ -42,23 +45,41 @@ public class Clock extends Device {
     private TimeEvent mEvTimeAt;
     private TimeState mStTimeFromTo;
 
-    public Clock(Context context, EventType evClockAt, StateType stClockFromTo) {
-        super(3, "Clock", "Google", "Android", R.drawable.ic_access_time_black_24dp);
+    // Instances
+    private HashMap<Integer,TimeEvent> timeAtInstances;
+    private HashMap<Integer,TimeState> timeFromToInstances;
+
+    public Clock(Context context, EventType evClockAt, StateType stClockFromTo, DeviceManager deviceManager) {
+        super(3, "Clock", "Google", "Android", R.drawable.ic_access_time_black_24dp, deviceManager);
         this.mContext = context;
         this.getEventTypes().put(evClockAt.getId(),evClockAt);
         this.getStateTypes().put(stClockFromTo.getId(),stClockFromTo);
-        mEvTimeAt = new TimeEvent(18,"Clock At", R.drawable.ic_access_time_black_24dp, this, evClockAt);
-        mStTimeFromTo = new TimeState(19,"Clock From To", R.drawable.ic_code_black_24dp, this, stClockFromTo, false);
+        mEvTimeAt = new TimeEvent(deviceManager.getNewId(),"Clock At", R.drawable.ic_access_time_black_24dp, this, evClockAt);
+        mStTimeFromTo = new TimeState(deviceManager.getNewId(),"Clock From To", R.drawable.ic_code_black_24dp, this, stClockFromTo, false);
         this.events.put(mEvTimeAt.getId(),mEvTimeAt);
         this.states.put(mStTimeFromTo.getId(),mStTimeFromTo);
+        this.timeAtInstances = new HashMap<>();
+        this.timeFromToInstances = new HashMap<>();
     }
 
     public TimeEvent getTimeAt() {
         return mEvTimeAt;
     }
 
+    public TimeEvent getTimeAtInstance(TimeEvent timeEvent, Date time){
+        TimeEvent instance = new TimeEvent(deviceManager.getNewId(),timeEvent,time);
+        eventInstances.put(instance.getId(),instance);
+        return instance;
+    }
+
     public TimeState getTimeFromTo() {
         return mStTimeFromTo;
+    }
+
+    public TimeState getTimeFromToInstance(TimeState timeState, Date timeFrom, Date timeTo){
+        TimeState instance = new TimeState(deviceManager.getNewId(),timeState,timeFrom,timeTo);
+        stateInstances.put(instance.getId(),instance);
+        return instance;
     }
 
     public void evTimeAt() {

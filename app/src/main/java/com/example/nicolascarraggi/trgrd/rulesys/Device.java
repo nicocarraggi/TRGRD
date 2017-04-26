@@ -13,22 +13,30 @@ public class Device {
     protected int id;
     protected String name, manufacturer, platform;
     protected int iconResource;
+    protected DeviceManager deviceManager;
     protected HashMap<Integer, Event> events;
+    protected HashMap<Integer, Event> eventInstances;
     protected HashMap<Integer, State> states;
+    protected HashMap<Integer, State> stateInstances;
     protected HashMap<Integer, Action> actions;
+    protected HashMap<Integer, Action> actionInstances;
     protected HashMap<Integer, EventType> eventTypes;
     protected HashMap<Integer, StateType> stateTypes;
     protected HashMap<Integer, ActionType> actionTypes;
 
-    public Device(int id, String name, String manufacturer, String platform, int iconResource) {
+    public Device(int id, String name, String manufacturer, String platform, int iconResource, DeviceManager deviceManager) {
         this.id = id;
         this.name = name;
         this.manufacturer = manufacturer;
         this.platform = platform;
         this.iconResource = iconResource;
+        this.deviceManager = deviceManager;
         this.events = new HashMap<>();
+        this.eventInstances = new HashMap<>();
         this.states = new HashMap<>();
+        this.stateInstances = new HashMap<>();
         this.actions = new HashMap<>();
+        this.actionInstances = new HashMap<>();
         this.eventTypes = new HashMap<>();
         this.stateTypes = new HashMap<>();
         this.actionTypes = new HashMap<>();
@@ -110,4 +118,27 @@ public class Device {
         return actions.get(id);
     }
 
+    public HashMap<Integer, Event> getEventInstances() {
+        return eventInstances;
+    }
+
+    public HashMap<Integer, State> getStateInstances() {
+        return stateInstances;
+    }
+
+    public HashMap<Integer, Action> getActionInstances() {
+        return actionInstances;
+    }
+
+    public void deleteEventInstance(int id) {
+        eventInstances.remove(id);
+    }
+
+    public void deleteStateInstance(int id) {
+        stateInstances.remove(id);
+    }
+
+    public void deleteActionInstance(int id) {
+        actionInstances.remove(id);
+    }
 }

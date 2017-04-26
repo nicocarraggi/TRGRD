@@ -48,6 +48,26 @@ public class State extends Event {
         stateChanged();
     }
 
+    public boolean isNormalState() {
+        return stateValueType == StateValueType.NONE;
+    }
+
+    public boolean isValueState() {
+        return stateValueType == StateValueType.VALUE;
+    }
+
+    public boolean isTimeState() {
+        return stateValueType == StateValueType.TIME;
+    }
+
+    public boolean isCalendarState() {
+        return stateValueType == StateValueType.CALENDAR;
+    }
+
+    public boolean isLocationState() {
+        return stateValueType == StateValueType.LOCATION;
+    }
+
     public enum StateValueType {
         NONE, VALUE, TIME, CALENDAR, LOCATION
     }

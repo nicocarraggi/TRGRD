@@ -16,32 +16,36 @@ import java.util.Set;
 
 public class DeviceManager {
 
+    // TODO add rule ID system
+    private int newId = 1;
+    // TODO get and write Events,States,Actions & their types from and to database?
+
     private HashMap<Integer,Device> devices;
     private HashMap<Integer,EventType> eventTypes;
     private HashMap<Integer,StateType> stateTypes;
     private HashMap<Integer,ActionType> actionTypes;
 
     // EventTypes
-    private EventType evAlarmAlert = new EventType(1,"alarm alert");
-    private EventType evAlarmSnooze = new EventType(2,"alarm snooze");
-    private EventType evAlarmDismiss = new EventType(3,"alarm dismiss");
-    private EventType evAlarmDone = new EventType(4,"alarm done");
-    private EventType evCallInc = new EventType(5,"call incoming");
-    private EventType evButtonPress = new EventType(6,"button press"); // change to evOneInput? too restrictive now, could also be a gesture from myo?
-    private EventType evHeartRateReading = new EventType(7,"heart rate reading");
-    private EventType evTimeAt = new EventType(15,"time at");
+    private EventType evAlarmAlert = new EventType(getNewId(),"alarm alert");
+    private EventType evAlarmSnooze = new EventType(getNewId(),"alarm snooze");
+    private EventType evAlarmDismiss = new EventType(getNewId(),"alarm dismiss");
+    private EventType evAlarmDone = new EventType(getNewId(),"alarm done");
+    private EventType evCallInc = new EventType(getNewId(),"call incoming");
+    private EventType evButtonPress = new EventType(getNewId(),"button press"); // change to evOneInput? too restrictive now, could also be a gesture from myo?
+    private EventType evHeartRateReading = new EventType(getNewId(),"heart rate reading");
+    private EventType evTimeAt = new EventType(getNewId(),"time at");
 
     // StateTypes
-    private StateType stAlarmGoing = new StateType(8,"alarm going");
-    private StateType stCallIncGoing = new StateType(9,"call incoming going");
-    private StateType stTimeFromTo = new StateType(16,"time from to");
+    private StateType stAlarmGoing = new StateType(getNewId(),"alarm going");
+    private StateType stCallIncGoing = new StateType(getNewId(),"call incoming going");
+    private StateType stTimeFromTo = new StateType(getNewId(),"time from to");
 
     // ActionTypes
-    private ActionType acAlarmSnooze = new ActionType(10,"alarm snooze");
-    private ActionType acAlarmDismiss = new ActionType(11,"alarm dismiss");
-    private ActionType acAlarmVibrate = new ActionType(12,"alarm vibrate");
-    private ActionType acAlarmDisplay = new ActionType(13,"alarm display");
-    private ActionType acTimeDisplay = new ActionType(14,"time display");
+    private ActionType acAlarmSnooze = new ActionType(getNewId(),"alarm snooze");
+    private ActionType acAlarmDismiss = new ActionType(getNewId(),"alarm dismiss");
+    private ActionType acAlarmVibrate = new ActionType(getNewId(),"alarm vibrate");
+    private ActionType acAlarmDisplay = new ActionType(getNewId(),"alarm display");
+    private ActionType acTimeDisplay = new ActionType(getNewId(),"time display");
 
     // Devices
     private AndroidPhone mAndroidPhone;
@@ -69,9 +73,9 @@ public class DeviceManager {
         this.actionTypes.put(acAlarmVibrate.getId(),acAlarmVibrate);
         this.actionTypes.put(acAlarmDisplay.getId(),acAlarmDisplay);
         this.actionTypes.put(acTimeDisplay.getId(),acTimeDisplay);
-        this.mAndroidPhone = new AndroidPhone(mContext, evAlarmAlert, evAlarmSnooze, evAlarmDismiss, evAlarmDone, evCallInc, stAlarmGoing, stCallIncGoing, acAlarmSnooze, acAlarmDismiss);
-        this.mPebble = new Pebble(mContext, evButtonPress, evHeartRateReading, acAlarmVibrate, acAlarmDisplay, acTimeDisplay);
-        this.mClock = new Clock(mContext, evTimeAt, stTimeFromTo);
+        this.mAndroidPhone = new AndroidPhone(mContext, evAlarmAlert, evAlarmSnooze, evAlarmDismiss, evAlarmDone, evCallInc, stAlarmGoing, stCallIncGoing, acAlarmSnooze, acAlarmDismiss, this);
+        this.mPebble = new Pebble(mContext, evButtonPress, evHeartRateReading, acAlarmVibrate, acAlarmDisplay, acTimeDisplay, this);
+        this.mClock = new Clock(mContext, evTimeAt, stTimeFromTo, this);
         this.devices.put(mAndroidPhone.getId(),mAndroidPhone);
         this.devices.put(mPebble.getId(),mPebble);
         this.devices.put(mClock.getId(),mClock);
@@ -143,6 +147,10 @@ public class DeviceManager {
             actions.addAll(d.getActions().values());
         }
         return actions;
+    }
+
+    public int getNewId(){
+        return this.newId++;
     }
 
 // Start & Stop Devices:

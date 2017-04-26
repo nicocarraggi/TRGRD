@@ -13,6 +13,7 @@ public class Action {
     private int id;
     private String name;
     private int iconResource;
+    private ActionValueType actionValueType;
     private Device device;
     private ActionType actionType;
     private Callable callable;
@@ -23,6 +24,7 @@ public class Action {
         this.id = id;
         this.name = name;
         this.iconResource = iconResource;
+        this.actionValueType = ActionValueType.NONE;
         this.device = device;
         this.actionType = actionType;
         this.callable = callable;
@@ -85,4 +87,11 @@ public class Action {
         callable.call();
     }
 
+    public Object getActionValueType() {
+        return actionValueType;
+    }
+
+    public enum ActionValueType {
+        NONE, VALUE
+    }
 }

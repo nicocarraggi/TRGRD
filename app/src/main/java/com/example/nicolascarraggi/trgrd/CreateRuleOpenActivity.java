@@ -27,7 +27,11 @@ import com.example.nicolascarraggi.trgrd.rulesys.Action;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
 import com.example.nicolascarraggi.trgrd.rulesys.Rule;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
+import com.example.nicolascarraggi.trgrd.rulesys.TimeEvent;
+import com.example.nicolascarraggi.trgrd.rulesys.TimeState;
+import com.example.nicolascarraggi.trgrd.rulesys.devices.Clock;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,8 +45,11 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
     private boolean isCreate, isBoundOnce;
     private Rule rule;
     private Set<Event> events;
+    private Set<Event> deletedEventInstaces;
     private Set<State> states;
+    private Set<State> deletedStateInstaces;
     private Set<Action> actions;
+    private Set<Action> deletedActionInstaces;
     private EventsAdapter eventsAdapter;
     private StatesAdapter statesAdapter;
     private ActionsAdapter actionsAdapter;
@@ -68,8 +75,11 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
         this.rvActions = (RecyclerView) findViewById(R.id.rvCreateRuleOpenActions);
 
         this.events = new HashSet<>();
+        this.deletedEventInstaces = new HashSet<>();
         this.states = new HashSet<>();
+        this.deletedStateInstaces = new HashSet<>();
         this.actions = new HashSet<>();
+        this.deletedActionInstaces = new HashSet<>();
 
         this.isBoundOnce = false;
 
@@ -90,6 +100,8 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_save) {
             if(isRuleValid()) {
+                // persist delete of instances!
+                persistDeleteInstances();
                 if(isCreate) {
                     int newId = ruleSystemService.getNewId();
                     this.rule = new Rule(newId, etName.getText().toString(), events, states, actions);
@@ -110,6 +122,31 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void persistDeleteInstances() {
+        for(Event e: deletedEventInstaces){
+            e.getDevice().deleteEventInstance(e.getId());
+        }
+        for(State s: deletedStateInstaces){
+            s.getDevice().deleteStateInstance(s.getId());
+        }
+        for(Action a: deletedActionInstaces){
+            a.getDevice().deleteStateInstance(a.getId());
+        }
+    }
+
+    private void deleteInstance(String type, Event event, State state, Action action) {
+        // puts deleted instances in a temporary collection!
+        // if rule is saved, persist the deletes to the devices to actually delete the instances!
+        // else ( in case the user goes back without saving ) do nothing, because they are still used!
+        if(type.equals("event") && (event.getEventValueType() != Event.EventValueType.NONE)){
+            deletedEventInstaces.add(event);
+        } else if(type.equals("state") && (state.getStateValueType() != State.StateValueType.NONE)){
+            deletedStateInstaces.add(state);
+        } else if(type.equals("action") && (action.getActionValueType() != Action.ActionValueType.NONE)){
+            deletedActionInstaces.add(action);
+        }
     }
 
     @Override
@@ -163,21 +200,38 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
+            // ADD TRIGGER RESULT
             if(resultCode == RESULT_OK) {
                 String type = data.getStringExtra("type");
                 int devId = data.getIntExtra("devid",0);
                 int id = data.getIntExtra("id",0);
                 if (type.equals("event")){
                     Event event = ruleSystemService.getDeviceManager().getDevice(devId).getEvent(id);
+                    // if instance must be created ...
+                    if (event.isTimeEvent()){
+                        Date d = new Date();
+                        d.setHours(14);
+                        TimeEvent timeEvent = ((Clock) event.getDevice()).getTimeAtInstance((TimeEvent) event,d);
+                        event = timeEvent;
+                    }
                     events.add(event);
                     eventsAdapter.updateData(events);
                 } else if (type.equals("state")){
-                    State state = ruleSystemService.getDeviceManager().getDevice(devId).getState(id);
+                    State state = ruleSystemService.getDeviceManager().getDevice(devId).getState(id);// if instance must be created ...
+                    if (state.isTimeState()){
+                        Date dFrom = new Date();
+                        Date dTo = new Date();
+                        dFrom.setHours(14);
+                        dTo.setHours(15);
+                        TimeState timeState = ((Clock) state.getDevice()).getTimeFromToInstance((TimeState) state,dFrom,dTo);
+                        state = timeState;
+                    }
                     states.add(state);
                     statesAdapter.updateData(states);
                 }
             }
         } else if (requestCode == 2){
+            // ADD ACTION RESULT
             if(resultCode == RESULT_OK) {
                 int devId = data.getIntExtra("devid",0);
                 int id = data.getIntExtra("id",0);
@@ -225,6 +279,8 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                 .setTitle("Delete "+name)
                 .setPositiveButton("delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        // delete instance (if an instance exists!)
+                        CreateRuleOpenActivity.this.deleteInstance(type,event,state,action);
                         if (type.equals("event") && (event != null)){
                             CreateRuleOpenActivity.this.events.remove(event);
                             CreateRuleOpenActivity.this.eventsAdapter.updateData(CreateRuleOpenActivity.this.events);

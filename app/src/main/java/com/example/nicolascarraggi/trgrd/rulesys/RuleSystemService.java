@@ -79,7 +79,6 @@ public class RuleSystemService extends Service {
     }
 
     public int getNewId(){
-        Log.d("TRGRD","RuleSystemService getNewId id = "+newId);
         return this.newId++;
     }
 

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.nicolascarraggi.trgrd.R;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
+import com.example.nicolascarraggi.trgrd.rulesys.TimeEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -93,7 +94,12 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
             this.myOnItemClickListener = listener;
             this.ivEventDevice.setImageResource(event.getDevice().getIconResource());
             this.ivEvent.setImageResource(event.getIconResource());
-            this.tvEventName.setText(event.getName());
+            if (event.isNormalEvent()){
+                this.tvEventName.setText(event.getName());
+            } else if (event.isTimeEvent()){
+                TimeEvent timeEvent = (TimeEvent) event;
+                this.tvEventName.setText(event.getName()+" [at "+timeEvent.getTime().getHours()+"]");
+            }
             if(!mShowDelete && ivEventDelete != null){
                 ivEventDelete.setVisibility(View.GONE);
             }
