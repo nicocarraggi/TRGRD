@@ -12,17 +12,20 @@ import java.util.Date;
 public class TimeEvent extends Event {
 
     private Date time;
+    private boolean isSkeleton;
 
     public TimeEvent(int id, String name, int iconResource, Device device, EventType eventType) {
         super(id, name, iconResource, device, eventType);
         this.eventValueType = EventValueType.TIME;
         this.time = null;
+        this.isSkeleton=true;
     }
 
     public TimeEvent(int id, String name, int iconResource, Device device, EventType eventType, Date time) {
         super(id, name, iconResource, device, eventType);
         this.eventValueType = EventValueType.TIME;
         this.time = time;
+        this.isSkeleton=false;
     }
 
     // copy constructor
@@ -30,6 +33,7 @@ public class TimeEvent extends Event {
         super(id, timeEvent.getName(),timeEvent.getIconResource(),timeEvent.getDevice(),timeEvent.getEventType());
         this.eventValueType = EventValueType.TIME;
         this.time = time;
+        this.isSkeleton=false;
     }
 
     public Date getTime() {
@@ -38,5 +42,9 @@ public class TimeEvent extends Event {
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    public boolean isSkeleton() {
+        return isSkeleton;
     }
 }

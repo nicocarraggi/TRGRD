@@ -1,6 +1,7 @@
 package com.example.nicolascarraggi.trgrd.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,7 +99,12 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
                 this.tvEventName.setText(event.getName());
             } else if (event.isTimeEvent()){
                 TimeEvent timeEvent = (TimeEvent) event;
-                this.tvEventName.setText(event.getName()+" [at "+timeEvent.getTime().getHours()+"]");
+                Log.d("TRGRD","EvensAdapter TimeEvent = "+timeEvent.getName());
+                String time = "...";
+                if (!timeEvent.isSkeleton()){
+                    time = ""+timeEvent.getTime().getHours();
+                }
+                this.tvEventName.setText(event.getName()+" [at "+time+"]");
             }
             if(!mShowDelete && ivEventDelete != null){
                 ivEventDelete.setVisibility(View.GONE);
