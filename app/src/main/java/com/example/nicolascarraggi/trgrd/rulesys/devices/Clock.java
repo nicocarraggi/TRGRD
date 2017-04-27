@@ -10,6 +10,7 @@ import com.example.nicolascarraggi.trgrd.R;
 import com.example.nicolascarraggi.trgrd.rulesys.Device;
 import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
 import com.example.nicolascarraggi.trgrd.rulesys.EventType;
+import com.example.nicolascarraggi.trgrd.rulesys.MyTime;
 import com.example.nicolascarraggi.trgrd.rulesys.StateType;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeState;
@@ -66,7 +67,7 @@ public class Clock extends Device {
         return mEvTimeAt;
     }
 
-    public TimeEvent getTimeAtInstance(TimeEvent timeEvent, Date time){
+    public TimeEvent getTimeAtInstance(TimeEvent timeEvent, MyTime time){
         TimeEvent instance = new TimeEvent(deviceManager.getNewId(),timeEvent,time);
         eventInstances.put(instance.getId(),instance);
         return instance;
@@ -76,7 +77,7 @@ public class Clock extends Device {
         return mStTimeFromTo;
     }
 
-    public TimeState getTimeFromToInstance(TimeState timeState, Date timeFrom, Date timeTo){
+    public TimeState getTimeFromToInstance(TimeState timeState, MyTime timeFrom, MyTime timeTo){
         TimeState instance = new TimeState(deviceManager.getNewId(),timeState,timeFrom,timeTo);
         stateInstances.put(instance.getId(),instance);
         return instance;

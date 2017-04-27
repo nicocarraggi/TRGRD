@@ -115,7 +115,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
                     bEventValueOne.setVisibility(View.VISIBLE);
                     tvEventName.setVisibility(View.GONE);
                     tvEventValueOne.setText("At");
-                    bEventValueOne.setText("" + timeEvent.getTime().getHours() + ":" + timeEvent.getTime().getMinutes());
+                    bEventValueOne.setText(timeEvent.getTime().toString());
                     if(!mEdit) {
                         bEventValueOne.setBackgroundColor(Color.TRANSPARENT);
                     }

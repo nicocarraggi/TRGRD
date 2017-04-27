@@ -62,35 +62,57 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/tvStateValueOne"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="from"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
+                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                    android:weightSum="2">
 
-                <Button
-                    android:id="@+id/bStateValueOne"
-                    android:text="12:00"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    <TextView
+                        android:id="@+id/tvStateValueOne"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="from"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-                <TextView
-                    android:id="@+id/tvStateValueTwo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="to"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
+                    <TextView
+                        android:id="@+id/tvStateValueTwo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="to"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-                <Button
-                    android:id="@+id/bStateValueTwo"
-                    android:text="13:00"
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:orientation="vertical"
+                    android:layout_height="match_parent"
+                    android:weightSum="2">
+
+                    <Button
+                        android:id="@+id/bStateValueOne"
+                        android:text="12:00"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <Button
+                        android:id="@+id/bStateValueTwo"
+                        android:text="13:00"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

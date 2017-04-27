@@ -1,20 +1,26 @@
 package com.example.nicolascarraggi.trgrd;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.nicolascarraggi.trgrd.adapters.ActionsAdapter;
@@ -25,12 +31,14 @@ import com.example.nicolascarraggi.trgrd.adapters.MyStateOnItemClickListener;
 import com.example.nicolascarraggi.trgrd.adapters.StatesAdapter;
 import com.example.nicolascarraggi.trgrd.rulesys.Action;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
+import com.example.nicolascarraggi.trgrd.rulesys.MyTime;
 import com.example.nicolascarraggi.trgrd.rulesys.Rule;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeState;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Clock;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -209,7 +217,7 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                     Event event = ruleSystemService.getDeviceManager().getDevice(devId).getEvent(id);
                     // if instance must be created ...
                     if (event.isTimeEvent()){
-                        Date d = new Date();
+                        MyTime d = new MyTime();
                         d.setHours(14);
                         TimeEvent timeEvent = ((Clock) event.getDevice()).getTimeAtInstance((TimeEvent) event,d);
                         event = timeEvent;
@@ -219,10 +227,10 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                 } else if (type.equals("state")){
                     State state = ruleSystemService.getDeviceManager().getDevice(devId).getState(id);// if instance must be created ...
                     if (state.isTimeState()){
-                        Date dFrom = new Date();
-                        Date dTo = new Date();
-                        dFrom.setHours(14);
-                        dTo.setHours(15);
+                        MyTime dFrom = new MyTime();
+                        MyTime dTo = new MyTime();
+                        dFrom.setMinutes(0);
+                        dTo.setMinutes(0);
                         TimeState timeState = ((Clock) state.getDevice()).getTimeFromToInstance((TimeState) state,dFrom,dTo);
                         state = timeState;
                     }
@@ -302,6 +310,73 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
         builder.create().show();
     }
 
+
+    private void editTime(final Button button, final TimeEvent item) {
+
+        @SuppressLint("ValidFragment")
+        class EventTimePickerFragment extends DialogFragment
+                implements TimePickerDialog.OnTimeSetListener {
+
+            @Override
+            public Dialog onCreateDialog(Bundle savedInstanceState) {
+                int hour = item.getTime().getHours();
+                int minute = item.getTime().getMinutes();
+
+                // Create a new instance of TimePickerDialog and return it
+                return new TimePickerDialog(getActivity(), this, hour, minute,true);
+            }
+
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                // Do something with the time chosen by the user
+                MyTime time = item.getTime();
+                time.setHours(hourOfDay);
+                time.setMinutes(minute);
+                button.setText(time.toString());
+            }
+        }
+
+        DialogFragment newFragment = new EventTimePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "timePicker");
+
+    }
+
+    private void editTime(final Button button, final TimeState item) {
+
+        MyTime tempTime;
+        if(button.getId() == R.id.bStateValueOne){
+            tempTime = item.getTimeFrom();
+        } else {
+            tempTime = item.getTimeTo();
+        }
+        final MyTime time = tempTime;
+
+        @SuppressLint("ValidFragment")
+        class StateTimePickerFragment extends DialogFragment
+                implements TimePickerDialog.OnTimeSetListener {
+
+            @Override
+            public Dialog onCreateDialog(Bundle savedInstanceState) {
+                int hour = time.getHours();
+                int minute = time.getMinutes();
+
+                // Create a new instance of TimePickerDialog and return it
+                return new TimePickerDialog(getActivity(), this, hour, minute,true);
+            }
+
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                // Do something with the time chosen by the user
+                time.setHours(hourOfDay);
+                time.setMinutes(minute);
+                button.setText(time.toString());
+            }
+        }
+
+        DialogFragment newFragment = new StateTimePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "timePicker");
+
+
+    }
+
     // onItemClick for 1 Event item
     @Override
     public void onItemClick(View view, Event item) {
@@ -311,6 +386,11 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                 break;
             case R.id.ivEventDelete:
                 alertDelete("event", item, null, null);
+                break;
+            case R.id.bEventValueOne:
+                if (item.isTimeEvent()){
+                    editTime((Button) view, (TimeEvent) item);
+                }
                 break;
         }
     }
@@ -325,6 +405,16 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
             case R.id.ivStateDelete:
                 alertDelete("state", null, item, null);
                 break;
+            case R.id.bStateValueOne:
+                if (item.isTimeState()){
+                    editTime((Button) view, (TimeState) item);
+                }
+                break;
+            case R.id.bStateValueTwo:
+                if (item.isTimeState()){
+                    editTime((Button) view, (TimeState) item);
+                }
+                break;
         }
     }
 
@@ -338,6 +428,26 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
             case R.id.ivActionDelete:
                 alertDelete("action", null, null, item);
                 break;
+        }
+    }
+
+    public static class TimePickerFragment extends DialogFragment
+            implements TimePickerDialog.OnTimeSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current time as the default values for the picker
+            final Calendar c = Calendar.getInstance();
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            int minute = c.get(Calendar.MINUTE);
+
+            // Create a new instance of TimePickerDialog and return it
+            return new TimePickerDialog(getActivity(), this, hour, minute,
+                    DateFormat.is24HourFormat(getActivity()));
+        }
+
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            // Do something with the time chosen by the user
         }
     }
 }

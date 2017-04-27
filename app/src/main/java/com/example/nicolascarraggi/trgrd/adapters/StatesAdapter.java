@@ -125,9 +125,9 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
                     bStateValueTwo.setVisibility(View.VISIBLE);
                     tvStateName.setVisibility(View.GONE);
                     tvStateValueOne.setText("From");
-                    tvStateValueTwo.setText("to");
-                    bStateValueOne.setText("" + timeState.getTimeFrom().getHours() + ":" + timeState.getTimeFrom().getMinutes());
-                    bStateValueTwo.setText("" + timeState.getTimeTo().getHours() + ":" + timeState.getTimeTo().getMinutes());
+                    tvStateValueTwo.setText("To");
+                    bStateValueOne.setText(timeState.getTimeFrom().toString());
+                    bStateValueTwo.setText(timeState.getTimeTo().toString());
                     if(!mEdit) {
                         bStateValueOne.setBackgroundColor(Color.TRANSPARENT);
                         bStateValueTwo.setBackgroundColor(Color.TRANSPARENT);

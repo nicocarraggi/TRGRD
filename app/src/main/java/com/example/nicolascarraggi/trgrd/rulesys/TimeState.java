@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class TimeState extends State {
 
-    private Date timeFrom, timeTo;
+    private MyTime timeFrom, timeTo;
 
     public TimeState(int id, String name, int iconResource, Device device, StateType stateType, boolean state) {
         super(id, name, iconResource, device, stateType, state);
@@ -20,7 +20,7 @@ public class TimeState extends State {
         this.timeTo = null;
     }
 
-    public TimeState(int id, String name, int iconResource, Device device, StateType stateType, boolean state, Date timeFrom, Date timeTo) {
+    public TimeState(int id, String name, int iconResource, Device device, StateType stateType, boolean state, MyTime timeFrom, MyTime timeTo) {
         super(id, name, iconResource, device, stateType, state);
         this.stateValueType = StateValueType.TIME;
         this.timeFrom = timeFrom;
@@ -29,7 +29,7 @@ public class TimeState extends State {
     }
 
     // copy constructor
-    public TimeState(int id, TimeState timeState, Date timeFrom, Date timeTo){
+    public TimeState(int id, TimeState timeState, MyTime timeFrom, MyTime timeTo){
         super(id, timeState.getName(), timeState.getIconResource(), timeState.getDevice(), timeState.getStateType(), timeState.isState());
         this.stateValueType = StateValueType.TIME;
         this.timeFrom = timeFrom;
@@ -37,19 +37,19 @@ public class TimeState extends State {
         this.isSkeleton = false;
     }
 
-    public Date getTimeFrom() {
+    public MyTime getTimeFrom() {
         return timeFrom;
     }
 
-    public void setTimeFrom(Date timeFrom) {
+    public void setTimeFrom(MyTime timeFrom) {
         this.timeFrom = timeFrom;
     }
 
-    public Date getTimeTo() {
+    public MyTime getTimeTo() {
         return timeTo;
     }
 
-    public void setTimeTo(Date timeTo) {
+    public void setTimeTo(MyTime timeTo) {
         this.timeTo = timeTo;
     }
 }
