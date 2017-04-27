@@ -1,5 +1,7 @@
 package com.example.nicolascarraggi.trgrd.rulesys;
 
+import android.util.Log;
+
 import java.util.Date;
 
 /**
@@ -28,5 +30,14 @@ public class MyTime extends Date {
         } else m = ""+minutes;
 
         return h+":"+m;
+    }
+
+    public boolean equals(MyTime otherTime){
+        return (this.getHours() == otherTime.getHours() && this.getMinutes() == otherTime.getMinutes());
+    }
+
+    public boolean isBetween(MyTime from, MyTime to){
+        // TODO !!
+        return false;
     }
 }

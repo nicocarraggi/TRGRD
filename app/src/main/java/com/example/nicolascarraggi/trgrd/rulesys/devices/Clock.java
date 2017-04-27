@@ -9,6 +9,7 @@ import android.util.Log;
 import com.example.nicolascarraggi.trgrd.R;
 import com.example.nicolascarraggi.trgrd.rulesys.Device;
 import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
+import com.example.nicolascarraggi.trgrd.rulesys.Event;
 import com.example.nicolascarraggi.trgrd.rulesys.EventType;
 import com.example.nicolascarraggi.trgrd.rulesys.MyTime;
 import com.example.nicolascarraggi.trgrd.rulesys.StateType;
@@ -46,10 +47,6 @@ public class Clock extends Device {
     private TimeEvent mEvTimeAt;
     private TimeState mStTimeFromTo;
 
-    // Instances
-    private HashMap<Integer,TimeEvent> timeAtInstances;
-    private HashMap<Integer,TimeState> timeFromToInstances;
-
     public Clock(Context context, EventType evClockAt, StateType stClockFromTo, DeviceManager deviceManager) {
         super(3, "Clock", "Google", "Android", R.drawable.ic_access_time_black_24dp, deviceManager);
         this.mContext = context;
@@ -59,8 +56,6 @@ public class Clock extends Device {
         mStTimeFromTo = new TimeState(deviceManager.getNewId(),"Time from ... to ...", R.drawable.ic_code_black_24dp, this, stClockFromTo, false);
         this.events.put(mEvTimeAt.getId(),mEvTimeAt);
         this.states.put(mStTimeFromTo.getId(),mStTimeFromTo);
-        this.timeAtInstances = new HashMap<>();
-        this.timeFromToInstances = new HashMap<>();
     }
 
     public TimeEvent getTimeAt() {
@@ -84,7 +79,14 @@ public class Clock extends Device {
     }
 
     public void evTimeAt() {
+        MyTime time = new MyTime();
         // check all instances of mEvTimeAt ???
+        for (Event e : eventInstances.values()){
+            TimeEvent timeEvent = (TimeEvent) e;
+            if(timeEvent.getTime().equals(time)) {
+                timeEvent.trigger();
+            }
+        }
     }
 
     public void stTimeFromTo() {
