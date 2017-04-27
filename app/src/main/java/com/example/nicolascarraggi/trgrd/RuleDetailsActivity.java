@@ -122,33 +122,30 @@ public class RuleDetailsActivity extends RuleSystemBindingActivity implements My
     }
 
     @Override
-    public void onItemClick(Event item) {
-        Toast.makeText(RuleDetailsActivity.this, "Event Clicked: "+item.getId(), Toast.LENGTH_SHORT).show();
+    public void onItemClick(View view, Event item) {
+        switch(view.getId()) {
+            case R.id.tvEventName:
+                Toast.makeText(RuleDetailsActivity.this, "Event Clicked: "+item.getId(), Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 
     @Override
-    public void onItemDeleteClick(Event item) {
-
+    public void onItemClick(View view, State item) {
+        switch(view.getId()) {
+            case R.id.tvStateName:
+                Toast.makeText(RuleDetailsActivity.this, "State tvStateName clicked: "+item.getId(), Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 
     @Override
-    public void onItemClick(State item) {
-        Toast.makeText(RuleDetailsActivity.this, "State Clicked: "+item.getId(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onItemDeleteClick(State item) {
-
-    }
-
-    @Override
-    public void onItemClick(Action item) {
-        Toast.makeText(RuleDetailsActivity.this, "Action Clicked: "+item.getId(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onItemDeleteClick(Action item) {
-
+    public void onItemClick(View view, Action item) {
+        switch(view.getId()) {
+            case R.id.tvActionName:
+                Toast.makeText(RuleDetailsActivity.this, "Action Clicked: "+item.getId(), Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 
     private void switchRuleActive(boolean b) {

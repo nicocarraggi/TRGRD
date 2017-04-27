@@ -25,6 +25,7 @@ public class TimeState extends State {
         this.stateValueType = StateValueType.TIME;
         this.timeFrom = timeFrom;
         this.timeTo = timeTo;
+        this.isSkeleton = false;
     }
 
     // copy constructor
@@ -33,6 +34,7 @@ public class TimeState extends State {
         this.stateValueType = StateValueType.TIME;
         this.timeFrom = timeFrom;
         this.timeTo = timeTo;
+        this.isSkeleton = false;
     }
 
     public Date getTimeFrom() {

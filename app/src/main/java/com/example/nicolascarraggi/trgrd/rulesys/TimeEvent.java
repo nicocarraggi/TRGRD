@@ -12,13 +12,11 @@ import java.util.Date;
 public class TimeEvent extends Event {
 
     private Date time;
-    private boolean isSkeleton;
 
     public TimeEvent(int id, String name, int iconResource, Device device, EventType eventType) {
         super(id, name, iconResource, device, eventType);
         this.eventValueType = EventValueType.TIME;
         this.time = null;
-        this.isSkeleton=true;
     }
 
     public TimeEvent(int id, String name, int iconResource, Device device, EventType eventType, Date time) {
@@ -42,9 +40,5 @@ public class TimeEvent extends Event {
 
     public void setTime(Date time) {
         this.time = time;
-    }
-
-    public boolean isSkeleton() {
-        return isSkeleton;
     }
 }

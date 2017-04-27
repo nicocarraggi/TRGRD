@@ -304,35 +304,40 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
 
     // onItemClick for 1 Event item
     @Override
-    public void onItemClick(Event item) {
-
-    }
-
-    @Override
-    public void onItemDeleteClick(Event item) {
-        alertDelete("event", item, null, null);
+    public void onItemClick(View view, Event item) {
+        switch(view.getId()) {
+            case R.id.tvEventName:
+                // Do something?
+                break;
+            case R.id.ivEventDelete:
+                alertDelete("event", item, null, null);
+                break;
+        }
     }
 
     // onItemClick for 1 State item
     @Override
-    public void onItemClick(State item) {
-
-    }
-
-    @Override
-    public void onItemDeleteClick(State item) {
-        alertDelete("state", null, item, null);
+    public void onItemClick(View view, State item) {
+        switch(view.getId()) {
+            case R.id.tvStateName:
+                // Do something?
+                break;
+            case R.id.ivStateDelete:
+                alertDelete("state", null, item, null);
+                break;
+        }
     }
 
     // onItemClick for 1 Action item
     @Override
-    public void onItemClick(Action item) {
-
+    public void onItemClick(View view, Action item) {
+        switch(view.getId()) {
+            case R.id.tvActionName:
+                // Do something?
+                break;
+            case R.id.ivActionDelete:
+                alertDelete("action", null, null, item);
+                break;
+        }
     }
-
-    @Override
-    public void onItemDeleteClick(Action item) {
-        alertDelete("action", null, null, item);
-    }
-
 }

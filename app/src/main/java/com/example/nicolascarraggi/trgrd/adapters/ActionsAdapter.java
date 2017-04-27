@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,12 +23,12 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
 
     private MyActionOnItemClickListener mListener;
     private ArrayList<Action> mDataset;
-    private boolean mShowDelete;
+    private boolean mEdit;
 
-    public ActionsAdapter(MyActionOnItemClickListener listener, Set<Action> mDataset, boolean showDelete) {
+    public ActionsAdapter(MyActionOnItemClickListener listener, Set<Action> mDataset, boolean edit) {
         this.mListener = listener;
         this.mDataset = new ArrayList<>();
-        this.mShowDelete = showDelete;
+        this.mEdit = edit;
         this.mDataset.addAll(mDataset);
         sort();
     }
@@ -95,21 +94,14 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
             this.ivActionDevice.setImageResource(action.getDevice().getIconResource());
             this.ivAction.setImageResource(action.getIconResource());
             this.tvActionName.setText(action.getName());
-            if(!mShowDelete && ivActionDelete != null){
+            if(!mEdit && ivActionDelete != null){
                 ivActionDelete.setVisibility(View.GONE);
             }
         }
 
         @Override
         public void onClick(View view) {
-            switch(view.getId()) {
-                case R.id.tvActionName:
-                    myActionOnItemClickListener.onItemClick(mDataset.get(getAdapterPosition()));
-                    break;
-                case R.id.ivActionDelete:
-                    myActionOnItemClickListener.onItemDeleteClick(mDataset.get(getAdapterPosition()));
-                    break;
-            }
+            myActionOnItemClickListener.onItemClick(view, mDataset.get(getAdapterPosition()));
         }
     }
 }

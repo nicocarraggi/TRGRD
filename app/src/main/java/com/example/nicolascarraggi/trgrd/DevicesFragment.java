@@ -65,11 +65,6 @@ public class DevicesFragment extends TrgrdFragment implements MyOnItemClickListe
     }
 
     @Override
-    public void onItemClick(Device item) {
-
-    }
-
-    @Override
     public void notifyIsServiceStartedChanged(boolean isServiceStarted) {
         super.notifyIsServiceStartedChanged(isServiceStarted);
         Log.d("TRGRD","DevicesFragment notify isServiceStarted = " + isServiceStarted);
@@ -86,5 +81,14 @@ public class DevicesFragment extends TrgrdFragment implements MyOnItemClickListe
     public void notifyIsServiceBoundChanged(boolean isServiceBound) {
         super.notifyIsServiceBoundChanged(isServiceBound);
         Log.d("TRGRD","DevicesFragment notify isServiceBound = " + isServiceBound);
+    }
+
+    @Override
+    public void onItemClick(View view, Device item) {
+        switch(view.getId()) {
+            case R.id.tvDeviceName:
+                Log.d("TRGRD","DevicesFragment onItemClick tvDeviceName");
+                break;
+        }
     }
 }

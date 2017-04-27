@@ -8,54 +8,67 @@
     android:layout_marginBottom="@dimen/activity_vertical_margin"
     android:layout_marginLeft="@dimen/activity_horizontal_margin"
     android:layout_marginRight="@dimen/activity_horizontal_margin"
-    android:weightSum="3"
+    android:weightSum="2"
     tools:context="com.example.nicolascarraggi.trgrd.AddTriggerActivity">
 
-    <TextView
-        android:id="@+id/tvAddTriggerEvents"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_marginBottom="7dp"
-        android:layout_marginLeft="5dp"
-        android:text="Events"/>
-
-    <TextView
-        android:id="@+id/tvAddTriggerEventsRed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_marginBottom="7dp"
-        android:layout_marginLeft="5dp"
-        android:visibility="gone"
-        android:textColor="#FF0000"
-        android:text="One event has already been selected!\nA rule can contain maximum 1 event, but multiple states can be added."/>
-
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvAddTriggerEvents"
-        android:scrollbars="vertical"
-        android:fadeScrollbars="false"
-        android:layout_width="match_parent"
+        android:orientation="vertical"
         android:layout_height="0dp"
-        android:layout_marginBottom="20dp"
-        android:layout_weight="2" />
+        android:layout_weight="1">
 
-    <!--Rule Actions -->
+        <TextView
+            android:id="@+id/tvAddTriggerEvents"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginBottom="7dp"
+            android:layout_marginLeft="5dp"
+            android:text="Events"/>
 
-    <TextView
+        <TextView
+            android:id="@+id/tvAddTriggerEventsRed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginBottom="7dp"
+            android:layout_marginLeft="5dp"
+            android:visibility="gone"
+            android:textColor="#FF0000"
+            android:text="One event has already been selected!\nA rule can contain maximum 1 event, but multiple states can be added."/>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvAddTriggerEvents"
+            android:scrollbars="vertical"
+            android:fadeScrollbars="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="7dp"
-        android:layout_marginLeft="5dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="States"/>
+        android:orientation="vertical"
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvAddTriggerStates"
-        android:scrollbars="vertical"
-        android:fadeScrollbars="false"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
+            android:layout_marginLeft="5dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="States"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvAddTriggerStates"
+            android:scrollbars="vertical"
+            android:fadeScrollbars="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
 </LinearLayout>

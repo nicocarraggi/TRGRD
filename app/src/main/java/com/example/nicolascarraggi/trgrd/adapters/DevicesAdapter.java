@@ -97,11 +97,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DeviceVi
 
         @Override
         public void onClick(View view) {
-            switch(view.getId()) {
-                case R.id.tvDeviceName:
-                    myOnItemClickListener.onItemClick(mDataset.get(getAdapterPosition()));
-                    break;
-            }
+            myOnItemClickListener.onItemClick(view, mDataset.get(getAdapterPosition()));
         }
     }
 }

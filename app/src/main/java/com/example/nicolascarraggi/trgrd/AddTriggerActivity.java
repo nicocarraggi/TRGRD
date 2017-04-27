@@ -77,23 +77,21 @@ public class AddTriggerActivity extends RuleSystemBindingActivity
     }
 
     @Override
-    public void onItemClick(Event item) {
-        returnClickedItemId("event",item.getDevice().getId(),item.getId());
+    public void onItemClick(View view, Event item) {
+        switch(view.getId()) {
+            case R.id.tvEventName:
+                returnClickedItemId("event",item.getDevice().getId(),item.getId());
+                break;
+        }
     }
 
     @Override
-    public void onItemDeleteClick(Event item) {
-        // DO NOTHING because events can't be deleted here!
-    }
-
-    @Override
-    public void onItemClick(State item) {
-        returnClickedItemId("state",item.getDevice().getId(),item.getId());
-    }
-
-    @Override
-    public void onItemDeleteClick(State item) {
-        // DO NOTHING because states can't be deleted here!
+    public void onItemClick(View view, State item) {
+        switch(view.getId()) {
+            case R.id.tvStateName:
+                returnClickedItemId("state",item.getDevice().getId(),item.getId());
+                break;
+        }
     }
 
     public void returnClickedItemId(String type, int devId, int id){

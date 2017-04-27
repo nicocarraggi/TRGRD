@@ -1,5 +1,7 @@
 package com.example.nicolascarraggi.trgrd.adapters;
 
+import android.view.View;
+
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
 
 /**
@@ -7,6 +9,5 @@ import com.example.nicolascarraggi.trgrd.rulesys.Event;
  */
 
 public interface MyEventOnItemClickListener {
-    void onItemClick(Event item);
-    void onItemDeleteClick(Event item);
+    void onItemClick(View view, Event item);
 }

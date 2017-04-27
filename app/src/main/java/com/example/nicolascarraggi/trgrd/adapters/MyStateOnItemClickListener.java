@@ -1,5 +1,7 @@
 package com.example.nicolascarraggi.trgrd.adapters;
 
+import android.view.View;
+
 import com.example.nicolascarraggi.trgrd.rulesys.State;
 
 /**
@@ -7,6 +9,5 @@ import com.example.nicolascarraggi.trgrd.rulesys.State;
  */
 
 public interface MyStateOnItemClickListener {
-    void onItemClick(State item);
-    void onItemDeleteClick(State item);
+    void onItemClick(View view, State item);
 }

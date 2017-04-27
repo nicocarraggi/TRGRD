@@ -16,6 +16,7 @@ public class Event {
     protected EventValueType eventValueType;
     protected Device device;
     protected boolean usedInRule;
+    protected boolean isSkeleton; // for events & states with values...
     protected Set<Rule> rules; // = listeners
 
     public Event(int id, String name, int iconResource, Device device, EventType eventType) {
@@ -26,6 +27,7 @@ public class Event {
         this.eventType = eventType;
         this.usedInRule = false;
         this.eventValueType = EventValueType.NONE;
+        this.isSkeleton = true;
         this.rules = new HashSet<Rule>();
     }
 
@@ -71,6 +73,10 @@ public class Event {
 
     public boolean isUsedInRule() {
         return usedInRule;
+    }
+
+    public boolean isSkeleton() {
+        return isSkeleton;
     }
 
     public synchronized void addRule(Rule rule){

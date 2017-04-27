@@ -1,11 +1,11 @@
 package com.example.nicolascarraggi.trgrd.adapters;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,12 +26,12 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
 
     private ArrayList<Event> mDataset;
     private MyEventOnItemClickListener mListener;
-    boolean mShowDelete;
+    boolean mEdit;
 
-    public EventsAdapter(MyEventOnItemClickListener listener, Set<Event> mDataset, boolean showDelete) {
+    public EventsAdapter(MyEventOnItemClickListener listener, Set<Event> mDataset, boolean edit) {
         this.mListener = listener;
         this.mDataset = new ArrayList<>();
-        this.mShowDelete = showDelete;
+        this.mEdit = edit;
         this.mDataset.addAll(mDataset);
         sort();
     }
@@ -79,7 +79,8 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
 
         private MyEventOnItemClickListener myOnItemClickListener;
         private ImageView ivEventDevice, ivEvent, ivEventDelete;
-        private TextView tvEventName;
+        private TextView tvEventName, tvEventValueOne;
+        private Button bEventValueOne;
 
         public EventViewHolder(View itemView) {
             super(itemView);
@@ -87,40 +88,44 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
             this.ivEvent = (ImageView) itemView.findViewById(R.id.ivEvent);
             this.ivEventDelete = (ImageView) itemView.findViewById(R.id.ivEventDelete);
             this.tvEventName = (TextView) itemView.findViewById(R.id.tvEventName);
+            this.tvEventValueOne = (TextView) itemView.findViewById(R.id.tvEventValueOne);
+            this.bEventValueOne = (Button) itemView.findViewById(R.id.bEventValueOne);
             tvEventName.setOnClickListener(this);
             ivEventDelete.setOnClickListener(this);
+            bEventValueOne.setOnClickListener(this);
         }
 
         public void bind(Event event, MyEventOnItemClickListener listener){
             this.myOnItemClickListener = listener;
             this.ivEventDevice.setImageResource(event.getDevice().getIconResource());
             this.ivEvent.setImageResource(event.getIconResource());
-            if (event.isNormalEvent()){
-                this.tvEventName.setText(event.getName());
-            } else if (event.isTimeEvent()){
-                TimeEvent timeEvent = (TimeEvent) event;
-                Log.d("TRGRD","EvensAdapter TimeEvent = "+timeEvent.getName());
-                String time = "...";
-                if (!timeEvent.isSkeleton()){
-                    time = ""+timeEvent.getTime().getHours();
-                }
-                this.tvEventName.setText(event.getName()+" [at "+time+"]");
-            }
-            if(!mShowDelete && ivEventDelete != null){
+            this.tvEventName.setText(event.getName());
+            if(!mEdit && ivEventDelete != null){
                 ivEventDelete.setVisibility(View.GONE);
+            }
+            if(event.isSkeleton()){
+                // Hide unwanted views!
+                if(tvEventValueOne != null) tvEventValueOne.setVisibility(View.GONE);
+                if(bEventValueOne != null) bEventValueOne.setVisibility(View.GONE);
+            } else if(event.isTimeEvent()){
+                TimeEvent timeEvent = (TimeEvent) event;
+                // TODO really needed?
+                if (tvEventValueOne != null && bEventValueOne != null) {
+                    tvEventValueOne.setVisibility(View.VISIBLE);
+                    bEventValueOne.setVisibility(View.VISIBLE);
+                    tvEventName.setVisibility(View.GONE);
+                    tvEventValueOne.setText("At");
+                    bEventValueOne.setText("" + timeEvent.getTime().getHours() + ":" + timeEvent.getTime().getMinutes());
+                    if(!mEdit) {
+                        bEventValueOne.setBackgroundColor(Color.TRANSPARENT);
+                    }
+                }
             }
         }
 
         @Override
         public void onClick(View view) {
-            switch(view.getId()) {
-                case R.id.tvEventName:
-                    myOnItemClickListener.onItemClick(mDataset.get(getAdapterPosition()));
-                    break;
-                case R.id.ivEventDelete:
-                    myOnItemClickListener.onItemDeleteClick(mDataset.get(getAdapterPosition()));
-                    break;
-            }
+            myOnItemClickListener.onItemClick(view, mDataset.get(getAdapterPosition()));
         }
     }
 }

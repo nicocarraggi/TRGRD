@@ -1,15 +1,17 @@
 package com.example.nicolascarraggi.trgrd.adapters;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.nicolascarraggi.trgrd.R;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
+import com.example.nicolascarraggi.trgrd.rulesys.TimeState;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,12 +26,12 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
     
     private ArrayList<State> mDataset;
     private MyStateOnItemClickListener mListener;
-    private boolean mShowDelete;
+    private boolean mEdit;
 
-    public StatesAdapter(MyStateOnItemClickListener listener, Set<State> mDataset, boolean mShowDelete) {
+    public StatesAdapter(MyStateOnItemClickListener listener, Set<State> mDataset, boolean edit) {
         this.mListener = listener;
         this.mDataset = new ArrayList<>();
-        this.mShowDelete = mShowDelete;
+        this.mEdit = edit;
         this.mDataset.addAll(mDataset);
         sort();
     }
@@ -77,7 +79,8 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
 
         private MyStateOnItemClickListener myStateOnItemClickListener;
         private ImageView ivStateDevice, ivState, ivStateDelete;
-        private TextView tvStateName;
+        private TextView tvStateName, tvStateValueOne, tvStateValueTwo;
+        private Button bStateValueOne, bStateValueTwo;
 
         public StateViewHolder(View itemView) {
             super(itemView);
@@ -85,8 +88,14 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
             this.ivState = (ImageView) itemView.findViewById(R.id.ivState);
             this.ivStateDelete = (ImageView) itemView.findViewById(R.id.ivStateDelete);
             this.tvStateName = (TextView) itemView.findViewById(R.id.tvStateName);
+            this.tvStateValueOne = (TextView) itemView.findViewById(R.id.tvStateValueOne);
+            this.tvStateValueTwo = (TextView) itemView.findViewById(R.id.tvStateValueTwo);
+            this.bStateValueOne = (Button) itemView.findViewById(R.id.bStateValueOne);
+            this.bStateValueTwo = (Button) itemView.findViewById(R.id.bStateValueTwo);
             tvStateName.setOnClickListener(this);
             ivStateDelete.setOnClickListener(this);
+            bStateValueOne.setOnClickListener(this);
+            bStateValueTwo.setOnClickListener(this);
         }
 
         public void bind(State state, MyStateOnItemClickListener listener){
@@ -94,21 +103,42 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
             this.ivStateDevice.setImageResource(state.getDevice().getIconResource());
             this.ivState.setImageResource(state.getIconResource());
             this.tvStateName.setText(state.getName());
-            if(!mShowDelete && ivStateDelete != null){
+            if(!mEdit && ivStateDelete != null){
                 ivStateDelete.setVisibility(View.GONE);
+            }
+            if(state.isSkeleton()){
+                // Hide unwanted views!
+                if(tvStateValueOne != null) tvStateValueOne.setVisibility(View.GONE);
+                if(bStateValueOne != null) bStateValueOne.setVisibility(View.GONE);
+                if(tvStateValueTwo != null) tvStateValueTwo.setVisibility(View.GONE);
+                if(bStateValueTwo != null) bStateValueTwo.setVisibility(View.GONE);
+            } else if(state.isTimeState()){ // this is NOT skeleton ...
+                TimeState timeState = (TimeState) state;
+                // TODO really needed?
+                if (tvStateValueOne != null
+                        && bStateValueOne != null
+                        && tvStateValueTwo != null
+                        && bStateValueTwo != null) {
+                    tvStateValueOne.setVisibility(View.VISIBLE);
+                    bStateValueOne.setVisibility(View.VISIBLE);
+                    tvStateValueTwo.setVisibility(View.VISIBLE);
+                    bStateValueTwo.setVisibility(View.VISIBLE);
+                    tvStateName.setVisibility(View.GONE);
+                    tvStateValueOne.setText("From");
+                    tvStateValueTwo.setText("to");
+                    bStateValueOne.setText("" + timeState.getTimeFrom().getHours() + ":" + timeState.getTimeFrom().getMinutes());
+                    bStateValueTwo.setText("" + timeState.getTimeTo().getHours() + ":" + timeState.getTimeTo().getMinutes());
+                    if(!mEdit) {
+                        bStateValueOne.setBackgroundColor(Color.TRANSPARENT);
+                        bStateValueTwo.setBackgroundColor(Color.TRANSPARENT);
+                    }
+                }
             }
         }
 
         @Override
         public void onClick(View view) {
-            switch(view.getId()) {
-                case R.id.tvStateName:
-                    myStateOnItemClickListener.onItemClick(mDataset.get(getAdapterPosition()));
-                    break;
-                case R.id.ivStateDelete:
-                    myStateOnItemClickListener.onItemDeleteClick(mDataset.get(getAdapterPosition()));
-                    break;
-            }
+            myStateOnItemClickListener.onItemClick(view, mDataset.get(getAdapterPosition()));
         }
     }
 }

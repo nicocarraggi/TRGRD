@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.example.nicolascarraggi.trgrd.adapters.ActionsAdapter;
 import com.example.nicolascarraggi.trgrd.adapters.MyActionOnItemClickListener;
@@ -42,16 +43,15 @@ public class AddActionActivity extends RuleSystemBindingActivity implements MyAc
     }
 
     @Override
-    public void onItemClick(Action item) {
-        Intent intent = new Intent();
-        intent.putExtra("devid", item.getDevice().getId());
-        intent.putExtra("id", item.getId());
-        setResult(RESULT_OK, intent);
-        finish();
-    }
-
-    @Override
-    public void onItemDeleteClick(Action item) {
-        // DO NOTHING because actions can't be deleted here!
+    public void onItemClick(View view, Action item) {
+        switch(view.getId()) {
+            case R.id.tvActionName:
+                Intent intent = new Intent();
+                intent.putExtra("devid", item.getDevice().getId());
+                intent.putExtra("id", item.getId());
+                setResult(RESULT_OK, intent);
+                finish();
+                break;
+        }
     }
 }

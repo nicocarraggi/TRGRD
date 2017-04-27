@@ -54,8 +54,8 @@ public class Clock extends Device {
         this.mContext = context;
         this.getEventTypes().put(evClockAt.getId(),evClockAt);
         this.getStateTypes().put(stClockFromTo.getId(),stClockFromTo);
-        mEvTimeAt = new TimeEvent(deviceManager.getNewId(),"Clock At", R.drawable.ic_access_time_black_24dp, this, evClockAt);
-        mStTimeFromTo = new TimeState(deviceManager.getNewId(),"Clock From To", R.drawable.ic_code_black_24dp, this, stClockFromTo, false);
+        mEvTimeAt = new TimeEvent(deviceManager.getNewId(),"Time at ...", R.drawable.ic_keyboard_arrow_down_black_24dp, this, evClockAt);
+        mStTimeFromTo = new TimeState(deviceManager.getNewId(),"Time from ... to ...", R.drawable.ic_code_black_24dp, this, stClockFromTo, false);
         this.events.put(mEvTimeAt.getId(),mEvTimeAt);
         this.states.put(mStTimeFromTo.getId(),mStTimeFromTo);
         this.timeAtInstances = new HashMap<>();
