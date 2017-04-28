@@ -108,21 +108,20 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_save) {
             if(isRuleValid()) {
-                // persist delete of instances!
-                persistDeleteInstances();
                 if(isCreate) {
                     int newId = ruleSystemService.getNewId();
                     this.rule = new Rule(newId, etName.getText().toString(), events, states, actions);
                     ruleSystemService.addRule(rule);
+                    this.rule.setActive(true);
                     Intent intent = new Intent(this, RuleDetailsActivity.class);
                     intent.putExtra("ruleid",rule.getId());
                     startActivity(intent);
                 } else {
                     this.rule.setName(etName.getText().toString());
-                    this.rule.setEvents(events);
-                    this.rule.setStates(states);
-                    this.rule.setActions(actions);
+                    this.rule.reset(events,states,actions);
                 }
+                // persist delete of instances!
+                persistDeleteInstances();
                 finish();
             } else {
                 Toast.makeText(CreateRuleOpenActivity.this, "A rule requires a name, 1 or more triggers and 1 or more actions!", Toast.LENGTH_LONG).show();
@@ -218,7 +217,7 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                     // if instance must be created ...
                     if (event.isTimeEvent()){
                         MyTime d = new MyTime();
-                        d.setHours(14);
+                        d.setMinutes(0);
                         TimeEvent timeEvent = ((Clock) event.getDevice()).getTimeAtInstance((TimeEvent) event,d);
                         event = timeEvent;
                     }

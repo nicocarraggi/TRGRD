@@ -114,24 +114,33 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
                 if(bStateValueTwo != null) bStateValueTwo.setVisibility(View.GONE);
             } else if(state.isTimeState()){ // this is NOT skeleton ...
                 TimeState timeState = (TimeState) state;
-                // TODO really needed?
-                if (tvStateValueOne != null
-                        && bStateValueOne != null
-                        && tvStateValueTwo != null
-                        && bStateValueTwo != null) {
-                    tvStateValueOne.setVisibility(View.VISIBLE);
-                    bStateValueOne.setVisibility(View.VISIBLE);
-                    tvStateValueTwo.setVisibility(View.VISIBLE);
-                    bStateValueTwo.setVisibility(View.VISIBLE);
-                    tvStateName.setVisibility(View.GONE);
-                    tvStateValueOne.setText("From");
-                    tvStateValueTwo.setText("To");
-                    bStateValueOne.setText(timeState.getTimeFrom().toString());
-                    bStateValueTwo.setText(timeState.getTimeTo().toString());
-                    if(!mEdit) {
-                        bStateValueOne.setBackgroundColor(Color.TRANSPARENT);
-                        bStateValueTwo.setBackgroundColor(Color.TRANSPARENT);
+                if(mEdit) {
+                    // TODO really needed?
+                    if (tvStateValueOne != null
+                            && bStateValueOne != null
+                            && tvStateValueTwo != null
+                            && bStateValueTwo != null) {
+                        tvStateValueOne.setVisibility(View.VISIBLE);
+                        bStateValueOne.setVisibility(View.VISIBLE);
+                        tvStateValueTwo.setVisibility(View.VISIBLE);
+                        bStateValueTwo.setVisibility(View.VISIBLE);
+                        tvStateName.setVisibility(View.GONE);
+                        tvStateValueOne.setText("From");
+                        tvStateValueTwo.setText("To");
+                        bStateValueOne.setText(timeState.getTimeFrom().toString());
+                        bStateValueTwo.setText(timeState.getTimeTo().toString());
+//                        if (!mEdit) {
+//                            bStateValueOne.setBackgroundColor(Color.TRANSPARENT);
+//                            bStateValueTwo.setBackgroundColor(Color.TRANSPARENT);
+//                        }
                     }
+                } else {
+                    tvStateName.setText("From   "+timeState.getTimeFrom().toString()+"   to   "+timeState.getTimeTo().toString());
+                    // Hide unwanted views!
+                    if(tvStateValueOne != null) tvStateValueOne.setVisibility(View.GONE);
+                    if(bStateValueOne != null) bStateValueOne.setVisibility(View.GONE);
+                    if(tvStateValueTwo != null) tvStateValueTwo.setVisibility(View.GONE);
+                    if(bStateValueTwo != null) bStateValueTwo.setVisibility(View.GONE);
                 }
             }
         }

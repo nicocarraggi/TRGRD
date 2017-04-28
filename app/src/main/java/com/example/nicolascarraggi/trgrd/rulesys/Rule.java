@@ -31,9 +31,18 @@ public class Rule {
         this.id = id;
         this.name = name;
         this.active = false;
-        this.events = events;
-        this.states = states;
-        this.actions = actions;
+        this.events = new HashSet<>();
+        this.states = new HashSet<>();
+        this.actions = new HashSet<>();
+        for (Event e: events){
+            this.addEvent(e);
+        }
+        for (State s: states){
+            this.addState(s);
+        }
+        for (Action a: actions){
+            this.addAction(a);
+        }
         this.times = 0;
     }
 
@@ -171,5 +180,30 @@ public class Rule {
 
     public void setActions(Set<Action> actions) {
         this.actions = actions;
+    }
+
+    public void reset(Set<Event> events, Set<State> states, Set<Action> actions) {
+        // remove all triggers & actions to unsubscribe all!
+        for (Event e: this.events){
+            this.removeEvent(e);
+        }
+        for (State s: this.states){
+            this.removeState(s);
+        }
+
+        for (Action a: this.actions){
+            this.removeAction(a);
+        }
+        // add and subscribe all new triggers & actions!
+        for (Event e: events){
+            this.addEvent(e);
+        }
+        for (State s: states){
+            this.addState(s);
+        }
+
+        for (Action a: actions){
+            this.addAction(a);
+        }
     }
 }
