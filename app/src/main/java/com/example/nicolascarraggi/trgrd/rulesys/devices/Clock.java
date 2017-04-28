@@ -12,6 +12,7 @@ import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
 import com.example.nicolascarraggi.trgrd.rulesys.EventType;
 import com.example.nicolascarraggi.trgrd.rulesys.MyTime;
+import com.example.nicolascarraggi.trgrd.rulesys.State;
 import com.example.nicolascarraggi.trgrd.rulesys.StateType;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeState;
@@ -33,8 +34,7 @@ public class Clock extends Device {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            Log.d("TRGRD","Clock mReceiver "+action);
-
+            //Log.d("TRGRD","Clock mReceiver "+action);
             if (action.equals(Intent.ACTION_TIME_TICK)){
                 evTimeAt();
                 stTimeFromTo();
@@ -91,6 +91,12 @@ public class Clock extends Device {
 
     public void stTimeFromTo() {
         // check all instances of mStTimeFromTo ???
+        MyTime time = new MyTime();
+        // check all instances of mEvTimeAt ???
+        for (State s : stateInstances.values()){
+            TimeState timeState = (TimeState) s;
+            timeState.setState(time.isBetween(timeState.getTimeFrom(),timeState.getTimeTo()));
+        }
     }
 
     // Register & UnRegister Android Phone Broadcast Receiver

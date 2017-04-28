@@ -14,6 +14,12 @@ public class MyTime extends Date {
         super();
     }
 
+    public MyTime(int hours, int minutes){
+        super();
+        this.setHours(hours);
+        this.setMinutes(minutes);
+    }
+
     @Override
     public String toString() {
 
@@ -32,12 +38,39 @@ public class MyTime extends Date {
         return h+":"+m;
     }
 
-    public boolean equals(MyTime otherTime){
-        return (this.getHours() == otherTime.getHours() && this.getMinutes() == otherTime.getMinutes());
+    public boolean equals(MyTime other){
+        return (this.getHours() == other.getHours() && this.getMinutes() == other.getMinutes());
+    }
+    
+    public boolean isBefore(MyTime other){
+        if(this.getHours() == other.getHours()){
+            return (this.getMinutes() <= other.getMinutes());
+        } else if(this.getHours() < other.getHours()){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isAfter(MyTime other){
+        if(this.getHours() == other.getHours()){
+            return (this.getMinutes() >= other.getMinutes());
+        } else if(this.getHours() > other.getHours()){
+            return true;
+        }
+        return false;
     }
 
     public boolean isBetween(MyTime from, MyTime to){
-        // TODO !!
-        return false;
+        MyTime dayEnd = new MyTime(23,59);
+        MyTime dayStart = new MyTime(0,0);
+        //     1) to is later in the day than from!
+        // OR  2) to is earlier in the day than from! (goes over midnight!)
+        if(to.isAfter(from)){
+            return (this.isAfter(from) && this.isBefore(to));
+        } else {
+            // this is between from and midnight (=23:59) or between midnight (00:00) and to!
+            return (this.isAfter(from) && this.isBefore(dayEnd)
+                        || this.isAfter(dayStart) && this.isBefore(to));
+        }
     }
 }
