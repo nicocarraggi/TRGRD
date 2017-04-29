@@ -1,23 +1,39 @@
 package com.example.nicolascarraggi.trgrd.rulesys;
 
-import android.util.Log;
-
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  * Created by nicolascarraggi on 27/04/17.
  */
 
-public class MyTime extends Date {
+public class MyTime {
+
+    private Calendar calendar;
 
     public MyTime() {
-        super();
+        this.calendar = Calendar.getInstance();
     }
 
     public MyTime(int hours, int minutes){
-        super();
-        this.setHours(hours);
-        this.setMinutes(minutes);
+        this.calendar = Calendar.getInstance();
+        this.calendar.set(Calendar.HOUR_OF_DAY,hours);
+        this.calendar.set(Calendar.MINUTE, minutes);
+    }
+
+    public int getHours(){
+        return calendar.get(Calendar.HOUR_OF_DAY);
+    }
+
+    public void setHours(int hours){
+        calendar.set(Calendar.HOUR_OF_DAY,hours);
+    }
+
+    public int getMinutes(){
+        return calendar.get(Calendar.MINUTE);
+    }
+
+    public void setMinutes(int minutes){
+        this.calendar.set(Calendar.MINUTE, minutes);
     }
 
     @Override

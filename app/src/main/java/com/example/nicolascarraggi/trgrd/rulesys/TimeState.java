@@ -1,7 +1,5 @@
 package com.example.nicolascarraggi.trgrd.rulesys;
 
-import java.util.Date;
-
 /**
  * Created by nicolascarraggi on 26/04/17.
  *

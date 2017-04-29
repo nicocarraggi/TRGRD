@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.nicolascarraggi.trgrd.R;
-import com.example.nicolascarraggi.trgrd.RuleDetailsActivity;
 import com.example.nicolascarraggi.trgrd.rulesys.Rule;
 
 import java.util.ArrayList;

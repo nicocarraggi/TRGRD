@@ -26,7 +26,7 @@ import com.example.nicolascarraggi.trgrd.rulesys.Event;
 import com.example.nicolascarraggi.trgrd.rulesys.Rule;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
 
-public class RuleDetailsActivity extends RuleSystemBindingActivity implements MyEventOnItemClickListener,
+public class RuleDetailsOpenActivity extends RuleSystemBindingActivity implements MyEventOnItemClickListener,
         MyStateOnItemClickListener, MyActionOnItemClickListener, CompoundButton.OnCheckedChangeListener {
 
     private int ruleId;
@@ -106,12 +106,12 @@ public class RuleDetailsActivity extends RuleSystemBindingActivity implements My
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_edit) {
+        if (id == R.id.action_rule_edit) {
             Intent intent = null;
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(RuleDetailsActivity.this);
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(RuleDetailsOpenActivity.this);
             String rulesMethodology = prefs.getString("rule_methodology_list", "2");
             if (rulesMethodology.equals("2")){
-                intent = new Intent(RuleDetailsActivity.this, CreateRuleOpenActivity.class);
+                intent = new Intent(RuleDetailsOpenActivity.this, CreateRuleOpenActivity.class);
                 intent.putExtra("iscreate",false);
                 intent.putExtra("ruleid",ruleId);
             }
@@ -125,7 +125,7 @@ public class RuleDetailsActivity extends RuleSystemBindingActivity implements My
     public void onItemClick(View view, Event item) {
         switch(view.getId()) {
             case R.id.tvEventName:
-                Toast.makeText(RuleDetailsActivity.this, "Event Clicked: "+item.getId(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(RuleDetailsOpenActivity.this, "Event Clicked: "+item.getId(), Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -134,7 +134,7 @@ public class RuleDetailsActivity extends RuleSystemBindingActivity implements My
     public void onItemClick(View view, State item) {
         switch(view.getId()) {
             case R.id.tvStateName:
-                Toast.makeText(RuleDetailsActivity.this, "State tvStateName clicked: "+item.getId(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(RuleDetailsOpenActivity.this, "State tvStateName clicked: "+item.getId(), Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -143,7 +143,7 @@ public class RuleDetailsActivity extends RuleSystemBindingActivity implements My
     public void onItemClick(View view, Action item) {
         switch(view.getId()) {
             case R.id.tvActionName:
-                Toast.makeText(RuleDetailsActivity.this, "Action Clicked: "+item.getId(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(RuleDetailsOpenActivity.this, "Action Clicked: "+item.getId(), Toast.LENGTH_SHORT).show();
                 break;
         }
     }

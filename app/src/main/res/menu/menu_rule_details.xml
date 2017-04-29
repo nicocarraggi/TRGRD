@@ -1,9 +1,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.nicolascarraggi.trgrd.MainActivity">
+    tools:context="com.example.nicolascarraggi.trgrd.RuleDetailsOpenActivity">
     <item
-        android:id="@+id/action_edit"
+        android:id="@+id/action_rule_edit"
         android:orderInCategory="100"
         android:title="Edit"
         app:showAsAction="always" />

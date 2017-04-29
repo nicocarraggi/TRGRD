@@ -1,9 +1,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.nicolascarraggi.trgrd.CreateRuleOpenActivity">
+    tools:context="com.example.nicolascarraggi.trgrd.CreateLocationActivity">
     <item
-        android:id="@+id/action_rule_save"
+        android:id="@+id/action_location_save"
         android:orderInCategory="100"
         android:title="Save"
         app:showAsAction="always" />

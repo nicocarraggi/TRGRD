@@ -38,10 +38,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.nicolascarraggi.trgrd.MainActivity" />
         </activity>
-        <activity android:name=".RuleDetailsActivity" />
+        <activity android:name=".RuleDetailsOpenActivity" />
         <activity android:name=".CreateRuleOpenActivity" />
         <activity android:name=".AddTriggerActivity" />
         <activity android:name=".AddActionActivity" />
+        <activity android:name=".CreateLocationActivity" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAhyw7RLsV5caKzejK4ZAjuYD2N3GvczHc" />
+
+        <activity android:name=".LocationDetailsActivity"></activity>
     </application>
 
 </manifest>

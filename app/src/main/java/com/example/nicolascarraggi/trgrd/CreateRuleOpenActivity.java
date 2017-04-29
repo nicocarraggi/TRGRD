@@ -5,8 +5,6 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
@@ -14,7 +12,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,7 +36,6 @@ import com.example.nicolascarraggi.trgrd.rulesys.TimeState;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Clock;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -106,14 +102,14 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_save) {
+        if (id == R.id.action_rule_save) {
             if(isRuleValid()) {
                 if(isCreate) {
                     int newId = ruleSystemService.getNewId();
                     this.rule = new Rule(newId, etName.getText().toString(), events, states, actions);
                     ruleSystemService.addRule(rule);
                     this.rule.setActive(true);
-                    Intent intent = new Intent(this, RuleDetailsActivity.class);
+                    Intent intent = new Intent(this, RuleDetailsOpenActivity.class);
                     intent.putExtra("ruleid",rule.getId());
                     startActivity(intent);
                 } else {

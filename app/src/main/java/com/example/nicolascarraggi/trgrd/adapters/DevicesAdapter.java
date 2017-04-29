@@ -59,7 +59,6 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DeviceVi
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.device_item, parent, false);
         // set the view's size, margins, paddings and layout parameters
-
         DeviceViewHolder vh = new DeviceViewHolder(v);
         return vh;
     }
@@ -92,6 +91,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DeviceVi
             this.myOnItemClickListener = listener;
             this.ivDevice.setImageResource(device.getIconResource());
             this.tvDeviceName.setText(device.getName());
+            tvDeviceName.setOnClickListener(this);
             //holder.switchDeviceActive.setChecked(device.isActive());
         }
 
