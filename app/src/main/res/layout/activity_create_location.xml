@@ -3,18 +3,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:layout_marginBottom="@dimen/activity_vertical_margin"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:focusableInTouchMode="true"
     android:orientation="vertical"
     tools:context="com.example.nicolascarraggi.trgrd.CreateLocationActivity">
 
-    <EditText
-        android:id="@+id/etCreateLocationName"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp">
 
-    <TextView
-        android:id="@+id/tvCreateLocationAddress"
+        <TextView
+            android:layout_width="76dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Name "/>
+
+        <EditText
+            android:id="@+id/etCreateLocationName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Pick a place..."/>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="7dp">
+
+        <TextView
+            android:layout_width="76dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Address "/>
+
+        <TextView
+            android:id="@+id/tvCreateLocationAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/bCreateLocationPick"
