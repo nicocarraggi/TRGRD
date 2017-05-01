@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.nicolascarraggi.trgrd.rulesys.devices.AndroidPhone;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Clock;
+import com.example.nicolascarraggi.trgrd.rulesys.devices.Geofences;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Pebble;
 
 import java.util.HashMap;
@@ -34,11 +35,16 @@ public class DeviceManager {
     private EventType evButtonPress = new EventType(getNewId(),"button press"); // change to evOneInput? too restrictive now, could also be a gesture from myo?
     private EventType evHeartRateReading = new EventType(getNewId(),"heart rate reading");
     private EventType evTimeAt = new EventType(getNewId(),"time at");
+    private EventType evLocationArrivingAt = new EventType(getNewId(),"arriving at");
+    private EventType evLocationLeaving = new EventType(getNewId(),"leaving");
+
 
     // StateTypes
     private StateType stAlarmGoing = new StateType(getNewId(),"alarm going");
     private StateType stCallIncGoing = new StateType(getNewId(),"call incoming going");
     private StateType stTimeFromTo = new StateType(getNewId(),"time from to");
+    private StateType stLocationCurrentlyAt = new StateType(getNewId(),"currently at");
+
 
     // ActionTypes
     private ActionType acAlarmSnooze = new ActionType(getNewId(),"alarm snooze");
@@ -51,6 +57,7 @@ public class DeviceManager {
     private AndroidPhone mAndroidPhone;
     private Pebble mPebble;
     private Clock mClock;
+    private Geofences mGeofences;
 
     public DeviceManager(Context mContext) {
         this.devices = new HashMap<>();
@@ -65,9 +72,12 @@ public class DeviceManager {
         this.eventTypes.put(evButtonPress.getId(),evButtonPress);
         this.eventTypes.put(evHeartRateReading.getId(),evHeartRateReading);
         this.eventTypes.put(evTimeAt.getId(),evTimeAt);
+        this.eventTypes.put(evLocationArrivingAt.getId(),evLocationArrivingAt);
+        this.eventTypes.put(evLocationLeaving.getId(),evLocationLeaving);
         this.stateTypes.put(stAlarmGoing.getId(),stAlarmGoing);
         this.stateTypes.put(stCallIncGoing.getId(),stCallIncGoing);
         this.stateTypes.put(stTimeFromTo.getId(),stTimeFromTo);
+        this.stateTypes.put(stLocationCurrentlyAt.getId(),stLocationCurrentlyAt);
         this.actionTypes.put(acAlarmSnooze.getId(),acAlarmSnooze);
         this.actionTypes.put(acAlarmDismiss.getId(),acAlarmDismiss);
         this.actionTypes.put(acAlarmVibrate.getId(),acAlarmVibrate);
@@ -76,9 +86,11 @@ public class DeviceManager {
         this.mAndroidPhone = new AndroidPhone(mContext, evAlarmAlert, evAlarmSnooze, evAlarmDismiss, evAlarmDone, evCallInc, stAlarmGoing, stCallIncGoing, acAlarmSnooze, acAlarmDismiss, this);
         this.mPebble = new Pebble(mContext, evButtonPress, evHeartRateReading, acAlarmVibrate, acAlarmDisplay, acTimeDisplay, this);
         this.mClock = new Clock(mContext, evTimeAt, stTimeFromTo, this);
+        this.mGeofences = new Geofences(mContext, evLocationArrivingAt, evLocationLeaving, stLocationCurrentlyAt, this);
         this.devices.put(mAndroidPhone.getId(),mAndroidPhone);
         this.devices.put(mPebble.getId(),mPebble);
         this.devices.put(mClock.getId(),mClock);
+        this.devices.put(mGeofences.getId(),mGeofences);
     }
 
     public AndroidPhone getAndroidPhone() {
@@ -89,8 +101,12 @@ public class DeviceManager {
         return mPebble;
     }
 
-    public Clock getmClock() {
+    public Clock getClock() {
         return mClock;
+    }
+
+    public Geofences getGeofences() {
+        return mGeofences;
     }
 
     public HashSet<Device> getDevices() {

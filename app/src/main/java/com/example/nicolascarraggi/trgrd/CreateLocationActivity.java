@@ -3,6 +3,7 @@ package com.example.nicolascarraggi.trgrd;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,6 +59,7 @@ public class CreateLocationActivity extends RuleSystemBindingActivity {
         ActionBar ab = getSupportActionBar();
         if (isCreate) {
             ab.setTitle("Create location");
+            etName.setVisibility(View.INVISIBLE);
         } else {
             ab.setTitle("Edit location");
             location = ruleSystemService.getLocation(locationId);
@@ -129,10 +131,13 @@ public class CreateLocationActivity extends RuleSystemBindingActivity {
     private void displayPlace(Intent data) {
         if(data != null) {
             Place selectedPlace = PlacePicker.getPlace(this, data);
+            Log.d("TRGRD","CreateLocationActivity displayPlace place = "+selectedPlace);
             String id = selectedPlace.getId();
             String name = selectedPlace.getName().toString();
-            String address = selectedPlace.getAddress().toString();
+            String address = "";
+            if(selectedPlace.getAddress() != null) address = selectedPlace.getAddress().toString();
             LatLng latLng = selectedPlace.getLatLng();
+            etName.setVisibility(View.VISIBLE);
             etName.setText(name);
             tvAddress.setText(address);
             if(isCreate){
