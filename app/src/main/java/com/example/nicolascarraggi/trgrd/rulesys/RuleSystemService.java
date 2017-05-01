@@ -25,13 +25,12 @@ public class RuleSystemService extends Service {
 
     private Rule mTestRuleAlarmStartPebble,mTestRuleAlarmDismissPebble,mTestRuleAlarmDonePebble;
 
-    private Location mTestLocationVub, mTestLocationStadium;
+    private Location mTestLocationVub, mTestLocationStadium, mTestLocationHome;
 
     private HashMap<Integer,Rule> rules;
     private HashMap<String,Location> locations;
 
     public RuleSystemService() {
-        this.mDeviceManager = new DeviceManager(this);
         this.rules = new HashMap<>();
         this.locations = new HashMap<>();
         this.mTestRuleAlarmStartPebble = new Rule(0,"Phone alarm alert on Pebble");
@@ -42,13 +41,16 @@ public class RuleSystemService extends Service {
         this.rules.put(mTestRuleAlarmDonePebble.getId(),mTestRuleAlarmDonePebble);
         this.mTestLocationVub = new Location("0", "Vrije Universiteit Brussel","Pleinlaan 9", R.drawable.ic_school_black_24dp, new LatLng(50.8218985, 4.3933034));
         this.mTestLocationStadium = new Location("1", "Stadium","Sippelberglaan 1", R.drawable.ic_directions_run_black_24dp, new LatLng(50.8597101, 4.3218491));
+        this.mTestLocationHome = new Location("2", "Home","Potaardestraat 161", R.drawable.ic_home_black_24dp, new LatLng(50.862164, 4.282571));
         this.locations.put(mTestLocationVub.getId(),mTestLocationVub);
         this.locations.put(mTestLocationStadium.getId(),mTestLocationStadium);
+        this.locations.put(mTestLocationHome.getId(),mTestLocationHome);
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        this.mDeviceManager = new DeviceManager(this);
         mDeviceManager.startDevices();
         testAlarmPebble();
     }

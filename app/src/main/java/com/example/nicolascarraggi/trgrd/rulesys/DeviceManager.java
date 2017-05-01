@@ -182,6 +182,7 @@ public class DeviceManager {
         mAndroidPhone.registerAndroidPhoneReceiver();
         mPebble.registerPebbleReceiver();
         mClock.registerClockReceiver();
+        mGeofences.connectGoogleApiClient();
     }
 
     public void stopDevices(){
@@ -191,6 +192,7 @@ public class DeviceManager {
         mAndroidPhone.unRegisterAndroidPhoneReceiver();
         mPebble.unRegisterPebbleReceiver();
         mClock.unRegisterClockReceiver();
+        mGeofences.disconnectGoogleApiClient();
     }
 
 

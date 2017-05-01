@@ -1,5 +1,6 @@
 package com.example.nicolascarraggi.trgrd.rulesys;
 
+import com.google.android.gms.location.Geofence;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
@@ -12,6 +13,8 @@ public class Location {
     private int iconResource;
     private LatLng latLng;
     // Save Place object?
+    private boolean hasGeofence;
+    private Geofence geofence;
 
     public Location(String id, String name, String address, int iconResource, LatLng latLng) {
         this.id = id;
@@ -19,6 +22,7 @@ public class Location {
         this.address = address;
         this.iconResource = iconResource;
         this.latLng = latLng;
+        this.hasGeofence = false;
     }
 
     public String getId() {
@@ -59,5 +63,30 @@ public class Location {
 
     public void setLatLng(LatLng latLng) {
         this.latLng = latLng;
+    }
+
+    public boolean isHasGeofence() {
+        return hasGeofence;
+    }
+
+    public Geofence getGeofence() {
+        return geofence;
+    }
+
+    public void setGeofence(Geofence geofence) {
+        this.geofence = geofence;
+        this.hasGeofence = (geofence != null);
+    }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", iconResource=" + iconResource +
+                ", latLng=" + latLng +
+                ", hasGeofence=" + hasGeofence +
+                '}';
     }
 }

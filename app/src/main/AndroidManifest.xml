@@ -50,6 +50,8 @@
             android:value="AIzaSyAhyw7RLsV5caKzejK4ZAjuYD2N3GvczHc" />
 
         <activity android:name=".LocationDetailsActivity"></activity>
+        <service android:name=".rulesys.devices.GeofenceTransitionsIntentService"/>
+
     </application>
 
 </manifest>
