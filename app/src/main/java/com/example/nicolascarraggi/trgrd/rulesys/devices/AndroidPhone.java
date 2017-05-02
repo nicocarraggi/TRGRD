@@ -14,6 +14,7 @@ import com.example.nicolascarraggi.trgrd.rulesys.Device;
 import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
 import com.example.nicolascarraggi.trgrd.rulesys.EventType;
+import com.example.nicolascarraggi.trgrd.rulesys.RuleSystemService;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
 import com.example.nicolascarraggi.trgrd.rulesys.StateType;
 
@@ -24,8 +25,6 @@ import java.util.concurrent.Callable;
  */
 
 public class AndroidPhone extends Device {
-
-    private Context mContext;
 
     // Constants
 
@@ -67,9 +66,8 @@ public class AndroidPhone extends Device {
     private State mStAlarmGoing, mStCallIncGoing;
     private Action mAcAlarmDismiss, mAcAlarmSnooze;
 
-    public AndroidPhone(Context context, EventType evAlarmAlert, EventType evAlarmSnooze, EventType evAlarmDismiss, EventType evAlarmDone, EventType evCallInc, StateType stAlarmGoing, StateType stCallIncGoing, ActionType acAlarmSnooze, ActionType acAlarmDismiss, DeviceManager deviceManager) {
-        super(1, "Phone", "Google", "Android", R.drawable.ic_phone_android_black_24dp, deviceManager);
-        this.mContext = context;
+    public AndroidPhone(RuleSystemService ruleSystemService, DeviceManager deviceManager, EventType evAlarmAlert, EventType evAlarmSnooze, EventType evAlarmDismiss, EventType evAlarmDone, EventType evCallInc, StateType stAlarmGoing, StateType stCallIncGoing, ActionType acAlarmSnooze, ActionType acAlarmDismiss) {
+        super(1, "Phone", "Google", "Android", R.drawable.ic_phone_android_black_24dp, ruleSystemService,deviceManager);
         this.eventTypes.put(evAlarmAlert.getId(),evAlarmAlert);
         this.eventTypes.put(evAlarmSnooze.getId(),evAlarmSnooze);
         this.eventTypes.put(evAlarmDismiss.getId(),evAlarmDismiss);
@@ -207,15 +205,15 @@ public class AndroidPhone extends Device {
 
     public void acAlarmSnooze(){
         Intent newIntent = new Intent(ALARM_SONY_SNOOZE_ACTION);
-        mContext.getApplicationContext().sendBroadcast(newIntent);
-        Toast.makeText(mContext, "Alarm snoozed by TRGRD", Toast.LENGTH_SHORT).show();
+        ruleSystemService.getApplicationContext().sendBroadcast(newIntent);
+        Toast.makeText(ruleSystemService, "Alarm snoozed by TRGRD", Toast.LENGTH_SHORT).show();
         //evAlarmSnooze(); THIS IS DONE in mReceiver already!
     }
 
     public void acAlarmDismiss(){
         Intent newIntent = new Intent(ALARM_SONY_DISMISS_ACTION);
-        mContext.getApplicationContext().sendBroadcast(newIntent);
-        Toast.makeText(mContext, "Alarm dismissed by TRGRD", Toast.LENGTH_SHORT).show();
+        ruleSystemService.getApplicationContext().sendBroadcast(newIntent);
+        Toast.makeText(ruleSystemService, "Alarm dismissed by TRGRD", Toast.LENGTH_SHORT).show();
         //evAlarmDismiss(); THIS IS DONE in mReceiver already!
     }
 
@@ -226,12 +224,12 @@ public class AndroidPhone extends Device {
         filter.addAction(ALARM_SONY_SNOOZE_ACTION);
         filter.addAction(ALARM_SONY_DISMISS_ACTION);
         filter.addAction(ALARM_SONY_DONE_ACTION);
-        mContext.registerReceiver(mReceiver, filter);
+        ruleSystemService.registerReceiver(mReceiver, filter);
         Log.d("TRGRD","AndroidPhone mReceiver registered!");
     }
 
     public void unRegisterAndroidPhoneReceiver(){
-        mContext.unregisterReceiver(mReceiver);
+        ruleSystemService.unregisterReceiver(mReceiver);
         Log.d("TRGRD","AndroidPhone mReceiver unRegistered!");
     }
 

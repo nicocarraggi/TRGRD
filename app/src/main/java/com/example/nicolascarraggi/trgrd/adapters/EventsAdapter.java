@@ -2,6 +2,7 @@ package com.example.nicolascarraggi.trgrd.adapters;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 
 import com.example.nicolascarraggi.trgrd.R;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
+import com.example.nicolascarraggi.trgrd.rulesys.Location;
+import com.example.nicolascarraggi.trgrd.rulesys.LocationEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeEvent;
 
 import java.util.ArrayList;
@@ -116,6 +119,25 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
                     tvEventName.setVisibility(View.GONE);
                     tvEventValueOne.setText("At");
                     bEventValueOne.setText(timeEvent.getTime().toString());
+                    if(!mEdit) {
+                        bEventValueOne.setBackgroundColor(Color.TRANSPARENT);
+                    }
+                }
+            } else if(event.isLocationEvent()){
+                LocationEvent locationEvent = (LocationEvent) event;
+                Log.d("TRGRD","EventsAdapter print location event "+locationEvent.getName());
+                if (tvEventValueOne != null && bEventValueOne != null) {
+                    tvEventValueOne.setVisibility(View.VISIBLE);
+                    bEventValueOne.setVisibility(View.VISIBLE);
+                    tvEventName.setVisibility(View.GONE);
+                    String text = "";
+                    if(locationEvent.getLocationEventType()== LocationEvent.LocationEventType.ARRIVING){
+                        text = "Arriving at: ";
+                    } else {
+                        text = "Leaving: ";
+                    }
+                    tvEventValueOne.setText(text);
+                    bEventValueOne.setText(locationEvent.getLocation().getName());
                     if(!mEdit) {
                         bEventValueOne.setBackgroundColor(Color.TRANSPARENT);
                     }

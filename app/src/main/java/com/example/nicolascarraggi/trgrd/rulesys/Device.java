@@ -15,6 +15,7 @@ public class Device {
     protected int iconResource;
     protected boolean started;
     protected DeviceManager deviceManager;
+    protected RuleSystemService ruleSystemService;
     protected HashMap<Integer, Event> events;
     protected HashMap<Integer, Event> eventInstances;
     protected HashMap<Integer, State> states;
@@ -25,13 +26,14 @@ public class Device {
     protected HashMap<Integer, StateType> stateTypes;
     protected HashMap<Integer, ActionType> actionTypes;
 
-    public Device(int id, String name, String manufacturer, String platform, int iconResource, DeviceManager deviceManager) {
+    public Device(int id, String name, String manufacturer, String platform, int iconResource, RuleSystemService ruleSystemService, DeviceManager deviceManager) {
         this.id = id;
         this.name = name;
         this.manufacturer = manufacturer;
         this.platform = platform;
         this.iconResource = iconResource;
         this.started = false;
+        this.ruleSystemService = ruleSystemService;
         this.deviceManager = deviceManager;
         this.events = new HashMap<>();
         this.eventInstances = new HashMap<>();

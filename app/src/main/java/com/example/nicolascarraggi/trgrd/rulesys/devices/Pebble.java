@@ -15,6 +15,7 @@ import com.example.nicolascarraggi.trgrd.rulesys.Device;
 import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
 import com.example.nicolascarraggi.trgrd.rulesys.EventType;
+import com.example.nicolascarraggi.trgrd.rulesys.RuleSystemService;
 
 import java.util.concurrent.Callable;
 
@@ -23,8 +24,6 @@ import java.util.concurrent.Callable;
  */
 
 public class Pebble extends Wearable {
-
-    private Context mContext;
 
     // Constants
 
@@ -54,9 +53,8 @@ public class Pebble extends Wearable {
     private Event mEvBtnUp, mEvBtnSelect, mEvBtnDown;
     private Action mAcVibrate, mAcScreenTime, mAcScreenAlarm, mAcScreenClean;
 
-    public Pebble(Context context, EventType evButtonPress, EventType evHeartRateReading, ActionType acAlarmVibrate, ActionType acAlarmDisplay, ActionType acTimeDisplay, DeviceManager deviceManager) {
-        super(2, "Pebble Steel", "Pebble", "Pebble OS", "Watch", "Wrist", R.drawable.ic_watch_black_24dp, deviceManager);
-        this.mContext = context;
+    public Pebble(RuleSystemService ruleSystemService, DeviceManager deviceManager, EventType evButtonPress, EventType evHeartRateReading, ActionType acAlarmVibrate, ActionType acAlarmDisplay, ActionType acTimeDisplay) {
+        super(2, "Pebble Steel", "Pebble", "Pebble OS", "Watch", "Wrist", R.drawable.ic_watch_black_24dp, ruleSystemService, deviceManager);
         this.eventTypes.put(evButtonPress.getId(),evButtonPress);
         this.eventTypes.put(evHeartRateReading.getId(),evHeartRateReading);
         this.actionTypes.put(acAlarmVibrate.getId(),acAlarmVibrate);
@@ -178,32 +176,32 @@ public class Pebble extends Wearable {
     public void acVibrate(){
         System.out.println("[Pebble] Vibrates!");
         Intent newIntent = new Intent(PEBBLE_VIBRATE_ACTION);
-        LocalBroadcastManager.getInstance(mContext).sendBroadcast(newIntent);
-        Toast.makeText(mContext, "Pebble Vibrate triggered by TRGRD", Toast.LENGTH_SHORT).show();
+        LocalBroadcastManager.getInstance(ruleSystemService).sendBroadcast(newIntent);
+        Toast.makeText(ruleSystemService, "Pebble Vibrate triggered by TRGRD", Toast.LENGTH_SHORT).show();
     }
 
     public void acScreenTime(){
         System.out.println("[Pebble] shows time!");
         Intent newIntent = new Intent(PEBBLE_SCREEN_TIME_ACTION);
-        LocalBroadcastManager.getInstance(mContext).sendBroadcast(newIntent);
-        Toast.makeText(mContext, "Pebble Screen Time triggered by TRGRD", Toast.LENGTH_SHORT).show();
+        LocalBroadcastManager.getInstance(ruleSystemService).sendBroadcast(newIntent);
+        Toast.makeText(ruleSystemService, "Pebble Screen Time triggered by TRGRD", Toast.LENGTH_SHORT).show();
     }
 
     public void acScreenAlarm(){
         // TEST: first vibrate pebble!
         Intent vibrateIntent = new Intent(PEBBLE_VIBRATE_ACTION);
-        LocalBroadcastManager.getInstance(mContext).sendBroadcast(vibrateIntent);
+        LocalBroadcastManager.getInstance(ruleSystemService).sendBroadcast(vibrateIntent);
         System.out.println("[Pebble] shows alarm!");
         Intent newIntent = new Intent(PEBBLE_SCREEN_ALARM_ACTION);
-        LocalBroadcastManager.getInstance(mContext).sendBroadcast(newIntent);
-        Toast.makeText(mContext, "Pebble Screen Alarm triggered by TRGRD", Toast.LENGTH_SHORT).show();
+        LocalBroadcastManager.getInstance(ruleSystemService).sendBroadcast(newIntent);
+        Toast.makeText(ruleSystemService, "Pebble Screen Alarm triggered by TRGRD", Toast.LENGTH_SHORT).show();
     }
 
     public void acScreenClean(){
         System.out.println("[Pebble] cleans screen!");
         Intent newIntent = new Intent(PEBBLE_SCREEN_CLEAN_ACTION);
-        LocalBroadcastManager.getInstance(mContext).sendBroadcast(newIntent);
-        Toast.makeText(mContext, "Pebble Screen Clean triggered by TRGRD", Toast.LENGTH_SHORT).show();
+        LocalBroadcastManager.getInstance(ruleSystemService).sendBroadcast(newIntent);
+        Toast.makeText(ruleSystemService, "Pebble Screen Clean triggered by TRGRD", Toast.LENGTH_SHORT).show();
     }
 
     // Simulate for testing!
@@ -222,25 +220,25 @@ public class Pebble extends Wearable {
         IntentFilter filter = new IntentFilter(PebbleCommunicationService.PEBBLE_BUTTON_UP_ACTION);
         filter.addAction(PebbleCommunicationService.PEBBLE_BUTTON_SELECT_ACTION);
         filter.addAction(PebbleCommunicationService.PEBBLE_BUTTON_DOWN_ACTION);
-        LocalBroadcastManager.getInstance(mContext).registerReceiver(mReceiver, filter);
+        LocalBroadcastManager.getInstance(ruleSystemService).registerReceiver(mReceiver, filter);
         Log.d("TRGRD","Pebble mReceiver registered!");
     }
 
     public void unRegisterPebbleReceiver(){
-        LocalBroadcastManager.getInstance(mContext).unregisterReceiver(mReceiver);
+        LocalBroadcastManager.getInstance(ruleSystemService).unregisterReceiver(mReceiver);
         Log.d("TRGRD","Pebble mReceiver unRegistered!");
     }
 
     // Start & Stop Pebble Communication Service
 
     public void startCommunicationService(){
-        Intent pebbleService = new Intent(mContext, PebbleCommunicationService.class);
-        mContext.startService(pebbleService);
+        Intent pebbleService = new Intent(ruleSystemService, PebbleCommunicationService.class);
+        ruleSystemService.startService(pebbleService);
     }
 
     public void stopCommunicationService(){
-        Intent pebbleService = new Intent(mContext, PebbleCommunicationService.class);
-        mContext.stopService(pebbleService);
+        Intent pebbleService = new Intent(ruleSystemService, PebbleCommunicationService.class);
+        ruleSystemService.stopService(pebbleService);
     }
 
     public void start(){

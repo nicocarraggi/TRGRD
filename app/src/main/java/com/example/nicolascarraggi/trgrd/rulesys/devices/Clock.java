@@ -12,6 +12,7 @@ import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
 import com.example.nicolascarraggi.trgrd.rulesys.EventType;
 import com.example.nicolascarraggi.trgrd.rulesys.MyTime;
+import com.example.nicolascarraggi.trgrd.rulesys.RuleSystemService;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
 import com.example.nicolascarraggi.trgrd.rulesys.StateType;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeEvent;
@@ -25,8 +26,6 @@ import java.util.HashMap;
  */
 
 public class Clock extends Device {
-
-    private Context mContext;
 
     // Clock Broadcast Receiver
 
@@ -47,9 +46,8 @@ public class Clock extends Device {
     private TimeEvent mEvTimeAt;
     private TimeState mStTimeFromTo;
 
-    public Clock(Context context, EventType evClockAt, StateType stClockFromTo, DeviceManager deviceManager) {
-        super(3, "Clock", "Google", "Android", R.drawable.ic_access_time_black_24dp, deviceManager);
-        this.mContext = context;
+    public Clock(RuleSystemService ruleSystemService, DeviceManager deviceManager, EventType evClockAt, StateType stClockFromTo) {
+        super(3, "Clock", "Google", "Android", R.drawable.ic_access_time_black_24dp, ruleSystemService, deviceManager);
         this.getEventTypes().put(evClockAt.getId(),evClockAt);
         this.getStateTypes().put(stClockFromTo.getId(),stClockFromTo);
         mEvTimeAt = new TimeEvent(deviceManager.getNewId(),"Time at ...", R.drawable.ic_keyboard_arrow_down_black_24dp, this, evClockAt);
@@ -103,12 +101,12 @@ public class Clock extends Device {
 
     public void registerClockReceiver(){
         IntentFilter filter = new IntentFilter(Intent.ACTION_TIME_TICK);
-        mContext.registerReceiver(mReceiver, filter);
+        ruleSystemService.registerReceiver(mReceiver, filter);
         Log.d("TRGRD","Clock mReceiver registered!");
     }
 
     public void unRegisterClockReceiver(){
-        mContext.unregisterReceiver(mReceiver);
+        ruleSystemService.unregisterReceiver(mReceiver);
         Log.d("TRGRD","Clock mReceiver unRegistered!");
     }
 

@@ -102,8 +102,10 @@
 
 
     <!-- FROM GEOFENCES EXAMPLE! -->
-
+    <string name="geofence_success">Geofence success</string>
+    <string name="geofence_added">Geofence added</string>
     <string name="geofences_added">Geofences added</string>
+    <string name="geofence_removed">Geofence removed</string>
     <string name="geofences_removed">Geofences removed</string>
 
     <!-- Error strings -->

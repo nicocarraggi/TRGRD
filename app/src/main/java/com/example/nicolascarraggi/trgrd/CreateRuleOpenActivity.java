@@ -28,13 +28,18 @@ import com.example.nicolascarraggi.trgrd.adapters.MyStateOnItemClickListener;
 import com.example.nicolascarraggi.trgrd.adapters.StatesAdapter;
 import com.example.nicolascarraggi.trgrd.rulesys.Action;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
+import com.example.nicolascarraggi.trgrd.rulesys.Location;
+import com.example.nicolascarraggi.trgrd.rulesys.LocationEvent;
+import com.example.nicolascarraggi.trgrd.rulesys.LocationState;
 import com.example.nicolascarraggi.trgrd.rulesys.MyTime;
 import com.example.nicolascarraggi.trgrd.rulesys.Rule;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeState;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Clock;
+import com.example.nicolascarraggi.trgrd.rulesys.devices.Geofences;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
@@ -43,7 +48,14 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
         implements MyEventOnItemClickListener,
         MyStateOnItemClickListener,
         MyActionOnItemClickListener,
-        View.OnClickListener{
+        View.OnClickListener {
+
+    private final int REQUEST_CODE_TRIGGER = 1;
+    private final int REQUEST_CODE_ACTION = 2;
+
+    private final int ASK_LOCATION_ARRIVING = 1;
+    private final int ASK_LOCATION_LEAVING = 2;
+    private final int ASK_LOCATION_CURRENTLY = 3;
 
     private int id;
     private boolean isCreate, isBoundOnce;
@@ -202,7 +214,7 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
+        if (requestCode == REQUEST_CODE_TRIGGER) {
             // ADD TRIGGER RESULT
             if(resultCode == RESULT_OK) {
                 String type = data.getStringExtra("type");
@@ -216,6 +228,15 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                         d.setMinutes(0);
                         TimeEvent timeEvent = ((Clock) event.getDevice()).getTimeAtInstance((TimeEvent) event,d);
                         event = timeEvent;
+                    } else if (event.isLocationEvent()){
+                        LocationEvent locationEvent = (LocationEvent) event;
+                        if (locationEvent.getLocationEventType() == LocationEvent.LocationEventType.ARRIVING){
+                            askLocation(ASK_LOCATION_ARRIVING,event);
+                        } else if (locationEvent.getLocationEventType() == LocationEvent.LocationEventType.LEAVING){
+                            askLocation(ASK_LOCATION_LEAVING,event);
+                        }
+                        // Return because event will be added later!
+                        return;
                     }
                     events.add(event);
                     eventsAdapter.updateData(events);
@@ -228,12 +249,16 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                         dTo.setMinutes(0);
                         TimeState timeState = ((Clock) state.getDevice()).getTimeFromToInstance((TimeState) state,dFrom,dTo);
                         state = timeState;
+                    } else if (state.isLocationState()){
+                        askLocation(ASK_LOCATION_CURRENTLY,state);
+                        // Return because state will be added later!
+                        return;
                     }
                     states.add(state);
                     statesAdapter.updateData(states);
                 }
             }
-        } else if (requestCode == 2){
+        } else if (requestCode == REQUEST_CODE_ACTION){
             // ADD ACTION RESULT
             if(resultCode == RESULT_OK) {
                 int devId = data.getIntExtra("devid",0);
@@ -259,11 +284,11 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                 Intent iTriggers = new Intent(CreateRuleOpenActivity.this, AddTriggerActivity.class);
                 boolean hasEvent = (!events.isEmpty());
                 iTriggers.putExtra("hasevent",hasEvent);
-                startActivityForResult(iTriggers, 1);
+                startActivityForResult(iTriggers, REQUEST_CODE_TRIGGER);
                 break;
             case R.id.bCreateRuleOpenAddAction:
                 Intent iActions = new Intent(CreateRuleOpenActivity.this, AddActionActivity.class);
-                startActivityForResult(iActions, 2);
+                startActivityForResult(iActions, REQUEST_CODE_ACTION);
                 break;
         }
     }
@@ -424,6 +449,53 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                 alertDelete("action", null, null, item);
                 break;
         }
+    }
+
+    public void onLocationArrivingAtClick(Event eventOrState, Location location) {
+        LocationEvent locationEvent = ((Geofences) eventOrState.getDevice()).getArrivingAtLocation(location);
+        events.add(locationEvent);
+        eventsAdapter.updateData(events);
+    }
+
+    public void onLocationLeavingClick(Event eventOrState, Location location) {
+        LocationEvent locationEvent = ((Geofences) eventOrState.getDevice()).getLeavingLocation(location);
+        events.add(locationEvent);
+        eventsAdapter.updateData(events);
+    }
+
+    public void onLocationCurrentlyAtClick(Event eventOrState, Location location) {
+        LocationState locationState = ((Geofences) eventOrState.getDevice()).getCurrentlyAtLocation(location);
+        states.add(locationState);
+        statesAdapter.updateData(states);
+    }
+
+    public void askLocation(final int type, final Event eventOrState){
+        final ArrayList<Location> locations = new ArrayList<>();
+        locations.addAll(ruleSystemService.getLocations());
+        CharSequence locationNames[] = new CharSequence[locations.size()];
+        for(int i=0; i<locations.size(); i++){
+            locationNames[i] = locations.get(i).getName();
+        }
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CreateRuleOpenActivity.this);
+        builder.setTitle("Pick a location");
+        builder.setItems(locationNames, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // the user clicked on colors[which]
+                switch (type){
+                    case ASK_LOCATION_ARRIVING:
+                        CreateRuleOpenActivity.this.onLocationArrivingAtClick(eventOrState, locations.get(which));
+                        break;
+                    case ASK_LOCATION_LEAVING:
+                        CreateRuleOpenActivity.this.onLocationLeavingClick(eventOrState, locations.get(which));
+                        break;
+                    case ASK_LOCATION_CURRENTLY:
+                        CreateRuleOpenActivity.this.onLocationCurrentlyAtClick(eventOrState, locations.get(which));
+                        break;
+                }
+            }
+        });
+        builder.show();
     }
 
     public static class TimePickerFragment extends DialogFragment

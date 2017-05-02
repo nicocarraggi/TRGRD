@@ -18,9 +18,14 @@ public class LocationState extends State {
     }
 
     public LocationState(int id, String name, int iconResource, Device device, StateType stateType, boolean state, Location location) {
-        super(id, name, iconResource, device, stateType, state);
-        this.stateValueType = StateValueType.LOCATION;
+        this(id, name, iconResource, device, stateType, state);
         this.location = location;
+        this.isSkeleton=false;
+    }
+
+    // copy constructor
+    public LocationState(int id, LocationState locationState, Location location){
+        this(id,locationState.getName(),locationState.getIconResource(),locationState.getDevice(),locationState.getStateType(),locationState.isState(),location);
     }
 
     public Location getLocation() {

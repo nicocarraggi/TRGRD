@@ -1,5 +1,6 @@
 package com.example.nicolascarraggi.trgrd.rulesys;
 
+import com.example.nicolascarraggi.trgrd.R;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -15,6 +16,8 @@ public class Location {
     // Save Place object?
     private boolean hasGeofence;
     private Geofence geofence;
+    private LocationEvent arrivingAt,leaving;
+    private LocationState currentlyAt;
 
     public Location(String id, String name, String address, int iconResource, LatLng latLng) {
         this.id = id;
@@ -23,6 +26,9 @@ public class Location {
         this.iconResource = iconResource;
         this.latLng = latLng;
         this.hasGeofence = false;
+        this.arrivingAt = null;
+        this.leaving = null;
+        this.currentlyAt = null;
     }
 
     public String getId() {
@@ -76,6 +82,30 @@ public class Location {
     public void setGeofence(Geofence geofence) {
         this.geofence = geofence;
         this.hasGeofence = (geofence != null);
+    }
+
+    public LocationEvent getArrivingAt() {
+        return arrivingAt;
+    }
+
+    public void setArrivingAt(LocationEvent arrivingAt) {
+        this.arrivingAt = arrivingAt;
+    }
+
+    public LocationEvent getLeaving() {
+        return leaving;
+    }
+
+    public void setLeaving(LocationEvent leaving) {
+        this.leaving = leaving;
+    }
+
+    public LocationState getCurrentlyAt() {
+        return currentlyAt;
+    }
+
+    public void setCurrentlyAt(LocationState currentlyAt) {
+        this.currentlyAt = currentlyAt;
     }
 
     @Override

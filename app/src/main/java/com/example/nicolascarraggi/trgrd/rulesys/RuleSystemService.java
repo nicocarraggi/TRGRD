@@ -31,6 +31,7 @@ public class RuleSystemService extends Service {
     private HashMap<String,Location> locations;
 
     public RuleSystemService() {
+        super();
         this.rules = new HashMap<>();
         this.locations = new HashMap<>();
         this.mTestRuleAlarmStartPebble = new Rule(0,"Phone alarm alert on Pebble");

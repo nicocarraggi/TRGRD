@@ -94,10 +94,10 @@ public class AddTriggerActivity extends RuleSystemBindingActivity
         }
     }
 
-    public void returnClickedItemId(String type, int devId, int id){
+    public void returnClickedItemId(String type, int deviceId, int id){
         Intent intent = new Intent();
         intent.putExtra("type", type);
-        intent.putExtra("devid", devId);
+        intent.putExtra("devid", deviceId);
         intent.putExtra("id", id);
         setResult(RESULT_OK, intent);
         finish();

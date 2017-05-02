@@ -2,6 +2,7 @@ package com.example.nicolascarraggi.trgrd.adapters;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.nicolascarraggi.trgrd.R;
+import com.example.nicolascarraggi.trgrd.rulesys.LocationState;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeState;
 
@@ -129,10 +131,6 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
                         tvStateValueTwo.setText("To");
                         bStateValueOne.setText(timeState.getTimeFrom().toString());
                         bStateValueTwo.setText(timeState.getTimeTo().toString());
-//                        if (!mEdit) {
-//                            bStateValueOne.setBackgroundColor(Color.TRANSPARENT);
-//                            bStateValueTwo.setBackgroundColor(Color.TRANSPARENT);
-//                        }
                     }
                 } else {
                     tvStateName.setText("From   "+timeState.getTimeFrom().toString()+"   to   "+timeState.getTimeTo().toString());
@@ -141,6 +139,31 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
                     if(bStateValueOne != null) bStateValueOne.setVisibility(View.GONE);
                     if(tvStateValueTwo != null) tvStateValueTwo.setVisibility(View.GONE);
                     if(bStateValueTwo != null) bStateValueTwo.setVisibility(View.GONE);
+                }
+            } else if(state.isLocationState()) {
+                LocationState locationState = (LocationState) state;
+                Log.d("TRGRD","StatesAdapter print location state "+locationState.getName());
+                if (mEdit) {
+                    // TODO really needed?
+                    if (tvStateValueOne != null
+                            && bStateValueOne != null
+                            && tvStateValueTwo != null
+                            && bStateValueTwo != null) {
+                        tvStateValueOne.setVisibility(View.VISIBLE);
+                        bStateValueOne.setVisibility(View.VISIBLE);
+                        tvStateValueTwo.setVisibility(View.GONE);
+                        bStateValueTwo.setVisibility(View.GONE);
+                        tvStateName.setVisibility(View.GONE);
+                        tvStateValueOne.setText("Currently at: ");
+                        bStateValueOne.setText(locationState.getLocation().getName());
+                    } else {
+                        tvStateName.setText("Currently at:   " + locationState.getLocation().getName());
+                        // Hide unwanted views!
+                        if (tvStateValueOne != null) tvStateValueOne.setVisibility(View.GONE);
+                        if (bStateValueOne != null) bStateValueOne.setVisibility(View.GONE);
+                        if (tvStateValueTwo != null) tvStateValueTwo.setVisibility(View.GONE);
+                        if (bStateValueTwo != null) bStateValueTwo.setVisibility(View.GONE);
+                    }
                 }
             }
         }

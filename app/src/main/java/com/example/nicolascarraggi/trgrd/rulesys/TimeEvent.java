@@ -26,10 +26,7 @@ public class TimeEvent extends Event {
 
     // copy constructor
     public TimeEvent(int id, TimeEvent timeEvent, MyTime time){
-        super(id, timeEvent.getName(),timeEvent.getIconResource(),timeEvent.getDevice(),timeEvent.getEventType());
-        this.eventValueType = EventValueType.TIME;
-        this.time = time;
-        this.isSkeleton=false;
+        this(id, timeEvent.getName(),timeEvent.getIconResource(),timeEvent.getDevice(),timeEvent.getEventType(), time);
     }
 
     public MyTime getTime() {

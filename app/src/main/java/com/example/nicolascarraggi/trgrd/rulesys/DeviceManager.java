@@ -59,7 +59,7 @@ public class DeviceManager {
     private Clock mClock;
     private Geofences mGeofences;
 
-    public DeviceManager(Context mContext) {
+    public DeviceManager(RuleSystemService ruleSystemService) {
         this.devices = new HashMap<>();
         this.eventTypes = new HashMap<>();
         this.stateTypes = new HashMap<>();
@@ -83,10 +83,10 @@ public class DeviceManager {
         this.actionTypes.put(acAlarmVibrate.getId(),acAlarmVibrate);
         this.actionTypes.put(acAlarmDisplay.getId(),acAlarmDisplay);
         this.actionTypes.put(acTimeDisplay.getId(),acTimeDisplay);
-        this.mAndroidPhone = new AndroidPhone(mContext, evAlarmAlert, evAlarmSnooze, evAlarmDismiss, evAlarmDone, evCallInc, stAlarmGoing, stCallIncGoing, acAlarmSnooze, acAlarmDismiss, this);
-        this.mPebble = new Pebble(mContext, evButtonPress, evHeartRateReading, acAlarmVibrate, acAlarmDisplay, acTimeDisplay, this);
-        this.mClock = new Clock(mContext, evTimeAt, stTimeFromTo, this);
-        this.mGeofences = new Geofences(mContext, evLocationArrivingAt, evLocationLeaving, stLocationCurrentlyAt, this);
+        this.mAndroidPhone = new AndroidPhone(ruleSystemService, this, evAlarmAlert, evAlarmSnooze, evAlarmDismiss, evAlarmDone, evCallInc, stAlarmGoing, stCallIncGoing, acAlarmSnooze, acAlarmDismiss);
+        this.mPebble = new Pebble(ruleSystemService, this, evButtonPress, evHeartRateReading, acAlarmVibrate, acAlarmDisplay, acTimeDisplay);
+        this.mClock = new Clock(ruleSystemService, this, evTimeAt, stTimeFromTo);
+        this.mGeofences = new Geofences(ruleSystemService, this, evLocationArrivingAt, evLocationLeaving, stLocationCurrentlyAt);
         this.devices.put(mAndroidPhone.getId(),mAndroidPhone);
         this.devices.put(mPebble.getId(),mPebble);
         this.devices.put(mClock.getId(),mClock);
