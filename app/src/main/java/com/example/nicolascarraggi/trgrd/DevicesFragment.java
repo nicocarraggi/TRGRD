@@ -1,6 +1,11 @@
 package com.example.nicolascarraggi.trgrd;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,6 +16,7 @@ import android.view.ViewGroup;
 import com.example.nicolascarraggi.trgrd.adapters.MyOnItemClickListener;
 import com.example.nicolascarraggi.trgrd.rulesys.Device;
 import com.example.nicolascarraggi.trgrd.adapters.DevicesAdapter;
+import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,8 +29,47 @@ public class DevicesFragment extends TrgrdFragment implements MyOnItemClickListe
     private DevicesAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    // Refresh Broadcast Receiver
+
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            Log.d("TRGRD","DevicesFragment mReceiver "+action);
+
+            if(action.equals(DeviceManager.DEVICES_REFRESH_ACTION)){
+                showDevices();
+            }
+        }
+    };
+
+    // Register & UnRegister Pebble Broadcast Receiver
+
+    public void registerDevicesReceiver(){
+        IntentFilter filter = new IntentFilter(DeviceManager.DEVICES_REFRESH_ACTION);
+        LocalBroadcastManager.getInstance(this.getContext()).registerReceiver(mReceiver, filter);
+        Log.d("TRGRD","DevicesFragment mReceiver registered!");
+    }
+
+    public void unRegisterDevicesReceiver(){
+        LocalBroadcastManager.getInstance(this.getContext()).unregisterReceiver(mReceiver);
+        Log.d("TRGRD","DevicesFragment mReceiver unRegistered!");
+    }
+
     public DevicesFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        registerDevicesReceiver();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unRegisterDevicesReceiver();
     }
 
     @Override

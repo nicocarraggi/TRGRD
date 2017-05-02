@@ -17,7 +17,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_marginBottom="7dp"
         android:layout_marginLeft="5dp"
-        android:text="Events"/>
+        android:text="Actions"/>
 
 
     <android.support.v7.widget.RecyclerView

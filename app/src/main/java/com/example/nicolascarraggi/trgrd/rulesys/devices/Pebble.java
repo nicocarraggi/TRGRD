@@ -245,12 +245,14 @@ public class Pebble extends Wearable {
         this.startCommunicationService();
         this.registerPebbleReceiver();
         this.started = true;
+        //deviceManager.sendRefreshBroadcast();
     }
 
     public void stop(){
         this.unRegisterPebbleReceiver();
         this.stopCommunicationService();
         this.started = false;
+        //deviceManager.sendRefreshBroadcast();
     }
 
 }

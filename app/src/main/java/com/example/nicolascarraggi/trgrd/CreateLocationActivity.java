@@ -26,7 +26,7 @@ public class CreateLocationActivity extends RuleSystemBindingActivity {
     private EditText etName;
     private TextView tvAddress;
     private Button bPick;
-    private boolean isCreate;
+    private boolean isCreate, isPicked;
     private String locationId;
     private Location location;
 
@@ -50,6 +50,8 @@ public class CreateLocationActivity extends RuleSystemBindingActivity {
             }
         });
 
+        isPicked = false;
+
     }
 
     @Override
@@ -59,7 +61,7 @@ public class CreateLocationActivity extends RuleSystemBindingActivity {
         ActionBar ab = getSupportActionBar();
         if (isCreate) {
             ab.setTitle("Create location");
-            etName.setVisibility(View.INVISIBLE);
+            if(!isPicked) etName.setVisibility(View.INVISIBLE);
         } else {
             ab.setTitle("Edit location");
             location = ruleSystemService.getLocation(locationId);
@@ -130,6 +132,8 @@ public class CreateLocationActivity extends RuleSystemBindingActivity {
 
     private void displayPlace(Intent data) {
         if(data != null) {
+            isPicked = true;
+            etName.setVisibility(View.VISIBLE);
             Place selectedPlace = PlacePicker.getPlace(this, data);
             Log.d("TRGRD","CreateLocationActivity displayPlace place = "+selectedPlace);
             String id = selectedPlace.getId();
@@ -137,7 +141,6 @@ public class CreateLocationActivity extends RuleSystemBindingActivity {
             String address = "";
             if(selectedPlace.getAddress() != null) address = selectedPlace.getAddress().toString();
             LatLng latLng = selectedPlace.getLatLng();
-            etName.setVisibility(View.VISIBLE);
             etName.setText(name);
             tvAddress.setText(address);
             if(isCreate){

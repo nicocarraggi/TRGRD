@@ -114,10 +114,12 @@ public class Clock extends Device {
     public void start(){
         this.registerClockReceiver();
         this.started = true;
+        //deviceManager.sendRefreshBroadcast();
     }
 
     public void stop(){
         this.unRegisterClockReceiver();
         this.started = false;
+        //deviceManager.sendRefreshBroadcast();
     }
 }

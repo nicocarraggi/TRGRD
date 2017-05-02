@@ -150,6 +150,7 @@ public class Geofences extends Device implements GoogleApiClient.ConnectionCallb
         }
 
         this.started = true;
+        deviceManager.sendRefreshBroadcast();
     }
 
     @Override
@@ -164,6 +165,7 @@ public class Geofences extends Device implements GoogleApiClient.ConnectionCallb
         // The connection to Google Play services was lost for some reason.
         Log.i("TRGRD", "Connection suspended");
         this.started = false;
+        deviceManager.sendRefreshBroadcast();
         // onConnected() will be called again automatically when the service reconnects
     }
 

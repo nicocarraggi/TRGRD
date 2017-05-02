@@ -1,6 +1,8 @@
 package com.example.nicolascarraggi.trgrd.rulesys;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.example.nicolascarraggi.trgrd.rulesys.devices.AndroidPhone;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Clock;
@@ -17,9 +19,13 @@ import java.util.Set;
 
 public class DeviceManager {
 
+    public static final String DEVICES_REFRESH_ACTION = "com.example.nicolascarraggi.trgrd.rulesys.devices.REFRESH";
+
     // TODO add rule ID system
     private int newId = 1;
     // TODO get and write Events,States,Actions & their types from and to database?
+
+    private RuleSystemService ruleSystemService;
 
     private HashMap<Integer,Device> devices;
     private HashMap<Integer,EventType> eventTypes;
@@ -60,6 +66,7 @@ public class DeviceManager {
     private Geofences mGeofences;
 
     public DeviceManager(RuleSystemService ruleSystemService) {
+        this.ruleSystemService = ruleSystemService;
         this.devices = new HashMap<>();
         this.eventTypes = new HashMap<>();
         this.stateTypes = new HashMap<>();
@@ -167,6 +174,11 @@ public class DeviceManager {
 
     public int getNewId(){
         return this.newId++;
+    }
+
+    public void sendRefreshBroadcast(){
+        Intent newIntent = new Intent(DEVICES_REFRESH_ACTION);
+        LocalBroadcastManager.getInstance(ruleSystemService).sendBroadcast(newIntent);
     }
 
     // Start & Stop Devices:

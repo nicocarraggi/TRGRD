@@ -236,11 +236,13 @@ public class AndroidPhone extends Device {
     public void start(){
         this.registerAndroidPhoneReceiver();
         this.started = true;
+        //deviceManager.sendRefreshBroadcast();
     }
 
     public void stop(){
         this.unRegisterAndroidPhoneReceiver();
         this.started = false;
+        //deviceManager.sendRefreshBroadcast();
     }
 
 }
