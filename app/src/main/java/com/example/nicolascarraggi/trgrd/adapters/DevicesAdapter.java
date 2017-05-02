@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -73,7 +74,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DeviceVi
         return mDataset.size();
     }
 
-    public class DeviceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class DeviceViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
         private MyOnItemClickListener<Device> myOnItemClickListener;
         private ImageView ivDevice;
@@ -92,12 +93,18 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DeviceVi
             this.ivDevice.setImageResource(device.getIconResource());
             this.tvDeviceName.setText(device.getName());
             tvDeviceName.setOnClickListener(this);
-            //holder.switchDeviceActive.setChecked(device.isActive());
+            switchDeviceActive.setChecked(device.isStarted());
+            switchDeviceActive.setOnCheckedChangeListener(this);
         }
 
         @Override
         public void onClick(View view) {
             myOnItemClickListener.onItemClick(view, mDataset.get(getAdapterPosition()));
+        }
+
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            // TODO!
         }
     }
 }

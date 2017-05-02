@@ -235,4 +235,14 @@ public class AndroidPhone extends Device {
         Log.d("TRGRD","AndroidPhone mReceiver unRegistered!");
     }
 
+    public void start(){
+        this.registerAndroidPhoneReceiver();
+        this.started = true;
+    }
+
+    public void stop(){
+        this.unRegisterAndroidPhoneReceiver();
+        this.started = false;
+    }
+
 }

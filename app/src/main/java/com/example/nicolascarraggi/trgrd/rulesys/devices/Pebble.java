@@ -243,4 +243,16 @@ public class Pebble extends Wearable {
         mContext.stopService(pebbleService);
     }
 
+    public void start(){
+        this.startCommunicationService();
+        this.registerPebbleReceiver();
+        this.started = true;
+    }
+
+    public void stop(){
+        this.unRegisterPebbleReceiver();
+        this.stopCommunicationService();
+        this.started = false;
+    }
+
 }

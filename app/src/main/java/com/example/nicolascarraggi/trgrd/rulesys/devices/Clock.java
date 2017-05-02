@@ -111,4 +111,15 @@ public class Clock extends Device {
         mContext.unregisterReceiver(mReceiver);
         Log.d("TRGRD","Clock mReceiver unRegistered!");
     }
+
+
+    public void start(){
+        this.registerClockReceiver();
+        this.started = true;
+    }
+
+    public void stop(){
+        this.unRegisterClockReceiver();
+        this.started = false;
+    }
 }

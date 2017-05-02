@@ -169,30 +169,24 @@ public class DeviceManager {
         return this.newId++;
     }
 
-// Start & Stop Devices:
+    // Start & Stop Devices:
     // Start & Stop Services from all devices!!!
     // Register & unRegister Receivers from all devices!!!
     // startDevices must be called in onResume method of Activity OR onCreate of Service
     // stopDevices must be called in onPause method of Activity OR onDestroy of Service
 
     public void startDevices(){
-        // Services
-        mPebble.startCommunicationService();
-        // Receivers
-        mAndroidPhone.registerAndroidPhoneReceiver();
-        mPebble.registerPebbleReceiver();
-        mClock.registerClockReceiver();
-        mGeofences.connectGoogleApiClient();
+        mAndroidPhone.start();
+        mPebble.start();
+        mClock.start();
+        mGeofences.start();
     }
 
     public void stopDevices(){
-        // Services
-        mPebble.stopCommunicationService();
-        // Receivers
-        mAndroidPhone.unRegisterAndroidPhoneReceiver();
-        mPebble.unRegisterPebbleReceiver();
-        mClock.unRegisterClockReceiver();
-        mGeofences.disconnectGoogleApiClient();
+        mAndroidPhone.stop();
+        mPebble.stop();
+        mClock.stop();
+        mGeofences.stop();
     }
 
 

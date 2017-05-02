@@ -13,6 +13,7 @@ public class Device {
     protected int id;
     protected String name, manufacturer, platform;
     protected int iconResource;
+    protected boolean started;
     protected DeviceManager deviceManager;
     protected HashMap<Integer, Event> events;
     protected HashMap<Integer, Event> eventInstances;
@@ -30,6 +31,7 @@ public class Device {
         this.manufacturer = manufacturer;
         this.platform = platform;
         this.iconResource = iconResource;
+        this.started = false;
         this.deviceManager = deviceManager;
         this.events = new HashMap<>();
         this.eventInstances = new HashMap<>();
@@ -80,6 +82,14 @@ public class Device {
 
     public void setIconResource(int iconResource) {
         this.iconResource = iconResource;
+    }
+
+    public boolean isStarted() {
+        return started;
+    }
+
+    public void setStarted(boolean started) {
+        this.started = started;
     }
 
     public HashMap<Integer, Event> getEvents() {

@@ -7,12 +7,14 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -22,21 +24,16 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
-import com.example.nicolascarraggi.trgrd.rulesys.Rule;
 import com.example.nicolascarraggi.trgrd.rulesys.RuleSystemService;
 
 import java.util.List;
-import java.util.Set;
+
+import android.Manifest;
 
 public class MainActivity extends AppCompatActivity implements TrgrdFragment.OnFragmentInteractionListener{
 
@@ -85,8 +82,20 @@ public class MainActivity extends AppCompatActivity implements TrgrdFragment.OnF
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+        askPermission();
+
         startRuleSystemService();
 
+    }
+
+    public void askPermission(){
+        int result = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+        int result2 = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
+        if (result == PackageManager.PERMISSION_GRANTED && result2 == PackageManager.PERMISSION_GRANTED) {
+            return;
+        } else {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},1234);
+        }
     }
 
     @Override

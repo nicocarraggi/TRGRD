@@ -132,6 +132,7 @@ public class Geofences extends Device implements ResultCallback<Status>, GoogleA
         Log.i("TRGRD", "Connected to GoogleApiClient");
         // TODO start geofences?!
         addGeofences();
+        this.started = true;
     }
 
     @Override
@@ -145,7 +146,7 @@ public class Geofences extends Device implements ResultCallback<Status>, GoogleA
     public void onConnectionSuspended(int cause) {
         // The connection to Google Play services was lost for some reason.
         Log.i("TRGRD", "Connection suspended");
-
+        this.started = false;
         // onConnected() will be called again automatically when the service reconnects
     }
 
@@ -318,4 +319,14 @@ public class Geofences extends Device implements ResultCallback<Status>, GoogleA
             Log.e("TRGRD", errorMessage);
         }
     }
+
+
+    public void start(){
+        this.connectGoogleApiClient();
+    }
+
+    public void stop(){
+        this.disconnectGoogleApiClient();
+    }
+
 }
