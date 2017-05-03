@@ -108,10 +108,7 @@ public class Geofences extends Device implements GoogleApiClient.ConnectionCallb
 
         // Initially set the PendingIntent used in addGeofences() and removeGeofences() to null.
         mGeofencePendingIntent = null;
-
-        // Get the geofences used. Geofence data is hard coded in this sample.
-        populateGeofenceList();
-
+        
         buildGoogleApiClient();
 
     }
@@ -145,7 +142,6 @@ public class Geofences extends Device implements GoogleApiClient.ConnectionCallb
 
         HashSet<Location> locations = ruleSystemService.getLocations();
         for (Location l: locations){
-            Log.i("TRGRD", "onConnected add geofence for location = "+l.toString());
             addGeofence(l);
         }
 
@@ -169,25 +165,6 @@ public class Geofences extends Device implements GoogleApiClient.ConnectionCallb
         // onConnected() will be called again automatically when the service reconnects
     }
 
-    /**
-     * Builds and returns a GeofencingRequest. Specifies the list of geofences to be monitored.
-     * Also specifies how the geofence notifications are initially triggered.
-     */
-    private GeofencingRequest getGeofencingRequest() {
-        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
-
-        // The INITIAL_TRIGGER_ENTER flag indicates that geofencing service should trigger a
-        // GEOFENCE_TRANSITION_ENTER notification when the geofence is added and if the device
-        // is already inside that geofence.
-        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
-
-        // Add the geofences to be monitored by geofencing service.
-        builder.addGeofences(mGeofenceList);
-
-        // Return a GeofencingRequest.
-        return builder.build();
-    }
-
     public void addGeofence(final Location location){
         if (!mGoogleApiClient.isConnected()) {
             Toast.makeText(ruleSystemService, ruleSystemService.getString(R.string.not_connected), Toast.LENGTH_SHORT).show();
@@ -202,7 +179,7 @@ public class Geofences extends Device implements GoogleApiClient.ConnectionCallb
             builder.addGeofence(geofence);
             LocationServices.GeofencingApi.addGeofences(
                     mGoogleApiClient,
-                    getGeofencingRequest(),
+                    builder.build(),
                     getGeofencePendingIntent()
             ).setResultCallback(new ResultCallback<Status>() {
                 @Override
@@ -249,100 +226,6 @@ public class Geofences extends Device implements GoogleApiClient.ConnectionCallb
         } catch (SecurityException securityException) {
             // Catch exception generated if the app does not use ACCESS_FINE_LOCATION permission.
             logSecurityException(securityException);
-        }
-    }
-
-    /**
-     * Adds geofences, which sets alerts to be notified when the device enters or exits one of the
-     * specified geofences. Handles the success or failure results returned by addGeofences().
-     */
-    public void addGeofences() {
-        if (!mGoogleApiClient.isConnected()) {
-            Toast.makeText(ruleSystemService, ruleSystemService.getString(R.string.not_connected), Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        try {
-            Log.d("TRGRD","Geofences addGeofences()");
-            LocationServices.GeofencingApi.addGeofences(
-                    mGoogleApiClient,
-                    // The GeofenceRequest object.
-                    getGeofencingRequest(),
-                    // A pending intent that that is reused when calling removeGeofences(). This
-                    // pending intent is used to generate an intent when a matched geofence
-                    // transition is observed.
-                    getGeofencePendingIntent()
-            ).setResultCallback(new ResultCallback<Status>() {
-                @Override
-                public void onResult(@NonNull Status status) {
-                    if (status.isSuccess()) {
-                        Toast.makeText(
-                                ruleSystemService, ruleSystemService.getString(R.string.geofences_added),
-                                Toast.LENGTH_SHORT
-                        ).show();
-                    } else {
-                        // Get the status code for the error and log it using a user-friendly message.
-                        String errorMessage = GeofenceErrorMessages.getErrorString(ruleSystemService,
-                                status.getStatusCode());
-                        Log.e("TRGRD", errorMessage);
-                    }
-                }
-            }); // Result processed in onResult().
-
-        } catch (SecurityException securityException) {
-            // Catch exception generated if the app does not use ACCESS_FINE_LOCATION permission.
-            logSecurityException(securityException);
-        }
-    }
-
-    /**
-     * Removes geofences, which stops further notifications when the device enters or exits
-     * previously registered geofences.
-     */
-    public void removeGeofences() {
-        if (!mGoogleApiClient.isConnected()) {
-            Toast.makeText(ruleSystemService, ruleSystemService.getString(R.string.not_connected), Toast.LENGTH_SHORT).show();
-            return;
-        }
-        try {
-            // Remove geofences.
-            LocationServices.GeofencingApi.removeGeofences(
-                    mGoogleApiClient,
-                    // This is the same pending intent that was used in addGeofences().
-                    getGeofencePendingIntent()
-            ).setResultCallback(new ResultCallback<Status>() {
-                @Override
-                public void onResult(@NonNull Status status) {
-                    if (status.isSuccess()) {
-                        Toast.makeText(
-                                ruleSystemService, ruleSystemService.getString(R.string.geofences_removed),
-                                Toast.LENGTH_SHORT
-                        ).show();
-                    } else {
-                        // Get the status code for the error and log it using a user-friendly message.
-                        String errorMessage = GeofenceErrorMessages.getErrorString(ruleSystemService,
-                                status.getStatusCode());
-                        Log.e("TRGRD", errorMessage);
-                    }
-                }
-            }); // Result processed in onResult().
-        } catch (SecurityException securityException) {
-            // Catch exception generated if the app does not use ACCESS_FINE_LOCATION permission.
-            logSecurityException(securityException);
-        }
-    }
-
-    /**
-     * This sample hard codes geofence data. A real app might dynamically create geofences based on
-     * the user's location.
-     */
-    public void populateGeofenceList() {
-        HashSet<Location> locations = ruleSystemService.getLocations();
-        for (Location l: locations){
-            Log.i("TRGRD", "populateGeofenceList location = "+l.toString());
-            Geofence geofence = createGeofence(l.getId(),l.getLatLng());
-            mGeofenceList.add(geofence);
-            l.setGeofence(geofence);
         }
     }
 
@@ -470,7 +353,7 @@ public class Geofences extends Device implements GoogleApiClient.ConnectionCallb
         }
         String triggeringGeofencesIdsString = TextUtils.join(", ",  triggeringGeofencesIdsList);
 
-        return geofenceTransitionString + ": " + triggeringGeofencesIdsString;
+        return geofenceTransitionString + ": " + mGeofenceLocations.get(triggeringGeofencesIdsString).getName();
     }
 
     /**
