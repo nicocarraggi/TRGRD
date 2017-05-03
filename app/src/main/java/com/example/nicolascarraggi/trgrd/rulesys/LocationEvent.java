@@ -12,6 +12,7 @@ public class LocationEvent extends Event {
     private LocationEventType locationEventType;
     private Location location;
 
+    // SKELETON constructor
     public LocationEvent(int id, String name, int iconResource, Device device, EventType eventType, LocationEventType locationEventType) {
         super(id, name, iconResource, device, eventType);
         this.eventValueType = EventValueType.LOCATION;

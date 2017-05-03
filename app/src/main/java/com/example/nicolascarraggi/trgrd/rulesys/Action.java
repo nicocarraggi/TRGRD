@@ -10,15 +10,16 @@ import java.util.concurrent.Callable;
 
 public class Action {
 
-    private int id;
-    private String name;
-    private int iconResource;
-    private ActionValueType actionValueType;
-    private Device device;
-    private ActionType actionType;
-    private Callable callable;
-    private boolean usedInRule;
-    private Set<Rule> rules;
+    protected int id;
+    protected String name;
+    protected int iconResource;
+    protected ActionValueType actionValueType;
+    protected Device device;
+    protected ActionType actionType;
+    protected Callable callable;
+    protected boolean usedInRule;
+    protected boolean isSkeleton;
+    protected Set<Rule> rules;
 
     public Action(int id, String name, int iconResource, Device device, ActionType actionType, Callable callable) {
         this.id = id;
@@ -29,6 +30,7 @@ public class Action {
         this.actionType = actionType;
         this.callable = callable;
         this.usedInRule = false;
+        this.isSkeleton = true;
         this.rules = new HashSet<>();
     }
 
@@ -91,7 +93,11 @@ public class Action {
         return actionValueType;
     }
 
+    public Callable getCallable() {
+        return callable;
+    }
+
     public enum ActionValueType {
-        NONE, VALUE
+        NONE, VALUE, NOTIFICATION
     }
 }

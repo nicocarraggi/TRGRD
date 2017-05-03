@@ -14,6 +14,7 @@ public class ValueEvent extends Event {
     private ValueEventType valueEventType;
     private int value;
 
+    // SKELETON constructor
     public ValueEvent(int id, String name, int iconResource, Device device, EventType eventType) {
         super(id, name, iconResource, device, eventType);
         this.eventValueType = EventValueType.VALUE;
@@ -22,8 +23,8 @@ public class ValueEvent extends Event {
     }
 
     public ValueEvent(int id, String name, int iconResource, Device device, EventType eventType, ValueEventType valueEventType, int value) {
-        super(id, name, iconResource, device, eventType);
-        this.eventValueType = EventValueType.VALUE;
+        this(id, name, iconResource, device, eventType);
+        this.isSkeleton = false;
         this.valueEventType = valueEventType;
         this.value = value;
     }

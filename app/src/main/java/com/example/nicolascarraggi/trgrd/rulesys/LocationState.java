@@ -11,6 +11,7 @@ public class LocationState extends State {
 
     private Location location;
 
+    // SKELETON constructor
     public LocationState(int id, String name, int iconResource, Device device, StateType stateType, boolean state) {
         super(id, name, iconResource, device, stateType, state);
         this.stateValueType = StateValueType.LOCATION;

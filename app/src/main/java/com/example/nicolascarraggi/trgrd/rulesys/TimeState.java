@@ -11,6 +11,7 @@ public class TimeState extends State {
 
     private MyTime timeFrom, timeTo;
 
+    // SKELETON constructor
     public TimeState(int id, String name, int iconResource, Device device, StateType stateType, boolean state) {
         super(id, name, iconResource, device, stateType, state);
         this.stateValueType = StateValueType.TIME;

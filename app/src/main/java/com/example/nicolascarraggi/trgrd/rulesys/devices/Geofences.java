@@ -108,7 +108,7 @@ public class Geofences extends Device implements GoogleApiClient.ConnectionCallb
 
         // Initially set the PendingIntent used in addGeofences() and removeGeofences() to null.
         mGeofencePendingIntent = null;
-        
+
         buildGoogleApiClient();
 
     }

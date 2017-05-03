@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -231,9 +232,9 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                     } else if (event.isLocationEvent()){
                         LocationEvent locationEvent = (LocationEvent) event;
                         if (locationEvent.getLocationEventType() == LocationEvent.LocationEventType.ARRIVING){
-                            askLocation(ASK_LOCATION_ARRIVING,event);
+                            askLocation(ASK_LOCATION_ARRIVING,event, null);
                         } else if (locationEvent.getLocationEventType() == LocationEvent.LocationEventType.LEAVING){
-                            askLocation(ASK_LOCATION_LEAVING,event);
+                            askLocation(ASK_LOCATION_LEAVING,event, null);
                         }
                         // Return because event will be added later!
                         return;
@@ -250,7 +251,7 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                         TimeState timeState = ((Clock) state.getDevice()).getTimeFromToInstance((TimeState) state,dFrom,dTo);
                         state = timeState;
                     } else if (state.isLocationState()){
-                        askLocation(ASK_LOCATION_CURRENTLY,state);
+                        askLocation(ASK_LOCATION_CURRENTLY,state, null);
                         // Return because state will be added later!
                         return;
                     }
@@ -410,6 +411,13 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
             case R.id.bEventValueOne:
                 if (item.isTimeEvent()){
                     editTime((Button) view, (TimeEvent) item);
+                } else if(item.isLocationEvent()){
+                    LocationEvent locationEvent = (LocationEvent) item;
+                    if(locationEvent.getLocationEventType() == LocationEvent.LocationEventType.ARRIVING){
+                        askLocation(ASK_LOCATION_ARRIVING,item, locationEvent.getLocation());
+                    } else if(locationEvent.getLocationEventType() == LocationEvent.LocationEventType.LEAVING){
+                        askLocation(ASK_LOCATION_LEAVING,item, locationEvent.getLocation());
+                    }
                 }
                 break;
         }
@@ -428,6 +436,9 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
             case R.id.bStateValueOne:
                 if (item.isTimeState()){
                     editTime((Button) view, (TimeState) item);
+                } else if (item.isLocationState()){
+                    LocationState locationState = (LocationState) item;
+                    askLocation(ASK_LOCATION_CURRENTLY,item,locationState.getLocation());
                 }
                 break;
             case R.id.bStateValueTwo:
@@ -469,7 +480,8 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
         statesAdapter.updateData(states);
     }
 
-    public void askLocation(final int type, final Event eventOrState){
+    public void askLocation(final int type, final Event eventOrState, final Location oldLocation){
+        Log.d("TRGRD","CreateRuleOpenActivity askLocation "+type+", "+eventOrState.getName()+", "+oldLocation);
         final ArrayList<Location> locations = new ArrayList<>();
         locations.addAll(ruleSystemService.getLocations());
         CharSequence locationNames[] = new CharSequence[locations.size()];
@@ -481,40 +493,27 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
         builder.setItems(locationNames, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // the user clicked on colors[which]
-                switch (type){
-                    case ASK_LOCATION_ARRIVING:
-                        CreateRuleOpenActivity.this.onLocationArrivingAtClick(eventOrState, locations.get(which));
-                        break;
-                    case ASK_LOCATION_LEAVING:
-                        CreateRuleOpenActivity.this.onLocationLeavingClick(eventOrState, locations.get(which));
-                        break;
-                    case ASK_LOCATION_CURRENTLY:
-                        CreateRuleOpenActivity.this.onLocationCurrentlyAtClick(eventOrState, locations.get(which));
-                        break;
+                Location selectedLocation = locations.get(which);
+                // Only change event or state IF there was previously no location OR the selected location is different from the old one.
+                if(oldLocation == null || !selectedLocation.getId().equals(oldLocation.getId())) {
+                    Log.d("TRGRD","CreateRuleOpenActivity askLocation UPDATE");
+                    switch (type) {
+                        case ASK_LOCATION_ARRIVING:
+                            if (oldLocation != null) CreateRuleOpenActivity.this.events.remove(eventOrState);
+                            CreateRuleOpenActivity.this.onLocationArrivingAtClick(eventOrState, selectedLocation);
+                            break;
+                        case ASK_LOCATION_LEAVING:
+                            if (oldLocation != null) CreateRuleOpenActivity.this.events.remove(eventOrState);
+                            CreateRuleOpenActivity.this.onLocationLeavingClick(eventOrState, selectedLocation);
+                            break;
+                        case ASK_LOCATION_CURRENTLY:
+                            if (oldLocation != null) CreateRuleOpenActivity.this.states.remove(eventOrState);
+                            CreateRuleOpenActivity.this.onLocationCurrentlyAtClick(eventOrState, selectedLocation);
+                            break;
+                    }
                 }
             }
         });
         builder.show();
-    }
-
-    public static class TimePickerFragment extends DialogFragment
-            implements TimePickerDialog.OnTimeSetListener {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current time as the default values for the picker
-            final Calendar c = Calendar.getInstance();
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
-
-            // Create a new instance of TimePickerDialog and return it
-            return new TimePickerDialog(getActivity(), this, hour, minute,
-                    DateFormat.is24HourFormat(getActivity()));
-        }
-
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            // Do something with the time chosen by the user
-        }
     }
 }

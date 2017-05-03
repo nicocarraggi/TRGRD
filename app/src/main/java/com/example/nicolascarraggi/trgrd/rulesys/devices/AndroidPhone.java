@@ -1,12 +1,19 @@
 package com.example.nicolascarraggi.trgrd.rulesys.devices;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.nicolascarraggi.trgrd.MainActivity;
 import com.example.nicolascarraggi.trgrd.R;
 import com.example.nicolascarraggi.trgrd.rulesys.Action;
 import com.example.nicolascarraggi.trgrd.rulesys.ActionType;
@@ -14,6 +21,7 @@ import com.example.nicolascarraggi.trgrd.rulesys.Device;
 import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
 import com.example.nicolascarraggi.trgrd.rulesys.EventType;
+import com.example.nicolascarraggi.trgrd.rulesys.NotificationAction;
 import com.example.nicolascarraggi.trgrd.rulesys.RuleSystemService;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
 import com.example.nicolascarraggi.trgrd.rulesys.StateType;
@@ -217,6 +225,51 @@ public class AndroidPhone extends Device {
         //evAlarmDismiss(); THIS IS DONE in mReceiver already!
     }
 
+    /**
+     * Posts a notification in the notification bar when a transition is detected.
+     * If the user clicks the notification, control goes to the MainActivity.
+     */
+    public void sendNotification(String text, NotificationAction.NotificationActionType type) {
+
+        // Get a notification builder that's compatible with platform versions >= 4
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(ruleSystemService);
+
+        // Define the notification settings.
+        builder.setSmallIcon(R.drawable.ic_location_on_black_24dp)
+                // In a real app, you may want to use a library like Volley
+                // to decode the Bitmap.
+                .setLargeIcon(BitmapFactory.decodeResource(ruleSystemService.getResources(),
+                        R.drawable.ic_location_on_black_24dp))
+                .setColor(Color.RED)
+                .setContentTitle(text);
+
+        if (type == NotificationAction.NotificationActionType.MAIN){
+            // Create an explicit content Intent that starts the main Activity.
+            Intent notificationIntent = new Intent(ruleSystemService, MainActivity.class);
+            // Construct a task stack.
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(ruleSystemService);
+            // Add the main Activity to the task stack as the parent.
+            stackBuilder.addParentStack(MainActivity.class);
+            // Push the content Intent onto the stack.
+            stackBuilder.addNextIntent(notificationIntent);
+            // Get a PendingIntent containing the entire back stack.
+            PendingIntent notificationPendingIntent =
+                    stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            builder.setContentIntent(notificationPendingIntent)
+                    .setContentText(ruleSystemService.getString(R.string.geofence_transition_notification_text));
+        }
+
+        // Dismiss notification once the user touches it.
+        builder.setAutoCancel(true);
+
+        // Get an instance of the Notification manager
+        NotificationManager mNotificationManager =
+                (NotificationManager) ruleSystemService.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Issue the notification
+        mNotificationManager.notify(0, builder.build());
+    }
+    
     // Register & UnRegister Android Phone Broadcast Receiver
 
     public void registerAndroidPhoneReceiver(){

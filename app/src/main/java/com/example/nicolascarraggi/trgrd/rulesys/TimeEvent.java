@@ -11,6 +11,7 @@ public class TimeEvent extends Event {
 
     private MyTime time;
 
+    // SKELETON constructor
     public TimeEvent(int id, String name, int iconResource, Device device, EventType eventType) {
         super(id, name, iconResource, device, eventType);
         this.eventValueType = EventValueType.TIME;
