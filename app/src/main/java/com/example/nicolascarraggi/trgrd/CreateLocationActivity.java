@@ -145,10 +145,12 @@ public class CreateLocationActivity extends RuleSystemBindingActivity {
             tvAddress.setText(address);
             if(isCreate){
                 location = new Location(id,name,address,R.drawable.ic_location_on_black_24dp,latLng);
+                ruleSystemService.getDeviceManager().getGeofences().addGeofence(location);
             } else {
                 location.setName(name);
                 location.setAddress(address);
                 location.setLatLng(latLng);
+                ruleSystemService.getDeviceManager().getGeofences().refrehGeofence(location);
                 // TODO add Place object?!
             }
         }

@@ -198,6 +198,38 @@ public class Geofences extends Device implements GoogleApiClient.ConnectionCallb
         }
     }
 
+    public void refrehGeofence(final Location location){
+        if (!mGoogleApiClient.isConnected()) {
+            Toast.makeText(ruleSystemService, ruleSystemService.getString(R.string.not_connected), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!location.isHasGeofence()){
+            Log.e("TRGRD","Geofences refrehGeofence location "+location.getName()+" has no geofence!");
+        }
+        try {
+            Log.d("TRGRD","Geofences refrehGeofence() for "+location.toString());
+            List<String> geofenceRequestIds = new ArrayList<>();
+            geofenceRequestIds.add(location.getGeofence().getRequestId());
+            LocationServices.GeofencingApi.removeGeofences(
+                    mGoogleApiClient,
+                    geofenceRequestIds
+            ).setResultCallback(new ResultCallback<Status>() {
+                @Override
+                public void onResult(@NonNull Status status) {
+                    Log.d("TRGRD","Geofences refrehGeofence of location "+location.getName()+" = "+status.isSuccess());
+                    if (status.isSuccess()){
+                        Geofences.this.mGeofenceLocations.remove(location.getGeofence().getRequestId());
+                        location.setGeofence(null);
+                        addGeofence(location);
+                    }
+                }
+            });
+        } catch (SecurityException securityException) {
+            // Catch exception generated if the app does not use ACCESS_FINE_LOCATION permission.
+            logSecurityException(securityException);
+        }
+    }
+
     public void removeGeofence(final Location location){
         if (!mGoogleApiClient.isConnected()) {
             Toast.makeText(ruleSystemService, ruleSystemService.getString(R.string.not_connected), Toast.LENGTH_SHORT).show();
@@ -381,14 +413,14 @@ public class Geofences extends Device implements GoogleApiClient.ConnectionCallb
         NotificationCompat.Builder builder = new NotificationCompat.Builder(ruleSystemService);
 
         // Define the notification settings.
-        builder.setSmallIcon(R.drawable.ic_location_on_black_24dp)
+        builder.setSmallIcon(R.drawable.ic_triggered_notification)
                 // In a real app, you may want to use a library like Volley
                 // to decode the Bitmap.
                 .setLargeIcon(BitmapFactory.decodeResource(ruleSystemService.getResources(),
-                        R.drawable.ic_location_on_black_24dp))
+                        R.mipmap.ic_launcher))
                 .setColor(Color.RED)
                 .setContentTitle(notificationDetails)
-                .setContentText(ruleSystemService.getString(R.string.geofence_transition_notification_text))
+                //.setContentText(ruleSystemService.getString(R.string.geofence_transition_notification_text))
                 .setContentIntent(notificationPendingIntent);
 
         // Dismiss notification once the user touches it.
@@ -430,27 +462,6 @@ public class Geofences extends Device implements GoogleApiClient.ConnectionCallb
         if (location.getCurrentlyAt() == null) {
             location.setCurrentlyAt(new LocationState(deviceManager.getNewId(),mStLocationCurrentlyAt,location));
         }
-    }
-
-    public LocationEvent getArrivingAtLocation(Location location){
-        if (!location.isHasGeofence()){
-            addGeofence(location);
-        }
-        return location.getArrivingAt();
-    }
-
-    public LocationEvent getLeavingLocation(Location location){
-        if (!location.isHasGeofence()){
-            addGeofence(location);
-        }
-        return location.getLeaving();
-    }
-
-    public LocationState getCurrentlyAtLocation(Location location){
-        if (!location.isHasGeofence()){
-            addGeofence(location);
-        }
-        return location.getCurrentlyAt();
     }
 
     // Register & UnRegister Android Phone Broadcast Receiver

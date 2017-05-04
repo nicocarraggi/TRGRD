@@ -462,20 +462,20 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
         }
     }
 
-    public void onLocationArrivingAtClick(Event eventOrState, Location location) {
-        LocationEvent locationEvent = ((Geofences) eventOrState.getDevice()).getArrivingAtLocation(location);
+    public void onLocationArrivingAtClick(Location location) {
+        LocationEvent locationEvent = location.getArrivingAt();
         events.add(locationEvent);
         eventsAdapter.updateData(events);
     }
 
-    public void onLocationLeavingClick(Event eventOrState, Location location) {
-        LocationEvent locationEvent = ((Geofences) eventOrState.getDevice()).getLeavingLocation(location);
+    public void onLocationLeavingClick(Location location) {
+        LocationEvent locationEvent = location.getLeaving();
         events.add(locationEvent);
         eventsAdapter.updateData(events);
     }
 
-    public void onLocationCurrentlyAtClick(Event eventOrState, Location location) {
-        LocationState locationState = ((Geofences) eventOrState.getDevice()).getCurrentlyAtLocation(location);
+    public void onLocationCurrentlyAtClick(Location location) {
+        LocationState locationState = location.getCurrentlyAt();
         states.add(locationState);
         statesAdapter.updateData(states);
     }
@@ -500,15 +500,15 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                     switch (type) {
                         case ASK_LOCATION_ARRIVING:
                             if (oldLocation != null) CreateRuleOpenActivity.this.events.remove(eventOrState);
-                            CreateRuleOpenActivity.this.onLocationArrivingAtClick(eventOrState, selectedLocation);
+                            CreateRuleOpenActivity.this.onLocationArrivingAtClick(selectedLocation);
                             break;
                         case ASK_LOCATION_LEAVING:
                             if (oldLocation != null) CreateRuleOpenActivity.this.events.remove(eventOrState);
-                            CreateRuleOpenActivity.this.onLocationLeavingClick(eventOrState, selectedLocation);
+                            CreateRuleOpenActivity.this.onLocationLeavingClick(selectedLocation);
                             break;
                         case ASK_LOCATION_CURRENTLY:
                             if (oldLocation != null) CreateRuleOpenActivity.this.states.remove(eventOrState);
-                            CreateRuleOpenActivity.this.onLocationCurrentlyAtClick(eventOrState, selectedLocation);
+                            CreateRuleOpenActivity.this.onLocationCurrentlyAtClick(selectedLocation);
                             break;
                     }
                 }

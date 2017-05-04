@@ -235,11 +235,11 @@ public class AndroidPhone extends Device {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(ruleSystemService);
 
         // Define the notification settings.
-        builder.setSmallIcon(R.drawable.ic_location_on_black_24dp)
+        builder.setSmallIcon(R.drawable.ic_triggered_notification)
                 // In a real app, you may want to use a library like Volley
                 // to decode the Bitmap.
                 .setLargeIcon(BitmapFactory.decodeResource(ruleSystemService.getResources(),
-                        R.drawable.ic_location_on_black_24dp))
+                        R.mipmap.ic_launcher))
                 .setColor(Color.RED)
                 .setContentTitle(text);
 
