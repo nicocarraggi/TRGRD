@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,12 +34,14 @@ import com.example.nicolascarraggi.trgrd.rulesys.Location;
 import com.example.nicolascarraggi.trgrd.rulesys.LocationEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.LocationState;
 import com.example.nicolascarraggi.trgrd.rulesys.MyTime;
+import com.example.nicolascarraggi.trgrd.rulesys.NotificationAction;
 import com.example.nicolascarraggi.trgrd.rulesys.Rule;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeState;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Clock;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Geofences;
+import com.example.nicolascarraggi.trgrd.rulesys.devices.NotificationDevice;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -148,7 +151,7 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
             s.getDevice().deleteStateInstance(s.getId());
         }
         for(Action a: deletedActionInstaces){
-            a.getDevice().deleteStateInstance(a.getId());
+            a.getDevice().deleteActionInstance(a.getId());
         }
     }
 
@@ -265,6 +268,11 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                 int devId = data.getIntExtra("devid",0);
                 int id = data.getIntExtra("id",0);
                 Action action = ruleSystemService.getDeviceManager().getDevice(devId).getAction(id);
+                if (action.isNotificationAction()){
+                    askNotification((NotificationAction) action,null);
+                    // Return because state will be added later!
+                    return;
+                }
                 actions.add(action);
                 actionsAdapter.updateData(actions);
             }
@@ -459,6 +467,11 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
             case R.id.ivActionDelete:
                 alertDelete("action", null, null, item);
                 break;
+            case R.id.bActionValueOne:
+                if (item.isNotificationAction()){
+                    askNotification((NotificationAction) item, (NotificationAction) item);
+                }
+                break;
         }
     }
 
@@ -516,4 +529,58 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
         });
         builder.show();
     }
+
+    public void onNoficationClick(NotificationAction action){
+        actions.add(action);
+        actionsAdapter.updateData(actions);
+    }
+
+    public void askNotification(final NotificationAction action, final NotificationAction oldAction){
+        AlertDialog.Builder builder = new AlertDialog.Builder(CreateRuleOpenActivity.this);
+        // Get the layout inflater
+        LayoutInflater inflater = CreateRuleOpenActivity.this.getLayoutInflater();
+
+        final View view = inflater.inflate(R.layout.dialog_notification, null);
+
+        final EditText etTitle, etText;
+        etTitle = (EditText) view.findViewById(R.id.etCreateRuleOpenNotificationTitle);
+        etText = (EditText) view.findViewById(R.id.etCreateRuleOpenNotificationText);
+
+        if(oldAction != null){
+            etTitle.setText(oldAction.getTitle());
+            etText.setText(oldAction.getText());
+        }
+
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the dialog layout
+        builder.setView(view)
+                .setTitle("Notification")
+                // Add action buttons
+                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        EditText etTitle, etText;
+                        etTitle = (EditText) view.findViewById(R.id.etCreateRuleOpenNotificationTitle);
+                        etText = (EditText) view.findViewById(R.id.etCreateRuleOpenNotificationText);
+                        String title, text;
+                        title = etTitle.getText().toString();
+                        text = etText.getText().toString();
+                        NotificationAction noAc = action;
+                        if(oldAction == null){
+                            noAc = ((NotificationDevice) action.getDevice()).getNotifyAction(title,
+                                    text, noAc.getNotificationActionType());
+                        } else {
+                            ((NotificationDevice) action.getDevice()).editNotifyAction(noAc,title,text);
+                        }
+                        onNoficationClick(noAc);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // DO nothing
+                    }
+                });
+        builder.show();
+    };
+
 }

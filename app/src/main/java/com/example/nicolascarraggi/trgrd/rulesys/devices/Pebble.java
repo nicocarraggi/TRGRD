@@ -15,6 +15,7 @@ import com.example.nicolascarraggi.trgrd.rulesys.Device;
 import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
 import com.example.nicolascarraggi.trgrd.rulesys.EventType;
+import com.example.nicolascarraggi.trgrd.rulesys.NotificationAction;
 import com.example.nicolascarraggi.trgrd.rulesys.RuleSystemService;
 
 import java.util.concurrent.Callable;
@@ -23,7 +24,7 @@ import java.util.concurrent.Callable;
  * Created by nicolascarraggi on 5/04/17.
  */
 
-public class Pebble extends Wearable {
+public class Pebble extends Wearable implements NotificationDevice {
 
     // Constants
 
@@ -52,8 +53,10 @@ public class Pebble extends Wearable {
 
     private Event mEvBtnUp, mEvBtnSelect, mEvBtnDown;
     private Action mAcVibrate, mAcScreenTime, mAcScreenAlarm, mAcScreenClean;
+    private NotificationAction mAcNotify;
 
-    public Pebble(RuleSystemService ruleSystemService, DeviceManager deviceManager, EventType evButtonPress, EventType evHeartRateReading, ActionType acAlarmVibrate, ActionType acAlarmDisplay, ActionType acTimeDisplay) {
+    public Pebble(RuleSystemService ruleSystemService, DeviceManager deviceManager, EventType evButtonPress, EventType evHeartRateReading,
+                  ActionType acAlarmVibrate, ActionType acAlarmDisplay, ActionType acTimeDisplay, ActionType acNotify) {
         super(2, "Pebble Steel", "Pebble", "Pebble OS", "Watch", "Wrist", R.drawable.ic_watch_black_24dp, ruleSystemService, deviceManager);
         this.eventTypes.put(evButtonPress.getId(),evButtonPress);
         this.eventTypes.put(evHeartRateReading.getId(),evHeartRateReading);
@@ -92,6 +95,8 @@ public class Pebble extends Wearable {
                 return null;
             }
         });
+        // Callable is null, will be overridden in instance with the correct parameters using getNotifyCallable(...)
+        this.mAcNotify = new NotificationAction(deviceManager.getNewId(),"Pebble notification",R.drawable.ic_notifications_active_black_24dp,this,acNotify);
         this.events.put(mEvBtnUp.getId(),mEvBtnUp);
         this.events.put(mEvBtnSelect.getId(),mEvBtnSelect);
         this.events.put(mEvBtnDown.getId(),mEvBtnDown);
@@ -99,6 +104,7 @@ public class Pebble extends Wearable {
         this.actions.put(mAcScreenTime.getId(),mAcScreenTime);
         this.actions.put(mAcScreenAlarm.getId(),mAcScreenAlarm);
         this.actions.put(mAcScreenClean.getId(),mAcScreenClean);
+        this.actions.put(mAcNotify.getId(),mAcNotify);
     }
 
     // These getters only needed for testing!
@@ -255,4 +261,33 @@ public class Pebble extends Wearable {
         //deviceManager.sendRefreshBroadcast();
     }
 
+    @Override
+    public NotificationAction getNotifyAction(String title, String text, NotificationAction.NotificationActionType type) {
+        NotificationAction instance = new NotificationAction(deviceManager.getNewId(),mAcNotify,title,text,getNotifyCallable(title,text,type));
+        actionInstances.put(instance.getId(),instance);
+        return instance;
+    }
+
+    @Override
+    public void editNotifyAction(NotificationAction notificationAction, String title, String text) {
+        notificationAction.setTitle(title);
+        notificationAction.setText(text);
+        notificationAction.setCallable(getNotifyCallable(title,text,notificationAction.getNotificationActionType()));
+    }
+
+    @Override
+    public Callable getNotifyCallable(final String title, final String text, final NotificationAction.NotificationActionType type) {
+        return new Callable<String>(){
+            @Override
+            public String call() throws Exception {
+                acNotify(title, text, type);
+                return null;
+            }
+        };
+    }
+
+    @Override
+    public void acNotify(String title, String text, NotificationAction.NotificationActionType type) {
+        // TODO send something to Pebble!!
+    }
 }

@@ -79,8 +79,10 @@ public class RulesFragment extends TrgrdFragment  implements MyOnItemClickListen
     }
 
     private void showRules(){
-        this.rules = mListener.getRuleSystemService().getRules();
-        mAdapter.updateData(rules);
+        if (mListener.getRuleSystemService() != null && mAdapter != null) {
+            this.rules = mListener.getRuleSystemService().getRules();
+            mAdapter.updateData(rules);
+        }
     }
 
     @Override

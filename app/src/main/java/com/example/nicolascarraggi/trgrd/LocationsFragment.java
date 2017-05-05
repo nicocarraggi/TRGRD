@@ -70,8 +70,10 @@ public class LocationsFragment extends TrgrdFragment implements MyOnItemClickLis
     }
 
     private void showLocations(){
-        this.locations = mListener.getRuleSystemService().getLocations();
-        mAdapter.updateData(locations);
+        if (mListener.getRuleSystemService() != null && mAdapter != null) {
+            this.locations = mListener.getRuleSystemService().getLocations();
+            mAdapter.updateData(locations);
+        }
     }
 
     @Override

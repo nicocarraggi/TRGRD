@@ -1,14 +1,17 @@
 package com.example.nicolascarraggi.trgrd.adapters;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.nicolascarraggi.trgrd.R;
 import com.example.nicolascarraggi.trgrd.rulesys.Action;
+import com.example.nicolascarraggi.trgrd.rulesys.NotificationAction;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -77,7 +80,8 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
 
         private MyActionOnItemClickListener myActionOnItemClickListener;
         private ImageView ivActionDevice, ivAction, ivActionDelete;
-        private TextView tvActionName;
+        private TextView tvActionName, tvActionValueOne;
+        private Button bActionValueOne;
 
         public ActionViewHolder(View itemView) {
             super(itemView);
@@ -85,8 +89,11 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
             this.ivAction = (ImageView) itemView.findViewById(R.id.ivAction);
             this.ivActionDelete = (ImageView) itemView.findViewById(R.id.ivActionDelete);
             this.tvActionName = (TextView) itemView.findViewById(R.id.tvActionName);
+            this.tvActionValueOne = (TextView) itemView.findViewById(R.id.tvActionValueOne);
+            this.bActionValueOne = (Button) itemView.findViewById(R.id.bActionValueOne);
             tvActionName.setOnClickListener(this);
             ivActionDelete.setOnClickListener(this);
+            bActionValueOne.setOnClickListener(this);
         }
 
         public void bind(Action action, MyActionOnItemClickListener listener){
@@ -96,6 +103,21 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
             this.tvActionName.setText(action.getName());
             if(!mEdit && ivActionDelete != null){
                 ivActionDelete.setVisibility(View.GONE);
+            }
+            if(action.isSkeleton()){
+                // Hide unwanted views!
+                if(tvActionValueOne != null) tvActionValueOne.setVisibility(View.GONE);
+                if(bActionValueOne != null) bActionValueOne.setVisibility(View.GONE);
+            } else if (action.isNotificationAction()){
+                NotificationAction notificationAction = (NotificationAction) action;
+                if(tvActionValueOne != null & bActionValueOne != null){
+                    tvActionValueOne.setVisibility(View.VISIBLE);
+                    bActionValueOne.setVisibility(View.VISIBLE);
+                    tvActionName.setVisibility(View.GONE);
+                    tvActionValueOne.setText("Notify:");
+                    bActionValueOne.setText(notificationAction.getTitle());
+                    if(!mEdit) bActionValueOne.setBackgroundColor(Color.TRANSPARENT);
+                }
             }
         }
 

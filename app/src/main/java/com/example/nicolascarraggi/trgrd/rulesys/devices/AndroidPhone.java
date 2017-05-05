@@ -32,7 +32,7 @@ import java.util.concurrent.Callable;
  * Created by nicolascarraggi on 5/04/17.
  */
 
-public class AndroidPhone extends Device {
+public class AndroidPhone extends Device implements NotificationDevice {
 
     // Constants
 
@@ -73,8 +73,11 @@ public class AndroidPhone extends Device {
     private Event mEvAlarmStart, mEvAlarmSnooze, mEvAlarmDismiss, mEvAlarmDone, mEvCallIncStart, mEvCallIncStop;
     private State mStAlarmGoing, mStCallIncGoing;
     private Action mAcAlarmDismiss, mAcAlarmSnooze;
+    private NotificationAction mAcNotify;
 
-    public AndroidPhone(RuleSystemService ruleSystemService, DeviceManager deviceManager, EventType evAlarmAlert, EventType evAlarmSnooze, EventType evAlarmDismiss, EventType evAlarmDone, EventType evCallInc, StateType stAlarmGoing, StateType stCallIncGoing, ActionType acAlarmSnooze, ActionType acAlarmDismiss) {
+    public AndroidPhone(RuleSystemService ruleSystemService, DeviceManager deviceManager, EventType evAlarmAlert, EventType evAlarmSnooze,
+                        EventType evAlarmDismiss, EventType evAlarmDone, EventType evCallInc, StateType stAlarmGoing, StateType stCallIncGoing,
+                        ActionType acAlarmSnooze, ActionType acAlarmDismiss, ActionType acNotify) {
         super(1, "Phone", "Google", "Android", R.drawable.ic_phone_android_black_24dp, ruleSystemService,deviceManager);
         this.eventTypes.put(evAlarmAlert.getId(),evAlarmAlert);
         this.eventTypes.put(evAlarmSnooze.getId(),evAlarmSnooze);
@@ -107,6 +110,8 @@ public class AndroidPhone extends Device {
                 return null;
             }
         });
+        // Callable is null, will be overridden in instance with the correct parameters using getNotifyCallable(...)
+        this.mAcNotify = new NotificationAction(deviceManager.getNewId(),"Phone notification",R.drawable.ic_notifications_active_black_24dp,this,acNotify);
         this.events.put(mEvAlarmStart.getId(),mEvAlarmStart);
         this.events.put(mEvAlarmSnooze.getId(),mEvAlarmSnooze);
         this.events.put(mEvAlarmDismiss.getId(),mEvAlarmDismiss);
@@ -117,6 +122,7 @@ public class AndroidPhone extends Device {
         this.states.put(mStCallIncGoing.getId(),mStCallIncGoing);
         this.actions.put(mAcAlarmDismiss.getId(),mAcAlarmDismiss);
         this.actions.put(mAcAlarmSnooze.getId(),mAcAlarmSnooze);
+        this.actions.put(mAcNotify.getId(),mAcNotify);
     }
 
     // These getters only needed for testing!
@@ -225,11 +231,29 @@ public class AndroidPhone extends Device {
         //evAlarmDismiss(); THIS IS DONE in mReceiver already!
     }
 
-    /**
-     * Posts a notification in the notification bar when a transition is detected.
-     * If the user clicks the notification, control goes to the MainActivity.
-     */
-    public void sendNotification(String text, NotificationAction.NotificationActionType type) {
+    public NotificationAction getNotifyAction(String title, String text, NotificationAction.NotificationActionType type){
+        NotificationAction instance = new NotificationAction(deviceManager.getNewId(),mAcNotify,title,text,getNotifyCallable(title,text,type));
+        actionInstances.put(instance.getId(),instance);
+        return instance;
+    }
+
+    public void editNotifyAction(NotificationAction notificationAction, String title, String text){
+        notificationAction.setTitle(title);
+        notificationAction.setText(text);
+        notificationAction.setCallable(getNotifyCallable(title,text,notificationAction.getNotificationActionType()));
+    }
+
+    public Callable getNotifyCallable(final String title, final String text, final NotificationAction.NotificationActionType type){
+        return new Callable<String>(){
+            @Override
+            public String call() throws Exception {
+                acNotify(title, text, type);
+                return null;
+            }
+        };
+    }
+
+    public void acNotify(String title, String text, NotificationAction.NotificationActionType type) {
 
         // Get a notification builder that's compatible with platform versions >= 4
         NotificationCompat.Builder builder = new NotificationCompat.Builder(ruleSystemService);
@@ -239,9 +263,10 @@ public class AndroidPhone extends Device {
                 // In a real app, you may want to use a library like Volley
                 // to decode the Bitmap.
                 .setLargeIcon(BitmapFactory.decodeResource(ruleSystemService.getResources(),
-                        R.mipmap.ic_launcher))
-                .setColor(Color.RED)
-                .setContentTitle(text);
+                        R.mipmap.ic_launcher_blue))
+                .setColor(Color.rgb(104,159,56))
+                .setContentTitle(title)
+                .setContentText(text);
 
         if (type == NotificationAction.NotificationActionType.MAIN){
             // Create an explicit content Intent that starts the main Activity.

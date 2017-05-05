@@ -417,10 +417,10 @@ public class Geofences extends Device implements GoogleApiClient.ConnectionCallb
                 // In a real app, you may want to use a library like Volley
                 // to decode the Bitmap.
                 .setLargeIcon(BitmapFactory.decodeResource(ruleSystemService.getResources(),
-                        R.mipmap.ic_launcher))
-                .setColor(Color.RED)
+                        R.mipmap.ic_launcher_blue))
+                .setColor(Color.rgb(104,159,56))
                 .setContentTitle(notificationDetails)
-                //.setContentText(ruleSystemService.getString(R.string.geofence_transition_notification_text))
+                .setContentText(ruleSystemService.getString(R.string.geofence_transition_notification_text))
                 .setContentIntent(notificationPendingIntent);
 
         // Dismiss notification once the user touches it.

@@ -97,6 +97,18 @@ public class Action {
         return callable;
     }
 
+    public void setCallable(Callable callable) {
+        this.callable = callable;
+    }
+
+    public boolean isNotificationAction() {
+        return actionValueType == ActionValueType.NOTIFICATION;
+    }
+
+    public boolean isSkeleton() {
+        return isSkeleton;
+    }
+
     public enum ActionValueType {
         NONE, VALUE, NOTIFICATION
     }
