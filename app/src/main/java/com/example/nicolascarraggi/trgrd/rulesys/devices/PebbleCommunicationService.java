@@ -33,6 +33,8 @@ public class PebbleCommunicationService extends Service {
 
             if(action.equals(Pebble.PEBBLE_VIBRATE_ACTION)){
                 vibrate();
+            } else if(action.equals(Pebble.PEBBLE_NOTIFICATION_ACTION)){
+                notifyPebble(intent.getStringExtra("title"),intent.getStringExtra("text"));
             } else if(action.equals(Pebble.PEBBLE_SCREEN_TIME_ACTION)){
                 screenTime();
             } else if(action.equals(Pebble.PEBBLE_SCREEN_ALARM_ACTION)){
@@ -51,6 +53,7 @@ public class PebbleCommunicationService extends Service {
             KEY_BUTTON = 0,
             KEY_VIBRATE = 1,
             KEY_TEXT = 2,
+            KEY_NOTIF = 3,
             BUTTON_UP = 0,
             BUTTON_SELECT = 1,
             BUTTON_DOWN = 2;
@@ -161,6 +164,7 @@ public class PebbleCommunicationService extends Service {
 
     public void registerPebbleCommunicationReceiver(){
         IntentFilter filter = new IntentFilter(Pebble.PEBBLE_VIBRATE_ACTION);
+        filter.addAction(Pebble.PEBBLE_NOTIFICATION_ACTION);
         filter.addAction(Pebble.PEBBLE_SCREEN_TIME_ACTION);
         filter.addAction(Pebble.PEBBLE_SCREEN_ALARM_ACTION);
         filter.addAction(Pebble.PEBBLE_SCREEN_CLEAN_ACTION);
@@ -187,6 +191,12 @@ public class PebbleCommunicationService extends Service {
 
     private void screenText(String text){
         mTextdict.addString(KEY_TEXT,text);
+        PebbleKit.sendDataToPebble(getApplicationContext(), WATCHAPP_UUID, mTextdict);
+    }
+
+    private void notifyPebble(String title, String text){
+        Log.d("TRGRD","Notify Pebble");
+        mTextdict.addString(KEY_NOTIF,text);
         PebbleKit.sendDataToPebble(getApplicationContext(), WATCHAPP_UUID, mTextdict);
     }
 

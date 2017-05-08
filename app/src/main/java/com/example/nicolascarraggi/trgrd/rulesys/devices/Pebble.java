@@ -29,6 +29,7 @@ public class Pebble extends Wearable implements NotificationDevice {
     // Constants
 
     public static final String PEBBLE_VIBRATE_ACTION = "com.example.nicolascarraggi.trgrd.rulesys.devices.VIBRATE";
+    public static final String PEBBLE_NOTIFICATION_ACTION = "com.example.nicolascarraggi.trgrd.rulesys.devices.NOTIFICATION";
     public static final String PEBBLE_SCREEN_TIME_ACTION = "com.example.nicolascarraggi.trgrd.rulesys.devices.SCREEN_TIME";
     public static final String PEBBLE_SCREEN_ALARM_ACTION = "com.example.nicolascarraggi.trgrd.rulesys.devices.SCREEN_ALARM";
     public static final String PEBBLE_SCREEN_CLEAN_ACTION = "com.example.nicolascarraggi.trgrd.rulesys.devices.SCREEN_CLEAN";
@@ -288,6 +289,11 @@ public class Pebble extends Wearable implements NotificationDevice {
 
     @Override
     public void acNotify(String title, String text, NotificationAction.NotificationActionType type) {
-        // TODO send something to Pebble!!
+        System.out.println("[Pebble] Vibrates!");
+        Intent newIntent = new Intent(PEBBLE_NOTIFICATION_ACTION);
+        newIntent.putExtra("title",title);
+        newIntent.putExtra("text",text);
+        LocalBroadcastManager.getInstance(ruleSystemService).sendBroadcast(newIntent);
+        Toast.makeText(ruleSystemService, "Pebble Notification triggered by TRGRD", Toast.LENGTH_SHORT).show();
     }
 }
