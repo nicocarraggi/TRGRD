@@ -11,10 +11,10 @@ public class ActionType extends Type {
     private Set<Action> actions;
 
     public ActionType(int id, String name) {
-        super(id, name);
+        super(id, name, TypeType.ACTION);
     }
 
-    public Set<Action> getEvents() {
+    public Set<Action> getActions() {
         return actions;
     }
 

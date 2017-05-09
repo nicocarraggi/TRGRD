@@ -28,11 +28,13 @@ public class RuleSystemService extends Service {
     private Location mTestLocationVub, mTestLocationStadium, mTestLocationHome;
 
     private HashMap<Integer,Rule> rules;
+    private HashMap<Integer,RuleTemplate> ruleTemplates;
     private HashMap<String,Location> locations;
 
     public RuleSystemService() {
         super();
         this.rules = new HashMap<>();
+        this.ruleTemplates = new HashMap<>();
         this.locations = new HashMap<>();
         this.mTestRuleAlarmStartPebble = new Rule(0,"Phone alarm alert on Pebble");
         this.mTestRuleAlarmDismissPebble = new Rule(1,"Dismiss phone alarm on Pebble");
@@ -90,6 +92,18 @@ public class RuleSystemService extends Service {
 
     public void addRule(Rule rule){
         this.rules.put(rule.getId(),rule);
+    }
+
+    public Set<Rule> getRuleTemplates(){
+        return new HashSet(ruleTemplates.values());
+    }
+
+    public RuleTemplate getRuleTemplate(int id){
+        return ruleTemplates.get(id);
+    }
+
+    public void addRuleTemplate(RuleTemplate ruleTemplate){
+        this.ruleTemplates.put(ruleTemplate.getId(),ruleTemplate);
     }
 
     public HashSet<Location> getLocations(){

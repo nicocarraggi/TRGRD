@@ -11,7 +11,7 @@ public class EventType extends Type {
     private Set<Event> events;
 
     public EventType(int id, String name) {
-        super(id, name);
+        super(id, name, TypeType.EVENT);
     }
 
     public Set<Event> getEvents() {

@@ -11,7 +11,7 @@ public class StateType extends Type {
     private Set<State> states;
 
     public StateType(int id, String name) {
-        super(id, name);
+        super(id, name, TypeType.STATE);
     }
 
     public Set<State> getEvents() {

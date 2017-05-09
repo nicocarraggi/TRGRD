@@ -50,8 +50,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAhyw7RLsV5caKzejK4ZAjuYD2N3GvczHc" />
 
-        <activity android:name=".LocationDetailsActivity"></activity>
-
+        <activity android:name=".LocationDetailsActivity" />
+        <activity android:name=".rulesys.RuleTemplateDetailsActivity"></activity>
     </application>
 
 </manifest>
