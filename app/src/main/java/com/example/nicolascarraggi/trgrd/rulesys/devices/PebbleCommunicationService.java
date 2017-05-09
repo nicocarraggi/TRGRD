@@ -196,7 +196,7 @@ public class PebbleCommunicationService extends Service {
 
     private void notifyPebble(String title, String text){
         Log.d("TRGRD","Notify Pebble");
-        mTextdict.addString(KEY_NOTIF,text);
+        mTextdict.addString(KEY_NOTIF,title+"|"+text);
         PebbleKit.sendDataToPebble(getApplicationContext(), WATCHAPP_UUID, mTextdict);
     }
 

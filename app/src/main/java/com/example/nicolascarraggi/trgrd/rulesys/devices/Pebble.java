@@ -184,14 +184,14 @@ public class Pebble extends Wearable implements NotificationDevice {
         System.out.println("[Pebble] Vibrates!");
         Intent newIntent = new Intent(PEBBLE_VIBRATE_ACTION);
         LocalBroadcastManager.getInstance(ruleSystemService).sendBroadcast(newIntent);
-        Toast.makeText(ruleSystemService, "Pebble Vibrate triggered by TRGRD", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(ruleSystemService, "Pebble Vibrate triggered by TRGRD", Toast.LENGTH_SHORT).show();
     }
 
     public void acScreenTime(){
         System.out.println("[Pebble] shows time!");
         Intent newIntent = new Intent(PEBBLE_SCREEN_TIME_ACTION);
         LocalBroadcastManager.getInstance(ruleSystemService).sendBroadcast(newIntent);
-        Toast.makeText(ruleSystemService, "Pebble Screen Time triggered by TRGRD", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(ruleSystemService, "Pebble Screen Time triggered by TRGRD", Toast.LENGTH_SHORT).show();
     }
 
     public void acScreenAlarm(){
@@ -201,14 +201,14 @@ public class Pebble extends Wearable implements NotificationDevice {
         System.out.println("[Pebble] shows alarm!");
         Intent newIntent = new Intent(PEBBLE_SCREEN_ALARM_ACTION);
         LocalBroadcastManager.getInstance(ruleSystemService).sendBroadcast(newIntent);
-        Toast.makeText(ruleSystemService, "Pebble Screen Alarm triggered by TRGRD", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(ruleSystemService, "Pebble Screen Alarm triggered by TRGRD", Toast.LENGTH_SHORT).show();
     }
 
     public void acScreenClean(){
         System.out.println("[Pebble] cleans screen!");
         Intent newIntent = new Intent(PEBBLE_SCREEN_CLEAN_ACTION);
         LocalBroadcastManager.getInstance(ruleSystemService).sendBroadcast(newIntent);
-        Toast.makeText(ruleSystemService, "Pebble Screen Clean triggered by TRGRD", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(ruleSystemService, "Pebble Screen Clean triggered by TRGRD", Toast.LENGTH_SHORT).show();
     }
 
     // Simulate for testing!
@@ -294,6 +294,6 @@ public class Pebble extends Wearable implements NotificationDevice {
         newIntent.putExtra("title",title);
         newIntent.putExtra("text",text);
         LocalBroadcastManager.getInstance(ruleSystemService).sendBroadcast(newIntent);
-        Toast.makeText(ruleSystemService, "Pebble Notification triggered by TRGRD", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(ruleSystemService, "Pebble Notification triggered by TRGRD", Toast.LENGTH_SHORT).show();
     }
 }
