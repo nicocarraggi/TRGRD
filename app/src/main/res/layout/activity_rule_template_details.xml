@@ -8,7 +8,7 @@
     android:layout_marginBottom="@dimen/activity_vertical_margin"
     android:layout_marginLeft="@dimen/activity_horizontal_margin"
     android:layout_marginRight="@dimen/activity_horizontal_margin"
-    tools:context="com.example.nicolascarraggi.trgrd.rulesys.RuleTemplateDetailsActivity">
+    tools:context="com.example.nicolascarraggi.trgrd.RuleTemplateDetailsActivity">
 
     <!--RuleTemplate Name -->
 

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:layout_weight="1"
-        android:background="#E1BEE7">
+        android:background="@color/colorEvent">
 
         <LinearLayout
             android:layout_width="wrap_content"

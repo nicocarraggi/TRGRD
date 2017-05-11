@@ -9,9 +9,20 @@ import java.util.Set;
 public class ActionType extends Type {
 
     private Set<Action> actions;
+    private Action instanceAction;
 
+    // SKELETON constructor
     public ActionType(int id, String name) {
         super(id, name, TypeType.ACTION);
+    }
+
+    // INSTANCE constructor
+    public ActionType(int id, ActionType actionType) {
+        super(id, actionType.getName(), TypeType.ACTION);
+        this.devices = actionType.getDevices();
+        this.actions = actionType.getActions();
+        this.isSkeleton = false;
+        this.instanceAction = null;
     }
 
     public Set<Action> getActions() {
@@ -26,4 +37,11 @@ public class ActionType extends Type {
         actions.remove(action);
     }
 
+    public Action getInstanceAction() {
+        return instanceAction;
+    }
+
+    public void setInstanceAction(Action action) {
+        this.instanceAction = action;
+    }
 }

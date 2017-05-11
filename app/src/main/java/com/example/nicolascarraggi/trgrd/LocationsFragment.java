@@ -84,7 +84,6 @@ public class LocationsFragment extends TrgrdFragment implements MyOnItemClickLis
             this.locations = new HashSet<>();
             this.mAdapter.updateData(locations);
         } else {
-            // TODO also check if service is bound?
             showLocations();
         }
     }

@@ -1,5 +1,9 @@
 package com.example.nicolascarraggi.trgrd.rulesys;
 
+import com.example.nicolascarraggi.trgrd.errors.NullActionException;
+import com.example.nicolascarraggi.trgrd.errors.NullEventException;
+import com.example.nicolascarraggi.trgrd.errors.NullStateException;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,6 +20,7 @@ public class Rule {
     private Set<State> states;
     private Set<Action> actions;
     private int times;
+    private RuleTemplate ruleTemplateInstance;
 
     public Rule(int id, String name) {
         this.id = id;
@@ -25,15 +30,11 @@ public class Rule {
         this.states = new HashSet<>();
         this.actions = new HashSet<>();
         this.times = 0;
+        this.ruleTemplateInstance = null;
     }
 
     public Rule(int id, String name, Set<Event> events, Set<State> states, Set<Action> actions) {
-        this.id = id;
-        this.name = name;
-        this.active = false;
-        this.events = new HashSet<>();
-        this.states = new HashSet<>();
-        this.actions = new HashSet<>();
+        this(id,name);
         for (Event e: events){
             this.addEvent(e);
         }
@@ -43,7 +44,44 @@ public class Rule {
         for (Action a: actions){
             this.addAction(a);
         }
-        this.times = 0;
+    }
+
+    public Rule(int id, RuleTemplate ruleTemplate)
+            throws NullActionException, NullEventException, NullStateException {
+        this(id,ruleTemplate.getName());
+        this.ruleTemplateInstance = ruleTemplate;
+        for (Type t: ruleTemplate.getTriggerTypes()){
+            if (!t.isSkeleton()){
+                if(t.isEventType()){
+                    EventType et = (EventType) t;
+                    Event e = et.getInstanceEvent();
+                    if(e == null){
+                        throw new NullEventException();
+                    } else {
+                        this.addEvent(e);
+                    }
+                } else if(t.isStateType()){
+                    StateType st = (StateType) t;
+                    State s = st.getInstanceState();
+                    if (s == null){
+                        throw new NullStateException();
+                    } else {
+                        this.addState(s);
+                    }
+                }
+            }
+        }
+        for (Type t: ruleTemplate.getActionTypes()){
+            if(!t.isSkeleton() && t.isActionType()){
+                ActionType at = (ActionType) t;
+                Action a = at.getInstanceAction();
+                if(a == null){
+                    throw new NullActionException();
+                } else {
+                    this.addAction(a);
+                }
+            }
+        }
     }
 
     private void executeRule(){

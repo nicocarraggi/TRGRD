@@ -29,12 +29,14 @@ public class RuleSystemService extends Service {
 
     private HashMap<Integer,Rule> rules;
     private HashMap<Integer,RuleTemplate> ruleTemplates;
+    private HashMap<Integer,RuleTemplate> ruleTemplateInstances;
     private HashMap<String,Location> locations;
 
     public RuleSystemService() {
         super();
         this.rules = new HashMap<>();
         this.ruleTemplates = new HashMap<>();
+        this.ruleTemplateInstances = new HashMap<>();
         this.locations = new HashMap<>();
         this.mTestRuleAlarmStartPebble = new Rule(0,"Phone alarm alert on Pebble");
         this.mTestRuleAlarmDismissPebble = new Rule(1,"Dismiss phone alarm on Pebble");
@@ -56,6 +58,7 @@ public class RuleSystemService extends Service {
         this.mDeviceManager = new DeviceManager(this);
         mDeviceManager.startDevices();
         testAlarmPebble();
+        testRuleTemplates();
     }
 
     @Override
@@ -94,7 +97,7 @@ public class RuleSystemService extends Service {
         this.rules.put(rule.getId(),rule);
     }
 
-    public Set<Rule> getRuleTemplates(){
+    public Set<RuleTemplate> getRuleTemplates(){
         return new HashSet(ruleTemplates.values());
     }
 
@@ -104,6 +107,18 @@ public class RuleSystemService extends Service {
 
     public void addRuleTemplate(RuleTemplate ruleTemplate){
         this.ruleTemplates.put(ruleTemplate.getId(),ruleTemplate);
+    }
+
+    public Set<RuleTemplate> getRuleTemplateInstances(){
+        return new HashSet(ruleTemplateInstances.values());
+    }
+
+    public RuleTemplate getRuleTemplateInstance(int id){
+        return ruleTemplateInstances.get(id);
+    }
+
+    public void addRuleTemplateInstance(RuleTemplate ruleTemplate){
+        this.ruleTemplateInstances.put(ruleTemplate.getId(),ruleTemplate);
     }
 
     public HashSet<Location> getLocations(){
@@ -137,6 +152,26 @@ public class RuleSystemService extends Service {
         mTestRuleAlarmDonePebble.addEvent(mDeviceManager.getAndroidPhone().getAlarmDone());
         mTestRuleAlarmDonePebble.addAction(mDeviceManager.getPebble().getScreenClean());
         mTestRuleAlarmDonePebble.setActive(true);
+    }
+
+    // RULE TEMPLATE TESTS
+    private void testRuleTemplates(){
+        // When alarm starts, display alarm
+        RuleTemplate rtAlarmStart = new RuleTemplate(getNewId(),"Display starting alarm");
+        rtAlarmStart.addTriggerType(mDeviceManager.evAlarmAlert);
+        rtAlarmStart.addActionType(mDeviceManager.acAlarmDisplay);
+        ruleTemplates.put(rtAlarmStart.getId(),rtAlarmStart);
+        // When a button is pressed, notify
+        RuleTemplate rtNotifyButton = new RuleTemplate(getNewId(),"Notify button pressed");
+        rtNotifyButton.addTriggerType(mDeviceManager.evButtonPress);
+        rtNotifyButton.addActionType(mDeviceManager.acNotify);
+        ruleTemplates.put(rtNotifyButton.getId(),rtNotifyButton);
+        // When at a location and button is pressed,
+        RuleTemplate rtCoffee = new RuleTemplate(getNewId(),"Coffee at a location");
+        rtCoffee.addTriggerType(mDeviceManager.evButtonPress);
+        rtCoffee.addTriggerType(mDeviceManager.stLocationCurrentlyAt);
+        rtCoffee.addActionType(mDeviceManager.acStartCoffee);
+        ruleTemplates.put(rtCoffee.getId(),rtCoffee);
     }
 
 }

@@ -33,32 +33,33 @@ public class DeviceManager {
     private HashMap<Integer,ActionType> actionTypes;
 
     // EventTypes
-    private EventType evAlarmAlert = new EventType(getNewId(),"alarm alert");
-    private EventType evAlarmSnooze = new EventType(getNewId(),"alarm snooze");
-    private EventType evAlarmDismiss = new EventType(getNewId(),"alarm dismiss");
-    private EventType evAlarmDone = new EventType(getNewId(),"alarm done");
-    private EventType evCallInc = new EventType(getNewId(),"call incoming");
-    private EventType evButtonPress = new EventType(getNewId(),"button press"); // change to evOneInput? too restrictive now, could also be a gesture from myo?
-    private EventType evHeartRateReading = new EventType(getNewId(),"heart rate reading");
-    private EventType evTimeAt = new EventType(getNewId(),"time at");
-    private EventType evLocationArrivingAt = new EventType(getNewId(),"arriving at");
-    private EventType evLocationLeaving = new EventType(getNewId(),"leaving");
+    public EventType evAlarmAlert = new EventType(getNewId(),"an alarm alert starts");
+    public EventType evAlarmSnooze = new EventType(getNewId(),"an alarm snoozed");
+    public EventType evAlarmDismiss = new EventType(getNewId(),"an alarm dismissed");
+    public EventType evAlarmDone = new EventType(getNewId(),"an alarm stopped");
+    public EventType evCallInc = new EventType(getNewId(),"a call comes in");
+    public EventType evButtonPress = new EventType(getNewId(),"a button is pressed"); // change to evOneInput? too restrictive now, could also be a gesture from myo?
+    public EventType evHeartRateReading = new EventType(getNewId(),"a heart rate reading comes in");
+    public EventType evTimeAt = new EventType(getNewId(),"time changes to a certain time"); // TODO other name
+    public EventType evLocationArrivingAt = new EventType(getNewId(),"arrived at a location");
+    public EventType evLocationLeaving = new EventType(getNewId(),"left a location");
 
 
     // StateTypes
-    private StateType stAlarmGoing = new StateType(getNewId(),"alarm going");
-    private StateType stCallIncGoing = new StateType(getNewId(),"call incoming going");
-    private StateType stTimeFromTo = new StateType(getNewId(),"time from to");
-    private StateType stLocationCurrentlyAt = new StateType(getNewId(),"currently at");
+    public StateType stAlarmGoing = new StateType(getNewId(),"an alarm is going");
+    public StateType stCallIncGoing = new StateType(getNewId(),"an incoming call is going");
+    public StateType stTimeFromTo = new StateType(getNewId(),"time is between two times");
+    public StateType stLocationCurrentlyAt = new StateType(getNewId(),"currently at a location");
 
 
     // ActionTypes
-    private ActionType acAlarmSnooze = new ActionType(getNewId(),"alarm snooze");
-    private ActionType acAlarmDismiss = new ActionType(getNewId(),"alarm dismiss");
-    private ActionType acAlarmVibrate = new ActionType(getNewId(),"alarm vibrate");
-    private ActionType acAlarmDisplay = new ActionType(getNewId(),"alarm display");
-    private ActionType acTimeDisplay = new ActionType(getNewId(),"time display");
-    private ActionType acNotify = new ActionType(getNewId(),"notify");
+    public ActionType acAlarmSnooze = new ActionType(getNewId(),"snooze an alarm");
+    public ActionType acAlarmDismiss = new ActionType(getNewId(),"dismiss an alarm");
+    public ActionType acAlarmVibrate = new ActionType(getNewId(),"vibrate an alarm");
+    public ActionType acAlarmDisplay = new ActionType(getNewId(),"display an alarm");
+    public ActionType acTimeDisplay = new ActionType(getNewId(),"display time");
+    public ActionType acNotify = new ActionType(getNewId(),"notify something");
+    public ActionType acStartCoffee = new ActionType(getNewId(),"start making coffee");
 
     // Devices
     private AndroidPhone mAndroidPhone;
@@ -92,6 +93,7 @@ public class DeviceManager {
         this.actionTypes.put(acAlarmDisplay.getId(),acAlarmDisplay);
         this.actionTypes.put(acTimeDisplay.getId(),acTimeDisplay);
         this.actionTypes.put(acNotify.getId(),acNotify);
+        this.actionTypes.put(acStartCoffee.getId(),acStartCoffee);
         this.mAndroidPhone = new AndroidPhone(ruleSystemService, this, evAlarmAlert, evAlarmSnooze, evAlarmDismiss, evAlarmDone, evCallInc, stAlarmGoing, stCallIncGoing, acAlarmSnooze, acAlarmDismiss,acNotify);
         this.mPebble = new Pebble(ruleSystemService, this, evButtonPress, evHeartRateReading, acAlarmVibrate, acAlarmDisplay, acTimeDisplay, acNotify);
         this.mClock = new Clock(ruleSystemService, this, evTimeAt, stTimeFromTo);

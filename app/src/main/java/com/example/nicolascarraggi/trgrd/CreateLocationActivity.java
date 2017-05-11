@@ -151,7 +151,6 @@ public class CreateLocationActivity extends RuleSystemBindingActivity {
                 location.setAddress(address);
                 location.setLatLng(latLng);
                 ruleSystemService.getDeviceManager().getGeofences().refrehGeofence(location);
-                // TODO add Place object?!
             }
         }
     }

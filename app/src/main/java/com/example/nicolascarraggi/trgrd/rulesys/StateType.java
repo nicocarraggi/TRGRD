@@ -9,12 +9,23 @@ import java.util.Set;
 public class StateType extends Type {
 
     private Set<State> states;
+    private State instanceState;
 
+    // SKELETON constructor
     public StateType(int id, String name) {
         super(id, name, TypeType.STATE);
     }
 
-    public Set<State> getEvents() {
+    // INSTANCE constructor
+    public StateType(int id, StateType stateType) {
+        super(id, stateType.getName(), TypeType.STATE);
+        this.devices = stateType.getDevices();
+        this.states = stateType.getStates();
+        this.isSkeleton = false;
+        this.instanceState = null;
+    }
+
+    public Set<State> getStates() {
         return states;
     }
 
@@ -24,5 +35,13 @@ public class StateType extends Type {
 
     public void removeState(State state){
         states.remove(state);
+    }
+
+    public State getInstanceState() {
+        return instanceState;
+    }
+
+    public void setInstanceState(State instanceState) {
+        this.instanceState = instanceState;
     }
 }

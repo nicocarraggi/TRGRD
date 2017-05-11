@@ -119,7 +119,6 @@ public class DevicesFragment extends TrgrdFragment implements MyOnItemClickListe
             this.devices = new HashSet<>();
             this.mAdapter.updateData(devices);
         } else {
-            // TODO also check if service is bound?
             showDevices();
         }
     }

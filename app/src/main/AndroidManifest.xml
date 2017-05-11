@@ -51,7 +51,9 @@
             android:value="AIzaSyAhyw7RLsV5caKzejK4ZAjuYD2N3GvczHc" />
 
         <activity android:name=".LocationDetailsActivity" />
-        <activity android:name=".rulesys.RuleTemplateDetailsActivity"></activity>
+        <activity android:name=".RuleTemplateDetailsActivity" />
+        <activity android:name=".CreateRuleFromTemplateActivity" />
+        <activity android:name=".ShowRuleTemplatesActivity"></activity>
     </application>
 
 </manifest>

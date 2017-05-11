@@ -1,10 +1,12 @@
-package com.example.nicolascarraggi.trgrd.rulesys;
+package com.example.nicolascarraggi.trgrd;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -12,6 +14,8 @@ import com.example.nicolascarraggi.trgrd.R;
 import com.example.nicolascarraggi.trgrd.RuleSystemBindingActivity;
 import com.example.nicolascarraggi.trgrd.adapters.MyOnItemClickListener;
 import com.example.nicolascarraggi.trgrd.adapters.TypesAdapter;
+import com.example.nicolascarraggi.trgrd.rulesys.RuleTemplate;
+import com.example.nicolascarraggi.trgrd.rulesys.Type;
 
 public class RuleTemplateDetailsActivity extends RuleSystemBindingActivity implements MyOnItemClickListener<Type> {
 
@@ -65,6 +69,35 @@ public class RuleTemplateDetailsActivity extends RuleSystemBindingActivity imple
 
         rvTriggers.setAdapter(triggerTypesAdapter);
         rvActions.setAdapter(actionTypesAdapter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_ruletemplate_details, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_ruletemplate_select) {
+            // TODO CHANGE
+/*            Intent intent = null;
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(RuleDetailsOpenActivity.this);
+            String rulesMethodology = prefs.getString("rule_methodology_list", "2");
+            if (rulesMethodology.equals("2")){
+                intent = new Intent(RuleDetailsOpenActivity.this, CreateRuleOpenActivity.class);
+                intent.putExtra("iscreate",false);
+                intent.putExtra("ruleid",ruleId);
+            }
+            if(intent != null) startActivity(intent);*/
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

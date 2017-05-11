@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.nicolascarraggi.trgrd.RuleTemplateDetailsActivity">
+    <item
+        android:id="@+id/action_ruletemplate_select"
+        android:orderInCategory="100"
+        android:title="Select"
+        app:showAsAction="always" />
+</menu>

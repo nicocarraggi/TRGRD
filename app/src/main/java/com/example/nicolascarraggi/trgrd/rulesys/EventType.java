@@ -9,9 +9,20 @@ import java.util.Set;
 public class EventType extends Type {
 
     private Set<Event> events;
+    private Event instanceEvent;
 
+    // SKELETON constructor
     public EventType(int id, String name) {
         super(id, name, TypeType.EVENT);
+    }
+
+    // INSTANCE constructor
+    public EventType(int id, EventType eventType) {
+        super(id, eventType.getName(), TypeType.EVENT);
+        this.devices = eventType.getDevices();
+        this.events = eventType.getEvents();
+        this.isSkeleton = false;
+        this.instanceEvent = null;
     }
 
     public Set<Event> getEvents() {
@@ -26,4 +37,11 @@ public class EventType extends Type {
         events.remove(event);
     }
 
+    public Event getInstanceEvent() {
+        return instanceEvent;
+    }
+
+    public void setInstanceEvent(Event instanceEvent) {
+        this.instanceEvent = instanceEvent;
+    }
 }

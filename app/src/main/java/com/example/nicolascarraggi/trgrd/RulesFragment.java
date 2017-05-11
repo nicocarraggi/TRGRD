@@ -23,6 +23,10 @@ import static java.lang.Integer.getInteger;
 
 public class RulesFragment extends TrgrdFragment  implements MyOnItemClickListener<Rule> {
 
+    public static final String RULE_METHODOLOGY_CONFIG = "0";
+    public static final String RULE_METHODOLOGY_TEMPLATE = "1";
+    public static final String RULE_METHODOLOGY_OPEN = "2";
+
     private Set<Rule> rules;
     private RecyclerView mRecyclerView;
     private RulesAdapter mAdapter;
@@ -68,7 +72,9 @@ public class RulesFragment extends TrgrdFragment  implements MyOnItemClickListen
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(RulesFragment.this.getContext());
                 String rulesMethodology = prefs.getString("rule_methodology_list", "2");
                 Log.d("TRGRD","RulesFragment rulesMethodology = "+rulesMethodology);
-                if (rulesMethodology.equals("2")){
+                if (rulesMethodology.equals(RULE_METHODOLOGY_TEMPLATE)){
+                    intent = new Intent(RulesFragment.this.getContext(), ShowRuleTemplatesActivity.class);
+                } else if (rulesMethodology.equals(RULE_METHODOLOGY_OPEN)){
                     intent = new Intent(RulesFragment.this.getContext(), CreateRuleOpenActivity.class);
                 }
                 if(intent != null) startActivity(intent);
@@ -104,7 +110,6 @@ public class RulesFragment extends TrgrdFragment  implements MyOnItemClickListen
             this.rules = new HashSet<>();
             this.mAdapter.updateData(rules);
         } else {
-            // TODO also check if service is bound?
             showRules();
         }
     }

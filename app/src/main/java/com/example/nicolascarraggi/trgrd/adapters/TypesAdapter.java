@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.nicolascarraggi.trgrd.R;
@@ -33,6 +34,7 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
     }
 
     private void sort(){
+        // TODO put Events above States
         // Sorting on name ... TODO other filters?
         Collections.sort(this.mDataset, new Comparator<Type>() {
             @Override
@@ -75,15 +77,17 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
 
         private MyOnItemClickListener<Type> myOnItemClickListener;
         private ImageView ivTypeDelete;
-        private TextView tvTypeName, tvTypeIntro, tvTypeOutro;
+        private TextView tvTypeName, tvTypeIntro;
+        private LinearLayout llType;
 
         public TypeViewHolder(View itemView) {
             super(itemView);
             this.tvTypeName = (TextView) itemView.findViewById(R.id.tvTypeName);
             this.tvTypeIntro = (TextView) itemView.findViewById(R.id.tvTypeIntro);
-            this.tvTypeOutro = (TextView) itemView.findViewById(R.id.tvTypeOutro);
             this.ivTypeDelete = (ImageView) itemView.findViewById(R.id.ivTypeDelete);
+            this.llType = (LinearLayout) itemView.findViewById(R.id.llType);
             tvTypeName.setOnClickListener(this);
+            ivTypeDelete.setOnClickListener(this);
         }
 
         public void bind(Type type, MyOnItemClickListener listener, int position){
@@ -94,13 +98,15 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
             }
             if(type.isEventType()){
                 tvTypeIntro.setText("When");
-                tvTypeOutro.setText(".");
+                llType.setBackgroundResource(R.color.colorEvent);
             } else if(type.isStateType()){
                 tvTypeIntro.setText("While");
-                tvTypeOutro.setText("is true.");
+                llType.setBackgroundResource(R.color.colorState);
             } else if (type.isActionType()){
+                // First item show "Then"
+                // TODO Other items show "And"
                 tvTypeIntro.setText("Then");
-                tvTypeOutro.setText(".");
+                llType.setBackgroundResource(R.color.colorAction);
             }
         }
 

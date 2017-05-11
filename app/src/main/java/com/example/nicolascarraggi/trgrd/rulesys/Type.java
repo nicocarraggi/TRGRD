@@ -11,12 +11,14 @@ public class Type {
     private int id;
     private String name;
     private TypeType typeType;
-    private Set<Device> devices;
+    protected Set<Device> devices;
+    protected boolean isSkeleton;
 
     public Type(int id, String name, TypeType typeType) {
         this.id = id;
         this.name = name;
         this.typeType = typeType;
+        this.isSkeleton = true;
     }
 
     public int getId() {
@@ -51,12 +53,20 @@ public class Type {
         return devices;
     }
 
+    public void setDevices(Set<Device> devices) {
+        this.devices = devices;
+    }
+
     public void addDevice(Device device){
         devices.add(device);
     }
 
     public void removeDevice(Device device){
         devices.remove(device);
+    }
+
+    public boolean isSkeleton() {
+        return isSkeleton;
     }
 
     public enum TypeType {
