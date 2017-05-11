@@ -25,8 +25,7 @@ public class RuleTemplate {
 
     // SKELETON constructor
     public RuleTemplate(int id, String name, ArrayList<Type> triggerTypes, ArrayList<Type> actionTypes) {
-        this.id = id;
-        this.name = name;
+        this(id,name);
         this.triggerTypes = triggerTypes;
         this.actionTypes = actionTypes;
     }
@@ -34,8 +33,7 @@ public class RuleTemplate {
     // INSTANCE constructor ( also creates instances of every type )
     // *** pass DeviceManager to get new IDs for type instances...
     public RuleTemplate(int id, RuleTemplate ruleTemplate, DeviceManager deviceManager){
-        this.id = id;
-        this.name = ruleTemplate.getName();
+        this(id,ruleTemplate.getName());
         this.isSkeleton = false;
         this.basedOn = ruleTemplate;
         for (Type t: ruleTemplate.getTriggerTypes()){

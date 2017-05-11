@@ -85,7 +85,7 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
 
         // Get extra int ID! IF real id (>=0), edit rule!!!
         this.isCreate = getIntent().getBooleanExtra("iscreate",true);
-        this.id = getIntent().getIntExtra("ruleid",2);
+        this.id = getIntent().getIntExtra("ruleid",2); // TODO replace with default ERROR VALUE ? (-1)
 
         this.etName = (EditText) findViewById(R.id.etCreateRuleOpenName);
         this.bAddAction = (Button) findViewById(R.id.bCreateRuleOpenAddAction);

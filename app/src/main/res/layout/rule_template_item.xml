@@ -12,7 +12,6 @@
 
         <ImageView
             android:id="@+id/ivRuleTemplate"
-            android:layout_marginLeft="4dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             app:srcCompat="@drawable/ic_description_black_24dp" />

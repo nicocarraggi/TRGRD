@@ -53,12 +53,12 @@ public class DeviceManager {
 
 
     // ActionTypes
-    public ActionType acAlarmSnooze = new ActionType(getNewId(),"snooze an alarm");
-    public ActionType acAlarmDismiss = new ActionType(getNewId(),"dismiss an alarm");
-    public ActionType acAlarmVibrate = new ActionType(getNewId(),"vibrate an alarm");
-    public ActionType acAlarmDisplay = new ActionType(getNewId(),"display an alarm");
+    public ActionType acAlarmSnooze = new ActionType(getNewId(),"snooze the alarm");
+    public ActionType acAlarmDismiss = new ActionType(getNewId(),"dismiss the alarm");
+    public ActionType acVibrate = new ActionType(getNewId(),"vibrate something");
+    public ActionType acAlarmDisplay = new ActionType(getNewId(),"display the alarm somewhere");
     public ActionType acTimeDisplay = new ActionType(getNewId(),"display time");
-    public ActionType acNotify = new ActionType(getNewId(),"notify something");
+    public ActionType acNotify = new ActionType(getNewId(),"notify something somewhere");
     public ActionType acStartCoffee = new ActionType(getNewId(),"start making coffee");
 
     // Devices
@@ -89,13 +89,13 @@ public class DeviceManager {
         this.stateTypes.put(stLocationCurrentlyAt.getId(),stLocationCurrentlyAt);
         this.actionTypes.put(acAlarmSnooze.getId(),acAlarmSnooze);
         this.actionTypes.put(acAlarmDismiss.getId(),acAlarmDismiss);
-        this.actionTypes.put(acAlarmVibrate.getId(),acAlarmVibrate);
+        this.actionTypes.put(acVibrate.getId(),acVibrate);
         this.actionTypes.put(acAlarmDisplay.getId(),acAlarmDisplay);
         this.actionTypes.put(acTimeDisplay.getId(),acTimeDisplay);
         this.actionTypes.put(acNotify.getId(),acNotify);
         this.actionTypes.put(acStartCoffee.getId(),acStartCoffee);
         this.mAndroidPhone = new AndroidPhone(ruleSystemService, this, evAlarmAlert, evAlarmSnooze, evAlarmDismiss, evAlarmDone, evCallInc, stAlarmGoing, stCallIncGoing, acAlarmSnooze, acAlarmDismiss,acNotify);
-        this.mPebble = new Pebble(ruleSystemService, this, evButtonPress, evHeartRateReading, acAlarmVibrate, acAlarmDisplay, acTimeDisplay, acNotify);
+        this.mPebble = new Pebble(ruleSystemService, this, evButtonPress, evHeartRateReading, acVibrate, acAlarmDisplay, acTimeDisplay, acNotify);
         this.mClock = new Clock(ruleSystemService, this, evTimeAt, stTimeFromTo);
         this.mGeofences = new Geofences(ruleSystemService, this, evLocationArrivingAt, evLocationLeaving, stLocationCurrentlyAt);
         this.devices.put(mAndroidPhone.getId(),mAndroidPhone);

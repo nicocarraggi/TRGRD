@@ -51,7 +51,7 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
 
         // Get extra int ID! IF real id (>=0), edit rule!!!
         this.isCreate = getIntent().getBooleanExtra("iscreate",true);
-        this.id = getIntent().getIntExtra("ruletemplateinstanceid",2);
+        this.id = getIntent().getIntExtra("ruletemplateinstanceid",2); // TODO replace with default ERROR VALUE ? (-1)
 
         this.etName = (EditText) findViewById(R.id.etCreateRuleFromTemplateName);
         this.rvTriggers = (RecyclerView) findViewById(R.id.rvCreateRuleFromTemplateTriggers);
@@ -93,7 +93,7 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
                 }
                 // persist delete of instances!
                 //persistDeleteInstances();
-                finish();
+                //finish();
             } else {
                 Toast.makeText(CreateRuleFromTemplateActivity.this, "A rule requires a name, 1 or more triggers and 1 or more actions!", Toast.LENGTH_LONG).show();
             }
@@ -118,14 +118,16 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
             ActionBar ab = getSupportActionBar();
             if (isCreate) {
                 ab.setTitle("Create rule");
+                ruleTemplateInstance = ruleSystemService.getRuleTemplateInstance(id);
+                etName.setText(ruleTemplateInstance.getName());
             } else {
                 ab.setTitle("Edit rule");
                 ruleTemplateInstance = ruleSystemService.getRuleTemplateInstance(id);
                 etName.setText(ruleTemplateInstance.getName());
             }
 
-            triggerTypesAdapter = new TypesAdapter(this, ruleTemplateInstance.getTriggerTypes(), true);
-            actionTypesAdapter = new TypesAdapter(this, ruleTemplateInstance.getActionTypes(), true);
+            triggerTypesAdapter = new TypesAdapter(this, ruleTemplateInstance.getTriggerTypes(), true, true);
+            actionTypesAdapter = new TypesAdapter(this, ruleTemplateInstance.getActionTypes(), true, true);
 
             // use this setting to improve performance if you know that changes
             // in content do not change the layout size of the RecyclerView
@@ -150,6 +152,6 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
 
     @Override
     public void onItemClick(View view, Type item) {
-
+        // TODO
     }
 }

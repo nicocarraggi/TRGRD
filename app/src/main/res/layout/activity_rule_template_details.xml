@@ -15,7 +15,6 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
@@ -26,7 +25,7 @@
 
     <!--Rule Triggers -->
 
-    <LinearLayout
+<!--    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
@@ -45,12 +44,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+    </LinearLayout>-->
 
-    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvRuleTemplateDetailsTriggers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <!--Rule Actions -->
 
-    <LinearLayout
+<!--    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
@@ -69,6 +72,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-    </LinearLayout>
+    </LinearLayout>-->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvRuleTemplateDetailsActions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

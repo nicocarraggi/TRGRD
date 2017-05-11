@@ -18,8 +18,9 @@
         android:layout_marginBottom="10dp">
 
         <TextView
-            android:layout_width="76dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingRight="5dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Name"/>
 
@@ -31,24 +32,26 @@
 
     </LinearLayout>
 
-    <TextView
+<!--    <TextView
         android:layout_width="76dp"
         android:layout_marginBottom="7dp"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Triggers"/>
+        android:text="Triggers"/>-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvCreateRuleFromTemplateTriggers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+<!--
     <TextView
         android:layout_width="76dp"
         android:layout_marginBottom="7dp"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Actions"/>
+-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvCreateRuleFromTemplateActions"

@@ -50,7 +50,7 @@ public class RuleDetailsOpenActivity extends RuleSystemBindingActivity implement
         ab.setTitle("Rule");
 
         Intent intent = getIntent();
-        this.ruleId = intent.getIntExtra("ruleid",0);
+        this.ruleId = intent.getIntExtra("ruleid",0); // TODO replace with default ERROR VALUE ? (-1)
 
         tvRuleDetailsName = (TextView) findViewById(R.id.tvRuleDetailsName);
         rvRuleDetailsEvents = (RecyclerView) findViewById(R.id.rvRuleDetailsEvents);

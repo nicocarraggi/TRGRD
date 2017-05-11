@@ -28,6 +28,7 @@ public class LocationDetailsActivity extends RuleSystemBindingActivity {
 
         Intent intent = getIntent();
         this.locationId = intent.getStringExtra("locationid");
+        // TODO IF empty string -> ID ERROR?
 
         tvName = (TextView) findViewById(R.id.tvLocationDetailsName);
         tvAddress = (TextView) findViewById(R.id.tvLocationDetailsAddress);

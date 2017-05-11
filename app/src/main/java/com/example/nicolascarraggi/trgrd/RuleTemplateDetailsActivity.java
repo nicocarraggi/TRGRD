@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.nicolascarraggi.trgrd.adapters.MyOnItemClickListener;
 import com.example.nicolascarraggi.trgrd.adapters.TypesAdapter;
+import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
 import com.example.nicolascarraggi.trgrd.rulesys.RuleTemplate;
 import com.example.nicolascarraggi.trgrd.rulesys.Type;
 
@@ -36,7 +37,7 @@ public class RuleTemplateDetailsActivity extends RuleSystemBindingActivity imple
         ab.setTitle("Rule template");
 
         Intent intent = getIntent();
-        this.ruleTemplateId = intent.getIntExtra("ruletemplateid",0);
+        this.ruleTemplateId = intent.getIntExtra("ruletemplateid",0); // TODO replace with default ERROR VALUE ? (-1)
 
         tvName = (TextView) findViewById(R.id.tvRuleTemplateDetailsName);
         rvTriggers = (RecyclerView) findViewById(R.id.rvRuleTemplateDetailsTriggers);
@@ -51,8 +52,8 @@ public class RuleTemplateDetailsActivity extends RuleSystemBindingActivity imple
 
         tvName.setText(ruleTemplate.getName());
 
-        triggerTypesAdapter = new TypesAdapter(this,ruleTemplate.getTriggerTypes(),false);
-        actionTypesAdapter = new TypesAdapter(this,ruleTemplate.getActionTypes(),false);
+        triggerTypesAdapter = new TypesAdapter(this,ruleTemplate.getTriggerTypes(),false,false);
+        actionTypesAdapter = new TypesAdapter(this,ruleTemplate.getActionTypes(),false,false);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -83,16 +84,14 @@ public class RuleTemplateDetailsActivity extends RuleSystemBindingActivity imple
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_ruletemplate_select) {
-            // TODO CHANGE
-/*            Intent intent = null;
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(RuleDetailsOpenActivity.this);
-            String rulesMethodology = prefs.getString("rule_methodology_list", "2");
-            if (rulesMethodology.equals("2")){
-                intent = new Intent(RuleDetailsOpenActivity.this, CreateRuleOpenActivity.class);
-                intent.putExtra("iscreate",false);
-                intent.putExtra("ruleid",ruleId);
-            }
-            if(intent != null) startActivity(intent);*/
+            // create new ruleTemplate instance
+            DeviceManager deviceManager = ruleSystemService.getDeviceManager();
+            RuleTemplate instance = new RuleTemplate(deviceManager.getNewId(),ruleTemplate,deviceManager);
+            ruleSystemService.addRuleTemplateInstance(instance);
+            Intent intent = new Intent(RuleTemplateDetailsActivity.this, CreateRuleFromTemplateActivity.class);
+            intent.putExtra("iscreate",true);
+            intent.putExtra("ruletemplateinstanceid",instance.getId());
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
