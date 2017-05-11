@@ -95,4 +95,21 @@ public class RuleTemplate {
         actionTypes.add(type);
     }
 
+    private boolean checkValidTypes(ArrayList<Type> types){
+        for (Type t: types){
+            if(t.isSkeleton() || !t.isHasInstanceItem()){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isInstanceValid(){
+        if (this.isSkeleton){
+            return false;
+        } else {
+            return (checkValidTypes(triggerTypes) && checkValidTypes(actionTypes));
+        }
+    }
+
 }

@@ -173,7 +173,7 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/ivTypeReplace"
+                android:id="@+id/ivTypeInstanceReplace"
                 android:src="@drawable/ic_autorenew_black_24dp"
                 android:layout_weight="0"
                 android:layout_width="40dp"

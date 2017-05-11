@@ -23,6 +23,7 @@ public class EventType extends Type {
         this.events = eventType.getEvents();
         this.isSkeleton = false;
         this.instanceEvent = null;
+        this.hasInstanceItem = false;
     }
 
     public Set<Event> getEvents() {
@@ -42,6 +43,7 @@ public class EventType extends Type {
     }
 
     public void setInstanceEvent(Event instanceEvent) {
+        this.hasInstanceItem = (instanceEvent != null);
         this.instanceEvent = instanceEvent;
     }
 }

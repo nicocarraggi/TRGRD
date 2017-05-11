@@ -23,6 +23,7 @@ public class ActionType extends Type {
         this.actions = actionType.getActions();
         this.isSkeleton = false;
         this.instanceAction = null;
+        this.hasInstanceItem = false;
     }
 
     public Set<Action> getActions() {
@@ -42,6 +43,7 @@ public class ActionType extends Type {
     }
 
     public void setInstanceAction(Action action) {
+        this.hasInstanceItem = (action != null);
         this.instanceAction = action;
     }
 }

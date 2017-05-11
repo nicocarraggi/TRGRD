@@ -10,8 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.nicolascarraggi.trgrd.R;
-import com.example.nicolascarraggi.trgrd.RuleSystemBindingActivity;
 import com.example.nicolascarraggi.trgrd.adapters.MyOnItemClickListener;
 import com.example.nicolascarraggi.trgrd.adapters.TypesAdapter;
 import com.example.nicolascarraggi.trgrd.rulesys.RuleTemplate;

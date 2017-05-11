@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -76,29 +77,42 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
     public class TypeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private MyOnItemClickListener<Type> myOnItemClickListener;
-        private ImageView ivTypeDelete;
-        private TextView tvTypeName, tvTypeIntro;
-        private LinearLayout llType;
+        private TextView tvTypeName, tvTypeIntro, tvTypeInstanceType, tvTypeInstanceName,
+                            tvTypeInstanceValueOne, tvTypeInstanceValueTwo;
+        private ImageView ivTypeInstanceDevice,ivTypeInstance,ivTypeInstanceReplace;
+        private Button bTypeInstanceValueOne, bTypeInstanceValueTwo;
+        private LinearLayout llType, llTypeInstance;
 
         public TypeViewHolder(View itemView) {
             super(itemView);
             this.tvTypeName = (TextView) itemView.findViewById(R.id.tvTypeName);
             this.tvTypeIntro = (TextView) itemView.findViewById(R.id.tvTypeIntro);
-            this.ivTypeDelete = (ImageView) itemView.findViewById(R.id.ivTypeDelete);
+            this.tvTypeInstanceType = (TextView) itemView.findViewById(R.id.tvTypeInstanceType);
+            this.tvTypeInstanceName = (TextView) itemView.findViewById(R.id.tvTypeInstanceName);
+            this.tvTypeInstanceValueOne = (TextView) itemView.findViewById(R.id.tvTypeInstanceValueOne);
+            this.tvTypeInstanceValueTwo = (TextView) itemView.findViewById(R.id.tvTypeInstanceValueTwo);
+            this.ivTypeInstanceDevice = (ImageView) itemView.findViewById(R.id.ivTypeInstanceDevice);
+            this.ivTypeInstance = (ImageView) itemView.findViewById(R.id.ivTypeInstance);
+            this.ivTypeInstanceReplace = (ImageView) itemView.findViewById(R.id.ivTypeInstanceReplace);
+            this.bTypeInstanceValueOne = (Button) itemView.findViewById(R.id.bTypeInstanceValueOne);
+            this.bTypeInstanceValueTwo = (Button) itemView.findViewById(R.id.bTypeInstanceValueTwo);
             this.llType = (LinearLayout) itemView.findViewById(R.id.llType);
+            this.llTypeInstance = (LinearLayout) itemView.findViewById(R.id.llTypeInstance);
+
             tvTypeName.setOnClickListener(this);
-            ivTypeDelete.setOnClickListener(this);
+            //ivTypeDelete.setOnClickListener(this);
         }
 
         public void bind(Type type, MyOnItemClickListener listener, int position){
             this.myOnItemClickListener = listener;
             this.tvTypeName.setText(type.getName());
-            if(!mEdit && ivTypeDelete != null){
-                ivTypeDelete.setVisibility(View.GONE);
+            if(!mEdit){
+                llTypeInstance.setVisibility(View.GONE);
             }
             if(type.isEventType()){
                 tvTypeIntro.setText("When");
                 llType.setBackgroundResource(R.color.colorEvent);
+
             } else if(type.isStateType()){
                 tvTypeIntro.setText("While");
                 llType.setBackgroundResource(R.color.colorState);

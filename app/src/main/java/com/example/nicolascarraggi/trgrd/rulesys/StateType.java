@@ -23,6 +23,7 @@ public class StateType extends Type {
         this.states = stateType.getStates();
         this.isSkeleton = false;
         this.instanceState = null;
+        this.hasInstanceItem = false;
     }
 
     public Set<State> getStates() {
@@ -42,6 +43,7 @@ public class StateType extends Type {
     }
 
     public void setInstanceState(State instanceState) {
+        this.hasInstanceItem = (instanceState != null);
         this.instanceState = instanceState;
     }
 }

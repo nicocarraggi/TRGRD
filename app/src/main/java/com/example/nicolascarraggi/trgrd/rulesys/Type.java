@@ -13,12 +13,14 @@ public class Type {
     private TypeType typeType;
     protected Set<Device> devices;
     protected boolean isSkeleton;
+    protected boolean hasInstanceItem;
 
     public Type(int id, String name, TypeType typeType) {
         this.id = id;
         this.name = name;
         this.typeType = typeType;
         this.isSkeleton = true;
+        this.hasInstanceItem = false;
     }
 
     public int getId() {
@@ -67,6 +69,10 @@ public class Type {
 
     public boolean isSkeleton() {
         return isSkeleton;
+    }
+
+    public boolean isHasInstanceItem() {
+        return hasInstanceItem;
     }
 
     public enum TypeType {
