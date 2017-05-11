@@ -108,6 +108,7 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
             if(!mEdit && ivStateDelete != null){
                 ivStateDelete.setVisibility(View.GONE);
             }
+            Log.d("TRGRD","StatesAdapter state: name = "+state.getName()+ ", id = "+state.getId());
             if(state.isSkeleton()){
                 // Hide unwanted views!
                 if(tvStateValueOne != null) tvStateValueOne.setVisibility(View.GONE);
@@ -142,7 +143,6 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
                 }
             } else if(state.isLocationState()) {
                 LocationState locationState = (LocationState) state;
-                Log.d("TRGRD","StatesAdapter print location state "+locationState.getName());
                 if (mEdit) {
                     // TODO really needed?
                     if (tvStateValueOne != null
@@ -156,14 +156,14 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
                         tvStateName.setVisibility(View.GONE);
                         tvStateValueOne.setText("Currently at: ");
                         bStateValueOne.setText(locationState.getLocation().getName());
-                    } else {
+                    }
+                } else {
                         tvStateName.setText("Currently at:   " + locationState.getLocation().getName());
                         // Hide unwanted views!
                         if (tvStateValueOne != null) tvStateValueOne.setVisibility(View.GONE);
                         if (bStateValueOne != null) bStateValueOne.setVisibility(View.GONE);
                         if (tvStateValueTwo != null) tvStateValueTwo.setVisibility(View.GONE);
                         if (bStateValueTwo != null) bStateValueTwo.setVisibility(View.GONE);
-                    }
                 }
             }
         }

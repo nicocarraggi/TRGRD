@@ -26,7 +26,7 @@ import com.example.nicolascarraggi.trgrd.rulesys.Type;
 public class AddItemFromTypeActivity extends RuleSystemBindingActivity implements MyActionOnItemClickListener, MyEventOnItemClickListener, MyStateOnItemClickListener {
 
     private String typeType;
-    private int typeId,typeInstanceId;
+    private int typeInstanceId;
     private Type type;
     private EventType eventType;
     private StateType stateType;
@@ -45,7 +45,6 @@ public class AddItemFromTypeActivity extends RuleSystemBindingActivity implement
 
         this.typeType = getIntent().getStringExtra("type");
         this.typeInstanceId = getIntent().getIntExtra("typeinstanceid",0); // TODO replace with default ERROR VALUE ? (-1)
-        this.typeId = getIntent().getIntExtra("typeid",0); // TODO replace with default ERROR VALUE ? (-1)
 
         ActionBar ab = getSupportActionBar();
         ab.setTitle("Add "+typeType);
@@ -64,20 +63,23 @@ public class AddItemFromTypeActivity extends RuleSystemBindingActivity implement
         rvItems.setLayoutManager(mLayoutManagerItems);
 
         if (typeType.equals("event")){
-            eventType = ruleSystemService.getDeviceManager().getEventType(typeId);
+            eventType = ruleSystemService.getDeviceManager().getEventTypeInstance(typeInstanceId);
             Log.d("TRGRD","AddItemFromTypeActivity eventType: id = "+eventType.getId()+", name = "+eventType.getName());
             eventsAdapter = new EventsAdapter(this, eventType.getEvents(),false);
             rvItems.setAdapter(eventsAdapter);
+            tvItems.setText("Events of type: \""+eventType.getName()+"\"");
         } else if(typeType.equals("state")){
-            stateType = ruleSystemService.getDeviceManager().getStateType(typeId);
+            stateType = ruleSystemService.getDeviceManager().getStateTypeInstance(typeInstanceId);
             Log.d("TRGRD","AddItemFromTypeActivity stateType: id = "+stateType.getId()+", name = "+stateType.getName());
             statesAdapter = new StatesAdapter(this, stateType.getStates(),false);
             rvItems.setAdapter(statesAdapter);
+            tvItems.setText("States of type: \""+stateType.getName()+"\"");
         } else if(typeType.equals("action")){
-            actionType = ruleSystemService.getDeviceManager().getActionType(typeId);
+            actionType = ruleSystemService.getDeviceManager().getActionTypeInstance(typeInstanceId);
             Log.d("TRGRD","AddItemFromTypeActivity actionType: id = "+actionType.getId()+", name = "+actionType.getName());
             actionsAdapter = new ActionsAdapter(this, actionType.getActions(),false);
             rvItems.setAdapter(actionsAdapter);
+            tvItems.setText("Actions of type: \""+actionType.getName()+"\"");
         }
 
     }
@@ -89,6 +91,7 @@ public class AddItemFromTypeActivity extends RuleSystemBindingActivity implement
                 Intent intent = new Intent();
                 intent.putExtra("devid", item.getDevice().getId());
                 intent.putExtra("id", item.getId());
+                intent.putExtra("typeinstanceid",typeInstanceId);
                 setResult(RESULT_OK, intent);
                 finish();
                 break;
@@ -102,6 +105,7 @@ public class AddItemFromTypeActivity extends RuleSystemBindingActivity implement
                 Intent intent = new Intent();
                 intent.putExtra("devid", item.getDevice().getId());
                 intent.putExtra("id", item.getId());
+                intent.putExtra("typeinstanceid",typeInstanceId);
                 setResult(RESULT_OK, intent);
                 finish();
                 break;
@@ -115,6 +119,7 @@ public class AddItemFromTypeActivity extends RuleSystemBindingActivity implement
                 Intent intent = new Intent();
                 intent.putExtra("devid", item.getDevice().getId());
                 intent.putExtra("id", item.getId());
+                intent.putExtra("typeinstanceid",typeInstanceId);
                 setResult(RESULT_OK, intent);
                 finish();
                 break;

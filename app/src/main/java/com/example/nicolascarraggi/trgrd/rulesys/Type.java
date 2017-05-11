@@ -23,7 +23,6 @@ public class Type {
         this.typeType = typeType;
         this.isSkeleton = true;
         this.hasInstanceItem = false;
-        Log.d("TRGRD","Type constructor: id = "+id+", name = "+name);
     }
 
     public int getId() {

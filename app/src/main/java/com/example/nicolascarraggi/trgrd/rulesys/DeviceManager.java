@@ -31,6 +31,9 @@ public class DeviceManager {
     private HashMap<Integer,EventType> eventTypes;
     private HashMap<Integer,StateType> stateTypes;
     private HashMap<Integer,ActionType> actionTypes;
+    private HashMap<Integer,EventType> eventTypeInstances;
+    private HashMap<Integer,StateType> stateTypeInstances;
+    private HashMap<Integer,ActionType> actionTypeInstances;
 
     // EventTypes
     public EventType evAlarmAlert = new EventType(getNewId(),"an alarm alert starts");
@@ -73,6 +76,9 @@ public class DeviceManager {
         this.eventTypes = new HashMap<>();
         this.stateTypes = new HashMap<>();
         this.actionTypes = new HashMap<>();
+        this.eventTypeInstances = new HashMap<>();
+        this.stateTypeInstances = new HashMap<>();
+        this.actionTypeInstances = new HashMap<>();
         this.eventTypes.put(evAlarmAlert.getId(),evAlarmAlert);
         this.eventTypes.put(evAlarmSnooze.getId(),evAlarmSnooze);
         this.eventTypes.put(evAlarmDismiss.getId(),evAlarmDismiss);
@@ -150,6 +156,42 @@ public class DeviceManager {
 
     public ActionType getActionType(int id){
         return actionTypes.get(id);
+    }
+
+    public HashMap<Integer, EventType> getEventTypeInstances() {
+        return eventTypeInstances;
+    }
+
+    public EventType getEventTypeInstance(int id){
+        return eventTypeInstances.get(id);
+    }
+
+    public void addEventTypeInstance(EventType instance){
+        eventTypeInstances.put(instance.getId(),instance);
+    }
+
+    public HashMap<Integer, StateType> getStateTypeInstances() {
+        return stateTypeInstances;
+    }
+
+    public StateType getStateTypeInstance(int id){
+        return stateTypeInstances.get(id);
+    }
+
+    public void addStateTypeInstance(StateType instance){
+        stateTypeInstances.put(instance.getId(),instance);
+    }
+
+    public HashMap<Integer, ActionType> getActionTypeInstances() {
+        return actionTypeInstances;
+    }
+
+    public ActionType getActionTypeInstance(int id){
+        return actionTypeInstances.get(id);
+    }
+
+    public void addActionTypeInstance(ActionType instance){
+        actionTypeInstances.put(instance.getId(),instance);
     }
 
     public Set<Event> getAllEvents(){

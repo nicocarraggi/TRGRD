@@ -164,8 +164,7 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
                 if(item.isEventType()){
                     Intent iEvents = new Intent(CreateRuleFromTemplateActivity.this, AddItemFromTypeActivity.class);
                     iEvents.putExtra("type","event");
-                    iEvents.putExtra("typeinstanceid",id);
-                    iEvents.putExtra("typeid",ruleTemplateInstance.getBasedOn().getId());
+                    iEvents.putExtra("typeinstanceid",item.getId());
                     if (item.isHasInstanceItem()){
                         startActivityForResult(iEvents, REQUEST_CODE_EVENT_RENEW);
                     } else {
@@ -174,8 +173,7 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
                 } else if(item.isStateType()){
                     Intent iStates = new Intent(CreateRuleFromTemplateActivity.this, AddItemFromTypeActivity.class);
                     iStates.putExtra("type","state");
-                    iStates.putExtra("typeinstanceid",id);
-                    iStates.putExtra("typeid",ruleTemplateInstance.getBasedOn().getId());
+                    iStates.putExtra("typeinstanceid",item.getId());
                     if (item.isHasInstanceItem()){
                         startActivityForResult(iStates, REQUEST_CODE_STATE_RENEW);
                     } else {
@@ -184,8 +182,7 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
                 } else if(item.isActionType()){
                     Intent iActions = new Intent(CreateRuleFromTemplateActivity.this, AddItemFromTypeActivity.class);
                     iActions.putExtra("type","action");
-                    iActions.putExtra("typeinstanceid",id);
-                    iActions.putExtra("typeid",ruleTemplateInstance.getBasedOn().getId());
+                    iActions.putExtra("typeinstanceid",item.getId());
                     if (item.isHasInstanceItem()){
                         startActivityForResult(iActions, REQUEST_CODE_ACTION_RENEW);
                     } else {

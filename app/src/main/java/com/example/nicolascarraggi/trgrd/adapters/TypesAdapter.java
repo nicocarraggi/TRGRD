@@ -287,6 +287,8 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
 
         @Override
         public void onClick(View view) {
+            Type type = mDataset.get(getAdapterPosition());
+            Log.d("TRGRD","TypesAdapter onClick type: id = "+type.getId()+", name = "+type.getName());
             myOnItemClickListener.onItemClick(view, mDataset.get(getAdapterPosition()));
         }
     }

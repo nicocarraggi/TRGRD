@@ -41,16 +41,22 @@ public class RuleTemplate {
         for (Type t: ruleTemplate.getTriggerTypes()){
             if (t.isEventType()){
                 EventType et = (EventType) t;
-                this.triggerTypes.add(new EventType(deviceManager.getNewId(),et));
+                EventType instance = new EventType(deviceManager.getNewId(),et);
+                this.triggerTypes.add(instance);
+                deviceManager.addEventTypeInstance(instance);
             } else if (t.isStateType()){
                 StateType st = (StateType) t;
-                this.triggerTypes.add(new StateType(deviceManager.getNewId(),st));
+                StateType instance = new StateType(deviceManager.getNewId(),st);
+                this.triggerTypes.add(instance);
+                deviceManager.addStateTypeInstance(instance);
             }
         }
         for (Type t: ruleTemplate.getActionTypes()){
             if (t.isActionType()){
                 ActionType at = (ActionType) t;
-                this.actionTypes.add(new ActionType(deviceManager.getNewId(),at));
+                ActionType instance = new ActionType(deviceManager.getNewId(),at);
+                this.actionTypes.add(instance);
+                deviceManager.addActionTypeInstance(instance);
             }
         }
     }
@@ -81,7 +87,6 @@ public class RuleTemplate {
 
     public void addTriggerType(Type type){
         triggerTypes.add(type);
-        Log.d("TRGRD","RuleTemplate type: id = "+type.getId()+", name = "+type.getName());
     }
 
     public ArrayList<Type> getActionTypes() {
