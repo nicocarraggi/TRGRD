@@ -1,5 +1,6 @@
 package com.example.nicolascarraggi.trgrd.rulesys;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -14,6 +15,7 @@ public class StateType extends Type {
     // SKELETON constructor
     public StateType(int id, String name) {
         super(id, name, TypeType.STATE);
+        this.states = new HashSet<>();
     }
 
     // INSTANCE constructor

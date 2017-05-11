@@ -1,5 +1,6 @@
 package com.example.nicolascarraggi.trgrd.rulesys;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -14,6 +15,7 @@ public class ActionType extends Type {
     // SKELETON constructor
     public ActionType(int id, String name) {
         super(id, name, TypeType.ACTION);
+        this.actions = new HashSet<>();
     }
 
     // INSTANCE constructor

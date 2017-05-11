@@ -168,7 +168,7 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
                 llTypeInstance.setBackgroundResource(R.color.colorEvent);
                 Event event = ((EventType) type).getInstanceEvent();
                 if(event == null){
-                    tvTypeInstanceName.setText("Add an event!");
+                    tvTypeInstanceName.setText("Add an event of this type!");
                     setViewHasInstance(false);
                     hideInstanceValueOne();
                     hideInstanceValueTwo();
@@ -212,7 +212,7 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
                 llTypeInstance.setBackgroundResource(R.color.colorState);
                 State state = ((StateType) type).getInstanceState();
                 if(state == null){
-                    tvTypeInstanceName.setText("Add a state!");
+                    tvTypeInstanceName.setText("Add a state of this type!");
                     setViewHasInstance(false);
                     hideInstanceValueOne();
                     hideInstanceValueTwo();
@@ -261,7 +261,7 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
                 llTypeInstance.setBackgroundResource(R.color.colorAction);
                 Action action = ((ActionType) type).getInstanceAction();
                 if(action == null){
-                    tvTypeInstanceName.setText("Add an action!");
+                    tvTypeInstanceName.setText("Add an action of this type!");
                     setViewHasInstance(false);
                     hideInstanceValueOne();
                     hideInstanceValueTwo();

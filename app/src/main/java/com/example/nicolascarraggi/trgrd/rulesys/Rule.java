@@ -220,6 +220,10 @@ public class Rule {
         this.actions = actions;
     }
 
+    public boolean isFromTemplate(){
+        return (ruleTemplateInstance != null);
+    }
+
     public void reset(Set<Event> events, Set<State> states, Set<Action> actions) {
         // remove all triggers & actions to unsubscribe all!
         for (Event e: this.events){

@@ -1,5 +1,8 @@
 package com.example.nicolascarraggi.trgrd.rulesys;
 
+import android.util.Log;
+
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -14,6 +17,7 @@ public class EventType extends Type {
     // SKELETON constructor
     public EventType(int id, String name) {
         super(id, name, TypeType.EVENT);
+        this.events = new HashSet<>();
     }
 
     // INSTANCE constructor

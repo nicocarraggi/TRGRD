@@ -1,5 +1,7 @@
 package com.example.nicolascarraggi.trgrd.rulesys;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -79,6 +81,7 @@ public class RuleTemplate {
 
     public void addTriggerType(Type type){
         triggerTypes.add(type);
+        Log.d("TRGRD","RuleTemplate type: id = "+type.getId()+", name = "+type.getName());
     }
 
     public ArrayList<Type> getActionTypes() {
@@ -91,6 +94,10 @@ public class RuleTemplate {
 
     public void addActionType(Type type){
         actionTypes.add(type);
+    }
+
+    public RuleTemplate getBasedOn() {
+        return basedOn;
     }
 
     private boolean checkValidTypes(ArrayList<Type> types){

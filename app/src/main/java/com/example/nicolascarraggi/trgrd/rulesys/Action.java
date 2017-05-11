@@ -28,6 +28,7 @@ public class Action {
         this.actionValueType = ActionValueType.NONE;
         this.device = device;
         this.actionType = actionType;
+        actionType.addAction(this);
         this.callable = callable;
         this.usedInRule = false;
         this.isSkeleton = true;

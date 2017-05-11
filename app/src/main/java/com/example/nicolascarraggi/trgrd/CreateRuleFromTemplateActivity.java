@@ -26,6 +26,13 @@ import java.util.Set;
 
 public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity implements MyOnItemClickListener<Type> {
 
+    private final int REQUEST_CODE_EVENT_ADD = 1;
+    private final int REQUEST_CODE_EVENT_RENEW = 2;
+    private final int REQUEST_CODE_STATE_ADD = 3;
+    private final int REQUEST_CODE_STATE_RENEW = 4;
+    private final int REQUEST_CODE_ACTION_ADD = 5;
+    private final int REQUEST_CODE_ACTION_RENEW = 6;
+
     private final int ASK_LOCATION_ARRIVING = 1;
     private final int ASK_LOCATION_LEAVING = 2;
     private final int ASK_LOCATION_CURRENTLY = 3;
@@ -152,6 +159,40 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
 
     @Override
     public void onItemClick(View view, Type item) {
-        // TODO
+        switch(view.getId()) {
+            case R.id.ivTypeInstanceReplace:
+                if(item.isEventType()){
+                    Intent iEvents = new Intent(CreateRuleFromTemplateActivity.this, AddItemFromTypeActivity.class);
+                    iEvents.putExtra("type","event");
+                    iEvents.putExtra("typeinstanceid",id);
+                    iEvents.putExtra("typeid",ruleTemplateInstance.getBasedOn().getId());
+                    if (item.isHasInstanceItem()){
+                        startActivityForResult(iEvents, REQUEST_CODE_EVENT_RENEW);
+                    } else {
+                        startActivityForResult(iEvents, REQUEST_CODE_EVENT_ADD);
+                    }
+                } else if(item.isStateType()){
+                    Intent iStates = new Intent(CreateRuleFromTemplateActivity.this, AddItemFromTypeActivity.class);
+                    iStates.putExtra("type","state");
+                    iStates.putExtra("typeinstanceid",id);
+                    iStates.putExtra("typeid",ruleTemplateInstance.getBasedOn().getId());
+                    if (item.isHasInstanceItem()){
+                        startActivityForResult(iStates, REQUEST_CODE_STATE_RENEW);
+                    } else {
+                        startActivityForResult(iStates, REQUEST_CODE_STATE_ADD);
+                    }
+                } else if(item.isActionType()){
+                    Intent iActions = new Intent(CreateRuleFromTemplateActivity.this, AddItemFromTypeActivity.class);
+                    iActions.putExtra("type","action");
+                    iActions.putExtra("typeinstanceid",id);
+                    iActions.putExtra("typeid",ruleTemplateInstance.getBasedOn().getId());
+                    if (item.isHasInstanceItem()){
+                        startActivityForResult(iActions, REQUEST_CODE_ACTION_RENEW);
+                    } else {
+                        startActivityForResult(iActions, REQUEST_CODE_ACTION_ADD);
+                    }
+                }
+                break;
+        }
     }
 }

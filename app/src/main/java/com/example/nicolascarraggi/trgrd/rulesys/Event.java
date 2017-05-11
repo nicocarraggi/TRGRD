@@ -25,6 +25,7 @@ public class Event {
         this.iconResource = iconResource;
         this.device = device;
         this.eventType = eventType;
+        if(eventType != null) eventType.addEvent(this); // eventType = null if this is a State
         this.usedInRule = false;
         this.eventValueType = EventValueType.NONE;
         this.isSkeleton = true;

@@ -1,5 +1,7 @@
 package com.example.nicolascarraggi.trgrd.rulesys;
 
+import android.util.Log;
+
 import java.util.Set;
 
 /**
@@ -21,6 +23,7 @@ public class Type {
         this.typeType = typeType;
         this.isSkeleton = true;
         this.hasInstanceItem = false;
+        Log.d("TRGRD","Type constructor: id = "+id+", name = "+name);
     }
 
     public int getId() {

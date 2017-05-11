@@ -53,7 +53,10 @@
         <activity android:name=".LocationDetailsActivity" />
         <activity android:name=".RuleTemplateDetailsActivity" />
         <activity android:name=".CreateRuleFromTemplateActivity" />
-        <activity android:name=".ShowRuleTemplatesActivity"></activity>
+        <activity android:name=".ShowRuleTemplatesActivity" />
+        <activity android:name=".AddEventFromEventTypeActivity" />
+        <activity android:name=".AddStateFromStateTypeActivity" />
+        <activity android:name=".AddItemFromTypeActivity"></activity>
     </application>
 
 </manifest>

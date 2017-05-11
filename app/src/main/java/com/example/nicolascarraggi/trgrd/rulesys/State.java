@@ -13,6 +13,7 @@ public class State extends Event {
     public State(int id, String name, int iconResource, Device device, StateType stateType, boolean state) {
         super(id, name, iconResource, device, null);
         this.stateType = stateType;
+        stateType.addState(this);
         this.state = state;
         this.stateValueType = State.StateValueType.NONE;
     }
