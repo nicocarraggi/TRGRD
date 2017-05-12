@@ -32,6 +32,14 @@ public class StateType extends Type {
         return states;
     }
 
+    public Set<State> getSkeletonStates() {
+        Set<State> skeletonStates = new HashSet<>();
+        for (State s: states){
+            if (s.isSkeleton()) skeletonStates.add(s);
+        }
+        return skeletonStates;
+    }
+
     public void addState(State state){
         states.add(state);
     }

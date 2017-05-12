@@ -64,20 +64,17 @@ public class AddItemFromTypeActivity extends RuleSystemBindingActivity implement
 
         if (typeType.equals("event")){
             eventType = ruleSystemService.getDeviceManager().getEventTypeInstance(typeInstanceId);
-            Log.d("TRGRD","AddItemFromTypeActivity eventType: id = "+eventType.getId()+", name = "+eventType.getName());
-            eventsAdapter = new EventsAdapter(this, eventType.getEvents(),false);
+            eventsAdapter = new EventsAdapter(this, eventType.getSkeletonEvents(),false);
             rvItems.setAdapter(eventsAdapter);
             tvItems.setText("Events of type: \""+eventType.getName()+"\"");
         } else if(typeType.equals("state")){
             stateType = ruleSystemService.getDeviceManager().getStateTypeInstance(typeInstanceId);
-            Log.d("TRGRD","AddItemFromTypeActivity stateType: id = "+stateType.getId()+", name = "+stateType.getName());
-            statesAdapter = new StatesAdapter(this, stateType.getStates(),false);
+            statesAdapter = new StatesAdapter(this, stateType.getSkeletonStates(),false);
             rvItems.setAdapter(statesAdapter);
             tvItems.setText("States of type: \""+stateType.getName()+"\"");
         } else if(typeType.equals("action")){
             actionType = ruleSystemService.getDeviceManager().getActionTypeInstance(typeInstanceId);
-            Log.d("TRGRD","AddItemFromTypeActivity actionType: id = "+actionType.getId()+", name = "+actionType.getName());
-            actionsAdapter = new ActionsAdapter(this, actionType.getActions(),false);
+            actionsAdapter = new ActionsAdapter(this, actionType.getSkeletonActions(),false);
             rvItems.setAdapter(actionsAdapter);
             tvItems.setText("Actions of type: \""+actionType.getName()+"\"");
         }

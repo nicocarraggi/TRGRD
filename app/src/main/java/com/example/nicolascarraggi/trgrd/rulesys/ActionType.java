@@ -32,6 +32,14 @@ public class ActionType extends Type {
         return actions;
     }
 
+    public Set<Action> getSkeletonActions() {
+        Set<Action> skeletonActions = new HashSet<>();
+        for (Action a: actions){
+            if (a.isSkeleton()) skeletonActions.add(a);
+        }
+        return skeletonActions;
+    }
+
     public void addAction(Action action){
         actions.add(action);
     }

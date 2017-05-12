@@ -34,6 +34,14 @@ public class EventType extends Type {
         return events;
     }
 
+    public Set<Event> getSkeletonEvents() {
+        Set<Event> skeletonEvents = new HashSet<>();
+        for (Event e: events){
+            if (e.isSkeleton()) skeletonEvents.add(e);
+        }
+        return skeletonEvents;
+    }
+
     public void addEvent(Event event){
         events.add(event);
     }

@@ -104,7 +104,6 @@ public class Event {
         return eventValueType == EventValueType.VALUE;
     }
 
-
     public boolean isTimeEvent(){
         return eventValueType == EventValueType.TIME;
     }
