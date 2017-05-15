@@ -81,4 +81,14 @@ public class Type {
         EVENT, STATE, ACTION
     }
 
+    @Override
+    public String toString() {
+        return "Type{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", typeType=" + typeType +
+                ", isSkeleton=" + isSkeleton +
+                ", hasInstanceItem=" + hasInstanceItem +
+                '}';
+    }
 }

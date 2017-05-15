@@ -73,4 +73,12 @@ public class State extends Event {
         NONE, VALUE, TIME, CALENDAR, LOCATION
     }
 
+    @Override
+    public String toString() {
+        return "State{" +
+                "stateType=" + stateType +
+                ", state=" + state +
+                ", stateValueType=" + stateValueType +
+                '}';
+    }
 }

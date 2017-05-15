@@ -56,4 +56,9 @@ public class StateType extends Type {
         this.hasInstanceItem = (instanceState != null);
         this.instanceState = instanceState;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

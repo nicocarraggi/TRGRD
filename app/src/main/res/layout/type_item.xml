@@ -116,6 +116,29 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                     <LinearLayout
+                        android:id="@+id/llTypeInstanceValueZero"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/tvTypeInstanceValueZero"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:text="at"
+                            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                        <Button
+                            android:id="@+id/bTypeInstanceValueZero"
+                            android:text="12:00"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llTypeInstanceValueOneTwo"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 

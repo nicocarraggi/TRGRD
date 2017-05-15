@@ -270,7 +270,7 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                 Action action = ruleSystemService.getDeviceManager().getDevice(devId).getAction(id);
                 if (action.isNotificationAction()){
                     askNotification((NotificationAction) action,null);
-                    // Return because state will be added later!
+                    // Return because action will be added later!
                     return;
                 }
                 actions.add(action);

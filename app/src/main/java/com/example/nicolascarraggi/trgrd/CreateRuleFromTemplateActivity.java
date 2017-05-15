@@ -3,11 +3,13 @@ package com.example.nicolascarraggi.trgrd;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,12 +20,14 @@ import android.widget.Toast;
 import com.example.nicolascarraggi.trgrd.adapters.MyOnItemClickListener;
 import com.example.nicolascarraggi.trgrd.adapters.TypesAdapter;
 import com.example.nicolascarraggi.trgrd.rulesys.Action;
+import com.example.nicolascarraggi.trgrd.rulesys.ActionType;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
 import com.example.nicolascarraggi.trgrd.rulesys.EventType;
 import com.example.nicolascarraggi.trgrd.rulesys.Location;
 import com.example.nicolascarraggi.trgrd.rulesys.LocationEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.LocationState;
 import com.example.nicolascarraggi.trgrd.rulesys.MyTime;
+import com.example.nicolascarraggi.trgrd.rulesys.NotificationAction;
 import com.example.nicolascarraggi.trgrd.rulesys.RuleTemplate;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
 import com.example.nicolascarraggi.trgrd.rulesys.StateType;
@@ -31,6 +35,7 @@ import com.example.nicolascarraggi.trgrd.rulesys.TimeEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeState;
 import com.example.nicolascarraggi.trgrd.rulesys.Type;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Clock;
+import com.example.nicolascarraggi.trgrd.rulesys.devices.NotificationDevice;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -239,6 +244,7 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
     private void addState(int itemId, int itemDevId, int itemTypeInstanceId){
         StateType stateTypeInstance = ruleSystemService.getDeviceManager().getStateTypeInstance(itemTypeInstanceId);
         State state = ruleSystemService.getDeviceManager().getDevice(itemDevId).getState(itemId);
+        Log.d("TRGRD","CreateRuleFromTemplateActivity addState state = "+state);
         if (state.isTimeState()){
             MyTime dFrom = new MyTime();
             MyTime dTo = new MyTime();
@@ -247,7 +253,8 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
             TimeState timeState = ((Clock) state.getDevice()).getTimeFromToInstance((TimeState) state,dFrom,dTo);
             state = timeState;
         } else if (state.isLocationState()){
-            askLocation(ASK_LOCATION_CURRENTLY,state, stateTypeInstance, null);
+            LocationState locationState = (LocationState) state;
+            askLocation(ASK_LOCATION_CURRENTLY,locationState, stateTypeInstance, null);
             // Return because state will be added later!
             return;
         }
@@ -256,7 +263,15 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
     }
 
     private void addAction(int itemId, int itemDevId, int itemTypeInstanceId){
+        ActionType actionTypeInstance = ruleSystemService.getDeviceManager().getActionTypeInstance(itemTypeInstanceId);
         Action action = ruleSystemService.getDeviceManager().getDevice(itemDevId).getAction(itemId);
+        if (action.isNotificationAction()){
+            askNotification((NotificationAction) action, actionTypeInstance, null);
+            // Return because action will be added later!
+            return;
+        }
+        actionTypeInstance.setInstanceAction(action);
+        actionTypesAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -279,6 +294,7 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
                 case REQUEST_CODE_STATE_RENEW:
                     break;
                 case REQUEST_CODE_ACTION_ADD:
+                    addAction(itemId,itemDevId,itemTypeInstanceId);
                     break;
                 case REQUEST_CODE_ACTION_RENEW:
                     break;
@@ -316,7 +332,7 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
     }
 
     public void askLocation(final int type, final Event eventOrState, final Type eventOrStateTypeInstance, final Location oldLocation){
-        Log.d("TRGRD","CreateRuleOpenActivity askLocation "+type+", "+eventOrState.getName()+", "+oldLocation);
+        //Log.d("TRGRD","CreateRuleFromTemplateActivity askLocation "+type+", "+eventOrState.getName()+", "+oldLocation);
         final ArrayList<Location> locations = new ArrayList<>();
         locations.addAll(ruleSystemService.getLocations());
         CharSequence locationNames[] = new CharSequence[locations.size()];
@@ -348,5 +364,62 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
         });
         builder.show();
     }
+
+    // ------------------------
+    // NOTIFICATION ASKING CODE
+    // ------------------------
+
+    public void onNoficationClick(NotificationAction action, ActionType actionTypeInstance){
+        actionTypeInstance.setInstanceAction(action);
+        actionTypesAdapter.notifyDataSetChanged();
+    }
+
+    public void askNotification(final NotificationAction action, final ActionType actionTypeInstance, final NotificationAction oldAction){
+        AlertDialog.Builder builder = new AlertDialog.Builder(CreateRuleFromTemplateActivity.this);
+        // Get the layout inflater
+        LayoutInflater inflater = CreateRuleFromTemplateActivity.this.getLayoutInflater();
+
+        final View view = inflater.inflate(R.layout.dialog_notification, null);
+
+        final EditText etTitle, etText;
+        etTitle = (EditText) view.findViewById(R.id.etCreateRuleOpenNotificationTitle);
+        etText = (EditText) view.findViewById(R.id.etCreateRuleOpenNotificationText);
+
+        if(oldAction != null){
+            etTitle.setText(oldAction.getTitle());
+            etText.setText(oldAction.getText());
+        }
+
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the dialog layout
+        builder.setView(view)
+                .setTitle("Notification")
+                // Add action buttons
+                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        EditText etTitle, etText;
+                        etTitle = (EditText) view.findViewById(R.id.etCreateRuleOpenNotificationTitle);
+                        etText = (EditText) view.findViewById(R.id.etCreateRuleOpenNotificationText);
+                        String title, text;
+                        title = etTitle.getText().toString();
+                        text = etText.getText().toString();
+                        NotificationAction noAc = action;
+                        if(oldAction == null){
+                            noAc = ((NotificationDevice) action.getDevice()).getNotifyAction(title,
+                                    text, noAc.getNotificationActionType());
+                        } else {
+                            ((NotificationDevice) action.getDevice()).editNotifyAction(noAc,title,text);
+                        }
+                        onNoficationClick(noAc, actionTypeInstance);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // DO nothing
+                    }
+                });
+        builder.show();
+    };
 
 }

@@ -36,4 +36,12 @@ public class LocationState extends State {
     public void setLocation(Location location) {
         this.location = location;
     }
+
+    @Override
+    public String toString() {
+        return "LocationState{" +
+                "state="+ super.toString()+
+                ", location=" + location +
+                '}';
+    }
 }

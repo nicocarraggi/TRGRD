@@ -93,10 +93,11 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
 
         private MyOnItemClickListener<Type> myOnItemClickListener;
         private TextView tvTypeName, tvTypeIntro, tvTypeInstanceType, tvTypeInstanceName,
-                            tvTypeInstanceValueOne, tvTypeInstanceValueTwo;
+                            tvTypeInstanceValueZero, tvTypeInstanceValueOne, tvTypeInstanceValueTwo;
         private ImageView ivTypeInstanceDevice,ivTypeInstance,ivTypeInstanceReplace;
-        private Button bTypeInstanceValueOne, bTypeInstanceValueTwo;
-        private LinearLayout llType, llTypeInstance, llTypeInstanceType;
+        private Button bTypeInstanceValueZero, bTypeInstanceValueOne, bTypeInstanceValueTwo;
+        private LinearLayout llType, llTypeInstance, llTypeInstanceType, llTypeInstanceValueZero,
+                                llTypeInstanceValueOneTwo;
 
         public TypeViewHolder(View itemView) {
             super(itemView);
@@ -104,16 +105,20 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
             this.tvTypeIntro = (TextView) itemView.findViewById(R.id.tvTypeIntro);
             this.tvTypeInstanceType = (TextView) itemView.findViewById(R.id.tvTypeInstanceType);
             this.tvTypeInstanceName = (TextView) itemView.findViewById(R.id.tvTypeInstanceName);
+            this.tvTypeInstanceValueZero = (TextView) itemView.findViewById(R.id.tvTypeInstanceValueZero);
             this.tvTypeInstanceValueOne = (TextView) itemView.findViewById(R.id.tvTypeInstanceValueOne);
             this.tvTypeInstanceValueTwo = (TextView) itemView.findViewById(R.id.tvTypeInstanceValueTwo);
             this.ivTypeInstanceDevice = (ImageView) itemView.findViewById(R.id.ivTypeInstanceDevice);
             this.ivTypeInstance = (ImageView) itemView.findViewById(R.id.ivTypeInstance);
             this.ivTypeInstanceReplace = (ImageView) itemView.findViewById(R.id.ivTypeInstanceReplace);
+            this.bTypeInstanceValueZero = (Button) itemView.findViewById(R.id.bTypeInstanceValueZero);
             this.bTypeInstanceValueOne = (Button) itemView.findViewById(R.id.bTypeInstanceValueOne);
             this.bTypeInstanceValueTwo = (Button) itemView.findViewById(R.id.bTypeInstanceValueTwo);
             this.llType = (LinearLayout) itemView.findViewById(R.id.llType);
             this.llTypeInstance = (LinearLayout) itemView.findViewById(R.id.llTypeInstance);
             this.llTypeInstanceType = (LinearLayout) itemView.findViewById(R.id.llTypeInstanceType);
+            this.llTypeInstanceValueZero = (LinearLayout) itemView.findViewById(R.id.llTypeInstanceValueZero);
+            this.llTypeInstanceValueOneTwo = (LinearLayout) itemView.findViewById(R.id.llTypeInstanceValueOneTwo);
             tvTypeName.setOnClickListener(this);
             tvTypeInstanceName.setOnClickListener(this);
             ivTypeInstanceReplace.setOnClickListener(this);
@@ -121,22 +126,32 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
             bTypeInstanceValueTwo.setOnClickListener(this);
         }
 
+        private void showInstanceName(){
+            tvTypeInstanceName.setVisibility(View.VISIBLE);
+        }
         private void hideInstanceName(){
             tvTypeInstanceName.setVisibility(View.GONE);
         }
 
-        private void hideInstanceValueOne(){
-            tvTypeInstanceValueOne.setVisibility(View.GONE);
-            bTypeInstanceValueOne.setVisibility(View.GONE);
+        private void showInstanceType(){
+            llTypeInstanceType.setVisibility(View.VISIBLE);
         }
-
-        private void hideInstanceValueTwo(){
-            tvTypeInstanceValueTwo.setVisibility(View.GONE);
-            bTypeInstanceValueTwo.setVisibility(View.GONE);
-        }
-
         private void hideInstanceType(){
             llTypeInstanceType.setVisibility(View.GONE);
+        }
+
+        private void showInstanceValueZero() {
+            llTypeInstanceValueZero.setVisibility(View.VISIBLE);
+        }
+        private void hideInstanceValueZero(){
+            llTypeInstanceValueZero.setVisibility(View.GONE);
+        }
+
+        private void showInstanceValueOneTwo(){
+            llTypeInstanceValueOneTwo.setVisibility(View.VISIBLE);
+        }
+        private void hideInstanceValueOneTwo(){
+            llTypeInstanceValueOneTwo.setVisibility(View.GONE);
         }
 
         private void setViewHasInstance(boolean hasInstance){
@@ -170,38 +185,43 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
                 if(event == null){
                     tvTypeInstanceName.setText("Add an event of this type!");
                     setViewHasInstance(false);
-                    hideInstanceValueOne();
-                    hideInstanceValueTwo();
+                    showInstanceName();
+                    hideInstanceValueZero();
+                    hideInstanceValueOneTwo();
                 } else {
+                    tvTypeInstanceType.setText("Event");
                     ivTypeInstanceDevice.setImageResource(event.getDevice().getIconResource());
                     ivTypeInstance.setImageResource(event.getIconResource());
                     tvTypeInstanceName.setText(event.getName());
                     setViewHasInstance(true);
                     if(event.isSkeleton()){
-                        hideInstanceValueOne();
-                        hideInstanceValueTwo();
+                        showInstanceName();
+                        hideInstanceValueZero();
+                        hideInstanceValueOneTwo();
                     } else if(event.isTimeEvent()) {
                         TimeEvent timeEvent = (TimeEvent) event;
                         hideInstanceName();
-                        hideInstanceValueTwo();
-                        tvTypeInstanceValueOne.setText("At");
-                        bTypeInstanceValueOne.setText(timeEvent.getTime().toString());
+                        showInstanceValueZero();
+                        hideInstanceValueOneTwo();
+                        tvTypeInstanceValueZero.setText("At");
+                        bTypeInstanceValueZero.setText(timeEvent.getTime().toString());
                         if (!mEdit) {
-                            bTypeInstanceValueOne.setBackgroundColor(Color.TRANSPARENT);
+                            bTypeInstanceValueZero.setBackgroundColor(Color.TRANSPARENT);
                         }
                     } else if(event.isLocationEvent()){
                         LocationEvent locationEvent = (LocationEvent) event;
                         hideInstanceName();
-                        hideInstanceValueTwo();
+                        showInstanceValueZero();
+                        hideInstanceValueOneTwo();
                         String text = "";
                         if(locationEvent.getLocationEventType()== LocationEvent.LocationEventType.ARRIVING){
                             text = "Arriving at: ";
                         } else {
                             text = "Leaving: ";
                         }
-                        tvTypeInstanceValueOne.setText(text);
-                        bTypeInstanceValueOne.setText(locationEvent.getLocation().getName());
-                        if(!mEdit) bTypeInstanceValueOne.setBackgroundColor(Color.TRANSPARENT);
+                        tvTypeInstanceValueZero.setText(text);
+                        bTypeInstanceValueZero.setText(locationEvent.getLocation().getName());
+                        if(!mEdit) bTypeInstanceValueZero.setBackgroundColor(Color.TRANSPARENT);
                     }
                 }
             } else if(type.isStateType()){
@@ -212,42 +232,50 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
                 llTypeInstance.setBackgroundResource(R.color.colorState);
                 State state = ((StateType) type).getInstanceState();
                 if(state == null){
-                    tvTypeInstanceName.setText("Add a state of this type!");
                     setViewHasInstance(false);
-                    hideInstanceValueOne();
-                    hideInstanceValueTwo();
+                    showInstanceName();
+                    hideInstanceValueZero();
+                    hideInstanceValueOneTwo();
+                    tvTypeInstanceName.setText("Add a state of this type!");
                 } else {
+                    tvTypeInstanceType.setText("State");
                     ivTypeInstanceDevice.setImageResource(state.getDevice().getIconResource());
                     ivTypeInstance.setImageResource(state.getIconResource());
                     tvTypeInstanceName.setText(state.getName());
                     setViewHasInstance(true);
                     if (state.isSkeleton()) {
-                        hideInstanceValueOne();
-                        hideInstanceValueTwo();
+                        showInstanceName();
+                        hideInstanceValueZero();
+                        hideInstanceValueOneTwo();
                     } else if (state.isTimeState()) {
                         TimeState timeState = (TimeState) state;
                         if (mEdit) {
                             hideInstanceName();
+                            hideInstanceValueZero();
+                            showInstanceValueOneTwo();
                             tvTypeInstanceValueOne.setText("From");
                             tvTypeInstanceValueTwo.setText("To");
                             bTypeInstanceValueOne.setText(timeState.getTimeFrom().toString());
                             bTypeInstanceValueTwo.setText(timeState.getTimeTo().toString());
                         } else {
+                            showInstanceName();
+                            hideInstanceValueZero();
+                            hideInstanceValueOneTwo();
                             tvTypeInstanceName.setText("From   " + timeState.getTimeFrom().toString() + "   to   " + timeState.getTimeTo().toString());
-                            hideInstanceValueOne();
-                            hideInstanceValueTwo();
                         }
                     } else if (state.isLocationState()) {
                         LocationState locationState = (LocationState) state;
                         if (mEdit) {
                             hideInstanceName();
-                            hideInstanceValueTwo();
-                            tvTypeInstanceValueOne.setText("Currently at: ");
-                            bTypeInstanceValueOne.setText(locationState.getLocation().getName());
+                            showInstanceValueZero();
+                            hideInstanceValueOneTwo();
+                            tvTypeInstanceValueZero.setText("Currently at: ");
+                            bTypeInstanceValueZero.setText(locationState.getLocation().getName());
                         } else {
                             tvTypeInstanceName.setText("Currently at:   " + locationState.getLocation().getName());
-                            hideInstanceValueOne();
-                            hideInstanceValueTwo();
+                            showInstanceName();
+                            hideInstanceValueZero();
+                            hideInstanceValueOneTwo();
                         }
                     }
                 }
@@ -263,23 +291,27 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
                 if(action == null){
                     tvTypeInstanceName.setText("Add an action of this type!");
                     setViewHasInstance(false);
-                    hideInstanceValueOne();
-                    hideInstanceValueTwo();
+                    showInstanceName();
+                    hideInstanceValueZero();
+                    hideInstanceValueOneTwo();
                 } else {
+                    tvTypeInstanceType.setText("Action");
                     ivTypeInstanceDevice.setImageResource(action.getDevice().getIconResource());
                     ivTypeInstance.setImageResource(action.getIconResource());
                     tvTypeInstanceName.setText(action.getName());
                     setViewHasInstance(true);
                     if(action.isSkeleton()){
-                        hideInstanceValueOne();
-                        hideInstanceValueTwo();
+                        showInstanceName();
+                        hideInstanceValueZero();
+                        hideInstanceValueOneTwo();
                     } else if (action.isNotificationAction()){
                         NotificationAction notificationAction = (NotificationAction) action;
                         hideInstanceName();
-                        hideInstanceValueTwo();
-                        tvTypeInstanceValueOne.setText("Notify:");
-                        bTypeInstanceValueOne.setText(notificationAction.getTitle());
-                        if(!mEdit) bTypeInstanceValueOne.setBackgroundColor(Color.TRANSPARENT);
+                        showInstanceValueZero();
+                        hideInstanceValueOneTwo();
+                        tvTypeInstanceValueZero.setText("Notify:");
+                        bTypeInstanceValueZero.setText(notificationAction.getTitle());
+                        if(!mEdit) bTypeInstanceValueZero.setBackgroundColor(Color.TRANSPARENT);
                     }
                 }
             }
