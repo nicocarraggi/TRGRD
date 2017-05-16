@@ -18,6 +18,8 @@ import com.example.nicolascarraggi.trgrd.rulesys.Type;
 
 public class RuleTemplateDetailsActivity extends RuleSystemBindingActivity implements MyOnItemClickListener<Type> {
 
+    public static final int RULETEMPLATE_DETAILS_INTENT=1;
+
     private int ruleTemplateId;
     private RuleTemplate ruleTemplate;
     private TypesAdapter triggerTypesAdapter;
@@ -91,10 +93,22 @@ public class RuleTemplateDetailsActivity extends RuleSystemBindingActivity imple
             Intent intent = new Intent(RuleTemplateDetailsActivity.this, CreateRuleFromTemplateActivity.class);
             intent.putExtra("iscreate",true);
             intent.putExtra("ruletemplateinstanceid",instance.getId());
-            startActivity(intent);
+            startActivityForResult(intent,RULETEMPLATE_DETAILS_INTENT);
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK){
+            if (requestCode == RULETEMPLATE_DETAILS_INTENT){
+                Intent backIntent = new Intent();
+                setResult(RESULT_OK, backIntent);
+                finish();
+            }
+        }
     }
 
     @Override

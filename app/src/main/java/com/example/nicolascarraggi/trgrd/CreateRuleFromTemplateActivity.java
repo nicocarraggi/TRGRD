@@ -1,7 +1,11 @@
 package com.example.nicolascarraggi.trgrd;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,12 +17,17 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.nicolascarraggi.trgrd.adapters.MyOnItemClickListener;
 import com.example.nicolascarraggi.trgrd.adapters.TypesAdapter;
+import com.example.nicolascarraggi.trgrd.errors.NullActionException;
+import com.example.nicolascarraggi.trgrd.errors.NullEventException;
+import com.example.nicolascarraggi.trgrd.errors.NullStateException;
 import com.example.nicolascarraggi.trgrd.rulesys.Action;
 import com.example.nicolascarraggi.trgrd.rulesys.ActionType;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
@@ -28,6 +37,7 @@ import com.example.nicolascarraggi.trgrd.rulesys.LocationEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.LocationState;
 import com.example.nicolascarraggi.trgrd.rulesys.MyTime;
 import com.example.nicolascarraggi.trgrd.rulesys.NotificationAction;
+import com.example.nicolascarraggi.trgrd.rulesys.Rule;
 import com.example.nicolascarraggi.trgrd.rulesys.RuleTemplate;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
 import com.example.nicolascarraggi.trgrd.rulesys.StateType;
@@ -111,6 +121,25 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
                     Intent intent = new Intent(this, RuleDetailsOpenActivity.class);
                     intent.putExtra("ruleid",rule.getId());
                     startActivity(intent);*/
+                    int newId = ruleSystemService.getNewId();
+                    try {
+                        Rule rule = new Rule(newId,ruleTemplateInstance);
+                        rule.setName(etName.getText().toString());
+                        ruleSystemService.addRule(rule);
+                        rule.setActive(true);
+                        Intent intent = new Intent(this, RuleDetailsOpenActivity.class);
+                        intent.putExtra("ruleid",rule.getId());
+                        startActivity(intent);
+                        Intent backIntent = new Intent();
+                        setResult(RESULT_OK, backIntent);
+                        finish();
+                    } catch (NullActionException e) {
+                        e.printStackTrace();
+                    } catch (NullEventException e) {
+                        e.printStackTrace();
+                    } catch (NullStateException e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     //this.rule.setName(etName.getText().toString());
                     //this.rule.reset(events,states,actions);
@@ -215,6 +244,43 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
                     }
                 }
                 break;
+            case R.id.bTypeInstanceValueZero:
+            case R.id.bTypeInstanceValueOne:
+                if(item.isEventType()){
+                    Event event = ((EventType) item).getInstanceEvent();
+                        if (event.isTimeEvent()){
+                        editTime((Button) view, (TimeEvent) event);
+                    } else if(event.isLocationEvent()){
+                        LocationEvent locationEvent = (LocationEvent) event;
+                        if(locationEvent.getLocationEventType() == LocationEvent.LocationEventType.ARRIVING){
+                            askLocation(ASK_LOCATION_ARRIVING,event,item,locationEvent.getLocation());
+                        } else if(locationEvent.getLocationEventType() == LocationEvent.LocationEventType.LEAVING){
+                            askLocation(ASK_LOCATION_LEAVING,event,item,locationEvent.getLocation());
+                        }
+                    }
+                } else if(item.isStateType()){
+                    State state = ((StateType) item).getInstanceState();
+                    if (state.isTimeState()){
+                        editTime((Button) view, (TimeState) state);
+                    } else if (state.isLocationState()){
+                        LocationState locationState = (LocationState) state;
+                        askLocation(ASK_LOCATION_CURRENTLY,state,item,locationState.getLocation());
+                    }
+                } else if(item.isActionType()){
+                    Action action = ((ActionType) item).getInstanceAction();
+                    if (action.isNotificationAction()){
+                        askNotification((NotificationAction) action,(ActionType)item, (NotificationAction) action);
+                    }
+                }
+                break;
+            case R.id.bTypeInstanceValueTwo:
+                if(item.isStateType()){
+                    State state = ((StateType) item).getInstanceState();
+                    if (state.isTimeState()){
+                        editTime((Button) view, (TimeState) state);
+                    }
+                }
+                break;
         }
     }
 
@@ -287,16 +353,22 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
                     addEvent(itemId,itemDevId,itemTypeInstanceId);
                     break;
                 case REQUEST_CODE_EVENT_RENEW:
+                    // TODO delete previous instance?
+                    addEvent(itemId,itemDevId,itemTypeInstanceId);
                     break;
                 case REQUEST_CODE_STATE_ADD:
                     addState(itemId,itemDevId,itemTypeInstanceId);
                     break;
                 case REQUEST_CODE_STATE_RENEW:
+                    // TODO delete previous instance?
+                    addState(itemId,itemDevId,itemTypeInstanceId);
                     break;
                 case REQUEST_CODE_ACTION_ADD:
                     addAction(itemId,itemDevId,itemTypeInstanceId);
                     break;
                 case REQUEST_CODE_ACTION_RENEW:
+                    // TODO delete previous instance?
+                    addAction(itemId,itemDevId,itemTypeInstanceId);
                     break;
                 default:
                     // ERROR: bad request code?
@@ -304,6 +376,77 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
             }
 
         }
+    }
+
+    // ----------------
+    // TIME ASKING CODE
+    // ----------------
+
+
+    private void editTime(final Button button, final TimeEvent item) {
+
+        @SuppressLint("ValidFragment")
+        class EventTimePickerFragment extends DialogFragment
+                implements TimePickerDialog.OnTimeSetListener {
+
+            @Override
+            public Dialog onCreateDialog(Bundle savedInstanceState) {
+                int hour = item.getTime().getHours();
+                int minute = item.getTime().getMinutes();
+
+                // Create a new instance of TimePickerDialog and return it
+                return new TimePickerDialog(getActivity(), this, hour, minute,true);
+            }
+
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                // Do something with the time chosen by the user
+                MyTime time = item.getTime();
+                time.setHours(hourOfDay);
+                time.setMinutes(minute);
+                button.setText(time.toString());
+            }
+        }
+
+        DialogFragment newFragment = new EventTimePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "timePicker");
+
+    }
+
+    private void editTime(final Button button, final TimeState item) {
+
+        MyTime tempTime;
+        if(button.getId() == R.id.bTypeInstanceValueOne){
+            tempTime = item.getTimeFrom();
+        } else {
+            tempTime = item.getTimeTo();
+        }
+        final MyTime time = tempTime;
+
+        @SuppressLint("ValidFragment")
+        class StateTimePickerFragment extends DialogFragment
+                implements TimePickerDialog.OnTimeSetListener {
+
+            @Override
+            public Dialog onCreateDialog(Bundle savedInstanceState) {
+                int hour = time.getHours();
+                int minute = time.getMinutes();
+
+                // Create a new instance of TimePickerDialog and return it
+                return new TimePickerDialog(getActivity(), this, hour, minute,true);
+            }
+
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                // Do something with the time chosen by the user
+                time.setHours(hourOfDay);
+                time.setMinutes(minute);
+                button.setText(time.toString());
+            }
+        }
+
+        DialogFragment newFragment = new StateTimePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "timePicker");
+
+
     }
 
     // --------------------

@@ -122,6 +122,7 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
             tvTypeName.setOnClickListener(this);
             tvTypeInstanceName.setOnClickListener(this);
             ivTypeInstanceReplace.setOnClickListener(this);
+            bTypeInstanceValueZero.setOnClickListener(this);
             bTypeInstanceValueOne.setOnClickListener(this);
             bTypeInstanceValueTwo.setOnClickListener(this);
         }
@@ -177,7 +178,7 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
             }
             if(type.isEventType()){
                 // Set Type information
-                tvTypeIntro.setText("When");
+                tvTypeIntro.setText("If");
                 //llType.setBackgroundResource(R.color.colorEvent);
                 // Set TypeInstance information
                 llTypeInstance.setBackgroundResource(R.color.colorEvent);
@@ -309,8 +310,8 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
                         hideInstanceName();
                         showInstanceValueZero();
                         hideInstanceValueOneTwo();
-                        tvTypeInstanceValueZero.setText("Notify:");
-                        bTypeInstanceValueZero.setText(notificationAction.getTitle());
+                        tvTypeInstanceValueZero.setText("Notify: ");
+                        bTypeInstanceValueZero.setText(notificationAction.getTitle()+" - "+notificationAction.getText());
                         if(!mEdit) bTypeInstanceValueZero.setBackgroundColor(Color.TRANSPARENT);
                     }
                 }

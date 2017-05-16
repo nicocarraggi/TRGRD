@@ -114,8 +114,8 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
                     tvActionValueOne.setVisibility(View.VISIBLE);
                     bActionValueOne.setVisibility(View.VISIBLE);
                     tvActionName.setVisibility(View.GONE);
-                    tvActionValueOne.setText("Notify:");
-                    bActionValueOne.setText(notificationAction.getTitle());
+                    tvActionValueOne.setText("Notify: ");
+                    bActionValueOne.setText(notificationAction.getTitle()+" - "+notificationAction.getText());
                     if(!mEdit) bActionValueOne.setBackgroundColor(Color.TRANSPARENT);
                 }
             }

@@ -13,6 +13,8 @@ import com.example.nicolascarraggi.trgrd.rulesys.RuleTemplate;
 
 public class ShowRuleTemplatesActivity extends RuleSystemBindingActivity implements MyOnItemClickListener<RuleTemplate> {
 
+    public static final int RULETEMPLATE_SELECT_INTENT=1;
+
     private RuleTemplatesAdapter ruleTemplatesAdapter;
     private RecyclerView.LayoutManager mLayoutManagerActions;
     private RecyclerView rvRuleTemplates;
@@ -46,8 +48,18 @@ public class ShowRuleTemplatesActivity extends RuleSystemBindingActivity impleme
             case R.id.tvRuleTemplateName:
                 Intent intent = new Intent(this, RuleTemplateDetailsActivity.class);
                 intent.putExtra("ruletemplateid", item.getId());
-                startActivity(intent);
+                startActivityForResult(intent,RULETEMPLATE_SELECT_INTENT);
                 break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK){
+            if (requestCode == RULETEMPLATE_SELECT_INTENT){
+                finish();
+            }
         }
     }
 
