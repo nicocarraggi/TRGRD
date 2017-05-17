@@ -6,6 +6,7 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import com.example.nicolascarraggi.trgrd.rulesys.devices.AndroidPhone;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Clock;
+import com.example.nicolascarraggi.trgrd.rulesys.devices.CoffeeMachine;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Geofences;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Pebble;
 
@@ -69,6 +70,7 @@ public class DeviceManager {
     private Pebble mPebble;
     private Clock mClock;
     private Geofences mGeofences;
+    private CoffeeMachine mCoffeeMachine;
 
     public DeviceManager(RuleSystemService ruleSystemService) {
         this.ruleSystemService = ruleSystemService;
@@ -104,10 +106,12 @@ public class DeviceManager {
         this.mPebble = new Pebble(ruleSystemService, this, evButtonPress, evHeartRateReading, acVibrate, acAlarmDisplay, acTimeDisplay, acNotify);
         this.mClock = new Clock(ruleSystemService, this, evTimeAt, stTimeFromTo);
         this.mGeofences = new Geofences(ruleSystemService, this, evLocationArrivingAt, evLocationLeaving, stLocationCurrentlyAt);
+        this.mCoffeeMachine = new CoffeeMachine(ruleSystemService,this,acStartCoffee);
         this.devices.put(mAndroidPhone.getId(),mAndroidPhone);
         this.devices.put(mPebble.getId(),mPebble);
         this.devices.put(mClock.getId(),mClock);
         this.devices.put(mGeofences.getId(),mGeofences);
+        this.devices.put(mCoffeeMachine.getId(),mCoffeeMachine);
     }
 
     public AndroidPhone getAndroidPhone() {
@@ -124,6 +128,10 @@ public class DeviceManager {
 
     public Geofences getGeofences() {
         return mGeofences;
+    }
+
+    public CoffeeMachine getCoffeeMachine() {
+        return mCoffeeMachine;
     }
 
     public HashSet<Device> getDevices() {
@@ -238,6 +246,7 @@ public class DeviceManager {
         mPebble.start();
         mClock.start();
         mGeofences.start();
+        mCoffeeMachine.start();
     }
 
     public void stopDevices(){
@@ -245,6 +254,7 @@ public class DeviceManager {
         mPebble.stop();
         mClock.stop();
         mGeofences.stop();
+        mCoffeeMachine.stop();
     }
 
 

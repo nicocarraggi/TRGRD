@@ -9,10 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.nicolascarraggi.trgrd.R;
+import com.example.nicolascarraggi.trgrd.rulesys.Action;
+import com.example.nicolascarraggi.trgrd.rulesys.Event;
 import com.example.nicolascarraggi.trgrd.rulesys.Rule;
+import com.example.nicolascarraggi.trgrd.rulesys.State;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -77,22 +81,50 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
     public class RuleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
         private MyOnItemClickListener myOnItemClickListener;
-        private ImageView ivRule;
+        private ImageView ivRule, ivEvent, ivState, ivAction;
         private TextView tvRuleName;
+        private LinearLayout llRuleIcons, llEvent, llStates, llActions;
         private SwitchCompat switchRuleActive;
 
         public RuleViewHolder(View itemView) {
             super(itemView);
-            this.ivRule = (ImageView) itemView.findViewById(R.id.ivRule);
+            //this.ivRule = (ImageView) itemView.findViewById(R.id.ivRule);
+            this.ivEvent = (ImageView) itemView.findViewById(R.id.ivRuleEvent);
+            this.ivState = (ImageView) itemView.findViewById(R.id.ivRuleState);
+            this.ivAction = (ImageView) itemView.findViewById(R.id.ivRuleAction);
             this.tvRuleName = (TextView) itemView.findViewById(R.id.tvRuleName);
+            this.llRuleIcons = (LinearLayout) itemView.findViewById(R.id.llRuleIcons);
+            this.llEvent = (LinearLayout) itemView.findViewById(R.id.llRuleEvent);
+            this.llStates = (LinearLayout) itemView.findViewById(R.id.llRuleStates);
+            this.llActions = (LinearLayout) itemView.findViewById(R.id.llRuleActions);
             this.switchRuleActive = (SwitchCompat) itemView.findViewById(R.id.switchRuleActive);
             tvRuleName.setOnClickListener(this);
+            llRuleIcons.setOnClickListener(this);
             switchRuleActive.setOnCheckedChangeListener(this);
         }
 
         public void bind(Rule rule, MyOnItemClickListener listener){
             this.myOnItemClickListener = listener;
             this.tvRuleName.setText(rule.getName());
+            if (rule.getEvents().isEmpty()){
+                llEvent.setVisibility(View.GONE);
+            } else {
+                for(Event e: rule.getEvents()){
+                    ivEvent.setImageResource(e.getDevice().getIconResource());
+                }
+            }
+            if (rule.getStates().isEmpty()){
+                llStates.setVisibility(View.GONE);
+            } else {
+                for(State s: rule.getStates()){
+                    // TODO inflate every other state?
+                    ivState.setImageResource(s.getDevice().getIconResource());
+                }
+            }
+            for (Action a: rule.getActions()){
+                // TODO inflate every other action?
+                ivAction.setImageResource(a.getDevice().getIconResource());
+            }
             this.switchRuleActive.setChecked(rule.isActive());
         }
 

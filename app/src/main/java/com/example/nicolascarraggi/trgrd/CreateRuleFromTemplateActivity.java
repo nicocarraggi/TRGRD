@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -114,20 +112,13 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
         if (id == R.id.action_rule_save) {
             if(isRuleValid()) {
                 if(isCreate) {
-                    /*int newId = ruleSystemService.getNewId();
-                    this.rule = new Rule(newId, etName.getText().toString(), events, states, actions);
-                    ruleSystemService.addRule(rule);
-                    this.rule.setActive(true);
-                    Intent intent = new Intent(this, RuleDetailsOpenActivity.class);
-                    intent.putExtra("ruleid",rule.getId());
-                    startActivity(intent);*/
                     int newId = ruleSystemService.getNewId();
                     try {
+                        ruleTemplateInstance.setName(etName.getText().toString());
                         Rule rule = new Rule(newId,ruleTemplateInstance);
-                        rule.setName(etName.getText().toString());
                         ruleSystemService.addRule(rule);
                         rule.setActive(true);
-                        Intent intent = new Intent(this, RuleDetailsOpenActivity.class);
+                        Intent intent = new Intent(this, RuleDetailsActivity.class);
                         intent.putExtra("ruleid",rule.getId());
                         startActivity(intent);
                         Intent backIntent = new Intent();
@@ -141,12 +132,13 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
                         e.printStackTrace();
                     }
                 } else {
-                    //this.rule.setName(etName.getText().toString());
-                    //this.rule.reset(events,states,actions);
+                    Rule rule = ruleTemplateInstance.getRule();
+                    if(rule != null) {
+                        ruleTemplateInstance.setName(etName.getText().toString());
+                        ruleTemplateInstance.getRule().resetFromRuleTemplateInstance(ruleTemplateInstance);
+                        finish();
+                    }
                 }
-                // persist delete of instances!
-                //persistDeleteInstances();
-                //finish();
             } else {
                 Toast.makeText(CreateRuleFromTemplateActivity.this, "A rule requires a name, 1 or more triggers and 1 or more actions!", Toast.LENGTH_LONG).show();
             }

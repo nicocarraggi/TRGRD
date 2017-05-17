@@ -96,7 +96,7 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
                             tvTypeInstanceValueZero, tvTypeInstanceValueOne, tvTypeInstanceValueTwo;
         private ImageView ivTypeInstanceDevice,ivTypeInstance,ivTypeInstanceReplace;
         private Button bTypeInstanceValueZero, bTypeInstanceValueOne, bTypeInstanceValueTwo;
-        private LinearLayout llType, llTypeInstance, llTypeInstanceType, llTypeInstanceValueZero,
+        private LinearLayout llType, llTypeInstance,llTypeInstanceItem, llTypeInstanceType, llTypeInstanceValueZero,
                                 llTypeInstanceValueOneTwo;
 
         public TypeViewHolder(View itemView) {
@@ -116,6 +116,7 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
             this.bTypeInstanceValueTwo = (Button) itemView.findViewById(R.id.bTypeInstanceValueTwo);
             this.llType = (LinearLayout) itemView.findViewById(R.id.llType);
             this.llTypeInstance = (LinearLayout) itemView.findViewById(R.id.llTypeInstance);
+            this.llTypeInstanceItem = (LinearLayout) itemView.findViewById(R.id.llTypeInstanceItem);
             this.llTypeInstanceType = (LinearLayout) itemView.findViewById(R.id.llTypeInstanceType);
             this.llTypeInstanceValueZero = (LinearLayout) itemView.findViewById(R.id.llTypeInstanceValueZero);
             this.llTypeInstanceValueOneTwo = (LinearLayout) itemView.findViewById(R.id.llTypeInstanceValueOneTwo);
@@ -181,7 +182,7 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
                 tvTypeIntro.setText("If");
                 //llType.setBackgroundResource(R.color.colorEvent);
                 // Set TypeInstance information
-                llTypeInstance.setBackgroundResource(R.color.colorEvent);
+                llTypeInstanceItem.setBackgroundResource(R.color.colorEvent);
                 Event event = ((EventType) type).getInstanceEvent();
                 if(event == null){
                     tvTypeInstanceName.setText("Add an event of this type!");
@@ -230,7 +231,7 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
                 tvTypeIntro.setText("While");
                 //llType.setBackgroundResource(R.color.colorState);
                 // Set TypeInstance information
-                llTypeInstance.setBackgroundResource(R.color.colorState);
+                llTypeInstanceItem.setBackgroundResource(R.color.colorState);
                 State state = ((StateType) type).getInstanceState();
                 if(state == null){
                     setViewHasInstance(false);
@@ -287,7 +288,7 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
                 tvTypeIntro.setText("Then");
                 //llType.setBackgroundResource(R.color.colorAction);
                 // Set TypeInstance information
-                llTypeInstance.setBackgroundResource(R.color.colorAction);
+                llTypeInstanceItem.setBackgroundResource(R.color.colorAction);
                 Action action = ((ActionType) type).getInstanceAction();
                 if(action == null){
                     tvTypeInstanceName.setText("Add an action of this type!");

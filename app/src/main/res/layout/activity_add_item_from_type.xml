@@ -11,14 +11,14 @@
     android:layout_marginRight="@dimen/activity_horizontal_margin"
     tools:context="com.example.nicolascarraggi.trgrd.AddItemFromTypeActivity">
 
-    <TextView
+<!--    <TextView
         android:id="@+id/tvAddItemFromTypeItems"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_marginBottom="7dp"
         android:layout_marginLeft="5dp"
-        android:text="Items"/>
+        android:text="Items"/>-->
 
 
     <android.support.v7.widget.RecyclerView

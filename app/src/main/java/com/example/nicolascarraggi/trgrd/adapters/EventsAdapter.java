@@ -82,7 +82,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
 
         private MyEventOnItemClickListener myOnItemClickListener;
         private ImageView ivEventDevice, ivEvent, ivEventDelete;
-        private TextView tvEventName, tvEventValueOne;
+        private TextView tvEventTypeName, tvEventName, tvEventValueOne;
         private Button bEventValueOne;
 
         public EventViewHolder(View itemView) {
@@ -90,6 +90,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
             this.ivEventDevice = (ImageView) itemView.findViewById(R.id.ivEventDevice);
             this.ivEvent = (ImageView) itemView.findViewById(R.id.ivEvent);
             this.ivEventDelete = (ImageView) itemView.findViewById(R.id.ivEventDelete);
+            this.tvEventTypeName = (TextView) itemView.findViewById(R.id.tvEventTypeName);
             this.tvEventName = (TextView) itemView.findViewById(R.id.tvEventName);
             this.tvEventValueOne = (TextView) itemView.findViewById(R.id.tvEventValueOne);
             this.bEventValueOne = (Button) itemView.findViewById(R.id.bEventValueOne);
@@ -102,6 +103,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
             this.myOnItemClickListener = listener;
             this.ivEventDevice.setImageResource(event.getDevice().getIconResource());
             this.ivEvent.setImageResource(event.getIconResource());
+            this.tvEventTypeName.setText(event.getEventType().getName());
             this.tvEventName.setText(event.getName());
             if(!mEdit && ivEventDelete != null){
                 ivEventDelete.setVisibility(View.GONE);

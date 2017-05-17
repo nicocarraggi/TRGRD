@@ -200,6 +200,11 @@ public class MainActivity extends AppCompatActivity implements TrgrdFragment.OnF
         return ruleSystemService;
     }
 
+    @Override
+    public void finishWithResult(Intent intent) {
+        // NOT needed here!
+    }
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {

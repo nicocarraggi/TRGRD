@@ -95,7 +95,8 @@ public class RulesFragment extends TrgrdFragment  implements MyOnItemClickListen
     public void onItemClick(View view, Rule rule) {
         switch(view.getId()) {
             case R.id.tvRuleName:
-                Intent intent = new Intent(this.getContext(), RuleDetailsOpenActivity.class);
+            case R.id.llRuleIcons:
+                Intent intent = new Intent(this.getContext(), RuleDetailsActivity.class);
                 intent.putExtra("ruleid",rule.getId());
                 startActivity(intent);
                 break;

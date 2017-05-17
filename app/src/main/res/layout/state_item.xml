@@ -3,114 +3,153 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp"
-    android:gravity="center_vertical">
+    android:orientation="vertical"
+    android:paddingBottom="5dp">
 
     <LinearLayout
+        android:id="@+id/llType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:layout_weight="1"
-        android:background="@color/colorState">
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:layout_marginLeft="4dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="4dp"
             android:gravity="center"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="State"/>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/ivStateDevice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_check_black_24dp" />
-
-                <ImageView
-                    android:id="@+id/ivState"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_check_black_24dp" />
-
-            </LinearLayout>
+                android:text="While"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvStateTypeName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="state is true"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:orientation="vertical"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:id="@+id/tvStateName"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="State title"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
+            android:gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@color/colorState">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_marginLeft="4dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="State"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_height="match_parent"
-                    android:weightSum="2">
+                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/tvStateValueOne"
+                    <ImageView
+                        android:id="@+id/ivStateDevice"
                         android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="from"
-                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_check_black_24dp" />
 
-                    <TextView
-                        android:id="@+id/tvStateValueTwo"
+                    <ImageView
+                        android:id="@+id/ivState"
                         android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="to"
-                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_check_black_24dp" />
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:orientation="vertical"
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tvStateName"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:weightSum="2">
+                    android:text="State title"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-                    <Button
-                        android:id="@+id/bStateValueOne"
-                        android:text="12:00"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                    <Button
-                        android:id="@+id/bStateValueTwo"
-                        android:text="13:00"
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                        android:orientation="vertical"
+                        android:layout_height="match_parent"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:id="@+id/tvStateValueOne"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="from"
+                            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                        <TextView
+                            android:id="@+id/tvStateValueTwo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:text="to"
+                            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_height="match_parent"
+                        android:weightSum="2">
+
+                        <Button
+                            android:id="@+id/bStateValueOne"
+                            android:text="12:00"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                        <Button
+                            android:id="@+id/bStateValueTwo"
+                            android:text="13:00"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -118,13 +157,12 @@
 
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/ivStateDelete"
+            android:src="@drawable/ic_delete_black_24dp"
+            android:layout_weight="0"
+            android:layout_width="40dp"
+            android:layout_height="30dp" />
+
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/ivStateDelete"
-        android:src="@drawable/ic_delete_black_24dp"
-        android:layout_weight="0"
-        android:layout_width="40dp"
-        android:layout_height="30dp" />
-
 </LinearLayout>

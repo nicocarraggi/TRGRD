@@ -40,7 +40,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.nicolascarraggi.trgrd.MainActivity" />
         </activity>
-        <activity android:name=".RuleDetailsOpenActivity" />
+        <activity android:name=".RuleDetailsActivity" />
         <activity android:name=".CreateRuleOpenActivity" />
         <activity android:name=".AddTriggerActivity" />
         <activity android:name=".AddActionActivity" />
@@ -56,7 +56,11 @@
         <activity android:name=".ShowRuleTemplatesActivity" />
         <activity android:name=".AddEventFromEventTypeActivity" />
         <activity android:name=".AddStateFromStateTypeActivity" />
-        <activity android:name=".AddItemFromTypeActivity"></activity>
+        <activity android:name=".AddItemFromTypeActivity" />
+        <activity
+            android:name=".AddEventOrStateActivity"
+            android:label="@string/title_activity_add_event_or_state"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

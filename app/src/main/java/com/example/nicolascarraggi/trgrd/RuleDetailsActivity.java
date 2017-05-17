@@ -26,7 +26,7 @@ import com.example.nicolascarraggi.trgrd.rulesys.Event;
 import com.example.nicolascarraggi.trgrd.rulesys.Rule;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
 
-public class RuleDetailsOpenActivity extends RuleSystemBindingActivity implements MyEventOnItemClickListener,
+public class RuleDetailsActivity extends RuleSystemBindingActivity implements MyEventOnItemClickListener,
         MyStateOnItemClickListener, MyActionOnItemClickListener, CompoundButton.OnCheckedChangeListener {
 
     private int ruleId;
@@ -108,12 +108,18 @@ public class RuleDetailsOpenActivity extends RuleSystemBindingActivity implement
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_rule_edit) {
             Intent intent = null;
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(RuleDetailsOpenActivity.this);
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(RuleDetailsActivity.this);
             String rulesMethodology = prefs.getString("rule_methodology_list", "2");
             if (rulesMethodology.equals("2")){
-                intent = new Intent(RuleDetailsOpenActivity.this, CreateRuleOpenActivity.class);
+                intent = new Intent(RuleDetailsActivity.this, CreateRuleOpenActivity.class);
                 intent.putExtra("iscreate",false);
                 intent.putExtra("ruleid",ruleId);
+            } else if(rulesMethodology.equals("1")){
+                if(rule.isFromTemplate()){
+                    intent = new Intent(RuleDetailsActivity.this, CreateRuleFromTemplateActivity.class);
+                    intent.putExtra("iscreate",false);
+                    intent.putExtra("ruletemplateinstanceid",rule.getRuleTemplateInstance().getId());
+                }
             }
             if(intent != null) startActivity(intent);
             return true;
@@ -125,7 +131,7 @@ public class RuleDetailsOpenActivity extends RuleSystemBindingActivity implement
     public void onItemClick(View view, Event item) {
         switch(view.getId()) {
             case R.id.tvEventName:
-                Toast.makeText(RuleDetailsOpenActivity.this, "Event Clicked: "+item.getId(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(RuleDetailsActivity.this, "Event Clicked: "+item.getId(), Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -134,7 +140,7 @@ public class RuleDetailsOpenActivity extends RuleSystemBindingActivity implement
     public void onItemClick(View view, State item) {
         switch(view.getId()) {
             case R.id.tvStateName:
-                Toast.makeText(RuleDetailsOpenActivity.this, "State tvStateName clicked: "+item.getId(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(RuleDetailsActivity.this, "State tvStateName clicked: "+item.getId(), Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -143,7 +149,7 @@ public class RuleDetailsOpenActivity extends RuleSystemBindingActivity implement
     public void onItemClick(View view, Action item) {
         switch(view.getId()) {
             case R.id.tvActionName:
-                Toast.makeText(RuleDetailsOpenActivity.this, "Action Clicked: "+item.getId(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(RuleDetailsActivity.this, "Action Clicked: "+item.getId(), Toast.LENGTH_SHORT).show();
                 break;
         }
     }

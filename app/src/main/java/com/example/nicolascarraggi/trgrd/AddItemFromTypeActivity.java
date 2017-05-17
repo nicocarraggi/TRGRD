@@ -49,7 +49,7 @@ public class AddItemFromTypeActivity extends RuleSystemBindingActivity implement
         ActionBar ab = getSupportActionBar();
         ab.setTitle("Add "+typeType);
 
-        tvItems = (TextView) findViewById(R.id.tvAddItemFromTypeItems);
+        //tvItems = (TextView) findViewById(R.id.tvAddItemFromTypeItems);
         rvItems = (RecyclerView) findViewById(R.id.rvAddItemFromTypeItems);
 
     }
@@ -66,17 +66,17 @@ public class AddItemFromTypeActivity extends RuleSystemBindingActivity implement
             eventType = ruleSystemService.getDeviceManager().getEventTypeInstance(typeInstanceId);
             eventsAdapter = new EventsAdapter(this, eventType.getSkeletonEvents(),false);
             rvItems.setAdapter(eventsAdapter);
-            tvItems.setText("Events of type: \""+eventType.getName()+"\"");
+            //tvItems.setText("Events of type: \""+eventType.getName()+"\"");
         } else if(typeType.equals("state")){
             stateType = ruleSystemService.getDeviceManager().getStateTypeInstance(typeInstanceId);
             statesAdapter = new StatesAdapter(this, stateType.getSkeletonStates(),false);
             rvItems.setAdapter(statesAdapter);
-            tvItems.setText("States of type: \""+stateType.getName()+"\"");
+            //tvItems.setText("States of type: \""+stateType.getName()+"\"");
         } else if(typeType.equals("action")){
             actionType = ruleSystemService.getDeviceManager().getActionTypeInstance(typeInstanceId);
             actionsAdapter = new ActionsAdapter(this, actionType.getSkeletonActions(),false);
             rvItems.setAdapter(actionsAdapter);
-            tvItems.setText("Actions of type: \""+actionType.getName()+"\"");
+            //tvItems.setText("Actions of type: \""+actionType.getName()+"\"");
         }
 
     }

@@ -81,7 +81,7 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
 
         private MyStateOnItemClickListener myStateOnItemClickListener;
         private ImageView ivStateDevice, ivState, ivStateDelete;
-        private TextView tvStateName, tvStateValueOne, tvStateValueTwo;
+        private TextView tvStateTypeName, tvStateName, tvStateValueOne, tvStateValueTwo;
         private Button bStateValueOne, bStateValueTwo;
 
         public StateViewHolder(View itemView) {
@@ -89,6 +89,7 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
             this.ivStateDevice = (ImageView) itemView.findViewById(R.id.ivStateDevice);
             this.ivState = (ImageView) itemView.findViewById(R.id.ivState);
             this.ivStateDelete = (ImageView) itemView.findViewById(R.id.ivStateDelete);
+            this.tvStateTypeName = (TextView) itemView.findViewById(R.id.tvStateTypeName);
             this.tvStateName = (TextView) itemView.findViewById(R.id.tvStateName);
             this.tvStateValueOne = (TextView) itemView.findViewById(R.id.tvStateValueOne);
             this.tvStateValueTwo = (TextView) itemView.findViewById(R.id.tvStateValueTwo);
@@ -104,6 +105,7 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
             this.myStateOnItemClickListener = listener;
             this.ivStateDevice.setImageResource(state.getDevice().getIconResource());
             this.ivState.setImageResource(state.getIconResource());
+            this.tvStateTypeName.setText(state.getStateType().getName());
             this.tvStateName.setText(state.getName());
             if(!mEdit && ivStateDelete != null){
                 ivStateDelete.setVisibility(View.GONE);

@@ -16,6 +16,7 @@ public class RuleTemplate {
     private ArrayList<Type> actionTypes;
     private boolean isSkeleton;
     private RuleTemplate basedOn;
+    private Rule rule;
 
     // SKELETON constructor
     public RuleTemplate(int id, String name){
@@ -23,6 +24,7 @@ public class RuleTemplate {
         this.name = name;
         this.triggerTypes = new ArrayList<>();
         this.actionTypes = new ArrayList<>();
+        this.rule = null;
     }
 
     // SKELETON constructor
@@ -103,6 +105,14 @@ public class RuleTemplate {
 
     public RuleTemplate getBasedOn() {
         return basedOn;
+    }
+
+    public Rule getRule() {
+        return rule;
+    }
+
+    public void setRule(Rule rule) {
+        this.rule = rule;
     }
 
     private boolean checkValidTypes(ArrayList<Type> types){

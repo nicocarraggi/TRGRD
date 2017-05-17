@@ -50,6 +50,12 @@ public class Rule {
             throws NullActionException, NullEventException, NullStateException {
         this(id,ruleTemplate.getName());
         this.ruleTemplateInstance = ruleTemplate;
+        fillFromRuleTemplate(ruleTemplate);
+        ruleTemplate.setRule(this);
+    }
+
+    private void fillFromRuleTemplate(RuleTemplate ruleTemplate)
+            throws NullActionException, NullEventException, NullStateException{
         for (Type t: ruleTemplate.getTriggerTypes()){
             if (!t.isSkeleton()){
                 if(t.isEventType()){
@@ -224,7 +230,11 @@ public class Rule {
         return (ruleTemplateInstance != null);
     }
 
-    public void reset(Set<Event> events, Set<State> states, Set<Action> actions) {
+    public RuleTemplate getRuleTemplateInstance() {
+        return ruleTemplateInstance;
+    }
+
+    private void removeEverything(){
         // remove all triggers & actions to unsubscribe all!
         for (Event e: this.events){
             this.removeEvent(e);
@@ -236,6 +246,10 @@ public class Rule {
         for (Action a: this.actions){
             this.removeAction(a);
         }
+    }
+
+    public void reset(Set<Event> events, Set<State> states, Set<Action> actions) {
+        removeEverything();
         // add and subscribe all new triggers & actions!
         for (Event e: events){
             this.addEvent(e);
@@ -246,6 +260,19 @@ public class Rule {
 
         for (Action a: actions){
             this.addAction(a);
+        }
+    }
+
+    public void resetFromRuleTemplateInstance(RuleTemplate ruleTemplate){
+        removeEverything();
+        try {
+            fillFromRuleTemplate(ruleTemplate);
+        } catch (NullActionException e) {
+            e.printStackTrace();
+        } catch (NullEventException e) {
+            e.printStackTrace();
+        } catch (NullStateException e) {
+            e.printStackTrace();
         }
     }
 }

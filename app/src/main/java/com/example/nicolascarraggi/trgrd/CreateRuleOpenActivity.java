@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -40,11 +39,9 @@ import com.example.nicolascarraggi.trgrd.rulesys.State;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeState;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Clock;
-import com.example.nicolascarraggi.trgrd.rulesys.devices.Geofences;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.NotificationDevice;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -125,7 +122,7 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                     this.rule = new Rule(newId, etName.getText().toString(), events, states, actions);
                     ruleSystemService.addRule(rule);
                     this.rule.setActive(true);
-                    Intent intent = new Intent(this, RuleDetailsOpenActivity.class);
+                    Intent intent = new Intent(this, RuleDetailsActivity.class);
                     intent.putExtra("ruleid",rule.getId());
                     startActivity(intent);
                 } else {
@@ -290,7 +287,7 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
     public void onClick(View view) {
         switch(view.getId()) {
             case R.id.bCreateRuleOpenAddTrigger:
-                Intent iTriggers = new Intent(CreateRuleOpenActivity.this, AddTriggerActivity.class);
+                Intent iTriggers = new Intent(CreateRuleOpenActivity.this, AddEventOrStateActivity.class);
                 boolean hasEvent = (!events.isEmpty());
                 iTriggers.putExtra("hasevent",hasEvent);
                 startActivityForResult(iTriggers, REQUEST_CODE_TRIGGER);

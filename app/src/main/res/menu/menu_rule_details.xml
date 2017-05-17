@@ -1,7 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.nicolascarraggi.trgrd.RuleDetailsOpenActivity">
+    tools:context="com.example.nicolascarraggi.trgrd.RuleDetailsActivity">
+
+    <item
+        android:id="@+id/action_rule_delete"
+        android:orderInCategory="100"
+        android:title="Delete"
+        app:showAsAction="always" />
+
     <item
         android:id="@+id/action_rule_edit"
         android:orderInCategory="100"

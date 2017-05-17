@@ -80,7 +80,7 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
 
         private MyActionOnItemClickListener myActionOnItemClickListener;
         private ImageView ivActionDevice, ivAction, ivActionDelete;
-        private TextView tvActionName, tvActionValueOne;
+        private TextView tvActionTypeName, tvActionName, tvActionValueOne;
         private Button bActionValueOne;
 
         public ActionViewHolder(View itemView) {
@@ -88,6 +88,7 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
             this.ivActionDevice = (ImageView) itemView.findViewById(R.id.ivActionDevice);
             this.ivAction = (ImageView) itemView.findViewById(R.id.ivAction);
             this.ivActionDelete = (ImageView) itemView.findViewById(R.id.ivActionDelete);
+            this.tvActionTypeName = (TextView) itemView.findViewById(R.id.tvActionTypeName);
             this.tvActionName = (TextView) itemView.findViewById(R.id.tvActionName);
             this.tvActionValueOne = (TextView) itemView.findViewById(R.id.tvActionValueOne);
             this.bActionValueOne = (Button) itemView.findViewById(R.id.bActionValueOne);
@@ -100,6 +101,7 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
             this.myActionOnItemClickListener = listener;
             this.ivActionDevice.setImageResource(action.getDevice().getIconResource());
             this.ivAction.setImageResource(action.getIconResource());
+            this.tvActionTypeName.setText(action.getActionType().getName());
             this.tvActionName.setText(action.getName());
             if(!mEdit && ivActionDelete != null){
                 ivActionDelete.setVisibility(View.GONE);
