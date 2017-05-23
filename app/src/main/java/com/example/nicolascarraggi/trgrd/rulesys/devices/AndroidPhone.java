@@ -78,7 +78,7 @@ public class AndroidPhone extends Device implements NotificationDevice {
     public AndroidPhone(RuleSystemService ruleSystemService, DeviceManager deviceManager, EventType evAlarmAlert, EventType evAlarmSnooze,
                         EventType evAlarmDismiss, EventType evAlarmDone, EventType evCallInc, StateType stAlarmGoing, StateType stCallIncGoing,
                         ActionType acAlarmSnooze, ActionType acAlarmDismiss, ActionType acNotify) {
-        super(1, "Phone", "Google", "Android", R.drawable.ic_phone_android_black_24dp, ruleSystemService,deviceManager);
+        super(ruleSystemService.getNewId(), "Phone", "Google", "Android", R.drawable.ic_phone_android_black_24dp, ruleSystemService,deviceManager);
         this.eventTypes.put(evAlarmAlert.getId(),evAlarmAlert);
         this.eventTypes.put(evAlarmSnooze.getId(),evAlarmSnooze);
         this.eventTypes.put(evAlarmDismiss.getId(),evAlarmDismiss);

@@ -16,7 +16,7 @@ import java.util.Set;
 public class RuleSystemService extends Service {
 
     // TODO add rule ID system
-    private int newId = 3;
+    private int newId = 6;
     // TODO get and write rules from and to database?
 
     private final IBinder ruleSystemBinder = new RuleSystemBinder();
@@ -28,6 +28,7 @@ public class RuleSystemService extends Service {
     private Location mTestLocationVub, mTestLocationStadium, mTestLocationHome;
 
     private HashMap<Integer,Rule> rules;
+    private HashMap<Integer,Rule> exampleRules;
     private HashMap<Integer,RuleTemplate> ruleTemplates;
     private HashMap<Integer,RuleTemplate> ruleTemplateInstances;
     private HashMap<String,Location> locations;
@@ -95,6 +96,18 @@ public class RuleSystemService extends Service {
 
     public void addRule(Rule rule){
         this.rules.put(rule.getId(),rule);
+    }
+
+    public Set<Rule> getExampleRules(){
+        return new HashSet(exampleRules.values());
+    }
+
+    public Rule getExampleRule(int id){
+        return exampleRules.get(id);
+    }
+
+    public void addExampleRule(Rule rule){
+        this.exampleRules.put(rule.getId(),rule);
     }
 
     public Set<RuleTemplate> getRuleTemplates(){
@@ -172,6 +185,10 @@ public class RuleSystemService extends Service {
         rtCoffee.addTriggerType(mDeviceManager.stLocationCurrentlyAt);
         rtCoffee.addActionType(mDeviceManager.acStartCoffee);
         ruleTemplates.put(rtCoffee.getId(),rtCoffee);
+    }
+
+    private void testExampleRules(){
+
     }
 
 }

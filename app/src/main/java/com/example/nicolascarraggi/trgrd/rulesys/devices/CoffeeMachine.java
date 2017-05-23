@@ -20,7 +20,7 @@ public class CoffeeMachine extends Device {
     private Action mAcStartCoffee;
 
     public CoffeeMachine(RuleSystemService ruleSystemService, DeviceManager deviceManager, ActionType acStartCoffee) {
-        super(5, "Coffee Machine", "Unknown", "Unknown", R.drawable.ic_local_cafe_black_24dp, ruleSystemService, deviceManager);
+        super(ruleSystemService.getNewId(), "Coffee Machine", "Unknown", "Unknown", R.drawable.ic_local_cafe_black_24dp, ruleSystemService, deviceManager);
         this.actionTypes.put(acStartCoffee.getId(),acStartCoffee);
         this.mAcStartCoffee = new Action(deviceManager.getNewId(),"Coffee machine start", R.drawable.ic_play_arrow_black_24dp, this, acStartCoffee, new Callable<String>() {
             @Override

@@ -8,6 +8,7 @@ import com.example.nicolascarraggi.trgrd.rulesys.devices.AndroidPhone;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Clock;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.CoffeeMachine;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Geofences;
+import com.example.nicolascarraggi.trgrd.rulesys.devices.Myo;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Pebble;
 
 import java.util.HashMap;
@@ -47,6 +48,7 @@ public class DeviceManager {
     public EventType evTimeAt = new EventType(getNewId(),"time changes to a certain time"); // TODO other name
     public EventType evLocationArrivingAt = new EventType(getNewId(),"arrived at a location");
     public EventType evLocationLeaving = new EventType(getNewId(),"left a location");
+    public EventType evGesture = new EventType(getNewId(),"gesture is made");
 
 
     // StateTypes
@@ -71,6 +73,7 @@ public class DeviceManager {
     private Clock mClock;
     private Geofences mGeofences;
     private CoffeeMachine mCoffeeMachine;
+    private Myo mMyo;
 
     public DeviceManager(RuleSystemService ruleSystemService) {
         this.ruleSystemService = ruleSystemService;
@@ -91,6 +94,7 @@ public class DeviceManager {
         this.eventTypes.put(evTimeAt.getId(),evTimeAt);
         this.eventTypes.put(evLocationArrivingAt.getId(),evLocationArrivingAt);
         this.eventTypes.put(evLocationLeaving.getId(),evLocationLeaving);
+        this.eventTypes.put(evGesture.getId(),evGesture);
         this.stateTypes.put(stAlarmGoing.getId(),stAlarmGoing);
         this.stateTypes.put(stCallIncGoing.getId(),stCallIncGoing);
         this.stateTypes.put(stTimeFromTo.getId(),stTimeFromTo);
@@ -107,11 +111,13 @@ public class DeviceManager {
         this.mClock = new Clock(ruleSystemService, this, evTimeAt, stTimeFromTo);
         this.mGeofences = new Geofences(ruleSystemService, this, evLocationArrivingAt, evLocationLeaving, stLocationCurrentlyAt);
         this.mCoffeeMachine = new CoffeeMachine(ruleSystemService,this,acStartCoffee);
+        this.mMyo = new Myo(ruleSystemService,this,evGesture);
         this.devices.put(mAndroidPhone.getId(),mAndroidPhone);
         this.devices.put(mPebble.getId(),mPebble);
         this.devices.put(mClock.getId(),mClock);
         this.devices.put(mGeofences.getId(),mGeofences);
         this.devices.put(mCoffeeMachine.getId(),mCoffeeMachine);
+        this.devices.put(mMyo.getId(),mMyo);
     }
 
     public AndroidPhone getAndroidPhone() {
@@ -247,6 +253,7 @@ public class DeviceManager {
         mClock.start();
         mGeofences.start();
         mCoffeeMachine.start();
+        mMyo.start();
     }
 
     public void stopDevices(){
@@ -255,6 +262,7 @@ public class DeviceManager {
         mClock.stop();
         mGeofences.stop();
         mCoffeeMachine.stop();
+        mMyo.stop();
     }
 
 

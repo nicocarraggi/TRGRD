@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.getpebble.android.kit.PebbleKit;
 import com.getpebble.android.kit.util.PebbleDictionary;
@@ -19,9 +18,9 @@ public class PebbleCommunicationService extends Service {
 
     // Constants
 
-    public static final String PEBBLE_BUTTON_UP_ACTION = "com.example.nicolascarraggi.trgrd.rulesys.devices.BUTTON_UP";
-    public static final String PEBBLE_BUTTON_SELECT_ACTION = "com.example.nicolascarraggi.trgrd.rulesys.devices.BUTTON_SELECT";
-    public static final String PEBBLE_BUTTON_DOWN_ACTION = "com.example.nicolascarraggi.trgrd.rulesys.devices.BUTTON_DOWN";
+    public static final String PEBBLE_BUTTON_UP_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.BUTTON_UP";
+    public static final String PEBBLE_BUTTON_SELECT_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.BUTTON_SELECT";
+    public static final String PEBBLE_BUTTON_DOWN_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.BUTTON_DOWN";
 
     // PebbleCommunicationService Broadcast Receiver
 
@@ -114,17 +113,17 @@ public class PebbleCommunicationService extends Service {
                         switch (button) {
                             case BUTTON_UP:
                                 Log.d("TRGRD", "PebbleCommunication Button Up");
-                                newIntent = new Intent(PEBBLE_BUTTON_UP_ACTION);
+                                newIntent = new Intent(PEBBLE_BUTTON_UP_EVENT);
                                 LocalBroadcastManager.getInstance(PebbleCommunicationService.this).sendBroadcast(newIntent);
                                 break;
                             case BUTTON_SELECT:
                                 Log.d("TRGRD", "PebbleCommunication Button Select");
-                                newIntent = new Intent(PEBBLE_BUTTON_SELECT_ACTION);
+                                newIntent = new Intent(PEBBLE_BUTTON_SELECT_EVENT);
                                 LocalBroadcastManager.getInstance(PebbleCommunicationService.this).sendBroadcast(newIntent);
                                 break;
                             case BUTTON_DOWN:
                                 Log.d("TRGRD", "PebbleCommunication Button Down");
-                                newIntent = new Intent(PEBBLE_BUTTON_DOWN_ACTION);
+                                newIntent = new Intent(PEBBLE_BUTTON_DOWN_EVENT);
                                 LocalBroadcastManager.getInstance(PebbleCommunicationService.this).sendBroadcast(newIntent);
                                 break;
                             default:

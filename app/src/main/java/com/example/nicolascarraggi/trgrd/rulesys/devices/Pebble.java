@@ -6,12 +6,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.nicolascarraggi.trgrd.R;
 import com.example.nicolascarraggi.trgrd.rulesys.Action;
 import com.example.nicolascarraggi.trgrd.rulesys.ActionType;
-import com.example.nicolascarraggi.trgrd.rulesys.Device;
 import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
 import com.example.nicolascarraggi.trgrd.rulesys.EventType;
@@ -42,11 +40,11 @@ public class Pebble extends Wearable implements NotificationDevice {
             String action = intent.getAction();
             Log.d("TRGRD","Pebble mReceiver "+action);
 
-            if(action.equals(PebbleCommunicationService.PEBBLE_BUTTON_UP_ACTION)){
+            if(action.equals(PebbleCommunicationService.PEBBLE_BUTTON_UP_EVENT)){
                 evBtnUp();
-            } else if(action.equals(PebbleCommunicationService.PEBBLE_BUTTON_SELECT_ACTION)){
+            } else if(action.equals(PebbleCommunicationService.PEBBLE_BUTTON_SELECT_EVENT)){
                 evBtnSelect();
-            } else if(action.equals(PebbleCommunicationService.PEBBLE_BUTTON_DOWN_ACTION)){
+            } else if(action.equals(PebbleCommunicationService.PEBBLE_BUTTON_DOWN_EVENT)){
                 evBtnDown();
             }
         }
@@ -58,7 +56,7 @@ public class Pebble extends Wearable implements NotificationDevice {
 
     public Pebble(RuleSystemService ruleSystemService, DeviceManager deviceManager, EventType evButtonPress, EventType evHeartRateReading,
                   ActionType acAlarmVibrate, ActionType acAlarmDisplay, ActionType acTimeDisplay, ActionType acNotify) {
-        super(2, "Pebble Steel", "Pebble", "Pebble OS", "Watch", "Wrist", R.drawable.ic_watch_black_24dp, ruleSystemService, deviceManager);
+        super(ruleSystemService.getNewId(), "Pebble Steel", "Pebble", "Pebble OS", "Watch", "Wrist", R.drawable.ic_watch_black_24dp, ruleSystemService, deviceManager);
         this.eventTypes.put(evButtonPress.getId(),evButtonPress);
         this.eventTypes.put(evHeartRateReading.getId(),evHeartRateReading);
         this.actionTypes.put(acAlarmVibrate.getId(),acAlarmVibrate);
@@ -224,9 +222,9 @@ public class Pebble extends Wearable implements NotificationDevice {
     // Register & UnRegister Pebble Broadcast Receiver
 
     public void registerPebbleReceiver(){
-        IntentFilter filter = new IntentFilter(PebbleCommunicationService.PEBBLE_BUTTON_UP_ACTION);
-        filter.addAction(PebbleCommunicationService.PEBBLE_BUTTON_SELECT_ACTION);
-        filter.addAction(PebbleCommunicationService.PEBBLE_BUTTON_DOWN_ACTION);
+        IntentFilter filter = new IntentFilter(PebbleCommunicationService.PEBBLE_BUTTON_UP_EVENT);
+        filter.addAction(PebbleCommunicationService.PEBBLE_BUTTON_SELECT_EVENT);
+        filter.addAction(PebbleCommunicationService.PEBBLE_BUTTON_DOWN_EVENT);
         LocalBroadcastManager.getInstance(ruleSystemService).registerReceiver(mReceiver, filter);
         Log.d("TRGRD","Pebble mReceiver registered!");
     }

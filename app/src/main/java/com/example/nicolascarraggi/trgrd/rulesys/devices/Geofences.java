@@ -91,7 +91,7 @@ public class Geofences extends Device implements GoogleApiClient.ConnectionCallb
     private LocationState mStLocationCurrentlyAt;
 
     public Geofences(RuleSystemService ruleSystemService, DeviceManager deviceManager, EventType evLocationArrivingAt, EventType evLocationLeaving, StateType stLocationCurrentlyAt) {
-        super(4, "Geofences", "Google", "Android", R.drawable.ic_my_location_black_24dp, ruleSystemService, deviceManager);
+        super(ruleSystemService.getNewId(), "Geofences", "Google", "Android", R.drawable.ic_my_location_black_24dp, ruleSystemService, deviceManager);
         this.eventTypes.put(evLocationArrivingAt.getId(),evLocationArrivingAt);
         this.eventTypes.put(evLocationLeaving.getId(),evLocationLeaving);
         this.stateTypes.put(stLocationCurrentlyAt.getId(),stLocationCurrentlyAt);

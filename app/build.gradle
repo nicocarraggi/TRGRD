@@ -24,10 +24,16 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    repositories {
+        maven {
+            url '/Users/nicolascarraggi/Documents/Vub/2eMa/Thesis/Myo/myo-android-sdk-0.10.0/myorepository'
+        }
+    }
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.android.support:design:23.4.0'
     compile 'com.getpebble:pebblekit:4.0.0'
+    compile 'com.thalmic:myosdk:0.10.+@aar'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.google.android.gms:play-services-maps:10.2.1'
     compile 'com.google.android.gms:play-services-places:10.2.1'
