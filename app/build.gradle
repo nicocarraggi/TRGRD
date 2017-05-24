@@ -39,4 +39,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-places:10.2.1'
     compile 'com.google.android.gms:play-services:10.2.1'
     testCompile 'junit:junit:4.12'
+    compile files('libs/native-libs.jar')
 }

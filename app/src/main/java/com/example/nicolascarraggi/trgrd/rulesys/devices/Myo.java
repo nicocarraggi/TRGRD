@@ -25,38 +25,68 @@ public class Myo extends Wearable {
             String action = intent.getAction();
             Log.d("TRGRD","Myo mReceiver "+action);
 
-            if(action.equals(MyoCommunicationService.MYO_GESTURE_EVENT)){
-                evGesture();
+            if(action.equals(MyoCommunicationService.MYO_GESTURE_FIST_EVENT)){
+                evGestureFist();
+            } else if(action.equals(MyoCommunicationService.MYO_GESTURE_WAVEIN_EVENT)){
+                evGestureWaveIn();
+            } else if(action.equals(MyoCommunicationService.MYO_GESTURE_WAVEOUT_EVENT)){
+                evGestureWaveOut();
+            } else if(action.equals(MyoCommunicationService.MYO_GESTURE_DOUBLETAP_EVENT)){
+                evGestureDoubleTap();
+            } else if(action.equals(MyoCommunicationService.MYO_GESTURE_FINGERSSPREAD_EVENT)){
+                evGestureFingersSpread();
             }
-            /*else if(action.equals(PebbleCommunicationService.PEBBLE_BUTTON_SELECT_EVENT)){
-                evBtnSelect();
-            } else if(action.equals(PebbleCommunicationService.PEBBLE_BUTTON_DOWN_EVENT)){
-                evBtnDown();
-            }*/
         }
     };
 
-    private Event mEvGesture;
+
+    private Event mEvGestureFist, mEvGestureWaveIn, mEvGestureWaveOut, mEvGestureDoubleTap, mEvGestureFingersSpread;
 
     public Myo(RuleSystemService ruleSystemService, DeviceManager deviceManager, EventType evGesture){
         super(ruleSystemService.getNewId(), "Myo", "Thalmic Labs", "Myo OS", "Armband", "Arm", R.drawable.ic_pan_tool_black_24dp,ruleSystemService,deviceManager);
         this.eventTypes.put(evGesture.getId(),evGesture);
-        mEvGesture = new Event(deviceManager.getNewId(),"Myo gesture",R.drawable.ic_gesture_black_24dp, this,evGesture);
-        this.events.put(mEvGesture.getId(),mEvGesture);
+        mEvGestureFist = new Event(deviceManager.getNewId(),"Myo FIST gesture",R.drawable.ic_gesture_black_24dp, this,evGesture);
+        mEvGestureWaveIn = new Event(deviceManager.getNewId(),"Myo WAVE IN gesture",R.drawable.ic_gesture_black_24dp, this,evGesture);
+        mEvGestureWaveOut = new Event(deviceManager.getNewId(),"Myo WAVE OUT gesture",R.drawable.ic_gesture_black_24dp, this,evGesture);
+        mEvGestureDoubleTap = new Event(deviceManager.getNewId(),"Myo DOUBLE TAP gesture",R.drawable.ic_gesture_black_24dp, this,evGesture);
+        mEvGestureFingersSpread = new Event(deviceManager.getNewId(),"Myo FINGERS SPREAD gesture",R.drawable.ic_gesture_black_24dp, this,evGesture);
+        this.events.put(mEvGestureFist.getId(),mEvGestureFist);
+        this.events.put(mEvGestureWaveIn.getId(),mEvGestureWaveIn);
+        this.events.put(mEvGestureWaveOut.getId(),mEvGestureWaveOut);
+        this.events.put(mEvGestureDoubleTap.getId(),mEvGestureDoubleTap);
+        this.events.put(mEvGestureFingersSpread.getId(),mEvGestureFingersSpread);
     }
 
     // Events
 
-    public void evGesture(){
-        mEvGesture.trigger();
+    private void evGestureFist() {
+        mEvGestureFist.trigger();
+    }
+
+    private void evGestureWaveIn() {
+        mEvGestureWaveIn.trigger();
+    }
+
+    private void evGestureWaveOut() {
+        mEvGestureWaveOut.trigger();
+    }
+
+    private void evGestureDoubleTap() {
+        mEvGestureDoubleTap.trigger();
+    }
+
+    private void evGestureFingersSpread() {
+        mEvGestureFingersSpread.trigger();
     }
 
     // Register & UnRegister Myo Broadcast Receiver
 
     public void registerMyoReceiver(){
-        IntentFilter filter = new IntentFilter(MyoCommunicationService.MYO_GESTURE_EVENT);
-        //filter.addAction(MyoCommunicationService.PEBBLE_BUTTON_SELECT_EVENT);
-        //filter.addAction(MyoCommunicationService.PEBBLE_BUTTON_DOWN_EVENT);
+        IntentFilter filter = new IntentFilter(MyoCommunicationService.MYO_GESTURE_FIST_EVENT);
+        filter.addAction(MyoCommunicationService.MYO_GESTURE_WAVEIN_EVENT);
+        filter.addAction(MyoCommunicationService.MYO_GESTURE_WAVEOUT_EVENT);
+        filter.addAction(MyoCommunicationService.MYO_GESTURE_DOUBLETAP_EVENT);
+        filter.addAction(MyoCommunicationService.MYO_GESTURE_FINGERSSPREAD_EVENT);
         LocalBroadcastManager.getInstance(ruleSystemService).registerReceiver(mReceiver, filter);
         Log.d("TRGRD","Myo mReceiver registered!");
     }

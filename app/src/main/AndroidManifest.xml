@@ -31,6 +31,10 @@
             android:name=".rulesys.devices.PebbleCommunicationService"
             android:enabled="true"
             android:exported="true" />
+        <service
+            android:name=".rulesys.devices.MyoCommunicationService"
+            android:enabled="true"
+            android:exported="true" />
 
         <activity
             android:name=".SettingsActivity"
