@@ -17,15 +17,22 @@ import com.example.nicolascarraggi.trgrd.rulesys.RuleSystemService;
  * Created by nicolascarraggi on 23/05/17.
  */
 
-public class Myo extends Wearable {
+public class MyoDevice extends Wearable {
+
+    public static final String MYO_START_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.myo.start";
+    public static final String MYO_STOP_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.myo.stop";
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            Log.d("TRGRD","Myo mReceiver "+action);
+            Log.d("TRGRD", "Myo mReceiver " + action);
 
             if(action.equals(MyoCommunicationService.MYO_GESTURE_FIST_EVENT)){
+                myoConnected();
+            } else if(action.equals(MyoCommunicationService.MYO_GESTURE_FIST_EVENT)){
+                myoDisconnected();
+            } else if(action.equals(MyoCommunicationService.MYO_GESTURE_FIST_EVENT)){
                 evGestureFist();
             } else if(action.equals(MyoCommunicationService.MYO_GESTURE_WAVEIN_EVENT)){
                 evGestureWaveIn();
@@ -39,10 +46,18 @@ public class Myo extends Wearable {
         }
     };
 
+    private void myoConnected() {
+        this.started = true;
+        deviceManager.sendRefreshBroadcast();
+    }
+
+    private void myoDisconnected() {
+        stop();
+    }
 
     private Event mEvGestureFist, mEvGestureWaveIn, mEvGestureWaveOut, mEvGestureDoubleTap, mEvGestureFingersSpread;
 
-    public Myo(RuleSystemService ruleSystemService, DeviceManager deviceManager, EventType evGesture){
+    public MyoDevice(RuleSystemService ruleSystemService, DeviceManager deviceManager, EventType evGesture){
         super(ruleSystemService.getNewId(), "Myo", "Thalmic Labs", "Myo OS", "Armband", "Arm", R.drawable.ic_pan_tool_black_24dp,ruleSystemService,deviceManager);
         this.eventTypes.put(evGesture.getId(),evGesture);
         mEvGestureFist = new Event(deviceManager.getNewId(),"Myo FIST gesture",R.drawable.ic_gesture_black_24dp, this,evGesture);
@@ -111,7 +126,6 @@ public class Myo extends Wearable {
     public void start(){
         this.startCommunicationService();
         this.registerMyoReceiver();
-        this.started = true;
         //deviceManager.sendRefreshBroadcast();
     }
 
@@ -119,6 +133,6 @@ public class Myo extends Wearable {
         this.unRegisterMyoReceiver();
         this.stopCommunicationService();
         this.started = false;
-        //deviceManager.sendRefreshBroadcast();
+        deviceManager.sendRefreshBroadcast();
     }
 }

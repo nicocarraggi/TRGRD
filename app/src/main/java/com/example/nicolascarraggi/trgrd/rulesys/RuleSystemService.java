@@ -64,11 +64,12 @@ public class RuleSystemService extends Service {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         mTestRuleAlarmStartPebble.setActive(false);
         mTestRuleAlarmDismissPebble.setActive(false);
         mTestRuleAlarmDonePebble.setActive(false);
+        // TODO deactivate all rules?
         mDeviceManager.stopDevices();
+        super.onDestroy();
     }
 
     @Override

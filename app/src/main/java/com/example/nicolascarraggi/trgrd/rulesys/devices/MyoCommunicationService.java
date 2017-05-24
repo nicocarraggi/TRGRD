@@ -6,6 +6,8 @@ package com.example.nicolascarraggi.trgrd.rulesys.devices;
  */
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
@@ -23,6 +25,8 @@ public class MyoCommunicationService extends Service {
 
     // Constants
 
+    public static final String MYO_CONNECTED_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.myo.connected";
+    public static final String MYO_DISCONNECTED_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.myo.disconnected";
     public static final String MYO_GESTURE_FIST_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.myo.gesture-fist";
     public static final String MYO_GESTURE_WAVEIN_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.myo.gesture-wavein";
     public static final String MYO_GESTURE_WAVEOUT_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.myo.gesture-waveout";
@@ -36,18 +40,22 @@ public class MyoCommunicationService extends Service {
     private DeviceListener mListener = new AbstractDeviceListener() {
         @Override
         public void onConnect(Myo myo, long timestamp) {
-            showToast(getString(R.string.connected));
+            Intent intent = new Intent(MYO_CONNECTED_EVENT);
+            LocalBroadcastManager.getInstance(MyoCommunicationService.this).sendBroadcast(intent);
+            showToast(getString(R.string.myo_connected));
         }
         @Override
         public void onDisconnect(Myo myo, long timestamp) {
-            showToast(getString(R.string.disconnected));
+            Intent intent = new Intent(MYO_DISCONNECTED_EVENT);
+            LocalBroadcastManager.getInstance(MyoCommunicationService.this).sendBroadcast(intent);
+            showToast(getString(R.string.myo_disconnected));
         }
         // onPose() is called whenever the Myo detects that the person wearing it has changed their pose, for example,
         // making a fist, or not making a fist anymore.
         @Override
         public void onPose(Myo myo, long timestamp, Pose pose) {
             // Show the name of the pose in a toast.
-            showToast(getString(R.string.pose, pose.toString()));
+            // showToast(getString(R.string.myo_pose, pose.toString()));
             String poseName = pose.toString();
             Intent newIntent = null;
             if(poseName.equals("FIST")){

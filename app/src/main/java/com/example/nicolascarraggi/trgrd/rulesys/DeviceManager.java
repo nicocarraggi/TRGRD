@@ -1,6 +1,5 @@
 package com.example.nicolascarraggi.trgrd.rulesys;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
@@ -8,7 +7,7 @@ import com.example.nicolascarraggi.trgrd.rulesys.devices.AndroidPhone;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Clock;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.CoffeeMachine;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Geofences;
-import com.example.nicolascarraggi.trgrd.rulesys.devices.Myo;
+import com.example.nicolascarraggi.trgrd.rulesys.devices.MyoDevice;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Pebble;
 
 import java.util.HashMap;
@@ -73,7 +72,7 @@ public class DeviceManager {
     private Clock mClock;
     private Geofences mGeofences;
     private CoffeeMachine mCoffeeMachine;
-    private Myo mMyo;
+    private MyoDevice mMyoDevice;
 
     public DeviceManager(RuleSystemService ruleSystemService) {
         this.ruleSystemService = ruleSystemService;
@@ -111,13 +110,13 @@ public class DeviceManager {
         this.mClock = new Clock(ruleSystemService, this, evTimeAt, stTimeFromTo);
         this.mGeofences = new Geofences(ruleSystemService, this, evLocationArrivingAt, evLocationLeaving, stLocationCurrentlyAt);
         this.mCoffeeMachine = new CoffeeMachine(ruleSystemService,this,acStartCoffee);
-        this.mMyo = new Myo(ruleSystemService,this,evGesture);
+        this.mMyoDevice = new MyoDevice(ruleSystemService,this,evGesture);
         this.devices.put(mAndroidPhone.getId(),mAndroidPhone);
         this.devices.put(mPebble.getId(),mPebble);
         this.devices.put(mClock.getId(),mClock);
         this.devices.put(mGeofences.getId(),mGeofences);
         this.devices.put(mCoffeeMachine.getId(),mCoffeeMachine);
-        this.devices.put(mMyo.getId(),mMyo);
+        this.devices.put(mMyoDevice.getId(), mMyoDevice);
     }
 
     public AndroidPhone getAndroidPhone() {
@@ -253,7 +252,7 @@ public class DeviceManager {
         mClock.start();
         mGeofences.start();
         mCoffeeMachine.start();
-        mMyo.start();
+        mMyoDevice.start();
     }
 
     public void stopDevices(){
@@ -262,7 +261,7 @@ public class DeviceManager {
         mClock.stop();
         mGeofences.stop();
         mCoffeeMachine.stop();
-        mMyo.stop();
+        mMyoDevice.stop();
     }
 
 

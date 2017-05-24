@@ -8,9 +8,9 @@
 
     <!-- Strings related to Myo -->
 
-    <string name="connected">Connected</string>
-    <string name="disconnected">Disconnected</string>
-    <string name="pose">Pose: %s</string>
+    <string name="myo_connected">MYO Connected</string>
+    <string name="myo_disconnected">MYO Disconnected</string>
+    <string name="myo_pose">MYO Pose: %s</string>
 
     <!-- Strings related to Settings -->
 

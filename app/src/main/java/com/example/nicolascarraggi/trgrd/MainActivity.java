@@ -304,8 +304,8 @@ public class MainActivity extends AppCompatActivity implements TrgrdFragment.OnF
     }
 
     private void stopRuleSystemService(){
-        Intent pebbleService = new Intent(MainActivity.this, RuleSystemService.class);
-        stopService(pebbleService);
+        Intent service = new Intent(MainActivity.this, RuleSystemService.class);
+        stopService(service);
         showOnOff(false);
         this.isServiceStarted = false;
         notifyFragmentsServiceStartedChange();
