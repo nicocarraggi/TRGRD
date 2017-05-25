@@ -11,7 +11,7 @@ import java.util.Set;
 public class Device {
 
     protected int id;
-    protected String name, manufacturer, platform;
+    protected String name, manufacturer, platform, status;
     protected int iconResource;
     protected boolean started;
     protected DeviceManager deviceManager;
@@ -31,6 +31,7 @@ public class Device {
         this.name = name;
         this.manufacturer = manufacturer;
         this.platform = platform;
+        this.status = "";
         this.iconResource = iconResource;
         this.started = false;
         this.ruleSystemService = ruleSystemService;
@@ -76,6 +77,14 @@ public class Device {
 
     public void setPlatform(String platform) {
         this.platform = platform;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public int getIconResource() {
@@ -153,4 +162,8 @@ public class Device {
     public void deleteActionInstance(int id) {
         actionInstances.remove(id);
     }
+
+    public void start(){};
+
+    public void stop(){};
 }

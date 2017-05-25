@@ -110,13 +110,14 @@ public class Clock extends Device {
         Log.d("TRGRD","Clock mReceiver unRegistered!");
     }
 
-
+    @Override
     public void start(){
         this.registerClockReceiver();
         this.started = true;
         //deviceManager.sendRefreshBroadcast();
     }
 
+    @Override
     public void stop(){
         this.unRegisterClockReceiver();
         this.started = false;

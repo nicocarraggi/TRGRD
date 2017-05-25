@@ -477,12 +477,13 @@ public class Geofences extends Device implements GoogleApiClient.ConnectionCallb
         Log.d("TRGRD","Geofences mReceiver unRegistered!");
     }
 
-
+    @Override
     public void start(){
         this.connectGoogleApiClient();
         this.registerGeofencesReceiver();
     }
 
+    @Override
     public void stop(){
         this.disconnectGoogleApiClient();
         this.unRegisterGeofencesReceiver();

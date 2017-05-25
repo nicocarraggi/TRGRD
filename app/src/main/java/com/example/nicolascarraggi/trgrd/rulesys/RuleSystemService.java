@@ -64,6 +64,7 @@ public class RuleSystemService extends Service {
 
     @Override
     public void onDestroy() {
+        Log.d("TRGRD","RuleSystemService onDestroy()");
         mTestRuleAlarmStartPebble.setActive(false);
         mTestRuleAlarmDismissPebble.setActive(false);
         mTestRuleAlarmDonePebble.setActive(false);

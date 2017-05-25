@@ -105,7 +105,7 @@ public class DevicesFragment extends TrgrdFragment implements MyOnItemClickListe
     }
 
     private void showDevices(){
-        if (mListener.getRuleSystemService() != null && mAdapter != null) {
+        if (mListener.getRuleSystemService() != null && mAdapter != null && isServiceBound) {
             this.devices = mListener.getRuleSystemService().getDeviceManager().getDevices();
             mAdapter.updateData(devices);
         }

@@ -311,12 +311,14 @@ public class AndroidPhone extends Device implements NotificationDevice {
         Log.d("TRGRD","AndroidPhone mReceiver unRegistered!");
     }
 
+    @Override
     public void start(){
         this.registerAndroidPhoneReceiver();
         this.started = true;
         //deviceManager.sendRefreshBroadcast();
     }
 
+    @Override
     public void stop(){
         this.unRegisterAndroidPhoneReceiver();
         this.started = false;

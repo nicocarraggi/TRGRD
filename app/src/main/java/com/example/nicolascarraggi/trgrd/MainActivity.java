@@ -304,6 +304,8 @@ public class MainActivity extends AppCompatActivity implements TrgrdFragment.OnF
     }
 
     private void stopRuleSystemService(){
+        unbindService(mConnection);
+        this.isServiceBound = false;
         Intent service = new Intent(MainActivity.this, RuleSystemService.class);
         stopService(service);
         showOnOff(false);

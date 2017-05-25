@@ -36,10 +36,12 @@ public class CoffeeMachine extends Device {
         // TODO send HTTP request
     }
 
+    @Override
     public void start(){
         this.started = true;
     }
 
+    @Override
     public void stop(){
         this.started = false;
     }

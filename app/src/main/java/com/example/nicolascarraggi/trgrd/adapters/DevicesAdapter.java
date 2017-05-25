@@ -78,13 +78,14 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DeviceVi
 
         private MyOnItemClickListener<Device> myOnItemClickListener;
         private ImageView ivDevice;
-        private TextView tvDeviceName;
+        private TextView tvDeviceName, tvDeviceStatus;
         private SwitchCompat switchDeviceActive;
 
         public DeviceViewHolder(View itemView) {
             super(itemView);
             this.ivDevice = (ImageView) itemView.findViewById(R.id.ivDevice);
             this.tvDeviceName = (TextView) itemView.findViewById(R.id.tvDeviceName);
+            this.tvDeviceStatus = (TextView) itemView.findViewById(R.id.tvDeviceStatus);
             this.switchDeviceActive = (SwitchCompat) itemView.findViewById(R.id.switchDeviceActive);
         }
 
@@ -92,6 +93,7 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DeviceVi
             this.myOnItemClickListener = listener;
             this.ivDevice.setImageResource(device.getIconResource());
             this.tvDeviceName.setText(device.getName());
+            this.tvDeviceStatus.setText(device.getStatus());
             tvDeviceName.setOnClickListener(this);
             switchDeviceActive.setChecked(device.isStarted());
             switchDeviceActive.setOnCheckedChangeListener(this);
@@ -104,7 +106,19 @@ public class DevicesAdapter extends RecyclerView.Adapter<DevicesAdapter.DeviceVi
 
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-            // TODO!
+            switch(compoundButton.getId()) {
+                case R.id.switchDeviceActive:
+                    switchDeviceStarted(mDataset.get(getAdapterPosition()), b);
+                    break;
+            }
+        }
+
+        private void switchDeviceStarted(Device device, boolean b) {
+            if(device.isStarted()!=b){
+                if (b){
+                    device.start();
+                } else device.stop();
+            }
         }
     }
 }

@@ -26,6 +26,15 @@
             android:text="Device name"
             android:textAppearance="?android:attr/textAppearanceMedium"/>
 
+        <TextView
+            android:id="@+id/tvDeviceStatus"
+            android:layout_marginLeft="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status"
+            android:textStyle="italic"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
+
     </LinearLayout>
 
     <android.support.v7.widget.SwitchCompat

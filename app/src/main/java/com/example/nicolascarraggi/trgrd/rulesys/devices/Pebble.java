@@ -246,6 +246,7 @@ public class Pebble extends Wearable implements NotificationDevice {
         ruleSystemService.stopService(pebbleService);
     }
 
+    @Override
     public void start(){
         this.startCommunicationService();
         this.registerPebbleReceiver();
@@ -253,6 +254,7 @@ public class Pebble extends Wearable implements NotificationDevice {
         //deviceManager.sendRefreshBroadcast();
     }
 
+    @Override
     public void stop(){
         this.unRegisterPebbleReceiver();
         this.stopCommunicationService();

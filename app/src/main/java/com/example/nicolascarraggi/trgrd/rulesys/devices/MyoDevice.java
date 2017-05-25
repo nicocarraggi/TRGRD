@@ -47,7 +47,7 @@ public class MyoDevice extends Wearable {
     };
 
     private void myoConnected() {
-        this.started = true;
+        this.setStatus("[ connected ]");
         deviceManager.sendRefreshBroadcast();
     }
 
@@ -123,13 +123,18 @@ public class MyoDevice extends Wearable {
         ruleSystemService.stopService(myoService);
     }
 
+    @Override
     public void start(){
         this.startCommunicationService();
         this.registerMyoReceiver();
-        //deviceManager.sendRefreshBroadcast();
+        this.started = true;
+        this.setStatus("[ searching... ]");
+        deviceManager.sendRefreshBroadcast();
     }
 
+    @Override
     public void stop(){
+        this.setStatus("");
         this.unRegisterMyoReceiver();
         this.stopCommunicationService();
         this.started = false;
