@@ -27,11 +27,11 @@ public class MyoCommunicationService extends Service {
 
     public static final String MYO_CONNECTED_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.myo.connected";
     public static final String MYO_DISCONNECTED_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.myo.disconnected";
-    public static final String MYO_GESTURE_FIST_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.myo.gesture-fist";
-    public static final String MYO_GESTURE_WAVEIN_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.myo.gesture-wavein";
-    public static final String MYO_GESTURE_WAVEOUT_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.myo.gesture-waveout";
-    public static final String MYO_GESTURE_DOUBLETAP_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.myo.gesture-doubletap";
-    public static final String MYO_GESTURE_FINGERSSPREAD_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.myo.gesture-fingersspread";
+    public static final String MYO_GESTURE_FIST_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.myo.gesture-fist"; // NEVER TRIGGERED
+    public static final String MYO_GESTURE_WAVEIN_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.myo.gesture-wavein"; // OK
+    public static final String MYO_GESTURE_WAVEOUT_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.myo.gesture-waveout"; // TOO SENSITIVE
+    public static final String MYO_GESTURE_DOUBLETAP_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.myo.gesture-doubletap"; // OK
+    public static final String MYO_GESTURE_FINGERSSPREAD_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.myo.gesture-fingersspread"; // NEVER TRIGGERED
 
     private static final String TAG = "MyoCommunicationService";
     private Toast mToast;

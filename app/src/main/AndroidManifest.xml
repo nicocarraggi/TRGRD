@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:allowBackup="true"
@@ -46,7 +48,6 @@
         </activity>
         <activity android:name=".RuleDetailsActivity" />
         <activity android:name=".CreateRuleOpenActivity" />
-        <activity android:name=".AddTriggerActivity" />
         <activity android:name=".AddActionActivity" />
         <activity android:name=".CreateLocationActivity" />
 
@@ -58,8 +59,6 @@
         <activity android:name=".RuleTemplateDetailsActivity" />
         <activity android:name=".CreateRuleFromTemplateActivity" />
         <activity android:name=".ShowRuleTemplatesActivity" />
-        <activity android:name=".AddEventFromEventTypeActivity" />
-        <activity android:name=".AddStateFromStateTypeActivity" />
         <activity android:name=".AddItemFromTypeActivity" />
         <activity
             android:name=".AddEventOrStateActivity"

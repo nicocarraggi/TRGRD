@@ -28,9 +28,9 @@ public class MyoDevice extends Wearable {
             String action = intent.getAction();
             Log.d("TRGRD", "Myo mReceiver " + action);
 
-            if(action.equals(MyoCommunicationService.MYO_GESTURE_FIST_EVENT)){
+            if(action.equals(MyoCommunicationService.MYO_CONNECTED_EVENT)){
                 myoConnected();
-            } else if(action.equals(MyoCommunicationService.MYO_GESTURE_FIST_EVENT)){
+            } else if(action.equals(MyoCommunicationService.MYO_DISCONNECTED_EVENT)){
                 myoDisconnected();
             } else if(action.equals(MyoCommunicationService.MYO_GESTURE_FIST_EVENT)){
                 evGestureFist();
@@ -102,6 +102,8 @@ public class MyoDevice extends Wearable {
         filter.addAction(MyoCommunicationService.MYO_GESTURE_WAVEOUT_EVENT);
         filter.addAction(MyoCommunicationService.MYO_GESTURE_DOUBLETAP_EVENT);
         filter.addAction(MyoCommunicationService.MYO_GESTURE_FINGERSSPREAD_EVENT);
+        filter.addAction(MyoCommunicationService.MYO_CONNECTED_EVENT);
+        filter.addAction(MyoCommunicationService.MYO_DISCONNECTED_EVENT);
         LocalBroadcastManager.getInstance(ruleSystemService).registerReceiver(mReceiver, filter);
         Log.d("TRGRD","Myo mReceiver registered!");
     }
@@ -130,6 +132,7 @@ public class MyoDevice extends Wearable {
         this.started = true;
         this.setStatus("[ searching... ]");
         deviceManager.sendRefreshBroadcast();
+        // TODO set a limit on searching time ( in which the user has to tap myo to device ) -> 10secs?
     }
 
     @Override
