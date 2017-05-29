@@ -137,10 +137,12 @@ public class MyoDevice extends Wearable {
 
     @Override
     public void stop(){
-        this.setStatus("");
-        this.unRegisterMyoReceiver();
-        this.stopCommunicationService();
-        this.started = false;
-        deviceManager.sendRefreshBroadcast();
+        if (started) {
+            this.setStatus("");
+            this.unRegisterMyoReceiver();
+            this.stopCommunicationService();
+            this.started = false;
+            deviceManager.sendRefreshBroadcast();
+        }
     }
 }

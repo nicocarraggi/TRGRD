@@ -98,6 +98,7 @@ public class MyoCommunicationService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Hub.getInstance().getScanner().stopScanning();
         Log.d("TRGRD","MyoCommunicationService onDestroy()");
         // We don't want any callbacks when the Service is gone, so unregister the listener.
         Hub.getInstance().removeListener(mListener);

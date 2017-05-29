@@ -252,7 +252,7 @@ public class DeviceManager {
         mClock.start();
         mGeofences.start();
         mCoffeeMachine.start();
-        mMyoDevice.start();
+        //mMyoDevice.start(); Manually start in GUI !!
     }
 
     public void stopDevices(){

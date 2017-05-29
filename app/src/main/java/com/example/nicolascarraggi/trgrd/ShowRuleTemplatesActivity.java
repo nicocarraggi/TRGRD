@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.example.nicolascarraggi.trgrd.adapters.MyOnItemClickListener;
 import com.example.nicolascarraggi.trgrd.adapters.RuleTemplatesAdapter;
+import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
 import com.example.nicolascarraggi.trgrd.rulesys.RuleTemplate;
 
 public class ShowRuleTemplatesActivity extends RuleSystemBindingActivity implements MyOnItemClickListener<RuleTemplate> {
@@ -46,8 +47,17 @@ public class ShowRuleTemplatesActivity extends RuleSystemBindingActivity impleme
     public void onItemClick(View view, RuleTemplate item) {
         switch(view.getId()) {
             case R.id.tvRuleTemplateName:
+/*                // SHOW Template details before edit!
                 Intent intent = new Intent(this, RuleTemplateDetailsActivity.class);
                 intent.putExtra("ruletemplateid", item.getId());
+                startActivityForResult(intent,RULETEMPLATE_SELECT_INTENT);*/
+                // create new ruleTemplate instance
+                DeviceManager deviceManager = ruleSystemService.getDeviceManager();
+                RuleTemplate instance = new RuleTemplate(deviceManager.getNewId(),item,deviceManager);
+                ruleSystemService.addRuleTemplateInstance(instance);
+                Intent intent = new Intent(ShowRuleTemplatesActivity.this, CreateRuleFromTemplateActivity.class);
+                intent.putExtra("iscreate",true);
+                intent.putExtra("ruletemplateinstanceid",instance.getId());
                 startActivityForResult(intent,RULETEMPLATE_SELECT_INTENT);
                 break;
         }

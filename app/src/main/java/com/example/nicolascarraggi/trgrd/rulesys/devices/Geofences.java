@@ -341,7 +341,7 @@ public class Geofences extends Device implements GoogleApiClient.ConnectionCallb
             );
 
             // Send notification and log the transition details.
-            sendNotification(geofenceTransitionDetails);
+            // sendNotification(geofenceTransitionDetails);
             Log.i("TRGRD", geofenceTransitionDetails);
 
             for(Geofence g: geofencingEvent.getTriggeringGeofences()){
@@ -389,6 +389,9 @@ public class Geofences extends Device implements GoogleApiClient.ConnectionCallb
     }
 
     /**
+     *
+     *  TODO remove?! not used!
+     *
      * Posts a notification in the notification bar when a transition is detected.
      * If the user clicks the notification, control goes to the MainActivity.
      */
