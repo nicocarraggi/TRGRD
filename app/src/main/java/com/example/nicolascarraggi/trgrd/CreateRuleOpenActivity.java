@@ -27,6 +27,7 @@ import com.example.nicolascarraggi.trgrd.adapters.MyActionOnItemClickListener;
 import com.example.nicolascarraggi.trgrd.adapters.MyEventOnItemClickListener;
 import com.example.nicolascarraggi.trgrd.adapters.MyStateOnItemClickListener;
 import com.example.nicolascarraggi.trgrd.adapters.StatesAdapter;
+import com.example.nicolascarraggi.trgrd.logging.MyLogger;
 import com.example.nicolascarraggi.trgrd.rulesys.Action;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
 import com.example.nicolascarraggi.trgrd.rulesys.Location;
@@ -75,6 +76,9 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
     private EditText etName;
     private Button bAddTrigger, bAddAction;
 
+    // for time logging
+    private MyTime start, end;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +87,8 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
         // Get extra int ID! IF real id (>=0), edit rule!!!
         this.isCreate = getIntent().getBooleanExtra("iscreate",true);
         this.id = getIntent().getIntExtra("ruleid",2); // TODO replace with default ERROR VALUE ? (-1)
+
+        start = new MyTime();
 
         this.etName = (EditText) findViewById(R.id.etCreateRuleOpenName);
         this.bAddAction = (Button) findViewById(R.id.bCreateRuleOpenAddAction);
@@ -131,6 +137,8 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                 }
                 // persist delete of instances!
                 persistDeleteInstances();
+                end = new MyTime();
+                MyLogger.timeframeLog("create rule open",start,end);
                 finish();
             } else {
                 Toast.makeText(CreateRuleOpenActivity.this, "A rule requires a name, 1 or more triggers and 1 or more actions!", Toast.LENGTH_LONG).show();

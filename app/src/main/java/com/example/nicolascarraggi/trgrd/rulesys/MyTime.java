@@ -89,4 +89,11 @@ public class MyTime {
                         || this.isAfter(dayStart) && this.isBefore(to));
         }
     }
+
+    public String getDifferenceString(MyTime other) {
+        String result = "";
+        // TODO calc
+        double difference =  ((double) other.calendar.getTime().getTime() - this.calendar.getTime().getTime())/1000;
+        return result+difference+"s";
+    }
 }

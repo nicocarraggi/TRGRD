@@ -9,7 +9,9 @@ import android.view.View;
 
 import com.example.nicolascarraggi.trgrd.adapters.MyOnItemClickListener;
 import com.example.nicolascarraggi.trgrd.adapters.RuleTemplatesAdapter;
+import com.example.nicolascarraggi.trgrd.logging.MyLogger;
 import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
+import com.example.nicolascarraggi.trgrd.rulesys.MyTime;
 import com.example.nicolascarraggi.trgrd.rulesys.RuleTemplate;
 
 public class ShowRuleTemplatesActivity extends RuleSystemBindingActivity implements MyOnItemClickListener<RuleTemplate> {
@@ -20,10 +22,15 @@ public class ShowRuleTemplatesActivity extends RuleSystemBindingActivity impleme
     private RecyclerView.LayoutManager mLayoutManagerActions;
     private RecyclerView rvRuleTemplates;
 
+    // for time logging
+    private MyTime start, end;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_rule_templates);
+
+        start = new MyTime();
 
         ActionBar ab = getSupportActionBar();
         ab.setTitle("Rule templates");
@@ -68,6 +75,8 @@ public class ShowRuleTemplatesActivity extends RuleSystemBindingActivity impleme
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK){
             if (requestCode == RULETEMPLATE_SELECT_INTENT){
+                end = new MyTime();
+                MyLogger.timeframeLog("create rule from template",start,end);
                 finish();
             }
         }
