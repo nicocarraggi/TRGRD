@@ -21,6 +21,7 @@ public class Rule {
     private Set<Action> actions;
     private int times;
     private RuleTemplate ruleTemplateInstance;
+    protected boolean isExample;
 
     public Rule(int id, String name) {
         this.id = id;
@@ -31,6 +32,7 @@ public class Rule {
         this.actions = new HashSet<>();
         this.times = 0;
         this.ruleTemplateInstance = null;
+        this.isExample = false;
     }
 
     public Rule(int id, String name, Set<Event> events, Set<State> states, Set<Action> actions) {
@@ -232,6 +234,10 @@ public class Rule {
 
     public RuleTemplate getRuleTemplateInstance() {
         return ruleTemplateInstance;
+    }
+
+    public boolean isExample() {
+        return isExample;
     }
 
     private void removeEverything(){

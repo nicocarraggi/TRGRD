@@ -7,6 +7,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.example.nicolascarraggi.trgrd.R;
+import com.example.nicolascarraggi.trgrd.logging.MyLogger;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.HashMap;
@@ -36,6 +37,7 @@ public class RuleSystemService extends Service {
     public RuleSystemService() {
         super();
         this.rules = new HashMap<>();
+        this.exampleRules = new HashMap<>();
         this.ruleTemplates = new HashMap<>();
         this.ruleTemplateInstances = new HashMap<>();
         this.locations = new HashMap<>();
@@ -60,6 +62,7 @@ public class RuleSystemService extends Service {
         mDeviceManager.startDevices();
         testAlarmPebble();
         testRuleTemplates();
+        testExampleRules();
     }
 
     @Override
@@ -190,7 +193,12 @@ public class RuleSystemService extends Service {
     }
 
     private void testExampleRules(){
-
+        ExampleRule exampleRuleCoffeeLocation = new ExampleRule(getNewId(),"Coffee at a location");
+        exampleRules.put(exampleRuleCoffeeLocation.getId(),exampleRuleCoffeeLocation);
+        ExampleRule exampleRuleDisplayAlarm = new ExampleRule(getNewId(),"Display starting alarm");
+        exampleRules.put(exampleRuleDisplayAlarm.getId(),exampleRuleDisplayAlarm);
+        ExampleRule exampleRuleNotifyButtonPressed = new ExampleRule(getNewId(),"Notify button pressed");
+        exampleRules.put(exampleRuleNotifyButtonPressed.getId(),exampleRuleNotifyButtonPressed);
     }
 
 }
