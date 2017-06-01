@@ -63,7 +63,8 @@
         <activity
             android:name=".AddEventOrStateActivity"
             android:label="@string/title_activity_add_event_or_state"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ShowExampleRulesActivity"></activity>
     </application>
 
 </manifest>

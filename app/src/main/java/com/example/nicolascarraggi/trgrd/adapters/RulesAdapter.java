@@ -31,9 +31,11 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
 
     private ArrayList<Rule> mDataset;
     private MyOnItemClickListener<Rule> mListener;
+    private boolean mShowSwitch;
 
-    public RulesAdapter(MyOnItemClickListener<Rule> listener, Set<Rule> mDataset) {
+    public RulesAdapter(MyOnItemClickListener<Rule> listener, Set<Rule> mDataset, boolean showSwitch) {
         this.mListener = listener;
+        this.mShowSwitch = showSwitch;
         this.mDataset = new ArrayList<>();
         this.mDataset.addAll(mDataset);
         sort();
@@ -97,10 +99,11 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
             this.llEvent = (LinearLayout) itemView.findViewById(R.id.llRuleEvent);
             this.llStates = (LinearLayout) itemView.findViewById(R.id.llRuleStates);
             this.llActions = (LinearLayout) itemView.findViewById(R.id.llRuleActions);
-            this.switchRuleActive = (SwitchCompat) itemView.findViewById(R.id.switchRuleActive);
             tvRuleName.setOnClickListener(this);
             llRuleIcons.setOnClickListener(this);
+            this.switchRuleActive = (SwitchCompat) itemView.findViewById(R.id.switchRuleActive);
             switchRuleActive.setOnCheckedChangeListener(this);
+            if(!mShowSwitch) switchRuleActive.setVisibility(View.GONE);
         }
 
         public void bind(Rule rule, MyOnItemClickListener listener){
@@ -125,7 +128,7 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
                 // TODO inflate every other action?
                 ivAction.setImageResource(a.getDevice().getIconResource());
             }
-            this.switchRuleActive.setChecked(rule.isActive());
+            if (mShowSwitch) this.switchRuleActive.setChecked(rule.isActive());
         }
 
         @Override

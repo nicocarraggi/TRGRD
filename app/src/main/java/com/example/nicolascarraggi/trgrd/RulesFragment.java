@@ -61,7 +61,7 @@ public class RulesFragment extends TrgrdFragment  implements MyOnItemClickListen
             }
         }
 
-        this.mAdapter = new RulesAdapter(this,rules);
+        this.mAdapter = new RulesAdapter(this,rules,true);
         mRecyclerView.setAdapter(mAdapter);
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fabRules);
@@ -72,7 +72,9 @@ public class RulesFragment extends TrgrdFragment  implements MyOnItemClickListen
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(RulesFragment.this.getContext());
                 String rulesMethodology = prefs.getString("rule_methodology_list", "2");
                 Log.d("TRGRD","RulesFragment rulesMethodology = "+rulesMethodology);
-                if (rulesMethodology.equals(RULE_METHODOLOGY_TEMPLATE)){
+                if (rulesMethodology.equals(RULE_METHODOLOGY_CONFIG)){
+                    intent = new Intent(RulesFragment.this.getContext(), ShowExampleRulesActivity.class);
+                } else if (rulesMethodology.equals(RULE_METHODOLOGY_TEMPLATE)){
                     intent = new Intent(RulesFragment.this.getContext(), ShowRuleTemplatesActivity.class);
                 } else if (rulesMethodology.equals(RULE_METHODOLOGY_OPEN)){
                     intent = new Intent(RulesFragment.this.getContext(), CreateRuleOpenActivity.class);

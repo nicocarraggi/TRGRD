@@ -29,6 +29,7 @@ dependencies {
             url '/Users/nicolascarraggi/Documents/Vub/2eMa/Thesis/Myo/myo-android-sdk-0.10.0/myorepository'
         }
     }
+    compile files('libs/native-libs.jar')
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.android.support:design:23.4.0'
@@ -39,5 +40,4 @@ dependencies {
     compile 'com.google.android.gms:play-services-places:10.2.1'
     compile 'com.google.android.gms:play-services:10.2.1'
     testCompile 'junit:junit:4.12'
-    compile files('libs/native-libs.jar')
 }
