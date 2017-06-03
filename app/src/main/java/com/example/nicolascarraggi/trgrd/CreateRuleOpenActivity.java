@@ -30,6 +30,8 @@ import com.example.nicolascarraggi.trgrd.adapters.StatesAdapter;
 import com.example.nicolascarraggi.trgrd.logging.MyLogger;
 import com.example.nicolascarraggi.trgrd.rulesys.Action;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
+import com.example.nicolascarraggi.trgrd.rulesys.InputAction;
+import com.example.nicolascarraggi.trgrd.rulesys.InputActionEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.Location;
 import com.example.nicolascarraggi.trgrd.rulesys.LocationEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.LocationState;
@@ -40,6 +42,7 @@ import com.example.nicolascarraggi.trgrd.rulesys.State;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeState;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Clock;
+import com.example.nicolascarraggi.trgrd.rulesys.devices.InputActionDevice;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.NotificationDevice;
 
 import java.util.ArrayList;
@@ -232,11 +235,16 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                 if (type.equals("event")){
                     Event event = ruleSystemService.getDeviceManager().getDevice(devId).getEvent(id);
                     // if instance must be created ...
-                    if (event.isTimeEvent()){
+                    if (event.isTimeEvent()) {
                         MyTime d = new MyTime();
                         d.setMinutes(0);
-                        TimeEvent timeEvent = ((Clock) event.getDevice()).getTimeAtInstance((TimeEvent) event,d);
+                        TimeEvent timeEvent = ((Clock) event.getDevice()).getTimeAtInstance((TimeEvent) event, d);
                         event = timeEvent;
+                    } else if (event.isInputActionEvent()){
+                        InputActionEvent inputActionEvent = (InputActionEvent) event;
+                        askInputAction(inputActionEvent, null);
+                        // Return because event will be added later!
+                        return;
                     } else if (event.isLocationEvent()){
                         LocationEvent locationEvent = (LocationEvent) event;
                         if (locationEvent.getLocationEventType() == LocationEvent.LocationEventType.ARRIVING){
@@ -478,6 +486,34 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                 }
                 break;
         }
+    }
+
+    public void askInputAction(final InputActionEvent inputActionEvent, final InputAction oldInputAction){
+        final ArrayList<InputAction> inputActions = ((InputActionDevice) inputActionEvent.getDevice()).getInputActions();
+        CharSequence inputActionNames[] = new CharSequence[inputActions.size()];
+        for(int i=0; i<inputActions.size(); i++){
+            inputActionNames[i] = inputActions.get(i).getName();
+        }
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CreateRuleOpenActivity.this);
+        builder.setTitle("Pick an event");
+        builder.setItems(inputActionNames, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                InputAction selectedInputAction = inputActions.get(which);
+                // Only change event or state IF there was previously no location OR the selected location is different from the old one.
+                if(oldInputAction == null || (selectedInputAction.getId() != oldInputAction.getId())) {
+                    Log.d("TRGRD","CreateRuleOpenActivity askInputAction UPDATE");
+                    if (oldInputAction != null) CreateRuleOpenActivity.this.events.remove(inputActionEvent);
+                    CreateRuleOpenActivity.this.onInputActionClick(selectedInputAction);
+                }
+            }
+        });
+        builder.show();
+    }
+
+    private void onInputActionClick(InputAction selectedInputAction) {
+        events.add(selectedInputAction.getInputActionEvent());
+        eventsAdapter.updateData(events);
     }
 
     public void onLocationArrivingAtClick(Location location) {

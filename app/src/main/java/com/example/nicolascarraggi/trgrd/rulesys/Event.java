@@ -108,12 +108,13 @@ public class Event {
         return eventValueType == EventValueType.TIME;
     }
 
+    public boolean isInputActionEvent() { return eventValueType == EventValueType.INPUTACTION;}
 
     public boolean isLocationEvent(){
         return eventValueType == EventValueType.LOCATION;
     }
 
     public enum EventValueType {
-        NONE, VALUE, TIME, LOCATION
+        NONE, VALUE, INPUTACTION, TIME, LOCATION
     }
 }

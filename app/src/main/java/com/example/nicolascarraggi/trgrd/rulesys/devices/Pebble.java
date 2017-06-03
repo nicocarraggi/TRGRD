@@ -13,16 +13,20 @@ import com.example.nicolascarraggi.trgrd.rulesys.ActionType;
 import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
 import com.example.nicolascarraggi.trgrd.rulesys.EventType;
+import com.example.nicolascarraggi.trgrd.rulesys.InputAction;
+import com.example.nicolascarraggi.trgrd.rulesys.InputActionEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.NotificationAction;
 import com.example.nicolascarraggi.trgrd.rulesys.RuleSystemService;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.Callable;
 
 /**
  * Created by nicolascarraggi on 5/04/17.
  */
 
-public class Pebble extends Wearable implements NotificationDevice {
+public class Pebble extends Wearable implements NotificationDevice, InputActionDevice {
 
     // Constants
 
@@ -50,6 +54,12 @@ public class Pebble extends Wearable implements NotificationDevice {
         }
     };
 
+    private InputAction mIaBtnUp, mIaBtnSelect, mIaBtnDown;
+    private InputActionEvent mIaEvBtn, mIaEvBtnUp, mIaEvBtnSelect, mIaEvBtnDown;
+    private ArrayList<InputAction> inputActions;
+    private HashMap<Integer, InputActionEvent> inputActionEvents;
+
+
     private Event mEvBtnUp, mEvBtnSelect, mEvBtnDown;
     private Action mAcVibrate, mAcScreenTime, mAcScreenAlarm, mAcScreenClean;
     private NotificationAction mAcNotify;
@@ -57,29 +67,48 @@ public class Pebble extends Wearable implements NotificationDevice {
     public Pebble(RuleSystemService ruleSystemService, DeviceManager deviceManager, EventType evButtonPress, EventType evHeartRateReading,
                   ActionType acAlarmVibrate, ActionType acAlarmDisplay, ActionType acTimeDisplay, ActionType acNotify) {
         super(ruleSystemService.getNewId(), "Pebble Steel", "Pebble", "Pebble OS", "Watch", "Wrist", R.drawable.ic_watch_black_24dp, ruleSystemService, deviceManager);
+        this.inputActions = new ArrayList<>();
+        this.inputActionEvents = new HashMap<>();
         this.eventTypes.put(evButtonPress.getId(),evButtonPress);
         this.eventTypes.put(evHeartRateReading.getId(),evHeartRateReading);
         this.actionTypes.put(acAlarmVibrate.getId(),acAlarmVibrate);
         this.actionTypes.put(acAlarmDisplay.getId(),acAlarmDisplay);
         this.actionTypes.put(acTimeDisplay.getId(),acTimeDisplay);
-        mEvBtnUp = new Event(deviceManager.getNewId(),"Pebble UP button is pressed", R.drawable.ic_keyboard_arrow_up_black_24dp, this, evButtonPress);
-        mEvBtnSelect = new Event(deviceManager.getNewId(),"Pebble SELECT button is pressed", R.drawable.ic_keyboard_arrow_right_black_24dp, this, evButtonPress);
-        mEvBtnDown = new Event(deviceManager.getNewId(),"Pebble DOWN button is pressed", R.drawable.ic_keyboard_arrow_down_black_24dp, this, evButtonPress);
-        mAcVibrate = new Action(deviceManager.getNewId(),"Pebble vibrate", R.drawable.ic_vibration_black_24dp, this, acAlarmVibrate, new Callable<String>() {
+        // INPUT ACTIONS
+        this.mIaBtnUp = new InputAction(deviceManager.getNewId(),"UP",R.drawable.ic_keyboard_arrow_up_black_24dp);
+        this.mIaBtnSelect = new InputAction(deviceManager.getNewId(),"SELECT",R.drawable.ic_keyboard_arrow_right_black_24dp);
+        this.mIaBtnDown = new InputAction(deviceManager.getNewId(),"DOWN",R.drawable.ic_keyboard_arrow_down_black_24dp);
+        this.inputActions.add(mIaBtnUp);
+        this.inputActions.add(mIaBtnSelect);
+        this.inputActions.add(mIaBtnDown);
+        // INPUT ACTION EVENTS
+        this.mIaEvBtn = new InputActionEvent(deviceManager.getNewId(),"Pebble ... button is pressed", R.drawable.ic_adjust_black_24dp, this, evButtonPress);
+        this.mIaEvBtnUp = new InputActionEvent(deviceManager.getNewId(),mIaEvBtn,mIaBtnUp);
+        this.mIaEvBtnSelect = new InputActionEvent(deviceManager.getNewId(),mIaEvBtn,mIaBtnSelect);
+        this.mIaEvBtnDown = new InputActionEvent(deviceManager.getNewId(),mIaEvBtn,mIaBtnDown);
+        this.inputActionEvents.put(mIaBtnUp.getId(), mIaEvBtnUp);
+        this.inputActionEvents.put(mIaBtnSelect.getId(), mIaEvBtnSelect);
+        this.inputActionEvents.put(mIaBtnDown.getId(), mIaEvBtnDown);
+        // EVENTS
+        this.mEvBtnUp = new Event(deviceManager.getNewId(),"Pebble UP button is pressed", R.drawable.ic_keyboard_arrow_up_black_24dp, this, evButtonPress);
+        this.mEvBtnSelect = new Event(deviceManager.getNewId(),"Pebble SELECT button is pressed", R.drawable.ic_keyboard_arrow_right_black_24dp, this, evButtonPress);
+        this.mEvBtnDown = new Event(deviceManager.getNewId(),"Pebble DOWN button is pressed", R.drawable.ic_keyboard_arrow_down_black_24dp, this, evButtonPress);
+        // ACTIONS
+        this.mAcVibrate = new Action(deviceManager.getNewId(),"Pebble vibrate", R.drawable.ic_vibration_black_24dp, this, acAlarmVibrate, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acVibrate();
                 return null;
             }
         });
-        mAcScreenTime = new Action(deviceManager.getNewId(),"Pebble watch mode time", R.drawable.ic_access_time_black_24dp, this, acTimeDisplay, new Callable<String>() {
+        this.mAcScreenTime = new Action(deviceManager.getNewId(),"Pebble watch mode time", R.drawable.ic_access_time_black_24dp, this, acTimeDisplay, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acScreenTime();
                 return null;
             }
         });
-        mAcScreenAlarm = new Action(deviceManager.getNewId(),"Pebble watch mode alarm", R.drawable.ic_alarm_black_24dp, this, acAlarmDisplay, new Callable<String>() {
+        this.mAcScreenAlarm = new Action(deviceManager.getNewId(),"Pebble watch mode alarm", R.drawable.ic_alarm_black_24dp, this, acAlarmDisplay, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acScreenAlarm();
@@ -87,7 +116,7 @@ public class Pebble extends Wearable implements NotificationDevice {
             }
         });
         // TODO remove ScreenClean!
-        mAcScreenClean = new Action(deviceManager.getNewId(),"Pebble watch mode clean", R.drawable.ic_cancel_black_24dp, this, acTimeDisplay, new Callable<String>() {
+        this.mAcScreenClean = new Action(deviceManager.getNewId(),"Pebble watch mode clean", R.drawable.ic_cancel_black_24dp, this, acTimeDisplay, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acScreenClean();
@@ -99,6 +128,7 @@ public class Pebble extends Wearable implements NotificationDevice {
         this.events.put(mEvBtnUp.getId(),mEvBtnUp);
         this.events.put(mEvBtnSelect.getId(),mEvBtnSelect);
         this.events.put(mEvBtnDown.getId(),mEvBtnDown);
+        this.events.put(mIaEvBtn.getId(),mIaEvBtn);
         this.actions.put(mAcVibrate.getId(),mAcVibrate);
         this.actions.put(mAcScreenTime.getId(),mAcScreenTime);
         this.actions.put(mAcScreenAlarm.getId(),mAcScreenAlarm);
@@ -106,7 +136,19 @@ public class Pebble extends Wearable implements NotificationDevice {
         this.actions.put(mAcNotify.getId(),mAcNotify);
     }
 
+    // getters
+
+    public ArrayList<InputAction> getInputActions() {
+        return inputActions;
+    }
+
+    public InputActionEvent getInputActionEvent(InputAction inputAction){
+        return inputActionEvents.get(inputAction.getId());
+    }
+
     // These getters only needed for testing!
+
+    public InputActionEvent getIaBtn(){return mIaEvBtn;};
 
     public Event getBtnUp() {
         return mEvBtnUp;
@@ -164,18 +206,21 @@ public class Pebble extends Wearable implements NotificationDevice {
         //Log.d("TRGRD", "Pebble Event Button Up");
         //System.out.println("[Pebble] Button Up!");
         mEvBtnUp.trigger();
+        mIaEvBtnUp.trigger();
     }
 
     public void evBtnSelect(){
         //Log.d("TRGRD", "Pebble Event Button Select");
         //System.out.println("[Pebble] Button Select!");
         mEvBtnSelect.trigger();
+        mIaEvBtnSelect.trigger();
     }
 
     public void evBtnDown(){
         //Log.d("TRGRD", "Pebble Event Button Down");
         //System.out.println("[Pebble] Button Down!");
         mEvBtnDown.trigger();
+        mIaEvBtnDown.trigger();
     }
 
     public void acVibrate(){
