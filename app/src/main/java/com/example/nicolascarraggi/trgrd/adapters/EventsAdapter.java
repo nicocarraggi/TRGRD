@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.nicolascarraggi.trgrd.R;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
+import com.example.nicolascarraggi.trgrd.rulesys.InputActionEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.Location;
 import com.example.nicolascarraggi.trgrd.rulesys.LocationEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeEvent;
@@ -112,7 +113,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
                 // Hide unwanted views!
                 if(tvEventValueOne != null) tvEventValueOne.setVisibility(View.GONE);
                 if(bEventValueOne != null) bEventValueOne.setVisibility(View.GONE);
-            } else if(event.isTimeEvent()){
+            } else if(event.isTimeEvent()) {
                 TimeEvent timeEvent = (TimeEvent) event;
                 // TODO really needed?
                 if (tvEventValueOne != null && bEventValueOne != null) {
@@ -121,6 +122,18 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
                     tvEventName.setVisibility(View.GONE);
                     tvEventValueOne.setText("At");
                     bEventValueOne.setText(timeEvent.getTime().toString());
+                    if (!mEdit) {
+                        bEventValueOne.setBackgroundColor(Color.TRANSPARENT);
+                    }
+                }
+            } else if(event.isInputActionEvent()){
+                InputActionEvent inputActionEvent = (InputActionEvent) event;
+                if (tvEventValueOne != null && bEventValueOne != null) {
+                    tvEventValueOne.setVisibility(View.VISIBLE);
+                    bEventValueOne.setVisibility(View.VISIBLE);
+                    tvEventName.setVisibility(View.GONE);
+                    tvEventValueOne.setText(inputActionEvent.getInputAction().getDescription());
+                    bEventValueOne.setText(inputActionEvent.getInputAction().getName());
                     if(!mEdit) {
                         bEventValueOne.setBackgroundColor(Color.TRANSPARENT);
                     }

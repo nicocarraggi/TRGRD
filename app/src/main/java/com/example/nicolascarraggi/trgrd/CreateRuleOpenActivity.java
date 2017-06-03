@@ -432,6 +432,9 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
             case R.id.bEventValueOne:
                 if (item.isTimeEvent()){
                     editTime((Button) view, (TimeEvent) item);
+                } else if(item.isInputActionEvent()){
+                    InputActionEvent inputActionEvent = (InputActionEvent) item;
+                    askInputAction(inputActionEvent, inputActionEvent.getInputAction());
                 } else if(item.isLocationEvent()){
                     LocationEvent locationEvent = (LocationEvent) item;
                     if(locationEvent.getLocationEventType() == LocationEvent.LocationEventType.ARRIVING){

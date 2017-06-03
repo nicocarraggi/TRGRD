@@ -75,9 +75,9 @@ public class Pebble extends Wearable implements NotificationDevice, InputActionD
         this.actionTypes.put(acAlarmDisplay.getId(),acAlarmDisplay);
         this.actionTypes.put(acTimeDisplay.getId(),acTimeDisplay);
         // INPUT ACTIONS
-        this.mIaBtnUp = new InputAction(deviceManager.getNewId(),"UP",R.drawable.ic_keyboard_arrow_up_black_24dp);
-        this.mIaBtnSelect = new InputAction(deviceManager.getNewId(),"SELECT",R.drawable.ic_keyboard_arrow_right_black_24dp);
-        this.mIaBtnDown = new InputAction(deviceManager.getNewId(),"DOWN",R.drawable.ic_keyboard_arrow_down_black_24dp);
+        this.mIaBtnUp = new InputAction(deviceManager.getNewId(),"Pebble button:","UP",R.drawable.ic_keyboard_arrow_up_black_24dp);
+        this.mIaBtnSelect = new InputAction(deviceManager.getNewId(),"Pebble button:","SELECT",R.drawable.ic_keyboard_arrow_right_black_24dp);
+        this.mIaBtnDown = new InputAction(deviceManager.getNewId(),"Pebble button:","DOWN",R.drawable.ic_keyboard_arrow_down_black_24dp);
         this.inputActions.add(mIaBtnUp);
         this.inputActions.add(mIaBtnSelect);
         this.inputActions.add(mIaBtnDown);

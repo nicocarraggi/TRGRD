@@ -7,12 +7,14 @@ package com.example.nicolascarraggi.trgrd.rulesys;
 public class InputAction {
 
     private int id;
+    private String description;
     private String name;
     private int iconResource;
     private InputActionEvent inputActionEvent;
 
-    public InputAction(int id, String name, int iconResource) {
+    public InputAction(int id, String description, String name, int iconResource) {
         this.id = id;
+        this.description = description;
         this.name = name;
         this.iconResource = iconResource;
         this.inputActionEvent = null;
@@ -24,6 +26,14 @@ public class InputAction {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getName() {
@@ -54,6 +64,7 @@ public class InputAction {
     public String toString() {
         return "InputAction{" +
                 "id=" + id +
+                ", description='" + description + '\'' +
                 ", name='" + name + '\'' +
                 '}';
     }
