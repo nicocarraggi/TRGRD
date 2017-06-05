@@ -60,7 +60,7 @@ public class Pebble extends Wearable implements NotificationDevice, InputActionD
     private HashMap<Integer, InputActionEvent> inputActionEvents;
 
 
-    private Event mEvBtnUp, mEvBtnSelect, mEvBtnDown;
+    //private Event mEvBtnUp, mEvBtnSelect, mEvBtnDown;
     private Action mAcVibrate, mAcScreenTime, mAcScreenAlarm, mAcScreenClean;
     private NotificationAction mAcNotify;
 
@@ -90,9 +90,9 @@ public class Pebble extends Wearable implements NotificationDevice, InputActionD
         this.inputActionEvents.put(mIaBtnSelect.getId(), mIaEvBtnSelect);
         this.inputActionEvents.put(mIaBtnDown.getId(), mIaEvBtnDown);
         // EVENTS
-        this.mEvBtnUp = new Event(deviceManager.getNewId(),"Pebble UP button is pressed", R.drawable.ic_keyboard_arrow_up_black_24dp, this, evButtonPress);
-        this.mEvBtnSelect = new Event(deviceManager.getNewId(),"Pebble SELECT button is pressed", R.drawable.ic_keyboard_arrow_right_black_24dp, this, evButtonPress);
-        this.mEvBtnDown = new Event(deviceManager.getNewId(),"Pebble DOWN button is pressed", R.drawable.ic_keyboard_arrow_down_black_24dp, this, evButtonPress);
+        //this.mEvBtnUp = new Event(deviceManager.getNewId(),"Pebble UP button is pressed", R.drawable.ic_keyboard_arrow_up_black_24dp, this, evButtonPress);
+        //this.mEvBtnSelect = new Event(deviceManager.getNewId(),"Pebble SELECT button is pressed", R.drawable.ic_keyboard_arrow_right_black_24dp, this, evButtonPress);
+        //this.mEvBtnDown = new Event(deviceManager.getNewId(),"Pebble DOWN button is pressed", R.drawable.ic_keyboard_arrow_down_black_24dp, this, evButtonPress);
         // ACTIONS
         this.mAcVibrate = new Action(deviceManager.getNewId(),"Pebble vibrate", R.drawable.ic_vibration_black_24dp, this, acAlarmVibrate, new Callable<String>() {
             @Override
@@ -125,9 +125,9 @@ public class Pebble extends Wearable implements NotificationDevice, InputActionD
         });
         // Callable is null, will be overridden in instance with the correct parameters using getNotifyCallable(...)
         this.mAcNotify = new NotificationAction(deviceManager.getNewId(),"Pebble notification",R.drawable.ic_notifications_active_black_24dp,this,acNotify);
-        this.events.put(mEvBtnUp.getId(),mEvBtnUp);
-        this.events.put(mEvBtnSelect.getId(),mEvBtnSelect);
-        this.events.put(mEvBtnDown.getId(),mEvBtnDown);
+        //this.events.put(mEvBtnUp.getId(),mEvBtnUp);
+        //this.events.put(mEvBtnSelect.getId(),mEvBtnSelect);
+        //this.events.put(mEvBtnDown.getId(),mEvBtnDown);
         this.events.put(mIaEvBtn.getId(),mIaEvBtn);
         this.actions.put(mAcVibrate.getId(),mAcVibrate);
         this.actions.put(mAcScreenTime.getId(),mAcScreenTime);
@@ -151,15 +151,15 @@ public class Pebble extends Wearable implements NotificationDevice, InputActionD
     public InputActionEvent getIaBtn(){return mIaEvBtn;};
 
     public Event getBtnUp() {
-        return mEvBtnUp;
+        return mIaEvBtnUp;
     }
 
     public Event getBtnSelect() {
-        return mEvBtnSelect;
+        return mIaEvBtnSelect;
     }
 
     public Event getBtnDown() {
-        return mEvBtnDown;
+        return mIaEvBtnDown;
     }
 
     public Action getVibrate() {
@@ -205,21 +205,21 @@ public class Pebble extends Wearable implements NotificationDevice, InputActionD
     public void evBtnUp(){
         //Log.d("TRGRD", "Pebble Event Button Up");
         //System.out.println("[Pebble] Button Up!");
-        mEvBtnUp.trigger();
+        //mEvBtnUp.trigger();
         mIaEvBtnUp.trigger();
     }
 
     public void evBtnSelect(){
         //Log.d("TRGRD", "Pebble Event Button Select");
         //System.out.println("[Pebble] Button Select!");
-        mEvBtnSelect.trigger();
+        //mEvBtnSelect.trigger();
         mIaEvBtnSelect.trigger();
     }
 
     public void evBtnDown(){
         //Log.d("TRGRD", "Pebble Event Button Down");
         //System.out.println("[Pebble] Button Down!");
-        mEvBtnDown.trigger();
+        //mEvBtnDown.trigger();
         mIaEvBtnDown.trigger();
     }
 

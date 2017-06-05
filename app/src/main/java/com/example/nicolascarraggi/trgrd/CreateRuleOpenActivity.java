@@ -491,11 +491,15 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
         }
     }
 
+    // ------------------------
+    // INPUT ACTION ASKING CODE
+    // ------------------------
+
     public void askInputAction(final InputActionEvent inputActionEvent, final InputAction oldInputAction){
         final ArrayList<InputAction> inputActions = ((InputActionDevice) inputActionEvent.getDevice()).getInputActions();
         CharSequence inputActionNames[] = new CharSequence[inputActions.size()];
         for(int i=0; i<inputActions.size(); i++){
-            inputActionNames[i] = inputActions.get(i).getName();
+            inputActionNames[i] = inputActions.get(i).getDescription()+" "+inputActions.get(i).getName();
         }
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CreateRuleOpenActivity.this);
         builder.setTitle("Pick an event");
@@ -518,6 +522,10 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
         events.add(selectedInputAction.getInputActionEvent());
         eventsAdapter.updateData(events);
     }
+
+    // --------------------
+    // LOCATION ASKING CODE
+    // --------------------
 
     public void onLocationArrivingAtClick(Location location) {
         LocationEvent locationEvent = location.getArrivingAt();
@@ -573,6 +581,10 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
         });
         builder.show();
     }
+
+    // ------------------------
+    // NOTIFICATION ASKING CODE
+    // ------------------------
 
     public void onNoficationClick(NotificationAction action){
         actions.add(action);

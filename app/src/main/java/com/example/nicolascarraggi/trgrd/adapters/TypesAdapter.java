@@ -17,6 +17,7 @@ import com.example.nicolascarraggi.trgrd.rulesys.Action;
 import com.example.nicolascarraggi.trgrd.rulesys.ActionType;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
 import com.example.nicolascarraggi.trgrd.rulesys.EventType;
+import com.example.nicolascarraggi.trgrd.rulesys.InputActionEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.LocationEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.LocationState;
 import com.example.nicolascarraggi.trgrd.rulesys.NotificationAction;
@@ -210,6 +211,14 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
                         if (!mEdit) {
                             bTypeInstanceValueZero.setBackgroundColor(Color.TRANSPARENT);
                         }
+                    } else if(event.isInputActionEvent()){
+                        InputActionEvent inputActionEvent = (InputActionEvent) event;
+                        hideInstanceName();
+                        showInstanceValueZero();
+                        hideInstanceValueOneTwo();
+                        tvTypeInstanceValueZero.setText(inputActionEvent.getInputAction().getDescription());
+                        bTypeInstanceValueZero.setText(inputActionEvent.getInputAction().getName());
+                        if(!mEdit) bTypeInstanceValueZero.setBackgroundColor(Color.TRANSPARENT);
                     } else if(event.isLocationEvent()){
                         LocationEvent locationEvent = (LocationEvent) event;
                         hideInstanceName();
@@ -218,7 +227,7 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
                         String text = "";
                         if(locationEvent.getLocationEventType()== LocationEvent.LocationEventType.ARRIVING){
                             text = "Arriving at: ";
-                        } else {
+                        } else if (locationEvent.getLocationEventType()== LocationEvent.LocationEventType.LEAVING){
                             text = "Leaving: ";
                         }
                         tvTypeInstanceValueZero.setText(text);

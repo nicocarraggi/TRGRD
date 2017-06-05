@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.nicolascarraggi.trgrd.adapters.MyOnItemClickListener;
+import com.example.nicolascarraggi.trgrd.logging.MyLogger;
 import com.example.nicolascarraggi.trgrd.rulesys.Device;
 import com.example.nicolascarraggi.trgrd.adapters.DevicesAdapter;
 import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
@@ -64,6 +65,7 @@ public class DevicesFragment extends TrgrdFragment implements MyOnItemClickListe
     public void onResume() {
         super.onResume();
         registerDevicesReceiver();
+        MyLogger.debugLog("TRGRD","DevicesFragment onResume()");
     }
 
     @Override

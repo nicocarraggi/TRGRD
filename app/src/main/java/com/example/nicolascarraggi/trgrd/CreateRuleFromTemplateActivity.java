@@ -30,6 +30,8 @@ import com.example.nicolascarraggi.trgrd.rulesys.Action;
 import com.example.nicolascarraggi.trgrd.rulesys.ActionType;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
 import com.example.nicolascarraggi.trgrd.rulesys.EventType;
+import com.example.nicolascarraggi.trgrd.rulesys.InputAction;
+import com.example.nicolascarraggi.trgrd.rulesys.InputActionEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.Location;
 import com.example.nicolascarraggi.trgrd.rulesys.LocationEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.LocationState;
@@ -43,6 +45,7 @@ import com.example.nicolascarraggi.trgrd.rulesys.TimeEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeState;
 import com.example.nicolascarraggi.trgrd.rulesys.Type;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Clock;
+import com.example.nicolascarraggi.trgrd.rulesys.devices.InputActionDevice;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.NotificationDevice;
 
 import java.util.ArrayList;
@@ -240,14 +243,17 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
             case R.id.bTypeInstanceValueOne:
                 if(item.isEventType()){
                     Event event = ((EventType) item).getInstanceEvent();
-                        if (event.isTimeEvent()){
+                    if (event.isTimeEvent()) {
                         editTime((Button) view, (TimeEvent) event);
+                    } else if(event.isInputActionEvent()){
+                        InputActionEvent inputActionEvent = (InputActionEvent) event;
+                        askInputAction(inputActionEvent,item,inputActionEvent.getInputAction());
                     } else if(event.isLocationEvent()){
                         LocationEvent locationEvent = (LocationEvent) event;
                         if(locationEvent.getLocationEventType() == LocationEvent.LocationEventType.ARRIVING){
-                            askLocation(ASK_LOCATION_ARRIVING,event,item,locationEvent.getLocation());
+                            askLocation(ASK_LOCATION_ARRIVING,item,locationEvent.getLocation());
                         } else if(locationEvent.getLocationEventType() == LocationEvent.LocationEventType.LEAVING){
-                            askLocation(ASK_LOCATION_LEAVING,event,item,locationEvent.getLocation());
+                            askLocation(ASK_LOCATION_LEAVING,item,locationEvent.getLocation());
                         }
                     }
                 } else if(item.isStateType()){
@@ -256,7 +262,7 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
                         editTime((Button) view, (TimeState) state);
                     } else if (state.isLocationState()){
                         LocationState locationState = (LocationState) state;
-                        askLocation(ASK_LOCATION_CURRENTLY,state,item,locationState.getLocation());
+                        askLocation(ASK_LOCATION_CURRENTLY,item,locationState.getLocation());
                     }
                 } else if(item.isActionType()){
                     Action action = ((ActionType) item).getInstanceAction();
@@ -280,17 +286,22 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
         EventType eventTypeInstance = ruleSystemService.getDeviceManager().getEventTypeInstance(itemTypeInstanceId);
         Event event = ruleSystemService.getDeviceManager().getDevice(itemDevId).getEvent(itemId);
         // if instance must be created ...
-        if (event.isTimeEvent()){
+        if (event.isTimeEvent()) {
             MyTime d = new MyTime();
             d.setMinutes(0);
-            TimeEvent timeEvent = ((Clock) event.getDevice()).getTimeAtInstance((TimeEvent) event,d);
+            TimeEvent timeEvent = ((Clock) event.getDevice()).getTimeAtInstance((TimeEvent) event, d);
             event = timeEvent;
+        } else if (event.isInputActionEvent()){
+            InputActionEvent inputActionEvent = (InputActionEvent) event;
+            askInputAction(inputActionEvent,eventTypeInstance,null);
+            // Return because event will be added later!
+            return;
         } else if (event.isLocationEvent()){
             LocationEvent locationEvent = (LocationEvent) event;
             if (locationEvent.getLocationEventType() == LocationEvent.LocationEventType.ARRIVING){
-                askLocation(ASK_LOCATION_ARRIVING,event,eventTypeInstance, null);
+                askLocation(ASK_LOCATION_ARRIVING,eventTypeInstance, null);
             } else if (locationEvent.getLocationEventType() == LocationEvent.LocationEventType.LEAVING){
-                askLocation(ASK_LOCATION_LEAVING,event,eventTypeInstance, null);
+                askLocation(ASK_LOCATION_LEAVING,eventTypeInstance, null);
             }
             // Return because event will be added later!
             return;
@@ -312,7 +323,7 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
             state = timeState;
         } else if (state.isLocationState()){
             LocationState locationState = (LocationState) state;
-            askLocation(ASK_LOCATION_CURRENTLY,locationState, stateTypeInstance, null);
+            askLocation(ASK_LOCATION_CURRENTLY, stateTypeInstance, null);
             // Return because state will be added later!
             return;
         }
@@ -441,6 +452,39 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
 
     }
 
+    // ------------------------
+    // INPUT ACTION ASKING CODE
+    // ------------------------
+
+    public void askInputAction(final InputActionEvent inputActionEvent, final Type eventTypeInstance, final InputAction oldInputAction){
+        final ArrayList<InputAction> inputActions = ((InputActionDevice) inputActionEvent.getDevice()).getInputActions();
+        CharSequence inputActionNames[] = new CharSequence[inputActions.size()];
+        for(int i=0; i<inputActions.size(); i++){
+            inputActionNames[i] = inputActions.get(i).getDescription()+" "+inputActions.get(i).getName();
+        }
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CreateRuleFromTemplateActivity.this);
+        builder.setTitle("Pick an event");
+        builder.setItems(inputActionNames, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                InputAction selectedInputAction = inputActions.get(which);
+                // Only change event or state IF there was previously no location OR the selected location is different from the old one.
+                if(oldInputAction == null || (selectedInputAction.getId() != oldInputAction.getId())) {
+                    Log.d("TRGRD","CreateRuleFromTemplateActivity askInputAction UPDATE");
+                    CreateRuleFromTemplateActivity.this.onInputActionClick(selectedInputAction, eventTypeInstance);
+                }
+            }
+        });
+        builder.show();
+    }
+
+    private void onInputActionClick(InputAction selectedInputAction, Type typeInstance) {
+        InputActionEvent inputActionEvent = selectedInputAction.getInputActionEvent();
+        EventType eventTypeInstance = (EventType) typeInstance;
+        eventTypeInstance.setInstanceEvent(inputActionEvent);
+        triggerTypesAdapter.notifyDataSetChanged();
+    }
+
     // --------------------
     // LOCATION ASKING CODE
     // --------------------
@@ -466,7 +510,7 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
         triggerTypesAdapter.notifyDataSetChanged();
     }
 
-    public void askLocation(final int type, final Event eventOrState, final Type eventOrStateTypeInstance, final Location oldLocation){
+    public void askLocation(final int type, final Type eventOrStateTypeInstance, final Location oldLocation){
         //Log.d("TRGRD","CreateRuleFromTemplateActivity askLocation "+type+", "+eventOrState.getName()+", "+oldLocation);
         final ArrayList<Location> locations = new ArrayList<>();
         locations.addAll(ruleSystemService.getLocations());
