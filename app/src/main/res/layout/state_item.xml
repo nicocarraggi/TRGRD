@@ -98,6 +98,32 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <LinearLayout
+                    android:id="@+id/llStateValueZero"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2">
+
+                    <TextView
+                        android:id="@+id/tvStateValueZero"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text="Currently at"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                    <Button
+                        android:id="@+id/bStateValueZero"
+                        android:text="Location"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llStateValueOneTwo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 

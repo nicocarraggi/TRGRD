@@ -98,6 +98,8 @@ public class DevicesFragment extends TrgrdFragment implements MyOnItemClickListe
             Log.d("TRGRD","DevicesFragment test isServiceStarted = "+mListener.getIsServiceStarted());
             if(mListener.getIsServiceStarted() && mListener.getIsServiceBound()){
                 this.devices = mListener.getRuleSystemService().getDeviceManager().getDevices();
+                this.isServiceStarted = true;
+                this.isServiceBound = true;
             }
         }
 
@@ -123,15 +125,16 @@ public class DevicesFragment extends TrgrdFragment implements MyOnItemClickListe
         if(!isServiceStarted){
             this.devices = new HashSet<>();
             this.mAdapter.updateData(devices);
-        } else {
+        } /*else {
             showDevices();
-        }
+        }*/
     }
 
     @Override
     public void notifyIsServiceBoundChanged(boolean isServiceBound) {
         super.notifyIsServiceBoundChanged(isServiceBound);
         this.isServiceBound = isServiceBound;
+        if(isServiceBound) showDevices();
         Log.d("TRGRD","DevicesFragment notify isServiceBound = " + isServiceBound);
     }
 

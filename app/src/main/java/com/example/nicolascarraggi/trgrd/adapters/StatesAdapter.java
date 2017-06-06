@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.nicolascarraggi.trgrd.R;
 import com.example.nicolascarraggi.trgrd.rulesys.LocationState;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeState;
+import com.google.android.gms.vision.text.Line;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,8 +84,9 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
 
         private MyStateOnItemClickListener myStateOnItemClickListener;
         private ImageView ivStateDevice, ivState, ivStateDelete;
-        private TextView tvStateTypeName, tvStateName, tvStateValueOne, tvStateValueTwo;
-        private Button bStateValueOne, bStateValueTwo;
+        private TextView tvStateTypeName, tvStateName, tvStateValueZero, tvStateValueOne, tvStateValueTwo;
+        private Button bStateValueZero, bStateValueOne, bStateValueTwo;
+        private LinearLayout llStateValueZero, llStateValueOneTwo;
 
         public StateViewHolder(View itemView) {
             super(itemView);
@@ -92,14 +95,41 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
             this.ivStateDelete = (ImageView) itemView.findViewById(R.id.ivStateDelete);
             this.tvStateTypeName = (TextView) itemView.findViewById(R.id.tvStateTypeName);
             this.tvStateName = (TextView) itemView.findViewById(R.id.tvStateName);
+            this.llStateValueZero = (LinearLayout) itemView.findViewById(R.id.llStateValueZero);
+            this.llStateValueOneTwo = (LinearLayout) itemView.findViewById(R.id.llStateValueOneTwo);
+            this.tvStateValueZero = (TextView) itemView.findViewById(R.id.tvStateValueZero);
             this.tvStateValueOne = (TextView) itemView.findViewById(R.id.tvStateValueOne);
             this.tvStateValueTwo = (TextView) itemView.findViewById(R.id.tvStateValueTwo);
+            this.bStateValueZero = (Button) itemView.findViewById(R.id.bStateValueZero);
             this.bStateValueOne = (Button) itemView.findViewById(R.id.bStateValueOne);
             this.bStateValueTwo = (Button) itemView.findViewById(R.id.bStateValueTwo);
             tvStateName.setOnClickListener(this);
             ivStateDelete.setOnClickListener(this);
+            bStateValueZero.setOnClickListener(this);
             bStateValueOne.setOnClickListener(this);
             bStateValueTwo.setOnClickListener(this);
+        }
+
+        private void showName() {
+            tvStateName.setVisibility(View.VISIBLE);
+        }
+
+        private void hideName() {
+            tvStateName.setVisibility(View.GONE);
+        }
+
+        private void showValueZero() {
+            llStateValueZero.setVisibility(View.VISIBLE);
+        }
+        private void hideValueZero(){
+            llStateValueZero.setVisibility(View.GONE);
+        }
+
+        private void showValueOneTwo(){
+            llStateValueOneTwo.setVisibility(View.VISIBLE);
+        }
+        private void hideValueOneTwo(){
+            llStateValueOneTwo.setVisibility(View.GONE);
         }
 
         public void bind(State state, MyStateOnItemClickListener listener){
@@ -113,60 +143,37 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
             }
             Log.d("TRGRD","StatesAdapter state: name = "+state.getName()+ ", id = "+state.getId());
             if(state.isSkeleton()){
-                // Hide unwanted views!
-                if(tvStateValueOne != null) tvStateValueOne.setVisibility(View.GONE);
-                if(bStateValueOne != null) bStateValueOne.setVisibility(View.GONE);
-                if(tvStateValueTwo != null) tvStateValueTwo.setVisibility(View.GONE);
-                if(bStateValueTwo != null) bStateValueTwo.setVisibility(View.GONE);
+                hideValueZero();
+                hideValueOneTwo();
             } else if(state.isTimeState()){ // this is NOT skeleton ...
                 TimeState timeState = (TimeState) state;
                 if(mEdit) {
-                    // TODO really needed?
-                    if (tvStateValueOne != null
-                            && bStateValueOne != null
-                            && tvStateValueTwo != null
-                            && bStateValueTwo != null) {
-                        tvStateValueOne.setVisibility(View.VISIBLE);
-                        bStateValueOne.setVisibility(View.VISIBLE);
-                        tvStateValueTwo.setVisibility(View.VISIBLE);
-                        bStateValueTwo.setVisibility(View.VISIBLE);
-                        tvStateName.setVisibility(View.GONE);
-                        tvStateValueOne.setText("From");
-                        tvStateValueTwo.setText("To");
-                        bStateValueOne.setText(timeState.getTimeFrom().toString());
-                        bStateValueTwo.setText(timeState.getTimeTo().toString());
-                    }
+                    hideName();
+                    hideValueZero();
+                    showValueOneTwo();
+                    tvStateValueOne.setText("From");
+                    tvStateValueTwo.setText("To");
+                    bStateValueOne.setText(timeState.getTimeFrom().toString());
+                    bStateValueTwo.setText(timeState.getTimeTo().toString());
                 } else {
+                    showName();
+                    hideValueZero();
+                    hideValueOneTwo();
                     tvStateName.setText("From   "+timeState.getTimeFrom().toString()+"   to   "+timeState.getTimeTo().toString());
-                    // Hide unwanted views!
-                    if(tvStateValueOne != null) tvStateValueOne.setVisibility(View.GONE);
-                    if(bStateValueOne != null) bStateValueOne.setVisibility(View.GONE);
-                    if(tvStateValueTwo != null) tvStateValueTwo.setVisibility(View.GONE);
-                    if(bStateValueTwo != null) bStateValueTwo.setVisibility(View.GONE);
                 }
             } else if(state.isLocationState()) {
                 LocationState locationState = (LocationState) state;
                 if (mEdit) {
-                    // TODO really needed?
-                    if (tvStateValueOne != null
-                            && bStateValueOne != null
-                            && tvStateValueTwo != null
-                            && bStateValueTwo != null) {
-                        tvStateValueOne.setVisibility(View.VISIBLE);
-                        bStateValueOne.setVisibility(View.VISIBLE);
-                        tvStateValueTwo.setVisibility(View.GONE);
-                        bStateValueTwo.setVisibility(View.GONE);
-                        tvStateName.setVisibility(View.GONE);
-                        tvStateValueOne.setText("Currently at: ");
-                        bStateValueOne.setText(locationState.getLocation().getName());
-                    }
+                    hideName();
+                    showValueZero();
+                    hideValueOneTwo();
+                    tvStateValueZero.setText("Currently at: ");
+                    bStateValueZero.setText(locationState.getLocation().getName());
                 } else {
-                        tvStateName.setText("Currently at:   " + locationState.getLocation().getName());
-                        // Hide unwanted views!
-                        if (tvStateValueOne != null) tvStateValueOne.setVisibility(View.GONE);
-                        if (bStateValueOne != null) bStateValueOne.setVisibility(View.GONE);
-                        if (tvStateValueTwo != null) tvStateValueTwo.setVisibility(View.GONE);
-                        if (bStateValueTwo != null) bStateValueTwo.setVisibility(View.GONE);
+                    showName();
+                    hideValueZero();
+                    hideValueOneTwo();
+                    tvStateName.setText("Currently at:   " + locationState.getLocation().getName());
                 }
             }
         }
