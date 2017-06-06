@@ -20,6 +20,7 @@ import com.thalmic.myo.DeviceListener;
 import com.thalmic.myo.Hub;
 import com.thalmic.myo.Myo;
 import com.thalmic.myo.Pose;
+import com.thalmic.myo.scanner.Scanner;
 
 public class MyoCommunicationService extends Service {
 
@@ -27,6 +28,7 @@ public class MyoCommunicationService extends Service {
 
     public static final String MYO_CONNECTED_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.myo.connected";
     public static final String MYO_DISCONNECTED_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.myo.disconnected";
+    public static final String MYO_HUBERROR_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.myo.huberror";
     public static final String MYO_GESTURE_FIST_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.myo.gesture-fist"; // NEVER TRIGGERED
     public static final String MYO_GESTURE_WAVEIN_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.myo.gesture-wavein"; // OK
     public static final String MYO_GESTURE_WAVEOUT_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.myo.gesture-waveout"; // TOO SENSITIVE
@@ -85,6 +87,8 @@ public class MyoCommunicationService extends Service {
         Hub hub = Hub.getInstance();
         if (!hub.init(this, getPackageName())) {
             showToast("Couldn't initialize Hub");
+            Intent intent = new Intent(MYO_HUBERROR_EVENT);
+            LocalBroadcastManager.getInstance(MyoCommunicationService.this).sendBroadcast(intent);
             stopSelf();
             return;
         }
@@ -98,7 +102,8 @@ public class MyoCommunicationService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Hub.getInstance().getScanner().stopScanning();
+        Scanner scanner = Hub.getInstance().getScanner();
+        if(scanner != null) Hub.getInstance().getScanner().stopScanning();
         Log.d("TRGRD","MyoCommunicationService onDestroy()");
         // We don't want any callbacks when the Service is gone, so unregister the listener.
         Hub.getInstance().removeListener(mListener);

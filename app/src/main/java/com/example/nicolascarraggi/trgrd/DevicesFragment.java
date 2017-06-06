@@ -65,6 +65,8 @@ public class DevicesFragment extends TrgrdFragment implements MyOnItemClickListe
     public void onResume() {
         super.onResume();
         registerDevicesReceiver();
+        this.isServiceStarted = mListener.getIsServiceStarted();
+        this.isServiceBound = mListener.getIsServiceBound();
         MyLogger.debugLog("TRGRD","DevicesFragment onResume()");
     }
 

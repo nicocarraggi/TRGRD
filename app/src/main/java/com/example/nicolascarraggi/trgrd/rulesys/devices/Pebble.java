@@ -136,19 +136,21 @@ public class Pebble extends Wearable implements NotificationDevice, InputActionD
         this.actions.put(mAcNotify.getId(),mAcNotify);
     }
 
-    // getters
+    // InputActionDevice getters
 
+    @Override
     public ArrayList<InputAction> getInputActions() {
         return inputActions;
     }
 
+    @Override
     public InputActionEvent getInputActionEvent(InputAction inputAction){
         return inputActionEvents.get(inputAction.getId());
     }
 
-    // These getters only needed for testing!
+    // Event getters
 
-    public InputActionEvent getIaBtn(){return mIaEvBtn;};
+    public Event getBtn(){return mIaEvBtn;};
 
     public Event getBtnUp() {
         return mIaEvBtnUp;
@@ -200,7 +202,7 @@ public class Pebble extends Wearable implements NotificationDevice, InputActionD
         return simScreenTime;
     }
 
-    // Events
+    // Event triggers
 
     public void evBtnUp(){
         //Log.d("TRGRD", "Pebble Event Button Up");
@@ -334,7 +336,7 @@ public class Pebble extends Wearable implements NotificationDevice, InputActionD
 
     @Override
     public void acNotify(String title, String text, NotificationAction.NotificationActionType type) {
-        System.out.println("[Pebble] Vibrates!");
+        //System.out.println("[Pebble] Vibrates!");
         Intent newIntent = new Intent(PEBBLE_NOTIFICATION_ACTION);
         newIntent.putExtra("title",title);
         newIntent.putExtra("text",text);
