@@ -2,7 +2,6 @@ package com.example.nicolascarraggi.trgrd;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -51,7 +50,7 @@ public class ShowExampleRulesActivity extends RuleSystemBindingActivity implemen
         switch(view.getId()) {
             case R.id.tvRuleName:
                 DeviceManager deviceManager = ruleSystemService.getDeviceManager();
-                Intent intent = new Intent(ShowExampleRulesActivity.this, CreateRuleOpenActivity.class);
+                Intent intent = new Intent(ShowExampleRulesActivity.this, CreateRuleActivity.class);
                 intent.putExtra("iscreate",true);
                 intent.putExtra("isfromexamplerule",true);
                 intent.putExtra("ruleid",item.getId());

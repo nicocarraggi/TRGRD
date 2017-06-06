@@ -47,7 +47,7 @@
                 android:value="com.example.nicolascarraggi.trgrd.MainActivity" />
         </activity>
         <activity android:name=".RuleDetailsActivity" />
-        <activity android:name=".CreateRuleOpenActivity" />
+        <activity android:name=".CreateRuleActivity" />
         <activity android:name=".AddActionActivity" />
         <activity android:name=".CreateLocationActivity" />
 

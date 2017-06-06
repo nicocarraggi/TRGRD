@@ -110,11 +110,16 @@ public class RuleDetailsActivity extends RuleSystemBindingActivity implements My
             Intent intent = null;
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(RuleDetailsActivity.this);
             String rulesMethodology = prefs.getString("rule_methodology_list", "2");
-            if (rulesMethodology.equals("2")){
-                intent = new Intent(RuleDetailsActivity.this, CreateRuleOpenActivity.class);
+            if (rulesMethodology.equals("0")){ // CLOSED
+                intent = new Intent(RuleDetailsActivity.this, CreateRuleActivity.class);
+                intent.putExtra("iscreate",false);
+                intent.putExtra("isfromexamplerule",true);
+                intent.putExtra("ruleid",ruleId);
+            } else if (rulesMethodology.equals("2")){ // OPEN
+                intent = new Intent(RuleDetailsActivity.this, CreateRuleActivity.class);
                 intent.putExtra("iscreate",false);
                 intent.putExtra("ruleid",ruleId);
-            } else if(rulesMethodology.equals("1")){
+            } else if(rulesMethodology.equals("1")){ // TEMPLATES
                 if(rule.isFromTemplate()){
                     intent = new Intent(RuleDetailsActivity.this, CreateRuleFromTemplateActivity.class);
                     intent.putExtra("iscreate",false);

@@ -51,7 +51,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CreateRuleOpenActivity extends RuleSystemBindingActivity
+public class CreateRuleActivity extends RuleSystemBindingActivity
         implements MyEventOnItemClickListener,
         MyStateOnItemClickListener,
         MyActionOnItemClickListener,
@@ -88,7 +88,7 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_rule_open);
+        setContentView(R.layout.activity_create_rule);
 
         // Get extra int ID! IF real id (>=0), edit rule!!!
         this.isCreate = getIntent().getBooleanExtra("iscreate",true);
@@ -159,7 +159,7 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                 MyLogger.timeframeLog("create rule open",start,end);
                 finish();
             } else {
-                Toast.makeText(CreateRuleOpenActivity.this, "A rule requires a name, 1 or more triggers and 1 or more actions!", Toast.LENGTH_LONG).show();
+                Toast.makeText(CreateRuleActivity.this, "A rule requires a name, 1 or more triggers and 1 or more actions!", Toast.LENGTH_LONG).show();
             }
             return true;
         }
@@ -344,13 +344,13 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
     public void onClick(View view) {
         switch(view.getId()) {
             case R.id.bCreateRuleOpenAddTrigger:
-                Intent iTriggers = new Intent(CreateRuleOpenActivity.this, AddEventOrStateActivity.class);
+                Intent iTriggers = new Intent(CreateRuleActivity.this, AddEventOrStateActivity.class);
                 boolean hasEvent = (!events.isEmpty());
                 iTriggers.putExtra("hasevent",hasEvent);
                 startActivityForResult(iTriggers, REQUEST_CODE_TRIGGER);
                 break;
             case R.id.bCreateRuleOpenAddAction:
-                Intent iActions = new Intent(CreateRuleOpenActivity.this, AddActionActivity.class);
+                Intent iActions = new Intent(CreateRuleActivity.this, AddActionActivity.class);
                 startActivityForResult(iActions, REQUEST_CODE_ACTION);
                 break;
         }
@@ -371,16 +371,16 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                 .setPositiveButton("delete", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // delete instance (if an instance exists!)
-                        CreateRuleOpenActivity.this.deleteInstance(type,event,state,action);
+                        CreateRuleActivity.this.deleteInstance(type,event,state,action);
                         if (type.equals("event") && (event != null)){
-                            CreateRuleOpenActivity.this.events.remove(event);
-                            CreateRuleOpenActivity.this.eventsAdapter.updateData(CreateRuleOpenActivity.this.events);
+                            CreateRuleActivity.this.events.remove(event);
+                            CreateRuleActivity.this.eventsAdapter.updateData(CreateRuleActivity.this.events);
                         } else if (type.equals("state") && (state != null)){
-                            CreateRuleOpenActivity.this.states.remove(state);
-                            CreateRuleOpenActivity.this.statesAdapter.updateData(CreateRuleOpenActivity.this.states);
+                            CreateRuleActivity.this.states.remove(state);
+                            CreateRuleActivity.this.statesAdapter.updateData(CreateRuleActivity.this.states);
                         } else if (type.equals("action") && (action != null)){
-                            CreateRuleOpenActivity.this.actions.remove(action);
-                            CreateRuleOpenActivity.this.actionsAdapter.updateData(CreateRuleOpenActivity.this.actions);
+                            CreateRuleActivity.this.actions.remove(action);
+                            CreateRuleActivity.this.actionsAdapter.updateData(CreateRuleActivity.this.actions);
                         }
                     }
                 })
@@ -498,6 +498,7 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
             case R.id.ivStateDelete:
                 alertDelete("state", null, item, null);
                 break;
+            case R.id.bStateValueZero:
             case R.id.bStateValueOne:
                 if (item.isTimeState()){
                     editTime((Button) view, (TimeState) item);
@@ -542,7 +543,7 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
         for(int i=0; i<inputActions.size(); i++){
             inputActionNames[i] = inputActions.get(i).getDescription()+" "+inputActions.get(i).getName();
         }
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CreateRuleOpenActivity.this);
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CreateRuleActivity.this);
         builder.setTitle("Pick an event");
         builder.setItems(inputActionNames, new DialogInterface.OnClickListener() {
             @Override
@@ -551,8 +552,8 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                 // Only change event or state IF there was previously no location OR the selected location is different from the old one.
                 if(oldInputAction == null || (selectedInputAction.getId() != oldInputAction.getId())) {
                     Log.d("TRGRD","CreateRuleOpenActivity askInputAction UPDATE");
-                    if (oldInputAction != null) CreateRuleOpenActivity.this.events.remove(inputActionEvent);
-                    CreateRuleOpenActivity.this.onInputActionClick(selectedInputAction);
+                    if (oldInputAction != null) CreateRuleActivity.this.events.remove(inputActionEvent);
+                    CreateRuleActivity.this.onInputActionClick(selectedInputAction);
                 }
             }
         });
@@ -594,7 +595,7 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
         for(int i=0; i<locations.size(); i++){
             locationNames[i] = locations.get(i).getName();
         }
-        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CreateRuleOpenActivity.this);
+        final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CreateRuleActivity.this);
         builder.setTitle("Pick a location");
         builder.setItems(locationNames, new DialogInterface.OnClickListener() {
             @Override
@@ -605,16 +606,16 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                     Log.d("TRGRD","CreateRuleOpenActivity askLocation UPDATE");
                     switch (type) {
                         case ASK_LOCATION_ARRIVING:
-                            if (oldLocation != null) CreateRuleOpenActivity.this.events.remove(eventOrState);
-                            CreateRuleOpenActivity.this.onLocationArrivingAtClick(selectedLocation);
+                            if (oldLocation != null) CreateRuleActivity.this.events.remove(eventOrState);
+                            CreateRuleActivity.this.onLocationArrivingAtClick(selectedLocation);
                             break;
                         case ASK_LOCATION_LEAVING:
-                            if (oldLocation != null) CreateRuleOpenActivity.this.events.remove(eventOrState);
-                            CreateRuleOpenActivity.this.onLocationLeavingClick(selectedLocation);
+                            if (oldLocation != null) CreateRuleActivity.this.events.remove(eventOrState);
+                            CreateRuleActivity.this.onLocationLeavingClick(selectedLocation);
                             break;
                         case ASK_LOCATION_CURRENTLY:
-                            if (oldLocation != null) CreateRuleOpenActivity.this.states.remove(eventOrState);
-                            CreateRuleOpenActivity.this.onLocationCurrentlyAtClick(selectedLocation);
+                            if (oldLocation != null) CreateRuleActivity.this.states.remove(eventOrState);
+                            CreateRuleActivity.this.onLocationCurrentlyAtClick(selectedLocation);
                             break;
                     }
                 }
@@ -633,9 +634,9 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
     }
 
     public void askNotification(final NotificationAction action, final NotificationAction oldAction){
-        AlertDialog.Builder builder = new AlertDialog.Builder(CreateRuleOpenActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(CreateRuleActivity.this);
         // Get the layout inflater
-        LayoutInflater inflater = CreateRuleOpenActivity.this.getLayoutInflater();
+        LayoutInflater inflater = CreateRuleActivity.this.getLayoutInflater();
 
         final View view = inflater.inflate(R.layout.dialog_notification, null);
 

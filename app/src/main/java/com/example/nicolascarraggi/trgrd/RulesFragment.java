@@ -77,7 +77,7 @@ public class RulesFragment extends TrgrdFragment  implements MyOnItemClickListen
                 } else if (rulesMethodology.equals(RULE_METHODOLOGY_TEMPLATE)){
                     intent = new Intent(RulesFragment.this.getContext(), ShowRuleTemplatesActivity.class);
                 } else if (rulesMethodology.equals(RULE_METHODOLOGY_OPEN)){
-                    intent = new Intent(RulesFragment.this.getContext(), CreateRuleOpenActivity.class);
+                    intent = new Intent(RulesFragment.this.getContext(), CreateRuleActivity.class);
                 }
                 if(intent != null) startActivity(intent);
             }
