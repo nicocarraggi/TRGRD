@@ -64,17 +64,17 @@ public class AddItemFromTypeActivity extends RuleSystemBindingActivity implement
 
         if (typeType.equals("event")){
             eventType = ruleSystemService.getDeviceManager().getEventTypeInstance(typeInstanceId);
-            eventsAdapter = new EventsAdapter(this, eventType.getSkeletonEvents(),false);
+            eventsAdapter = new EventsAdapter(this, eventType.getSkeletonEvents(),false, false);
             rvItems.setAdapter(eventsAdapter);
             //tvItems.setText("Events of type: \""+eventType.getName()+"\"");
         } else if(typeType.equals("state")){
             stateType = ruleSystemService.getDeviceManager().getStateTypeInstance(typeInstanceId);
-            statesAdapter = new StatesAdapter(this, stateType.getSkeletonStates(),false);
+            statesAdapter = new StatesAdapter(this, stateType.getSkeletonStates(),false, false);
             rvItems.setAdapter(statesAdapter);
             //tvItems.setText("States of type: \""+stateType.getName()+"\"");
         } else if(typeType.equals("action")){
             actionType = ruleSystemService.getDeviceManager().getActionTypeInstance(typeInstanceId);
-            actionsAdapter = new ActionsAdapter(this, actionType.getSkeletonActions(),false);
+            actionsAdapter = new ActionsAdapter(this, actionType.getSkeletonActions(),false, false);
             rvItems.setAdapter(actionsAdapter);
             //tvItems.setText("Actions of type: \""+actionType.getName()+"\"");
         }

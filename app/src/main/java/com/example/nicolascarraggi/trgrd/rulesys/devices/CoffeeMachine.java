@@ -32,6 +32,12 @@ public class CoffeeMachine extends Device {
         this.actions.put(mAcStartCoffee.getId(),mAcStartCoffee);
     }
 
+    // Action getter
+
+    public Action getStartCoffee() {
+        return mAcStartCoffee;
+    }
+
     private void acStartCoffee() {
         // TODO send HTTP request
     }

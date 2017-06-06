@@ -49,14 +49,13 @@ public class ShowExampleRulesActivity extends RuleSystemBindingActivity implemen
     @Override
     public void onItemClick(View view, Rule item) {
         switch(view.getId()) {
-            case R.id.tvRuleTemplateName:
+            case R.id.tvRuleName:
                 DeviceManager deviceManager = ruleSystemService.getDeviceManager();
-                //Rule instance = new RuleTemplate(deviceManager.getNewId(),item,deviceManager);
-                //ruleSystemService.addRuleTemplateInstance(instance);
-                //Intent intent = new Intent(ShowRuleTemplatesActivity.this, CreateRuleFromTemplateActivity.class);
-                //intent.putExtra("iscreate",true);
-                //intent.putExtra("ruletemplateinstanceid",instance.getId());
-                //startActivityForResult(intent,RULETEMPLATE_SELECT_INTENT);
+                Intent intent = new Intent(ShowExampleRulesActivity.this, CreateRuleOpenActivity.class);
+                intent.putExtra("iscreate",true);
+                intent.putExtra("isfromexamplerule",true);
+                intent.putExtra("ruleid",item.getId());
+                startActivityForResult(intent,EXAMPLERULE_SELECT_INTENT);
                 break;
         }
     }

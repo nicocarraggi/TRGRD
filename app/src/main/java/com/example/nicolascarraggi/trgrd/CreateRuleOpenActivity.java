@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ import com.example.nicolascarraggi.trgrd.adapters.StatesAdapter;
 import com.example.nicolascarraggi.trgrd.logging.MyLogger;
 import com.example.nicolascarraggi.trgrd.rulesys.Action;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
+import com.example.nicolascarraggi.trgrd.rulesys.ExampleRule;
 import com.example.nicolascarraggi.trgrd.rulesys.InputAction;
 import com.example.nicolascarraggi.trgrd.rulesys.InputActionEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.Location;
@@ -63,7 +65,7 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
     private final int ASK_LOCATION_CURRENTLY = 3;
 
     private int id;
-    private boolean isCreate, isBoundOnce;
+    private boolean isCreate, isFromExampleRule, isBoundOnce;
     private Rule rule;
     private Set<Event> events;
     private Set<Event> deletedEventInstaces;
@@ -76,6 +78,7 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
     private ActionsAdapter actionsAdapter;
     private RecyclerView.LayoutManager mLayoutManagerEvents, mLayoutManagerStates, mLayoutManagerActions;
     private RecyclerView rvEvents, rvStates, rvActions;
+    private LinearLayout llCreateRuleTriggers, llCreateRuleActions;
     private EditText etName;
     private Button bAddTrigger, bAddAction;
 
@@ -89,11 +92,14 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
 
         // Get extra int ID! IF real id (>=0), edit rule!!!
         this.isCreate = getIntent().getBooleanExtra("iscreate",true);
+        this.isFromExampleRule = getIntent().getBooleanExtra("isfromexamplerule",false);
         this.id = getIntent().getIntExtra("ruleid",2); // TODO replace with default ERROR VALUE ? (-1)
 
         start = new MyTime();
 
         this.etName = (EditText) findViewById(R.id.etCreateRuleOpenName);
+        this.llCreateRuleTriggers = (LinearLayout) findViewById(R.id.llCreateRuleTriggers);
+        this.llCreateRuleActions = (LinearLayout) findViewById(R.id.llCreateRuleActions);
         this.bAddAction = (Button) findViewById(R.id.bCreateRuleOpenAddAction);
         this.bAddTrigger = (Button) findViewById(R.id.bCreateRuleOpenAddTrigger);
         this.rvEvents = (RecyclerView) findViewById(R.id.rvCreateRuleOpenEvents);
@@ -108,6 +114,11 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
         this.deletedActionInstaces = new HashSet<>();
 
         this.isBoundOnce = false;
+
+        if(isFromExampleRule){
+            llCreateRuleTriggers.setVisibility(View.GONE);
+            llCreateRuleActions.setVisibility(View.GONE);
+        }
 
     }
 
@@ -134,6 +145,10 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                     Intent intent = new Intent(this, RuleDetailsActivity.class);
                     intent.putExtra("ruleid",rule.getId());
                     startActivity(intent);
+                    if (isFromExampleRule) {
+                        Intent backIntent = new Intent();
+                        setResult(RESULT_OK, backIntent);
+                    }
                 } else {
                     this.rule.setName(etName.getText().toString());
                     this.rule.reset(events,states,actions);
@@ -195,9 +210,9 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                 etName.setText(rule.getName());
             }
 
-            eventsAdapter = new EventsAdapter(this, events, true);
-            statesAdapter = new StatesAdapter(this, states, true);
-            actionsAdapter = new ActionsAdapter(this, actions, true);
+            eventsAdapter = new EventsAdapter(this, events, true, !isFromExampleRule);
+            statesAdapter = new StatesAdapter(this, states, true, !isFromExampleRule);
+            actionsAdapter = new ActionsAdapter(this, actions, true, !isFromExampleRule);
 
             // use this setting to improve performance if you know that changes
             // in content do not change the layout size of the RecyclerView
@@ -221,7 +236,74 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
             bAddAction.setOnClickListener(this);
 
             this.isBoundOnce = true;
+
+            if(isCreate && isFromExampleRule){
+                ExampleRule exampleRule = ruleSystemService.getExampleRule(id);
+                etName.setText(exampleRule.getName());
+                for (Event e: exampleRule.getEvents()){
+                    addEvent(e);
+                }
+                for (State s: exampleRule.getStates()){
+                    addState(s);
+                }
+                for (Action a: exampleRule.getActions()){
+                    addAction(a);
+                }
+            }
         }
+    }
+
+    private void addEvent(Event event){
+        // if instance must be created ...
+        if (event.isTimeEvent()) {
+            MyTime d = new MyTime();
+            d.setMinutes(0);
+            TimeEvent timeEvent = ((Clock) event.getDevice()).getTimeAtInstance((TimeEvent) event, d);
+            event = timeEvent;
+        } else if (event.isInputActionEvent()){
+            InputActionEvent inputActionEvent = (InputActionEvent) event;
+            askInputAction(inputActionEvent, null);
+            // Return because event will be added later!
+            return;
+        } else if (event.isLocationEvent()){
+            LocationEvent locationEvent = (LocationEvent) event;
+            if (locationEvent.getLocationEventType() == LocationEvent.LocationEventType.ARRIVING){
+                askLocation(ASK_LOCATION_ARRIVING,event, null);
+            } else if (locationEvent.getLocationEventType() == LocationEvent.LocationEventType.LEAVING){
+                askLocation(ASK_LOCATION_LEAVING,event, null);
+            }
+            // Return because event will be added later!
+            return;
+        }
+        events.add(event);
+        eventsAdapter.updateData(events);
+    }
+
+    private void addState(State state){
+        if (state.isTimeState()){
+            MyTime dFrom = new MyTime();
+            MyTime dTo = new MyTime();
+            dFrom.setMinutes(0);
+            dTo.setMinutes(0);
+            TimeState timeState = ((Clock) state.getDevice()).getTimeFromToInstance((TimeState) state,dFrom,dTo);
+            state = timeState;
+        } else if (state.isLocationState()){
+            askLocation(ASK_LOCATION_CURRENTLY,state, null);
+            // Return because state will be added later!
+            return;
+        }
+        states.add(state);
+        statesAdapter.updateData(states);
+    }
+
+    private void addAction(Action action){
+        if (action.isNotificationAction()){
+            askNotification((NotificationAction) action,null);
+            // Return because action will be added later!
+            return;
+        }
+        actions.add(action);
+        actionsAdapter.updateData(actions);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -234,45 +316,10 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                 int id = data.getIntExtra("id",0);
                 if (type.equals("event")){
                     Event event = ruleSystemService.getDeviceManager().getDevice(devId).getEvent(id);
-                    // if instance must be created ...
-                    if (event.isTimeEvent()) {
-                        MyTime d = new MyTime();
-                        d.setMinutes(0);
-                        TimeEvent timeEvent = ((Clock) event.getDevice()).getTimeAtInstance((TimeEvent) event, d);
-                        event = timeEvent;
-                    } else if (event.isInputActionEvent()){
-                        InputActionEvent inputActionEvent = (InputActionEvent) event;
-                        askInputAction(inputActionEvent, null);
-                        // Return because event will be added later!
-                        return;
-                    } else if (event.isLocationEvent()){
-                        LocationEvent locationEvent = (LocationEvent) event;
-                        if (locationEvent.getLocationEventType() == LocationEvent.LocationEventType.ARRIVING){
-                            askLocation(ASK_LOCATION_ARRIVING,event, null);
-                        } else if (locationEvent.getLocationEventType() == LocationEvent.LocationEventType.LEAVING){
-                            askLocation(ASK_LOCATION_LEAVING,event, null);
-                        }
-                        // Return because event will be added later!
-                        return;
-                    }
-                    events.add(event);
-                    eventsAdapter.updateData(events);
+                    addEvent(event);
                 } else if (type.equals("state")){
                     State state = ruleSystemService.getDeviceManager().getDevice(devId).getState(id);// if instance must be created ...
-                    if (state.isTimeState()){
-                        MyTime dFrom = new MyTime();
-                        MyTime dTo = new MyTime();
-                        dFrom.setMinutes(0);
-                        dTo.setMinutes(0);
-                        TimeState timeState = ((Clock) state.getDevice()).getTimeFromToInstance((TimeState) state,dFrom,dTo);
-                        state = timeState;
-                    } else if (state.isLocationState()){
-                        askLocation(ASK_LOCATION_CURRENTLY,state, null);
-                        // Return because state will be added later!
-                        return;
-                    }
-                    states.add(state);
-                    statesAdapter.updateData(states);
+                    addState(state);
                 }
             }
         } else if (requestCode == REQUEST_CODE_ACTION){
@@ -281,13 +328,7 @@ public class CreateRuleOpenActivity extends RuleSystemBindingActivity
                 int devId = data.getIntExtra("devid",0);
                 int id = data.getIntExtra("id",0);
                 Action action = ruleSystemService.getDeviceManager().getDevice(devId).getAction(id);
-                if (action.isNotificationAction()){
-                    askNotification((NotificationAction) action,null);
-                    // Return because action will be added later!
-                    return;
-                }
-                actions.add(action);
-                actionsAdapter.updateData(actions);
+                addAction(action);
             }
         }
     }

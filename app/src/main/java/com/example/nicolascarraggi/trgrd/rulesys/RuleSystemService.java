@@ -107,11 +107,11 @@ public class RuleSystemService extends Service {
         return new HashSet(exampleRules.values());
     }
 
-    public Rule getExampleRule(int id){
-        return exampleRules.get(id);
+    public ExampleRule getExampleRule(int id){
+        return (ExampleRule) exampleRules.get(id);
     }
 
-    public void addExampleRule(Rule rule){
+    public void addExampleRule(ExampleRule rule){
         this.exampleRules.put(rule.getId(),rule);
     }
 
@@ -193,12 +193,19 @@ public class RuleSystemService extends Service {
     }
 
     private void testExampleRules(){
-        ExampleRule exampleRuleCoffeeLocation = new ExampleRule(getNewId(),"Coffee at a location");
-        exampleRules.put(exampleRuleCoffeeLocation.getId(),exampleRuleCoffeeLocation);
-        ExampleRule exampleRuleDisplayAlarm = new ExampleRule(getNewId(),"Display starting alarm");
-        exampleRules.put(exampleRuleDisplayAlarm.getId(),exampleRuleDisplayAlarm);
-        ExampleRule exampleRuleNotifyButtonPressed = new ExampleRule(getNewId(),"Notify button pressed");
-        exampleRules.put(exampleRuleNotifyButtonPressed.getId(),exampleRuleNotifyButtonPressed);
+        ExampleRule erCoffeeLocation = new ExampleRule(getNewId(),"Start coffee with button when at a location");
+        erCoffeeLocation.addEvent(mDeviceManager.getPebble().getBtn());
+        erCoffeeLocation.addState(mDeviceManager.getGeofences().getLocationCurrentlyAt());
+        erCoffeeLocation.addAction(mDeviceManager.getCoffeeMachine().getStartCoffee());
+        exampleRules.put(erCoffeeLocation.getId(),erCoffeeLocation);
+        ExampleRule erDisplayAlarm = new ExampleRule(getNewId(),"Display Phone alarm on Pebble");
+        erDisplayAlarm.addEvent(mDeviceManager.getAndroidPhone().getAlarmStart());
+        erDisplayAlarm.addAction(mDeviceManager.getPebble().getScreenAlarm());
+        exampleRules.put(erDisplayAlarm.getId(),erDisplayAlarm);
+        ExampleRule erNotifyButtonPressed = new ExampleRule(getNewId(),"Notify Phone when Pebble button is pressed");
+        erNotifyButtonPressed.addEvent(mDeviceManager.getPebble().getBtn());
+        erNotifyButtonPressed.addAction(mDeviceManager.getAndroidPhone().getNotify());
+        exampleRules.put(erNotifyButtonPressed.getId(),erNotifyButtonPressed);
     }
 
 }

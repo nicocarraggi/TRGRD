@@ -155,7 +155,7 @@ public class AddEventOrStateActivity extends RuleSystemBindingActivity implement
                     tvAddEventOrStateEventsRed.setVisibility(View.VISIBLE);
                     rvTriggers.setVisibility(View.GONE);
                 } else {
-                    eventsAdapter = new EventsAdapter(this, mListener.getDeviceManager().getAllEvents(),false);
+                    eventsAdapter = new EventsAdapter(this, mListener.getDeviceManager().getAllEvents(),false,false);
                     rvTriggers.setHasFixedSize(true);
                     mLayoutManagerEvents = new LinearLayoutManager(this.getContext());
                     rvTriggers.setLayoutManager(mLayoutManagerEvents);
@@ -163,7 +163,7 @@ public class AddEventOrStateActivity extends RuleSystemBindingActivity implement
                 }
             } else if (eventsOrStates == 2){
                 // Show States
-                statesAdapter = new StatesAdapter(this,mListener.getDeviceManager().getAllStates(),false);
+                statesAdapter = new StatesAdapter(this,mListener.getDeviceManager().getAllStates(),false,false);
                 rvTriggers.setHasFixedSize(true);
                 // use a linear layout manager
                 mLayoutManagerStates = new LinearLayoutManager(this.getContext());

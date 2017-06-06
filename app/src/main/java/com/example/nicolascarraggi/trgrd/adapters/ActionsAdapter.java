@@ -26,12 +26,13 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
 
     private MyActionOnItemClickListener mListener;
     private ArrayList<Action> mDataset;
-    private boolean mEdit;
+    private boolean mEdit, mShowDelete;
 
-    public ActionsAdapter(MyActionOnItemClickListener listener, Set<Action> mDataset, boolean edit) {
+    public ActionsAdapter(MyActionOnItemClickListener listener, Set<Action> mDataset, boolean edit, boolean showDelete) {
         this.mListener = listener;
         this.mDataset = new ArrayList<>();
         this.mEdit = edit;
+        this.mShowDelete = showDelete;
         this.mDataset.addAll(mDataset);
         sort();
     }
@@ -103,7 +104,7 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
             this.ivAction.setImageResource(action.getIconResource());
             this.tvActionTypeName.setText(action.getActionType().getName());
             this.tvActionName.setText(action.getName());
-            if(!mEdit && ivActionDelete != null){
+            if(!mShowDelete && ivActionDelete != null){
                 ivActionDelete.setVisibility(View.GONE);
             }
             if(action.isSkeleton()){

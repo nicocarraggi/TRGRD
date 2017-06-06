@@ -34,7 +34,7 @@ public class AddActionActivity extends RuleSystemBindingActivity implements MyAc
     protected void onBound() {
         super.onBound();
 
-        actionsAdapter = new ActionsAdapter(this, ruleSystemService.getDeviceManager().getAllActions(),false);
+        actionsAdapter = new ActionsAdapter(this, ruleSystemService.getDeviceManager().getAllActions(), false, false);
         rvActions.setHasFixedSize(true);
         mLayoutManagerActions = new LinearLayoutManager(this);
         rvActions.setLayoutManager(mLayoutManagerActions);

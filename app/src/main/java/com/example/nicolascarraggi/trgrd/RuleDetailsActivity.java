@@ -70,9 +70,9 @@ public class RuleDetailsActivity extends RuleSystemBindingActivity implements My
         tvRuleDetailsName.setText(rule.getName());
         switchRuleDetailsActive.setChecked(rule.isActive());
 
-        eventsAdapter = new EventsAdapter(this,rule.getEvents(),false);
-        statesAdapter = new StatesAdapter(this,rule.getStates(),false);
-        actionsAdapter = new ActionsAdapter(this,rule.getActions(),false);
+        eventsAdapter = new EventsAdapter(this,rule.getEvents(),false, false);
+        statesAdapter = new StatesAdapter(this,rule.getStates(),false, false);
+        actionsAdapter = new ActionsAdapter(this,rule.getActions(),false, false);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView

@@ -28,12 +28,13 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
     
     private ArrayList<State> mDataset;
     private MyStateOnItemClickListener mListener;
-    private boolean mEdit;
+    private boolean mEdit, mShowDelete;
 
-    public StatesAdapter(MyStateOnItemClickListener listener, Set<State> mDataset, boolean edit) {
+    public StatesAdapter(MyStateOnItemClickListener listener, Set<State> mDataset, boolean edit, boolean showDelete) {
         this.mListener = listener;
         this.mDataset = new ArrayList<>();
         this.mEdit = edit;
+        this.mShowDelete = showDelete;
         this.mDataset.addAll(mDataset);
         sort();
     }
@@ -107,7 +108,7 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
             this.ivState.setImageResource(state.getIconResource());
             this.tvStateTypeName.setText(state.getStateType().getName());
             this.tvStateName.setText(state.getName());
-            if(!mEdit && ivStateDelete != null){
+            if(!mShowDelete && ivStateDelete != null){
                 ivStateDelete.setVisibility(View.GONE);
             }
             Log.d("TRGRD","StatesAdapter state: name = "+state.getName()+ ", id = "+state.getId());

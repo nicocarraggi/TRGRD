@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#1010"
     tools:context="com.example.nicolascarraggi.trgrd.ShowExampleRulesActivity">
 
     <TextView
@@ -12,10 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="16dp"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_marginBottom="7dp"
+        android:layout_marginBottom="16dp"
         android:text="Select an example rule:"/>
 
 

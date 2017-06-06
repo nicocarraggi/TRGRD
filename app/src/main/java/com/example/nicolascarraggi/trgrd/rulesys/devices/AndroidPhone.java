@@ -167,6 +167,10 @@ public class AndroidPhone extends Device implements NotificationDevice {
         return mAcAlarmSnooze;
     }
 
+    public NotificationAction getNotify() {
+        return mAcNotify;
+    }
+
     // FOR SIMULATION TESTS:
 
     public Action getSimAcAlarmDismiss(){

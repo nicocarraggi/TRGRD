@@ -30,12 +30,13 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
 
     private ArrayList<Event> mDataset;
     private MyEventOnItemClickListener mListener;
-    boolean mEdit;
+    boolean mEdit, mShowDelete;
 
-    public EventsAdapter(MyEventOnItemClickListener listener, Set<Event> mDataset, boolean edit) {
+    public EventsAdapter(MyEventOnItemClickListener listener, Set<Event> mDataset, boolean edit, boolean showDelete) {
         this.mListener = listener;
         this.mDataset = new ArrayList<>();
         this.mEdit = edit;
+        this.mShowDelete = showDelete;
         this.mDataset.addAll(mDataset);
         sort();
     }
@@ -106,7 +107,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
             this.ivEvent.setImageResource(event.getIconResource());
             this.tvEventTypeName.setText(event.getEventType().getName());
             this.tvEventName.setText(event.getName());
-            if(!mEdit && ivEventDelete != null){
+            if(!mShowDelete && ivEventDelete != null){
                 ivEventDelete.setVisibility(View.GONE);
             }
             if(event.isSkeleton()){

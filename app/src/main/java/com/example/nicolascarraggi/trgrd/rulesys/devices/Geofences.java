@@ -113,6 +113,20 @@ public class Geofences extends Device implements GoogleApiClient.ConnectionCallb
 
     }
 
+    // Event & State getters
+
+    public LocationEvent getLocationArrivingAt() {
+        return mEvLocationArrivingAt;
+    }
+
+    public LocationEvent getLocationLeaving() {
+        return mEvLocationLeaving;
+    }
+
+    public LocationState getLocationCurrentlyAt() {
+        return mStLocationCurrentlyAt;
+    }
+
     public void connectGoogleApiClient(){
         mGoogleApiClient.connect();
     }
