@@ -6,6 +6,9 @@
 
     <color name="colorRule">#FFFFFF</color>
     <color name="colorEvent">#E1BEE7</color>
+    <color name="colorEventDark">#9C27B0</color>
     <color name="colorState">#BBDEFB</color>
+    <color name="colorStateDark">#2196F3</color>
     <color name="colorAction">#C8E6C9</color>
+    <color name="colorActionDark">#4CAF50</color>
 </resources>

@@ -32,7 +32,10 @@ public class IntroActivity extends AppIntro {
         // Instead of fragments, you can also use our default slide
         // Just set a title, description, background and image. AppIntro will do the rest.
         addSlide(AppIntroFragment.newInstance("Welcome to Triggered", "Triggered allows the user to automate specific actions when specific events take place, using multiple services and devices.",R.drawable.trgrd, getResources().getColor(R.color.colorPrimary)));
-        addSlide(AppIntroFragment.newInstance("Rules", "To connect events to actions we use rules. A rule consists of events, states and actions.",R.drawable.rulescut, getResources().getColor(R.color.colorAccent)));
+        addSlide(AppIntroFragment.newInstance("Rules", "To connect events to actions we use rules. A rule consists of triggers (events and states) and actions.",R.drawable.rulescut, getResources().getColor(R.color.colorAccent)));
+        addSlide(AppIntroFragment.newInstance("Event", "A service or device can trigger an event, which can trigger a rule if all triggers are true.",R.drawable.rulescut, getResources().getColor(R.color.colorEventDark)));
+        addSlide(AppIntroFragment.newInstance("State", "A state can be true or false. While an event is true only the exact moment it happens, a state is true over a period of time.",R.drawable.rulescut, getResources().getColor(R.color.colorStateDark)));
+        addSlide(AppIntroFragment.newInstance("Action", "When a rule is triggered, its actions will be executed.",R.drawable.rulescut, getResources().getColor(R.color.colorActionDark)));
 
         // OPTIONAL METHODS
         // Override bar/separator color.
@@ -47,6 +50,10 @@ public class IntroActivity extends AppIntro {
         // NOTE: you will probably need to ask VIBRATE permission in Manifest.
         setVibrate(false);
         setVibrateIntensity(30);
+
+        setFadeAnimation();
+
+        showStatusBar(false);
     }
 
     @Override
