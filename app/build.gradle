@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 24
+    buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "com.example.nicolascarraggi.trgrd"
         minSdkVersion 23
@@ -28,16 +28,18 @@ dependencies {
         maven {
             url '/Users/nicolascarraggi/Documents/Vub/2eMa/Thesis/Myo/myo-android-sdk-0.10.0/myorepository'
         }
+        maven { url 'https://jitpack.io' }
     }
     compile files('libs/native-libs.jar')
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:support-v4:23.4.0'
-    compile 'com.android.support:design:23.4.0'
+    compile 'com.android.support:appcompat-v7:24.+'
+    compile 'com.android.support:support-v4:24.+'
+    compile 'com.android.support:design:24.+'
     compile 'com.getpebble:pebblekit:4.0.0'
     compile 'com.thalmic:myosdk:0.10.+@aar'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.google.android.gms:play-services-maps:10.2.1'
     compile 'com.google.android.gms:play-services-places:10.2.1'
     compile 'com.google.android.gms:play-services:10.2.1'
+    compile 'com.github.apl-devs:appintro:v4.+'
     testCompile 'junit:junit:4.12'
 }

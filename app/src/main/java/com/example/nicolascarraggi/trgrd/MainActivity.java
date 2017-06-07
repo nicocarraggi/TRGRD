@@ -65,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements TrgrdFragment.OnF
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        checkFirstStart();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
@@ -86,6 +88,42 @@ public class MainActivity extends AppCompatActivity implements TrgrdFragment.OnF
 
         startRuleSystemService();
 
+    }
+
+    private void checkFirstStart(){
+        //  Declare a new thread to do a preference check
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //  Initialize SharedPreferences
+                SharedPreferences getPrefs = PreferenceManager
+                        .getDefaultSharedPreferences(getBaseContext());
+
+                //  Create a new boolean and preference and set it to true
+                boolean isFirstStart = getPrefs.getBoolean("firstStart", true);
+
+                //  If the activity has never started before...
+                //if (isFirstStart) {
+                if (true) {
+
+                    //  Launch app intro
+                    Intent i = new Intent(MainActivity.this, IntroActivity.class);
+                    startActivity(i);
+
+                    //  Make a new preferences editor
+                    SharedPreferences.Editor e = getPrefs.edit();
+
+                    //  Edit preference to make it false because we don't want this to run again
+                    e.putBoolean("firstStart", false);
+
+                    //  Apply changes
+                    e.apply();
+                }
+            }
+        });
+
+        // Start the thread
+        t.start();
     }
 
     public void askPermission(){
