@@ -151,15 +151,15 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
                     hideName();
                     hideValueZero();
                     showValueOneTwo();
-                    tvStateValueOne.setText("From");
-                    tvStateValueTwo.setText("To");
+                    tvStateValueOne.setText("From: ");
+                    tvStateValueTwo.setText("To: ");
                     bStateValueOne.setText(timeState.getTimeFrom().toString());
                     bStateValueTwo.setText(timeState.getTimeTo().toString());
                 } else {
                     showName();
                     hideValueZero();
                     hideValueOneTwo();
-                    tvStateName.setText("From   "+timeState.getTimeFrom().toString()+"   to   "+timeState.getTimeTo().toString());
+                    tvStateName.setText("From:   "+timeState.getTimeFrom().toString()+"   to:   "+timeState.getTimeTo().toString());
                 }
             } else if(state.isLocationState()) {
                 LocationState locationState = (LocationState) state;

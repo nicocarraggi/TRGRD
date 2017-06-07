@@ -95,8 +95,8 @@ public class Geofences extends Device implements GoogleApiClient.ConnectionCallb
         this.eventTypes.put(evLocationArrivingAt.getId(),evLocationArrivingAt);
         this.eventTypes.put(evLocationLeaving.getId(),evLocationLeaving);
         this.stateTypes.put(stLocationCurrentlyAt.getId(),stLocationCurrentlyAt);
-        mEvLocationArrivingAt = new LocationEvent(deviceManager.getNewId(),"Arriving at ...",R.drawable.ic_my_location_black_24dp,this,evLocationArrivingAt, LocationEvent.LocationEventType.ARRIVING);
-        mEvLocationLeaving = new LocationEvent(deviceManager.getNewId(),"Leaving ...",R.drawable.ic_my_location_black_24dp,this,evLocationLeaving, LocationEvent.LocationEventType.LEAVING);
+        mEvLocationArrivingAt = new LocationEvent(deviceManager.getNewId(),"Arrived at ...",R.drawable.ic_my_location_black_24dp,this,evLocationArrivingAt, LocationEvent.LocationEventType.ARRIVING);
+        mEvLocationLeaving = new LocationEvent(deviceManager.getNewId(),"Left ...",R.drawable.ic_my_location_black_24dp,this,evLocationLeaving, LocationEvent.LocationEventType.LEAVING);
         mStLocationCurrentlyAt = new LocationState(deviceManager.getNewId(),"Currently at ...",R.drawable.ic_my_location_black_24dp,this,stLocationCurrentlyAt,false);
         this.events.put(mEvLocationArrivingAt.getId(),mEvLocationArrivingAt);
         this.events.put(mEvLocationLeaving.getId(),mEvLocationLeaving);

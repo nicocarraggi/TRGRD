@@ -193,7 +193,7 @@ public class RuleSystemService extends Service {
     }
 
     private void testExampleRules(){
-        ExampleRule erCoffeeLocation = new ExampleRule(getNewId(),"Start coffee with button when at a location");
+        ExampleRule erCoffeeLocation = new ExampleRule(getNewId(),"Start coffee with Pebble button when at a location");
         erCoffeeLocation.addEvent(mDeviceManager.getPebble().getBtn());
         erCoffeeLocation.addState(mDeviceManager.getGeofences().getLocationCurrentlyAt());
         erCoffeeLocation.addAction(mDeviceManager.getCoffeeMachine().getStartCoffee());

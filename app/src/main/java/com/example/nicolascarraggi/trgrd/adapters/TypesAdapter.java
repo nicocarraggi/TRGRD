@@ -203,13 +203,16 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
                         hideInstanceValueOneTwo();
                     } else if(event.isTimeEvent()) {
                         TimeEvent timeEvent = (TimeEvent) event;
-                        hideInstanceName();
-                        showInstanceValueZero();
                         hideInstanceValueOneTwo();
-                        tvTypeInstanceValueZero.setText("At");
-                        bTypeInstanceValueZero.setText(timeEvent.getTime().toString());
-                        if (!mEdit) {
-                            bTypeInstanceValueZero.setBackgroundColor(Color.TRANSPARENT);
+                        if (mEdit) {
+                            hideInstanceName();
+                            showInstanceValueZero();
+                            tvTypeInstanceValueZero.setText("At: ");
+                            bTypeInstanceValueZero.setText(timeEvent.getTime().toString());
+                        } else {
+                            showInstanceName();
+                            hideInstanceValueZero();
+                            tvTypeInstanceValueZero.setText("At:   "+timeEvent.getTime().toString());
                         }
                     } else if(event.isInputActionEvent()){
                         InputActionEvent inputActionEvent = (InputActionEvent) event;
@@ -219,20 +222,25 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
                         tvTypeInstanceValueZero.setText(inputActionEvent.getInputAction().getDescription());
                         bTypeInstanceValueZero.setText(inputActionEvent.getInputAction().getName());
                         if(!mEdit) bTypeInstanceValueZero.setBackgroundColor(Color.TRANSPARENT);
-                    } else if(event.isLocationEvent()){
+                    } else if(event.isLocationEvent()){String text = "";
                         LocationEvent locationEvent = (LocationEvent) event;
-                        hideInstanceName();
-                        showInstanceValueZero();
-                        hideInstanceValueOneTwo();
-                        String text = "";
                         if(locationEvent.getLocationEventType()== LocationEvent.LocationEventType.ARRIVING){
-                            text = "Arriving at: ";
+                            text = "Arrived at:   ";
                         } else if (locationEvent.getLocationEventType()== LocationEvent.LocationEventType.LEAVING){
-                            text = "Leaving: ";
+                            text = "Left:   ";
                         }
-                        tvTypeInstanceValueZero.setText(text);
-                        bTypeInstanceValueZero.setText(locationEvent.getLocation().getName());
-                        if(!mEdit) bTypeInstanceValueZero.setBackgroundColor(Color.TRANSPARENT);
+                        if (mEdit){
+                            hideInstanceName();
+                            showInstanceValueZero();
+                            hideInstanceValueOneTwo();
+                            tvTypeInstanceValueZero.setText(text);
+                            bTypeInstanceValueZero.setText(locationEvent.getLocation().getName());
+                        } else {
+                            tvTypeInstanceName.setText(text+ locationEvent.getLocation().getName());
+                            showInstanceName();
+                            hideInstanceValueZero();
+                            hideInstanceValueOneTwo();
+                        }
                     }
                 }
             } else if(type.isStateType()){
@@ -264,15 +272,15 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
                             hideInstanceName();
                             hideInstanceValueZero();
                             showInstanceValueOneTwo();
-                            tvTypeInstanceValueOne.setText("From");
-                            tvTypeInstanceValueTwo.setText("To");
+                            tvTypeInstanceValueOne.setText("From: ");
+                            tvTypeInstanceValueTwo.setText("To: ");
                             bTypeInstanceValueOne.setText(timeState.getTimeFrom().toString());
                             bTypeInstanceValueTwo.setText(timeState.getTimeTo().toString());
                         } else {
                             showInstanceName();
                             hideInstanceValueZero();
                             hideInstanceValueOneTwo();
-                            tvTypeInstanceName.setText("From   " + timeState.getTimeFrom().toString() + "   to   " + timeState.getTimeTo().toString());
+                            tvTypeInstanceName.setText("From:   " + timeState.getTimeFrom().toString() + "   to:   " + timeState.getTimeTo().toString());
                         }
                     } else if (state.isLocationState()) {
                         LocationState locationState = (LocationState) state;
@@ -317,12 +325,17 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
                         hideInstanceValueOneTwo();
                     } else if (action.isNotificationAction()){
                         NotificationAction notificationAction = (NotificationAction) action;
-                        hideInstanceName();
-                        showInstanceValueZero();
                         hideInstanceValueOneTwo();
-                        tvTypeInstanceValueZero.setText("Notify: ");
-                        bTypeInstanceValueZero.setText(notificationAction.getTitle()+" - "+notificationAction.getText());
-                        if(!mEdit) bTypeInstanceValueZero.setBackgroundColor(Color.TRANSPARENT);
+                        if (mEdit) {
+                            hideInstanceName();
+                            showInstanceValueZero();
+                            tvTypeInstanceValueZero.setText("Notify: ");
+                            bTypeInstanceValueZero.setText(notificationAction.getTitle()+" - "+notificationAction.getText());
+                        } else {
+                            showInstanceName();
+                            hideInstanceValueZero();
+                            tvTypeInstanceName.setText("Notify:   "+notificationAction.getTitle()+" - "+notificationAction.getText());
+                        }
                     }
                 }
             }

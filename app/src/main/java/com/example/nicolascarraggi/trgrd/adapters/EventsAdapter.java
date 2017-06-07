@@ -101,6 +101,23 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
             bEventValueOne.setOnClickListener(this);
         }
 
+        private void showName() {
+            tvEventName.setVisibility(View.VISIBLE);
+        }
+
+        private void hideName() {
+            tvEventName.setVisibility(View.GONE);
+        }
+
+        private void showValueOne() {
+            tvEventValueOne.setVisibility(View.VISIBLE);
+            bEventValueOne.setVisibility(View.VISIBLE);
+        }
+        private void hideValueOne(){
+            tvEventValueOne.setVisibility(View.GONE);
+            bEventValueOne.setVisibility(View.GONE);
+        }
+
         public void bind(Event event, MyEventOnItemClickListener listener){
             this.myOnItemClickListener = listener;
             this.ivEventDevice.setImageResource(event.getDevice().getIconResource());
@@ -111,52 +128,45 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
                 ivEventDelete.setVisibility(View.GONE);
             }
             if(event.isSkeleton()){
-                // Hide unwanted views!
-                if(tvEventValueOne != null) tvEventValueOne.setVisibility(View.GONE);
-                if(bEventValueOne != null) bEventValueOne.setVisibility(View.GONE);
+                hideValueOne();
             } else if(event.isTimeEvent()) {
                 TimeEvent timeEvent = (TimeEvent) event;
-                // TODO really needed?
-                if (tvEventValueOne != null && bEventValueOne != null) {
-                    tvEventValueOne.setVisibility(View.VISIBLE);
-                    bEventValueOne.setVisibility(View.VISIBLE);
-                    tvEventName.setVisibility(View.GONE);
-                    tvEventValueOne.setText("At");
+                if (mEdit){
+                    hideName();
+                    showValueOne();
+                    tvEventValueOne.setText("At: ");
                     bEventValueOne.setText(timeEvent.getTime().toString());
-                    if (!mEdit) {
-                        bEventValueOne.setBackgroundColor(Color.TRANSPARENT);
-                    }
+                } else {
+                    showName();
+                    hideValueOne();
+                    tvEventName.setText("At:   "+timeEvent.getTime().toString());
                 }
             } else if(event.isInputActionEvent()){
                 InputActionEvent inputActionEvent = (InputActionEvent) event;
-                if (tvEventValueOne != null && bEventValueOne != null) {
-                    tvEventValueOne.setVisibility(View.VISIBLE);
-                    bEventValueOne.setVisibility(View.VISIBLE);
-                    tvEventName.setVisibility(View.GONE);
-                    tvEventValueOne.setText(inputActionEvent.getInputAction().getDescription());
-                    bEventValueOne.setText(inputActionEvent.getInputAction().getName());
-                    if(!mEdit) {
-                        bEventValueOne.setBackgroundColor(Color.TRANSPARENT);
-                    }
+                hideName();
+                showValueOne();
+                tvEventValueOne.setText(inputActionEvent.getInputAction().getDescription());
+                bEventValueOne.setText(inputActionEvent.getInputAction().getName());
+                if(!mEdit) {
+                    bEventValueOne.setBackgroundColor(Color.TRANSPARENT);
                 }
             } else if(event.isLocationEvent()){
                 LocationEvent locationEvent = (LocationEvent) event;
-                Log.d("TRGRD","EventsAdapter print location event "+locationEvent.getName());
-                if (tvEventValueOne != null && bEventValueOne != null) {
-                    tvEventValueOne.setVisibility(View.VISIBLE);
-                    bEventValueOne.setVisibility(View.VISIBLE);
-                    tvEventName.setVisibility(View.GONE);
-                    String text = "";
-                    if(locationEvent.getLocationEventType()== LocationEvent.LocationEventType.ARRIVING){
-                        text = "Arriving at: ";
-                    } else {
-                        text = "Leaving: ";
-                    }
+                Log.d("TRGRD","EventsAdapter print location event "+locationEvent.getName());String text = "";
+                if(locationEvent.getLocationEventType()== LocationEvent.LocationEventType.ARRIVING){
+                    text = "Arrived at:   ";
+                } else {
+                    text = "Left:   ";
+                }
+                if(mEdit){
+                    hideName();
+                    showValueOne();
                     tvEventValueOne.setText(text);
                     bEventValueOne.setText(locationEvent.getLocation().getName());
-                    if(!mEdit) {
-                        bEventValueOne.setBackgroundColor(Color.TRANSPARENT);
-                    }
+                } else {
+                    showName();
+                    hideValueOne();
+                    tvEventName.setText(text+locationEvent.getLocation().getName());
                 }
             }
         }

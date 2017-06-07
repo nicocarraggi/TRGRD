@@ -98,6 +98,23 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
             bActionValueOne.setOnClickListener(this);
         }
 
+        private void showName() {
+            tvActionName.setVisibility(View.VISIBLE);
+        }
+
+        private void hideName() {
+            tvActionName.setVisibility(View.GONE);
+        }
+
+        private void showValueOne() {
+            tvActionValueOne.setVisibility(View.VISIBLE);
+            bActionValueOne.setVisibility(View.VISIBLE);
+        }
+        private void hideValueOne(){
+            tvActionValueOne.setVisibility(View.GONE);
+            bActionValueOne.setVisibility(View.GONE);
+        }
+
         public void bind(Action action, MyActionOnItemClickListener listener){
             this.myActionOnItemClickListener = listener;
             this.ivActionDevice.setImageResource(action.getDevice().getIconResource());
@@ -108,18 +125,18 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
                 ivActionDelete.setVisibility(View.GONE);
             }
             if(action.isSkeleton()){
-                // Hide unwanted views!
-                if(tvActionValueOne != null) tvActionValueOne.setVisibility(View.GONE);
-                if(bActionValueOne != null) bActionValueOne.setVisibility(View.GONE);
+                hideValueOne();
             } else if (action.isNotificationAction()){
                 NotificationAction notificationAction = (NotificationAction) action;
-                if(tvActionValueOne != null & bActionValueOne != null){
-                    tvActionValueOne.setVisibility(View.VISIBLE);
-                    bActionValueOne.setVisibility(View.VISIBLE);
-                    tvActionName.setVisibility(View.GONE);
+                if (mEdit) {
+                    hideName();
+                    showValueOne();
                     tvActionValueOne.setText("Notify: ");
                     bActionValueOne.setText(notificationAction.getTitle()+" - "+notificationAction.getText());
-                    if(!mEdit) bActionValueOne.setBackgroundColor(Color.TRANSPARENT);
+                } else {
+                    showName();
+                    hideValueOne();
+                    tvActionName.setText("Notify:   "+notificationAction.getTitle()+" - "+notificationAction.getText());
                 }
             }
         }
