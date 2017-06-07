@@ -169,11 +169,13 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
                     hideValueOneTwo();
                     tvStateValueZero.setText("Currently at: ");
                     bStateValueZero.setText(locationState.getLocation().getName());
+                    this.ivState.setImageResource(locationState.getLocation().getIconResource());
                 } else {
                     showName();
                     hideValueZero();
                     hideValueOneTwo();
                     tvStateName.setText("Currently at:   " + locationState.getLocation().getName());
+                    this.ivState.setImageResource(locationState.getLocation().getIconResource());
                 }
             }
         }

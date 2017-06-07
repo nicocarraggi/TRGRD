@@ -229,6 +229,7 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
                         } else if (locationEvent.getLocationEventType()== LocationEvent.LocationEventType.LEAVING){
                             text = "Left:   ";
                         }
+                        ivTypeInstance.setImageResource(locationEvent.getLocation().getIconResource());
                         if (mEdit){
                             hideInstanceName();
                             showInstanceValueZero();
@@ -290,11 +291,13 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
                             hideInstanceValueOneTwo();
                             tvTypeInstanceValueZero.setText("Currently at: ");
                             bTypeInstanceValueZero.setText(locationState.getLocation().getName());
+                            ivTypeInstance.setImageResource(locationState.getLocation().getIconResource());
                         } else {
-                            tvTypeInstanceName.setText("Currently at:   " + locationState.getLocation().getName());
                             showInstanceName();
                             hideInstanceValueZero();
                             hideInstanceValueOneTwo();
+                            tvTypeInstanceName.setText("Currently at:   " + locationState.getLocation().getName());
+                            ivTypeInstance.setImageResource(locationState.getLocation().getIconResource());
                         }
                     }
                 }

@@ -158,6 +158,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
                 } else {
                     text = "Left:   ";
                 }
+                this.ivEvent.setImageResource(locationEvent.getLocation().getIconResource());
                 if(mEdit){
                     hideName();
                     showValueOne();
