@@ -1,12 +1,12 @@
 package com.example.nicolascarraggi.trgrd.adapters;
 
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.nicolascarraggi.trgrd.R;
@@ -81,8 +81,10 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
 
         private MyActionOnItemClickListener myActionOnItemClickListener;
         private ImageView ivActionDevice, ivAction, ivActionDelete;
-        private TextView tvActionTypeName, tvActionName, tvActionValueOne;
-        private Button bActionValueOne;
+        private TextView tvActionTypeName, tvActionName, tvActionValueZero, tvActionValueThree,
+                            tvActionValueThreeValue;
+        private LinearLayout llActionValueZero, llActionValueThree;
+        private Button bActionValueZero;
 
         public ActionViewHolder(View itemView) {
             super(itemView);
@@ -91,11 +93,15 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
             this.ivActionDelete = (ImageView) itemView.findViewById(R.id.ivActionDelete);
             this.tvActionTypeName = (TextView) itemView.findViewById(R.id.tvActionTypeName);
             this.tvActionName = (TextView) itemView.findViewById(R.id.tvActionName);
-            this.tvActionValueOne = (TextView) itemView.findViewById(R.id.tvActionValueOne);
-            this.bActionValueOne = (Button) itemView.findViewById(R.id.bActionValueOne);
+            this.tvActionValueZero = (TextView) itemView.findViewById(R.id.tvActionValueZero);
+            this.tvActionValueThree = (TextView) itemView.findViewById(R.id.tvActionValueThree);
+            this.tvActionValueThreeValue = (TextView) itemView.findViewById(R.id.tvActionValueThreeValue);
+            this.bActionValueZero = (Button) itemView.findViewById(R.id.bActionValueZero);
+            this.llActionValueZero = (LinearLayout) itemView.findViewById(R.id.llActionValueZero);
+            this.llActionValueThree = (LinearLayout) itemView.findViewById(R.id.llActionValueThree);
             tvActionName.setOnClickListener(this);
             ivActionDelete.setOnClickListener(this);
-            bActionValueOne.setOnClickListener(this);
+            bActionValueZero.setOnClickListener(this);
         }
 
         private void showName() {
@@ -106,13 +112,18 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
             tvActionName.setVisibility(View.GONE);
         }
 
-        private void showValueOne() {
-            tvActionValueOne.setVisibility(View.VISIBLE);
-            bActionValueOne.setVisibility(View.VISIBLE);
+        private void showValueZero() {
+            llActionValueZero.setVisibility(View.VISIBLE);
         }
-        private void hideValueOne(){
-            tvActionValueOne.setVisibility(View.GONE);
-            bActionValueOne.setVisibility(View.GONE);
+        private void hideValueZero(){
+            llActionValueZero.setVisibility(View.GONE);
+        }
+
+        private void showValueThree() {
+            llActionValueThree.setVisibility(View.VISIBLE);
+        }
+        private void hideValueThree(){
+            llActionValueThree.setVisibility(View.GONE);
         }
 
         public void bind(Action action, MyActionOnItemClickListener listener){
@@ -124,19 +135,21 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
             if(!mShowDelete && ivActionDelete != null){
                 ivActionDelete.setVisibility(View.GONE);
             }
+            hideName();
+            hideValueZero();
+            hideValueThree();
             if(action.isSkeleton()){
-                hideValueOne();
+                showName();
             } else if (action.isNotificationAction()){
                 NotificationAction notificationAction = (NotificationAction) action;
                 if (mEdit) {
-                    hideName();
-                    showValueOne();
-                    tvActionValueOne.setText("Notify: ");
-                    bActionValueOne.setText(notificationAction.getTitle()+" - "+notificationAction.getText());
+                    showValueZero();
+                    tvActionValueZero.setText("Notify: ");
+                    bActionValueZero.setText(notificationAction.getTitle()+" - "+notificationAction.getText());
                 } else {
-                    showName();
-                    hideValueOne();
-                    tvActionName.setText("Notify:   "+notificationAction.getTitle()+" - "+notificationAction.getText());
+                    showValueThree();
+                    tvActionValueThree.setText("Notify:   ");
+                    tvActionValueThreeValue.setText(notificationAction.getTitle()+" - "+notificationAction.getText());
                 }
             }
         }

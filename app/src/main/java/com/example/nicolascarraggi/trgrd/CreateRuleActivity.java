@@ -470,7 +470,7 @@ public class CreateRuleActivity extends RuleSystemBindingActivity
             case R.id.ivEventDelete:
                 alertDelete("event", item, null, null);
                 break;
-            case R.id.bEventValueOne:
+            case R.id.bEventValueZero:
                 if (item.isTimeEvent()){
                     editTime((Button) view, (TimeEvent) item);
                 } else if(item.isInputActionEvent()){
@@ -525,7 +525,7 @@ public class CreateRuleActivity extends RuleSystemBindingActivity
             case R.id.ivActionDelete:
                 alertDelete("action", null, null, item);
                 break;
-            case R.id.bActionValueOne:
+            case R.id.bActionValueZero:
                 if (item.isNotificationAction()){
                     askNotification((NotificationAction) item, (NotificationAction) item);
                 }

@@ -84,9 +84,10 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
 
         private MyStateOnItemClickListener myStateOnItemClickListener;
         private ImageView ivStateDevice, ivState, ivStateDelete;
-        private TextView tvStateTypeName, tvStateName, tvStateValueZero, tvStateValueOne, tvStateValueTwo;
+        private TextView tvStateTypeName, tvStateName, tvStateValueZero, tvStateValueOne,
+                            tvStateValueTwo, tvStateValueThree, tvStateValueThreeValue;
         private Button bStateValueZero, bStateValueOne, bStateValueTwo;
-        private LinearLayout llStateValueZero, llStateValueOneTwo;
+        private LinearLayout llStateValueZero, llStateValueOneTwo, llStateValueThree;
 
         public StateViewHolder(View itemView) {
             super(itemView);
@@ -97,9 +98,12 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
             this.tvStateName = (TextView) itemView.findViewById(R.id.tvStateName);
             this.llStateValueZero = (LinearLayout) itemView.findViewById(R.id.llStateValueZero);
             this.llStateValueOneTwo = (LinearLayout) itemView.findViewById(R.id.llStateValueOneTwo);
+            this.llStateValueThree = (LinearLayout) itemView.findViewById(R.id.llStateValueThree);
             this.tvStateValueZero = (TextView) itemView.findViewById(R.id.tvStateValueZero);
             this.tvStateValueOne = (TextView) itemView.findViewById(R.id.tvStateValueOne);
             this.tvStateValueTwo = (TextView) itemView.findViewById(R.id.tvStateValueTwo);
+            this.tvStateValueThree = (TextView) itemView.findViewById(R.id.tvStateValueThree);
+            this.tvStateValueThreeValue = (TextView) itemView.findViewById(R.id.tvStateValueThreeValue);
             this.bStateValueZero = (Button) itemView.findViewById(R.id.bStateValueZero);
             this.bStateValueOne = (Button) itemView.findViewById(R.id.bStateValueOne);
             this.bStateValueTwo = (Button) itemView.findViewById(R.id.bStateValueTwo);
@@ -132,6 +136,13 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
             llStateValueOneTwo.setVisibility(View.GONE);
         }
 
+        private void showValueThree(){
+            llStateValueThree.setVisibility(View.VISIBLE);
+        }
+        private void hideValueThree(){
+            llStateValueThree.setVisibility(View.GONE);
+        }
+
         public void bind(State state, MyStateOnItemClickListener listener){
             this.myStateOnItemClickListener = listener;
             this.ivStateDevice.setImageResource(state.getDevice().getIconResource());
@@ -141,15 +152,15 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
             if(!mShowDelete && ivStateDelete != null){
                 ivStateDelete.setVisibility(View.GONE);
             }
-            Log.d("TRGRD","StatesAdapter state: name = "+state.getName()+ ", id = "+state.getId());
+            hideName();
+            hideValueZero();
+            hideValueOneTwo();
+            hideValueThree();
             if(state.isSkeleton()){
-                hideValueZero();
-                hideValueOneTwo();
+                showName();
             } else if(state.isTimeState()){ // this is NOT skeleton ...
                 TimeState timeState = (TimeState) state;
                 if(mEdit) {
-                    hideName();
-                    hideValueZero();
                     showValueOneTwo();
                     tvStateValueOne.setText("From: ");
                     tvStateValueTwo.setText("To: ");
@@ -157,24 +168,19 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StateViewH
                     bStateValueTwo.setText(timeState.getTimeTo().toString());
                 } else {
                     showName();
-                    hideValueZero();
-                    hideValueOneTwo();
                     tvStateName.setText("From:   "+timeState.getTimeFrom().toString()+"   to:   "+timeState.getTimeTo().toString());
                 }
             } else if(state.isLocationState()) {
                 LocationState locationState = (LocationState) state;
                 if (mEdit) {
-                    hideName();
                     showValueZero();
-                    hideValueOneTwo();
                     tvStateValueZero.setText("Currently at: ");
                     bStateValueZero.setText(locationState.getLocation().getName());
                     this.ivState.setImageResource(locationState.getLocation().getIconResource());
                 } else {
-                    showName();
-                    hideValueZero();
-                    hideValueOneTwo();
-                    tvStateName.setText("Currently at:   " + locationState.getLocation().getName());
+                    showValueThree();
+                    tvStateValueThree.setText("Currently at:   ");
+                    tvStateValueThreeValue.setText(locationState.getLocation().getName());
                     this.ivState.setImageResource(locationState.getLocation().getIconResource());
                 }
             }

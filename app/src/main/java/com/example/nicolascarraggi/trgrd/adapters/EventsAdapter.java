@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.nicolascarraggi.trgrd.R;
@@ -84,8 +85,10 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
 
         private MyEventOnItemClickListener myOnItemClickListener;
         private ImageView ivEventDevice, ivEvent, ivEventDelete;
-        private TextView tvEventTypeName, tvEventName, tvEventValueOne;
-        private Button bEventValueOne;
+        private TextView tvEventTypeName, tvEventName, tvEventValueZero,
+                            tvEventValueThree, tvEventValueThreeValue;
+        private Button bEventValueZero;
+        private LinearLayout llEventValueZero, llEventValueThree;
 
         public EventViewHolder(View itemView) {
             super(itemView);
@@ -94,11 +97,15 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
             this.ivEventDelete = (ImageView) itemView.findViewById(R.id.ivEventDelete);
             this.tvEventTypeName = (TextView) itemView.findViewById(R.id.tvEventTypeName);
             this.tvEventName = (TextView) itemView.findViewById(R.id.tvEventName);
-            this.tvEventValueOne = (TextView) itemView.findViewById(R.id.tvEventValueOne);
-            this.bEventValueOne = (Button) itemView.findViewById(R.id.bEventValueOne);
+            this.tvEventValueZero = (TextView) itemView.findViewById(R.id.tvEventValueZero);
+            this.bEventValueZero = (Button) itemView.findViewById(R.id.bEventValueZero);
+            this.tvEventValueThree = (TextView) itemView.findViewById(R.id.tvEventValueThree);
+            this.tvEventValueThreeValue = (TextView) itemView.findViewById(R.id.tvEventValueThreeValue);
+            this.llEventValueZero = (LinearLayout) itemView.findViewById(R.id.llEventValueZero);
+            this.llEventValueThree = (LinearLayout) itemView.findViewById(R.id.llEventValueThree);
             tvEventName.setOnClickListener(this);
             ivEventDelete.setOnClickListener(this);
-            bEventValueOne.setOnClickListener(this);
+            bEventValueZero.setOnClickListener(this);
         }
 
         private void showName() {
@@ -109,13 +116,18 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
             tvEventName.setVisibility(View.GONE);
         }
 
-        private void showValueOne() {
-            tvEventValueOne.setVisibility(View.VISIBLE);
-            bEventValueOne.setVisibility(View.VISIBLE);
+        private void showValueZero() {
+            llEventValueZero.setVisibility(View.VISIBLE);
         }
-        private void hideValueOne(){
-            tvEventValueOne.setVisibility(View.GONE);
-            bEventValueOne.setVisibility(View.GONE);
+        private void hideValueZero(){
+            llEventValueZero.setVisibility(View.GONE);
+        }
+
+        private void showValueThree() {
+            llEventValueThree.setVisibility(View.VISIBLE);
+        }
+        private void hideValueThree(){
+            llEventValueThree.setVisibility(View.GONE);
         }
 
         public void bind(Event event, MyEventOnItemClickListener listener){
@@ -127,28 +139,32 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
             if(!mShowDelete && ivEventDelete != null){
                 ivEventDelete.setVisibility(View.GONE);
             }
+            hideName();
+            hideValueZero();
+            hideValueThree();
             if(event.isSkeleton()){
-                hideValueOne();
+                showName();
             } else if(event.isTimeEvent()) {
                 TimeEvent timeEvent = (TimeEvent) event;
                 if (mEdit){
-                    hideName();
-                    showValueOne();
-                    tvEventValueOne.setText("At: ");
-                    bEventValueOne.setText(timeEvent.getTime().toString());
+                    showValueZero();
+                    tvEventValueZero.setText("At: ");
+                    bEventValueZero.setText(timeEvent.getTime().toString());
                 } else {
-                    showName();
-                    hideValueOne();
-                    tvEventName.setText("At:   "+timeEvent.getTime().toString());
+                    showValueThree();
+                    tvEventValueThree.setText("At:   "+timeEvent.getTime().toString());
+                    tvEventValueThreeValue.setText(timeEvent.getTime().toString());
                 }
             } else if(event.isInputActionEvent()){
                 InputActionEvent inputActionEvent = (InputActionEvent) event;
-                hideName();
-                showValueOne();
-                tvEventValueOne.setText(inputActionEvent.getInputAction().getDescription());
-                bEventValueOne.setText(inputActionEvent.getInputAction().getName());
-                if(!mEdit) {
-                    bEventValueOne.setBackgroundColor(Color.TRANSPARENT);
+                if (mEdit) {
+                    showValueZero();
+                    tvEventValueZero.setText(inputActionEvent.getInputAction().getDescription());
+                    bEventValueZero.setText(inputActionEvent.getInputAction().getName());
+                } else {
+                    showValueThree();
+                    tvEventValueThree.setText(inputActionEvent.getInputAction().getDescription()+"   ");
+                    tvEventValueThreeValue.setText(inputActionEvent.getInputAction().getName());
                 }
             } else if(event.isLocationEvent()){
                 LocationEvent locationEvent = (LocationEvent) event;
@@ -160,14 +176,13 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
                 }
                 this.ivEvent.setImageResource(locationEvent.getLocation().getIconResource());
                 if(mEdit){
-                    hideName();
-                    showValueOne();
-                    tvEventValueOne.setText(text);
-                    bEventValueOne.setText(locationEvent.getLocation().getName());
+                    showValueZero();
+                    tvEventValueZero.setText(text);
+                    bEventValueZero.setText(locationEvent.getLocation().getName());
                 } else {
-                    showName();
-                    hideValueOne();
-                    tvEventName.setText(text+locationEvent.getLocation().getName());
+                    showValueThree();
+                    tvEventValueThree.setText(text);
+                    tvEventValueThreeValue.setText(locationEvent.getLocation().getName());
                 }
             }
         }

@@ -98,26 +98,49 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <LinearLayout
+                    android:id="@+id/llEventValueZero"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:weightSum="2">
+                    android:gravity="center_vertical">
 
                     <TextView
-                        android:id="@+id/tvEventValueOne"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
+                        android:id="@+id/tvEventValueZero"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxWidth="150dp"
                         android:text="from"
-                        android:layout_weight="1"
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                     <Button
-                        android:id="@+id/bEventValueOne"
+                        android:id="@+id/bEventValueZero"
                         android:text="12:00"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llEventValueThree"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvEventValueThree"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxWidth="150dp"
+                        android:text="Arrived at:   "
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                    <TextView
+                        android:id="@+id/tvEventValueThreeValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Vrije Universiteit Brussel"
+                        android:gravity="center_vertical"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 </LinearLayout>
 

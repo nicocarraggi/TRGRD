@@ -106,26 +106,49 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <LinearLayout
+                    android:id="@+id/llActionValueZero"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:weightSum="2">
+                    android:gravity="center_vertical">
 
                     <TextView
-                        android:id="@+id/tvActionValueOne"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:text="Notify:"
-                        android:layout_weight="1"
+                        android:id="@+id/tvActionValueZero"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Notify:   "
+                        android:maxWidth="150dp"
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                     <Button
-                        android:id="@+id/bActionValueOne"
+                        android:id="@+id/bActionValueZero"
                         android:text="Value one"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llActionValueThree"
+                    android:gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvActionValueThree"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxWidth="150dp"
+                        android:text="Notify:   "
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                    <TextView
+                        android:id="@+id/tvActionValueThreeValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="This - is a test to see how long this can get"
+                        android:gravity="center_vertical"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 </LinearLayout>
 
