@@ -1,91 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/activity_vertical_margin"
     android:layout_marginBottom="@dimen/activity_vertical_margin"
     android:layout_marginLeft="@dimen/activity_horizontal_margin"
     android:layout_marginRight="@dimen/activity_horizontal_margin"
     android:focusableInTouchMode="true"
-    android:orientation="vertical"
     tools:context="com.example.nicolascarraggi.trgrd.CreateRuleActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp">
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="76dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Name "/>
-
-        <EditText
-            android:id="@+id/etCreateRuleOpenName"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter a name for the rule..."/>
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:layout_width="76dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Name "/>
+
+            <EditText
+                android:id="@+id/etCreateRuleOpenName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter a name for the rule..."/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/llCreateRuleTriggers"
+            android:layout_marginBottom="7dp">
+
+            <TextView
+                android:layout_width="76dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Triggers "/>
+
+            <Button
+                android:id="@+id/bCreateRuleOpenAddTrigger"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add trigger"/>
+
+        </LinearLayout>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvCreateRuleOpenEvents"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvCreateRuleOpenStates"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/llCreateRuleActions"
+            android:layout_marginBottom="7dp">
+
+            <TextView
+                android:layout_width="76dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Actions "/>
+
+            <Button
+                android:id="@+id/bCreateRuleOpenAddAction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add action"/>
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvCreateRuleOpenActions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/llCreateRuleTriggers"
-        android:layout_marginBottom="7dp">
-
-        <TextView
-            android:layout_width="76dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Triggers "/>
-
-        <Button
-            android:id="@+id/bCreateRuleOpenAddTrigger"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add trigger"/>
-
-    </LinearLayout>
-
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvCreateRuleOpenEvents"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvCreateRuleOpenStates"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/llCreateRuleActions"
-        android:layout_marginBottom="7dp">
-
-        <TextView
-            android:layout_width="76dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Actions "/>
-
-        <Button
-            android:id="@+id/bCreateRuleOpenAddAction"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add action"/>
-
-    </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvCreateRuleOpenActions"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp" />
-
-</LinearLayout>
+</ScrollView>

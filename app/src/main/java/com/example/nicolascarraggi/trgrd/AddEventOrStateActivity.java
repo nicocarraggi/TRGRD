@@ -151,15 +151,14 @@ public class AddEventOrStateActivity extends RuleSystemBindingActivity implement
             boolean showEvents = getArguments().getBoolean(ARG_SHOW_EVENTS);
             if(eventsOrStates == 1){
                 // Show Events
+                eventsAdapter = new EventsAdapter(this, mListener.getDeviceManager().getAllEvents(),false,false);
+                rvTriggers.setHasFixedSize(true);
+                mLayoutManagerEvents = new LinearLayoutManager(this.getContext());
+                rvTriggers.setLayoutManager(mLayoutManagerEvents);
+                rvTriggers.setAdapter(eventsAdapter);
                 if(!showEvents){
                     tvAddEventOrStateEventsRed.setVisibility(View.VISIBLE);
-                    rvTriggers.setVisibility(View.GONE);
-                } else {
-                    eventsAdapter = new EventsAdapter(this, mListener.getDeviceManager().getAllEvents(),false,false);
-                    rvTriggers.setHasFixedSize(true);
-                    mLayoutManagerEvents = new LinearLayoutManager(this.getContext());
-                    rvTriggers.setLayoutManager(mLayoutManagerEvents);
-                    rvTriggers.setAdapter(eventsAdapter);
+                    //rvTriggers.setVisibility(View.GONE);
                 }
             } else if (eventsOrStates == 2){
                 // Show States

@@ -110,6 +110,9 @@ public class Rule {
     public void checkRule(){
         System.out.println("[Rule "+this.name+"] checkRule()");
         if(active){
+
+            // TODO check events?!
+
             if(!states.isEmpty()){
                 System.out.println("[Rule "+this.name+"] checkRule() checking states");
                 // If event and states, check if all states are true !
@@ -242,16 +245,9 @@ public class Rule {
 
     private void removeEverything(){
         // remove all triggers & actions to unsubscribe all!
-        for (Event e: this.events){
-            this.removeEvent(e);
-        }
-        for (State s: this.states){
-            this.removeState(s);
-        }
-
-        for (Action a: this.actions){
-            this.removeAction(a);
-        }
+        this.events = new HashSet<>();
+        this.states = new HashSet<>();
+        this.actions = new HashSet<>();
     }
 
     public void reset(Set<Event> events, Set<State> states, Set<Action> actions) {

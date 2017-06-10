@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.getpebble.android.kit.PebbleKit;
 import com.getpebble.android.kit.util.PebbleDictionary;
@@ -113,16 +114,19 @@ public class PebbleCommunicationService extends Service {
                         switch (button) {
                             case BUTTON_UP:
                                 Log.d("TRGRD", "PebbleCommunication Button Up");
+                                Toast.makeText(getApplicationContext(), "Pebble up", Toast.LENGTH_SHORT).show();
                                 newIntent = new Intent(PEBBLE_BUTTON_UP_EVENT);
                                 LocalBroadcastManager.getInstance(PebbleCommunicationService.this).sendBroadcast(newIntent);
                                 break;
                             case BUTTON_SELECT:
                                 Log.d("TRGRD", "PebbleCommunication Button Select");
+                                Toast.makeText(getApplicationContext(), "Pebble select", Toast.LENGTH_SHORT).show();
                                 newIntent = new Intent(PEBBLE_BUTTON_SELECT_EVENT);
                                 LocalBroadcastManager.getInstance(PebbleCommunicationService.this).sendBroadcast(newIntent);
                                 break;
                             case BUTTON_DOWN:
                                 Log.d("TRGRD", "PebbleCommunication Button Down");
+                                Toast.makeText(getApplicationContext(), "Pebble down", Toast.LENGTH_SHORT).show();
                                 newIntent = new Intent(PEBBLE_BUTTON_DOWN_EVENT);
                                 LocalBroadcastManager.getInstance(PebbleCommunicationService.this).sendBroadcast(newIntent);
                                 break;
