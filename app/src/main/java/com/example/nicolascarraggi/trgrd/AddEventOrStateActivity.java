@@ -21,6 +21,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.nicolascarraggi.trgrd.adapters.EventsAdapter;
@@ -123,7 +125,8 @@ public class AddEventOrStateActivity extends RuleSystemBindingActivity implement
         private StatesAdapter statesAdapter;
         private RecyclerView.LayoutManager mLayoutManagerEvents, mLayoutManagerStates;
         private RecyclerView rvTriggers;
-        private TextView tvAddEventOrStateEventsRed;
+        private LinearLayout llAddEventOrStateEvent;
+        private Button bAddEventOrStateEventOk;
 
         public PlaceholderFragment() {
         }
@@ -146,9 +149,11 @@ public class AddEventOrStateActivity extends RuleSystemBindingActivity implement
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_add_event_or_state, container, false);
             rvTriggers = (RecyclerView) rootView.findViewById(R.id.rvAddEventOrStateTriggers);
-            tvAddEventOrStateEventsRed = (TextView) rootView.findViewById(R.id.tvAddEventOrStateEventsRed);
+            llAddEventOrStateEvent = (LinearLayout) rootView.findViewById(R.id.llAddEventOrStateEvent);
+            bAddEventOrStateEventOk = (Button) rootView.findViewById(R.id.bAddEventOrStateEventOk);
             int eventsOrStates = getArguments().getInt(ARG_SECTION_NUMBER);
             boolean showEvents = getArguments().getBoolean(ARG_SHOW_EVENTS);
+            llAddEventOrStateEvent.setVisibility(View.GONE);
             if(eventsOrStates == 1){
                 // Show Events
                 eventsAdapter = new EventsAdapter(this, mListener.getDeviceManager().getAllEvents(),false,false);
@@ -157,7 +162,13 @@ public class AddEventOrStateActivity extends RuleSystemBindingActivity implement
                 rvTriggers.setLayoutManager(mLayoutManagerEvents);
                 rvTriggers.setAdapter(eventsAdapter);
                 if(!showEvents){
-                    tvAddEventOrStateEventsRed.setVisibility(View.VISIBLE);
+                    llAddEventOrStateEvent.setVisibility(View.VISIBLE);
+                    bAddEventOrStateEventOk.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            llAddEventOrStateEvent.setVisibility(View.GONE);
+                        }
+                    });
                     //rvTriggers.setVisibility(View.GONE);
                 }
             } else if (eventsOrStates == 2){

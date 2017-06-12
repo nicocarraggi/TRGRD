@@ -54,6 +54,7 @@ public class PebbleCommunicationService extends Service {
             KEY_VIBRATE = 1,
             KEY_TEXT = 2,
             KEY_NOTIF = 3,
+            KEY_TAP = 4,
             BUTTON_UP = 0,
             BUTTON_SELECT = 1,
             BUTTON_DOWN = 2;
@@ -135,7 +136,10 @@ public class PebbleCommunicationService extends Service {
                                 break;
                         }
                     }
-
+                    if(data.getInteger(KEY_TAP) != null){
+                        Log.d("TRGRD", "PebbleCommunication TAP/SHAKE");
+                        Toast.makeText(getApplicationContext(), "Pebble tap/shake", Toast.LENGTH_SHORT).show();
+                    }
                 }
             };
 
