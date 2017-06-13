@@ -70,7 +70,7 @@ public class RuleDetailsActivity extends RuleSystemBindingActivity implements My
         tvRuleDetailsName.setText(rule.getName());
         switchRuleDetailsActive.setChecked(rule.isActive());
 
-        eventsAdapter = new EventsAdapter(this,rule.getEvents(),false, false);
+        eventsAdapter = new EventsAdapter(this,rule.getEvents(),false, false, true);
         statesAdapter = new StatesAdapter(this,rule.getStates(),false, false);
         actionsAdapter = new ActionsAdapter(this,rule.getActions(),false, false);
 

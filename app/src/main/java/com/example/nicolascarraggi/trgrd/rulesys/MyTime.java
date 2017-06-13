@@ -1,5 +1,7 @@
 package com.example.nicolascarraggi.trgrd.rulesys;
 
+import com.example.nicolascarraggi.trgrd.logging.MyLogger;
+
 import java.util.Calendar;
 
 /**
@@ -90,9 +92,19 @@ public class MyTime {
         }
     }
 
+    public double getDifferenceMs(MyTime other){
+        return ((double) other.calendar.getTime().getTime() - this.calendar.getTime().getTime());
+    }
+
+    public boolean isInSameTimeSpan(MyTime other, double timeSpan){
+        double difference = getDifferenceMs(other);
+        MyLogger.debugLog("TRGRD","MyTime isInSameTimeSpan: difference = "+difference+", timespan = "+timeSpan);
+        return difference <= timeSpan;
+    }
+
     public String getDifferenceString(MyTime other) {
         String result = "";
-        double difference =  ((double) other.calendar.getTime().getTime() - this.calendar.getTime().getTime())/1000;
+        double difference =  getDifferenceMs(other)/1000;
         return result+difference+"s";
     }
 }

@@ -31,11 +31,12 @@ public class IntroActivity extends AppIntro {
 
         // Instead of fragments, you can also use our default slide
         // Just set a title, description, background and image. AppIntro will do the rest.
-        addSlide(AppIntroFragment.newInstance("Welcome to Triggered", "Triggered allows the user to automate specific actions when specific events take place, using multiple services and devices.",R.drawable.trgrd, getResources().getColor(R.color.colorPrimary)));
+        addSlide(AppIntroFragment.newInstance("Welcome to Triggered", "Triggered allows the user to automate specific actions when specific events take place, using multiple services and devices.",R.drawable.trgrd_small, getResources().getColor(R.color.colorPrimary)));
         addSlide(AppIntroFragment.newInstance("Rules", "To connect events to actions we use rules. A rule consists of triggers (events and states) and actions.",R.drawable.rulescut, getResources().getColor(R.color.colorAccent)));
         addSlide(AppIntroFragment.newInstance("Event\n( If ... )", "A service or device can trigger an event, which can trigger a rule if all triggers are true.",R.drawable.event, getResources().getColor(R.color.colorEventDark)));
         addSlide(AppIntroFragment.newInstance("State\n ( While ... )", "A state can be true or false. While an event is true only the exact moment it happens, a state is true over a period of time.",R.drawable.state, getResources().getColor(R.color.colorStateDark)));
         addSlide(AppIntroFragment.newInstance("Action\n ( Then ... )", "When a rule is triggered, its actions will be executed.",R.drawable.action, getResources().getColor(R.color.colorActionDark)));
+        addSlide(AppIntroFragment.newInstance("For example", "This rule allows the user to dismiss an alarm that is ringing on the users phone, by pressing a button on the Pebble watch.",R.drawable.alarmrule, getResources().getColor(R.color.colorRed)));
 
         // OPTIONAL METHODS
         // Override bar/separator color.
@@ -51,7 +52,7 @@ public class IntroActivity extends AppIntro {
         setVibrate(false);
         setVibrateIntensity(30);
 
-        setFadeAnimation();
+        //setFadeAnimation();
 
         showStatusBar(false);
     }

@@ -7,12 +7,13 @@
     android:layout_marginBottom="@dimen/activity_vertical_margin"
     android:layout_marginLeft="@dimen/activity_horizontal_margin"
     android:layout_marginRight="@dimen/activity_horizontal_margin"
-    android:focusableInTouchMode="true"
     tools:context="com.example.nicolascarraggi.trgrd.CreateRuleActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:orientation="vertical">
 
         <LinearLayout
@@ -23,6 +24,8 @@
             <TextView
                 android:layout_width="76dp"
                 android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Name "/>
 

@@ -156,11 +156,14 @@ public class AddEventOrStateActivity extends RuleSystemBindingActivity implement
             llAddEventOrStateEvent.setVisibility(View.GONE);
             if(eventsOrStates == 1){
                 // Show Events
-                eventsAdapter = new EventsAdapter(this, mListener.getDeviceManager().getAllEvents(),false,false);
+                eventsAdapter = new EventsAdapter(this, mListener.getDeviceManager().getAllEvents(),false,false,false);
                 rvTriggers.setHasFixedSize(true);
                 mLayoutManagerEvents = new LinearLayoutManager(this.getContext());
                 rvTriggers.setLayoutManager(mLayoutManagerEvents);
                 rvTriggers.setAdapter(eventsAdapter);
+                /*
+                Removed because confusing for the user?
+
                 if(!showEvents){
                     llAddEventOrStateEvent.setVisibility(View.VISIBLE);
                     bAddEventOrStateEventOk.setOnClickListener(new View.OnClickListener() {
@@ -171,6 +174,7 @@ public class AddEventOrStateActivity extends RuleSystemBindingActivity implement
                     });
                     //rvTriggers.setVisibility(View.GONE);
                 }
+                */
             } else if (eventsOrStates == 2){
                 // Show States
                 statesAdapter = new StatesAdapter(this,mListener.getDeviceManager().getAllStates(),false,false);

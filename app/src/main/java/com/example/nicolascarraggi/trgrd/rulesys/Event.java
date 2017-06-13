@@ -16,6 +16,7 @@ public class Event {
     protected EventValueType eventValueType;
     protected Device device;
     protected boolean usedInRule;
+    private MyTime lastTimeTriggered;
     protected boolean isSkeleton; // for events & states with values...
     protected Set<Rule> rules; // = listeners
 
@@ -80,6 +81,10 @@ public class Event {
         return isSkeleton;
     }
 
+    public MyTime getLastTimeTriggered() {
+        return lastTimeTriggered;
+    }
+
     public synchronized void addRule(Rule rule){
         rules.add(rule);
         this.usedInRule = true;
@@ -91,6 +96,7 @@ public class Event {
     }
 
     public synchronized void trigger(){
+        this.lastTimeTriggered = new MyTime();
         for (Rule rule : rules){
             rule.eventTriggered(this);
         }

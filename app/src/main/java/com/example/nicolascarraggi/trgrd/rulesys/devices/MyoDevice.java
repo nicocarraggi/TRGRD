@@ -20,6 +20,10 @@ import java.util.HashMap;
 
 /**
  * Created by nicolascarraggi on 23/05/17.
+ *
+ * Not working correctly: fist, fingers spread
+ * TODO: comment out gestures IF they work correctly!
+ *
  */
 
 public class MyoDevice extends Wearable implements InputActionDevice {
@@ -40,7 +44,7 @@ public class MyoDevice extends Wearable implements InputActionDevice {
             } else if(action.equals(MyoCommunicationService.MYO_HUBERROR_EVENT)){
                 myoHubError();
             } else if(action.equals(MyoCommunicationService.MYO_GESTURE_FIST_EVENT)){
-                evGestureFist();
+                //evGestureFist();
             } else if(action.equals(MyoCommunicationService.MYO_GESTURE_WAVEIN_EVENT)){
                 evGestureWaveIn();
             } else if(action.equals(MyoCommunicationService.MYO_GESTURE_WAVEOUT_EVENT)){
@@ -48,7 +52,7 @@ public class MyoDevice extends Wearable implements InputActionDevice {
             } else if(action.equals(MyoCommunicationService.MYO_GESTURE_DOUBLETAP_EVENT)){
                 evGestureDoubleTap();
             } else if(action.equals(MyoCommunicationService.MYO_GESTURE_FINGERSSPREAD_EVENT)){
-                evGestureFingersSpread();
+                //evGestureFingersSpread();
             }
         }
     };
@@ -77,39 +81,29 @@ public class MyoDevice extends Wearable implements InputActionDevice {
         this.inputActionEvents = new HashMap<>();
         this.eventTypes.put(evGesture.getId(),evGesture);
         // INPUT ACTIONS
-        this.mIaGestFist = new InputAction(deviceManager.getNewId(),"MYO gesture Test test test:","Fist",R.drawable.ic_gesture_black_24dp);
+        //this.mIaGestFist = new InputAction(deviceManager.getNewId(),"MYO gesture:","Fist",R.drawable.ic_gesture_black_24dp);
         this.mIaGestWaveIn = new InputAction(deviceManager.getNewId(),"MYO gesture:","Wave in",R.drawable.ic_gesture_black_24dp);
         this.mIaGestWaveOut = new InputAction(deviceManager.getNewId(),"MYO gesture:","Wave out",R.drawable.ic_gesture_black_24dp);
         this.mIaGestDoubleTap = new InputAction(deviceManager.getNewId(),"MYO gesture:","Double tap",R.drawable.ic_gesture_black_24dp);
-        this.mIaGestFingSpread = new InputAction(deviceManager.getNewId(),"MYO gesture:","Fingers spread",R.drawable.ic_gesture_black_24dp);
-        this.inputActions.add(mIaGestFist);
+        //this.mIaGestFingSpread = new InputAction(deviceManager.getNewId(),"MYO gesture:","Fingers spread",R.drawable.ic_gesture_black_24dp);
+        //this.inputActions.add(mIaGestFist);
         this.inputActions.add(mIaGestWaveIn);
         this.inputActions.add(mIaGestWaveOut);
         this.inputActions.add(mIaGestDoubleTap);
-        this.inputActions.add(mIaGestFingSpread);
+        //this.inputActions.add(mIaGestFingSpread);
         // INPUT ACTION EVENTS
         this.mIaEvGest = new InputActionEvent(deviceManager.getNewId(),"MYO ... gesture is made", R.drawable.ic_gesture_black_24dp, this, evGesture);
-        this.mIaEvGestFist = new InputActionEvent(deviceManager.getNewId(),mIaEvGest,mIaGestFist);
+        //this.mIaEvGestFist = new InputActionEvent(deviceManager.getNewId(),mIaEvGest,mIaGestFist);
         this.mIaEvGestWaveIn = new InputActionEvent(deviceManager.getNewId(),mIaEvGest,mIaGestWaveIn);
         this.mIaEvGestWaveOut = new InputActionEvent(deviceManager.getNewId(),mIaEvGest,mIaGestWaveOut);
         this.mIaEvGestDoubleTap = new InputActionEvent(deviceManager.getNewId(),mIaEvGest,mIaGestDoubleTap);
-        this.mIaEvGestFingSpread = new InputActionEvent(deviceManager.getNewId(),mIaEvGest,mIaGestFingSpread);
-        this.inputActionEvents.put(mIaEvGestFist.getId(), mIaEvGestFist);
+        //this.mIaEvGestFingSpread = new InputActionEvent(deviceManager.getNewId(),mIaEvGest,mIaGestFingSpread);
+        ///this.inputActionEvents.put(mIaEvGestFist.getId(), mIaEvGestFist);
         this.inputActionEvents.put(mIaEvGestWaveIn.getId(), mIaEvGestWaveIn);
         this.inputActionEvents.put(mIaEvGestWaveOut.getId(), mIaEvGestWaveOut);
         this.inputActionEvents.put(mIaEvGestDoubleTap.getId(), mIaEvGestDoubleTap);
-        this.inputActionEvents.put(mIaEvGestFingSpread.getId(), mIaEvGestFingSpread);
+        //this.inputActionEvents.put(mIaEvGestFingSpread.getId(), mIaEvGestFingSpread);
         // EVENTS
-        //mEvGestureFist = new Event(deviceManager.getNewId(),"Myo FIST gesture",R.drawable.ic_gesture_black_24dp, this,evGesture);
-        //mEvGestureWaveIn = new Event(deviceManager.getNewId(),"Myo WAVE IN gesture",R.drawable.ic_gesture_black_24dp, this,evGesture);
-        //mEvGestureWaveOut = new Event(deviceManager.getNewId(),"Myo WAVE OUT gesture",R.drawable.ic_gesture_black_24dp, this,evGesture);
-        //mEvGestureDoubleTap = new Event(deviceManager.getNewId(),"Myo DOUBLE TAP gesture",R.drawable.ic_gesture_black_24dp, this,evGesture);
-        //mEvGestureFingersSpread = new Event(deviceManager.getNewId(),"Myo FINGERS SPREAD gesture",R.drawable.ic_gesture_black_24dp, this,evGesture);
-        //this.events.put(mEvGestureFist.getId(),mEvGestureFist);
-        //this.events.put(mEvGestureWaveIn.getId(),mEvGestureWaveIn);
-        //this.events.put(mEvGestureWaveOut.getId(),mEvGestureWaveOut);
-        //this.events.put(mEvGestureDoubleTap.getId(),mEvGestureDoubleTap);
-        //this.events.put(mEvGestureFingersSpread.getId(),mEvGestureFingersSpread);
         this.events.put(mIaEvGest.getId(),mIaEvGest);
     }
 
@@ -155,28 +149,23 @@ public class MyoDevice extends Wearable implements InputActionDevice {
     // Event triggers
 
     private void evGestureFist() {
-        mIaEvGestFist.trigger();
-        //mEvGestureFist.trigger();
+        //mIaEvGestFist.trigger();
     }
 
     private void evGestureWaveIn() {
         mIaEvGestWaveIn.trigger();
-        //mEvGestureWaveIn.trigger();
     }
 
     private void evGestureWaveOut() {
         mIaEvGestWaveOut.trigger();
-        //mEvGestureWaveOut.trigger();
     }
 
     private void evGestureDoubleTap() {
         mIaEvGestDoubleTap.trigger();
-        //mEvGestureDoubleTap.trigger();
     }
 
     private void evGestureFingersSpread() {
-        mIaEvGestFingSpread.trigger();
-        //mEvGestureFingersSpread.trigger();
+        //mIaEvGestFingSpread.trigger();
     }
 
     // Register & UnRegister Myo Broadcast Receiver

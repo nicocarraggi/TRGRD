@@ -3,6 +3,7 @@ package com.example.nicolascarraggi.trgrd.rulesys;
 import com.example.nicolascarraggi.trgrd.errors.NullActionException;
 import com.example.nicolascarraggi.trgrd.errors.NullEventException;
 import com.example.nicolascarraggi.trgrd.errors.NullStateException;
+import com.example.nicolascarraggi.trgrd.logging.MyLogger;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,6 +23,7 @@ public class Rule {
     private int times;
     private RuleTemplate ruleTemplateInstance;
     protected boolean isExample;
+    private final double eventsTimeSpan = 2000; // 2 seconds
 
     public Rule(int id, String name) {
         this.id = id;
@@ -110,9 +112,16 @@ public class Rule {
     public void checkRule(){
         System.out.println("[Rule "+this.name+"] checkRule()");
         if(active){
-
-            // TODO check events?!
-
+            if(!events.isEmpty() && events.size() > 1){
+                MyTime now = new MyTime();
+                for (Event e: events){
+                    // If an event is not triggered in the same timespan as now ( didn't happen recently )
+                    // Then stop checking rule and return!
+                    if ((e.getLastTimeTriggered() == null) || !e.getLastTimeTriggered().isInSameTimeSpan(now,eventsTimeSpan)){
+                        return;
+                    }
+                }
+            }
             if(!states.isEmpty()){
                 System.out.println("[Rule "+this.name+"] checkRule() checking states");
                 // If event and states, check if all states are true !
@@ -122,10 +131,10 @@ public class Rule {
                     // If 1 state is false, stop the loop!
                     if(!s.isState()){
                         isRuleTrue = false;
-                        break;
+                        return;
                     }
                 }
-                if (isRuleTrue) executeRule();
+                executeRule();
             } else {
                 System.out.println("[Rule "+this.name+"] checkRule() no states");
                 // If event and no states, rule is executed !

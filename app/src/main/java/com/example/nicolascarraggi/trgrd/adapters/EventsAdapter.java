@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.nicolascarraggi.trgrd.R;
+import com.example.nicolascarraggi.trgrd.logging.MyLogger;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
 import com.example.nicolascarraggi.trgrd.rulesys.InputActionEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.Location;
@@ -31,13 +32,14 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
 
     private ArrayList<Event> mDataset;
     private MyEventOnItemClickListener mListener;
-    boolean mEdit, mShowDelete;
+    boolean mEdit, mShowDelete, mShowAnd;
 
-    public EventsAdapter(MyEventOnItemClickListener listener, Set<Event> mDataset, boolean edit, boolean showDelete) {
+    public EventsAdapter(MyEventOnItemClickListener listener, Set<Event> mDataset, boolean edit, boolean showDelete, boolean showAnd) {
         this.mListener = listener;
         this.mDataset = new ArrayList<>();
         this.mEdit = edit;
         this.mShowDelete = showDelete;
+        this.mShowAnd = showAnd;
         this.mDataset.addAll(mDataset);
         sort();
     }
@@ -85,7 +87,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
 
         private MyEventOnItemClickListener myOnItemClickListener;
         private ImageView ivEventDevice, ivEvent, ivEventDelete;
-        private TextView tvEventTypeName, tvEventName, tvEventValueZero,
+        private TextView tvEventTypeIntro, tvEventTypeName, tvEventName, tvEventValueZero,
                             tvEventValueThree, tvEventValueThreeValue;
         private Button bEventValueZero;
         private LinearLayout llEventValueZero, llEventValueThree;
@@ -95,6 +97,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
             this.ivEventDevice = (ImageView) itemView.findViewById(R.id.ivEventDevice);
             this.ivEvent = (ImageView) itemView.findViewById(R.id.ivEvent);
             this.ivEventDelete = (ImageView) itemView.findViewById(R.id.ivEventDelete);
+            this.tvEventTypeIntro = (TextView) itemView.findViewById(R.id.tvEventTypeIntro);
             this.tvEventTypeName = (TextView) itemView.findViewById(R.id.tvEventTypeName);
             this.tvEventName = (TextView) itemView.findViewById(R.id.tvEventName);
             this.tvEventValueZero = (TextView) itemView.findViewById(R.id.tvEventValueZero);
@@ -134,6 +137,9 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
             this.myOnItemClickListener = listener;
             this.ivEventDevice.setImageResource(event.getDevice().getIconResource());
             this.ivEvent.setImageResource(event.getIconResource());
+            if(mShowAnd && getAdapterPosition()>0){
+                this.tvEventTypeIntro.setText("And");
+            }
             this.tvEventTypeName.setText(event.getEventType().getName());
             this.tvEventName.setText(event.getName());
             if(!mShowDelete && ivEventDelete != null){

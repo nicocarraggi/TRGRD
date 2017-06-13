@@ -64,7 +64,7 @@ public class AddItemFromTypeActivity extends RuleSystemBindingActivity implement
 
         if (typeType.equals("event")){
             eventType = ruleSystemService.getDeviceManager().getEventTypeInstance(typeInstanceId);
-            eventsAdapter = new EventsAdapter(this, eventType.getSkeletonEvents(),false, false);
+            eventsAdapter = new EventsAdapter(this, eventType.getSkeletonEvents(),false, false, false);
             rvItems.setAdapter(eventsAdapter);
             //tvItems.setText("Events of type: \""+eventType.getName()+"\"");
         } else if(typeType.equals("state")){

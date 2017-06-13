@@ -462,6 +462,7 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
         for(int i=0; i<inputActions.size(); i++){
             inputActionNames[i] = inputActions.get(i).getDescription()+" "+inputActions.get(i).getName();
         }
+        // TODO if no input actions ( size = 0 ) throw error?
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CreateRuleFromTemplateActivity.this);
         builder.setTitle("Pick an event");
         builder.setItems(inputActionNames, new DialogInterface.OnClickListener() {
@@ -518,6 +519,7 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
         for(int i=0; i<locations.size(); i++){
             locationNames[i] = locations.get(i).getName();
         }
+        // TODO if no locations ( size = 0 ) throw error?
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CreateRuleFromTemplateActivity.this);
         builder.setTitle("Pick a location");
         builder.setItems(locationNames, new DialogInterface.OnClickListener() {

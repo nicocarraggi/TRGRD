@@ -41,7 +41,7 @@ public class DeviceManager {
     public EventType evAlarmSnooze = new EventType(getNewId(),"an alarm snoozed");
     public EventType evAlarmDismiss = new EventType(getNewId(),"an alarm dismissed");
     public EventType evAlarmDone = new EventType(getNewId(),"an alarm stopped");
-    public EventType evCallInc = new EventType(getNewId(),"a call comes in");
+    public EventType evCallInc = new EventType(getNewId(),"an incoming call starts or stops");
     public EventType evButtonPress = new EventType(getNewId(),"a button is pressed"); // change to evOneInput? too restrictive now, could also be a gesture from myo?
     public EventType evHeartRateReading = new EventType(getNewId(),"a heart rate reading comes in");
     public EventType evTimeAt = new EventType(getNewId(),"time changes to a certain time"); // TODO other name

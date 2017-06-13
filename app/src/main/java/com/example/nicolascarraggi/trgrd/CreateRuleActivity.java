@@ -210,7 +210,7 @@ public class CreateRuleActivity extends RuleSystemBindingActivity
                 etName.setText(rule.getName());
             }
 
-            eventsAdapter = new EventsAdapter(this, events, true, !isFromExampleRule);
+            eventsAdapter = new EventsAdapter(this, events, true, !isFromExampleRule, true);
             statesAdapter = new StatesAdapter(this, states, true, !isFromExampleRule);
             actionsAdapter = new ActionsAdapter(this, actions, true, !isFromExampleRule);
 
@@ -543,6 +543,16 @@ public class CreateRuleActivity extends RuleSystemBindingActivity
         for(int i=0; i<inputActions.size(); i++){
             inputActionNames[i] = inputActions.get(i).getDescription()+" "+inputActions.get(i).getName();
         }
+
+        // TODO if no input actions ( size = 0 ) throw error?
+
+        if (oldInputAction == null){
+            // IF oldInputAction is null AND is from example rule, just select first option to avoid showing multiple
+            //    dialogs at the start! User can change the value afterwards.
+            CreateRuleActivity.this.onInputActionClick(inputActions.get(0));
+            return;
+        }
+
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CreateRuleActivity.this);
         builder.setTitle("Pick an event");
         builder.setItems(inputActionNames, new DialogInterface.OnClickListener() {
@@ -595,6 +605,25 @@ public class CreateRuleActivity extends RuleSystemBindingActivity
         for(int i=0; i<locations.size(); i++){
             locationNames[i] = locations.get(i).getName();
         }
+        // TODO if no locations ( size = 0 ) throw error?
+
+        if (oldLocation == null && isFromExampleRule){
+            // IF oldLocation is null AND is from example rule, just select first option to avoid showing multiple
+            //    dialogs at the start! User can change the value afterwards.
+            switch (type) {
+                case ASK_LOCATION_ARRIVING:
+                    CreateRuleActivity.this.onLocationArrivingAtClick(locations.get(0));
+                    break;
+                case ASK_LOCATION_LEAVING:
+                    CreateRuleActivity.this.onLocationLeavingClick(locations.get(0));
+                    break;
+                case ASK_LOCATION_CURRENTLY:
+                    CreateRuleActivity.this.onLocationCurrentlyAtClick(locations.get(0));
+                    break;
+            }
+            return;
+        }
+
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CreateRuleActivity.this);
         builder.setTitle("Pick a location");
         builder.setItems(locationNames, new DialogInterface.OnClickListener() {
@@ -647,6 +676,14 @@ public class CreateRuleActivity extends RuleSystemBindingActivity
         if(oldAction != null){
             etTitle.setText(oldAction.getTitle());
             etText.setText(oldAction.getText());
+        } else if(isFromExampleRule) {
+            // IF oldAction is null AND from example rule, just select first option to avoid showing multiple
+            //    dialogs at the start! User can change the value afterwards.
+            NotificationAction noAc = action;
+            noAc = ((NotificationDevice) action.getDevice()).getNotifyAction("...",
+                    "...", noAc.getNotificationActionType());
+            onNoficationClick(noAc);
+            return;
         }
 
         // Inflate and set the layout for the dialog

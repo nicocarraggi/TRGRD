@@ -11,4 +11,6 @@
     <color name="colorStateDark">#2196F3</color>
     <color name="colorAction">#C8E6C9</color>
     <color name="colorActionDark">#4CAF50</color>
+
+    <color name="colorRed">#F44336</color>
 </resources>
