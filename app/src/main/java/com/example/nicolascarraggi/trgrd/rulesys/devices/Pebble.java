@@ -66,7 +66,7 @@ public class Pebble extends Wearable implements NotificationDevice, InputActionD
 
     public Pebble(RuleSystemService ruleSystemService, DeviceManager deviceManager, EventType evButtonPress, EventType evHeartRateReading,
                   ActionType acAlarmVibrate, ActionType acAlarmDisplay, ActionType acTimeDisplay, ActionType acNotify) {
-        super(ruleSystemService.getNewId(), "Pebble Steel", "Pebble", "Pebble OS", "Watch", "Wrist", R.drawable.ic_watch_black_24dp, ruleSystemService, deviceManager);
+        super(ruleSystemService.getNewId(), "Pebble Watch", "Pebble", "Pebble OS", "Watch", "Wrist", R.drawable.ic_watch_black_24dp, ruleSystemService, deviceManager);
         this.inputActions = new ArrayList<>();
         this.inputActionEvents = new HashMap<>();
         this.eventTypes.put(evButtonPress.getId(),evButtonPress);
@@ -75,14 +75,14 @@ public class Pebble extends Wearable implements NotificationDevice, InputActionD
         this.actionTypes.put(acAlarmDisplay.getId(),acAlarmDisplay);
         this.actionTypes.put(acTimeDisplay.getId(),acTimeDisplay);
         // INPUT ACTIONS
-        this.mIaBtnUp = new InputAction(deviceManager.getNewId(),"Pebble button:","UP",R.drawable.ic_keyboard_arrow_up_black_24dp);
-        this.mIaBtnSelect = new InputAction(deviceManager.getNewId(),"Pebble button:","SELECT",R.drawable.ic_keyboard_arrow_right_black_24dp);
-        this.mIaBtnDown = new InputAction(deviceManager.getNewId(),"Pebble button:","DOWN",R.drawable.ic_keyboard_arrow_down_black_24dp);
+        this.mIaBtnUp = new InputAction(deviceManager.getNewId(),"Pebble watch button:","UP",R.drawable.ic_keyboard_arrow_up_black_24dp);
+        this.mIaBtnSelect = new InputAction(deviceManager.getNewId(),"Pebble watch button:","SELECT",R.drawable.ic_keyboard_arrow_right_black_24dp);
+        this.mIaBtnDown = new InputAction(deviceManager.getNewId(),"Pebble watch button:","DOWN",R.drawable.ic_keyboard_arrow_down_black_24dp);
         this.inputActions.add(mIaBtnUp);
         this.inputActions.add(mIaBtnSelect);
         this.inputActions.add(mIaBtnDown);
         // INPUT ACTION EVENTS
-        this.mIaEvBtn = new InputActionEvent(deviceManager.getNewId(),"Pebble ... button is pressed", R.drawable.ic_adjust_black_24dp, this, evButtonPress);
+        this.mIaEvBtn = new InputActionEvent(deviceManager.getNewId(),"Pebble watch ... button is pressed","button", R.drawable.ic_adjust_black_24dp, this, evButtonPress);
         this.mIaEvBtnUp = new InputActionEvent(deviceManager.getNewId(),mIaEvBtn,mIaBtnUp);
         this.mIaEvBtnSelect = new InputActionEvent(deviceManager.getNewId(),mIaEvBtn,mIaBtnSelect);
         this.mIaEvBtnDown = new InputActionEvent(deviceManager.getNewId(),mIaEvBtn,mIaBtnDown);
@@ -94,7 +94,7 @@ public class Pebble extends Wearable implements NotificationDevice, InputActionD
         //this.mEvBtnSelect = new Event(deviceManager.getNewId(),"Pebble SELECT button is pressed", R.drawable.ic_keyboard_arrow_right_black_24dp, this, evButtonPress);
         //this.mEvBtnDown = new Event(deviceManager.getNewId(),"Pebble DOWN button is pressed", R.drawable.ic_keyboard_arrow_down_black_24dp, this, evButtonPress);
         // ACTIONS
-        this.mAcVibrate = new Action(deviceManager.getNewId(),"Pebble vibrate", R.drawable.ic_vibration_black_24dp, this, acAlarmVibrate, new Callable<String>() {
+        this.mAcVibrate = new Action(deviceManager.getNewId(),"Pebble watch vibrate", R.drawable.ic_vibration_black_24dp, this, acAlarmVibrate, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acVibrate();
@@ -124,7 +124,7 @@ public class Pebble extends Wearable implements NotificationDevice, InputActionD
             }
         });
         // Callable is null, will be overridden in instance with the correct parameters using getNotifyCallable(...)
-        this.mAcNotify = new NotificationAction(deviceManager.getNewId(),"Pebble notification",R.drawable.ic_notifications_active_black_24dp,this,acNotify);
+        this.mAcNotify = new NotificationAction(deviceManager.getNewId(),"Pebble watch notification",R.drawable.ic_notifications_active_black_24dp,this,acNotify);
         //this.events.put(mEvBtnUp.getId(),mEvBtnUp);
         //this.events.put(mEvBtnSelect.getId(),mEvBtnSelect);
         //this.events.put(mEvBtnDown.getId(),mEvBtnDown);

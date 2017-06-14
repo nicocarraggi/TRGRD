@@ -24,6 +24,8 @@
         android:id="@+id/rvAddActionActions"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="20dp" />
+        android:fadeScrollbars="false"
+        android:scrollbars="vertical"
+        android:layout_marginBottom="5dp" />
 
 </LinearLayout>

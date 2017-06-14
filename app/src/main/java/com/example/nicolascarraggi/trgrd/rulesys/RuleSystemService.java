@@ -41,9 +41,9 @@ public class RuleSystemService extends Service {
         this.ruleTemplates = new HashMap<>();
         this.ruleTemplateInstances = new HashMap<>();
         this.locations = new HashMap<>();
-        this.mTestRuleAlarmStartPebble = new Rule(0,"Phone alarm alert on Pebble");
-        this.mTestRuleAlarmDismissPebble = new Rule(1,"Dismiss phone alarm on Pebble");
-        this.mTestRuleAlarmDonePebble = new Rule(2,"Phone alarm done to Pebble");
+        this.mTestRuleAlarmStartPebble = new Rule(0,"Display Phone alarm alert on Pebble watch");
+        this.mTestRuleAlarmDismissPebble = new Rule(1,"Dismiss Phone alarm with a Pebble watch button press");
+        this.mTestRuleAlarmDonePebble = new Rule(2,"Clear Pebble watch screen when Phone alarm is done");
         this.rules.put(mTestRuleAlarmStartPebble.getId(),mTestRuleAlarmStartPebble);
         this.rules.put(mTestRuleAlarmDismissPebble.getId(),mTestRuleAlarmDismissPebble);
         this.rules.put(mTestRuleAlarmDonePebble.getId(),mTestRuleAlarmDonePebble);
@@ -175,17 +175,17 @@ public class RuleSystemService extends Service {
     // RULE TEMPLATE TESTS
     private void testRuleTemplates(){
         // When alarm starts, display alarm
-        RuleTemplate rtAlarmStart = new RuleTemplate(getNewId(),"Display starting alarm");
+        RuleTemplate rtAlarmStart = new RuleTemplate(getNewId(),"Display a starting alarm on a device");
         rtAlarmStart.addTriggerType(mDeviceManager.evAlarmAlert);
         rtAlarmStart.addActionType(mDeviceManager.acAlarmDisplay);
         ruleTemplates.put(rtAlarmStart.getId(),rtAlarmStart);
         // When a button is pressed, notify
-        RuleTemplate rtNotifyButton = new RuleTemplate(getNewId(),"Notify button pressed");
+        RuleTemplate rtNotifyButton = new RuleTemplate(getNewId(),"Notify on a device that a button is pressed");
         rtNotifyButton.addTriggerType(mDeviceManager.evButtonPress);
         rtNotifyButton.addActionType(mDeviceManager.acNotify);
         ruleTemplates.put(rtNotifyButton.getId(),rtNotifyButton);
         // When at a location and button is pressed,
-        RuleTemplate rtCoffee = new RuleTemplate(getNewId(),"Coffee at a location");
+        RuleTemplate rtCoffee = new RuleTemplate(getNewId(),"Start making coffee at a location with a button press");
         rtCoffee.addTriggerType(mDeviceManager.evButtonPress);
         rtCoffee.addTriggerType(mDeviceManager.stLocationCurrentlyAt);
         rtCoffee.addActionType(mDeviceManager.acStartCoffee);
@@ -193,16 +193,16 @@ public class RuleSystemService extends Service {
     }
 
     private void testExampleRules(){
-        ExampleRule erCoffeeLocation = new ExampleRule(getNewId(),"Start coffee with Pebble button when at a location");
+        ExampleRule erCoffeeLocation = new ExampleRule(getNewId(),"Start coffee with Pebble watch button when at a location");
         erCoffeeLocation.addEvent(mDeviceManager.getPebble().getBtn());
         erCoffeeLocation.addState(mDeviceManager.getGeofences().getLocationCurrentlyAt());
-        erCoffeeLocation.addAction(mDeviceManager.getCoffeeMachine().getStartCoffee());
+        erCoffeeLocation.addAction(mDeviceManager.getHomeCoffeeMachine().getStartCoffee());
         exampleRules.put(erCoffeeLocation.getId(),erCoffeeLocation);
-        ExampleRule erDisplayAlarm = new ExampleRule(getNewId(),"Display Phone alarm on Pebble");
+        ExampleRule erDisplayAlarm = new ExampleRule(getNewId(),"Display Phone alarm on Pebble watch");
         erDisplayAlarm.addEvent(mDeviceManager.getAndroidPhone().getAlarmStart());
         erDisplayAlarm.addAction(mDeviceManager.getPebble().getScreenAlarm());
         exampleRules.put(erDisplayAlarm.getId(),erDisplayAlarm);
-        ExampleRule erNotifyButtonPressed = new ExampleRule(getNewId(),"Notify Phone when Pebble button is pressed");
+        ExampleRule erNotifyButtonPressed = new ExampleRule(getNewId(),"Notify Phone when Pebble watch button is pressed");
         erNotifyButtonPressed.addEvent(mDeviceManager.getPebble().getBtn());
         erNotifyButtonPressed.addAction(mDeviceManager.getAndroidPhone().getNotify());
         exampleRules.put(erNotifyButtonPressed.getId(),erNotifyButtonPressed);

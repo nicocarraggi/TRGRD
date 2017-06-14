@@ -39,7 +39,7 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
         this.mShowSwitch = showSwitch;
         this.mDataset = new ArrayList<>();
         this.mDataset.addAll(mDataset);
-        sort();
+        //sort();
     }
 
     private void sort(){
@@ -84,7 +84,7 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
     public class RuleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
         private MyOnItemClickListener myOnItemClickListener;
-        private ImageView ivRule, ivEvent, ivState, ivAction;
+        private ImageView ivRule, ivEvent, ivState, ivAction, ivEventDevice, ivStateDevice, ivActionDevice;
         private TextView tvRuleName;
         private LinearLayout llRuleIcons, llEvent, llStates, llActions;
         private SwitchCompat switchRuleActive;
@@ -95,6 +95,9 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
             this.ivEvent = (ImageView) itemView.findViewById(R.id.ivRuleEvent);
             this.ivState = (ImageView) itemView.findViewById(R.id.ivRuleState);
             this.ivAction = (ImageView) itemView.findViewById(R.id.ivRuleAction);
+            this.ivEventDevice = (ImageView) itemView.findViewById(R.id.ivRuleEventDevice);
+            this.ivStateDevice = (ImageView) itemView.findViewById(R.id.ivRuleStateDevice);
+            this.ivActionDevice = (ImageView) itemView.findViewById(R.id.ivRuleActionDevice);
             this.tvRuleName = (TextView) itemView.findViewById(R.id.tvRuleName);
             this.llRuleIcons = (LinearLayout) itemView.findViewById(R.id.llRuleIcons);
             this.llEvent = (LinearLayout) itemView.findViewById(R.id.llRuleEvent);
@@ -114,7 +117,8 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
                 llEvent.setVisibility(View.GONE);
             } else {
                 for(Event e: rule.getEvents()){
-                    ivEvent.setImageResource(e.getDevice().getIconResource());
+                    ivEvent.setImageResource(e.getIconResource());
+                    ivEventDevice.setImageResource(e.getDevice().getIconResource());
                 }
             }
             if (rule.getStates().isEmpty()){
@@ -122,12 +126,14 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
             } else {
                 for(State s: rule.getStates()){
                     // TODO inflate every other state?
-                    ivState.setImageResource(s.getDevice().getIconResource());
+                    ivState.setImageResource(s.getIconResource());
+                    ivStateDevice.setImageResource(s.getDevice().getIconResource());
                 }
             }
             for (Action a: rule.getActions()){
                 // TODO inflate every other action?
-                ivAction.setImageResource(a.getDevice().getIconResource());
+                ivAction.setImageResource(a.getIconResource());
+                ivActionDevice.setImageResource(a.getDevice().getIconResource());
             }
             if (mShowSwitch) this.switchRuleActive.setChecked(rule.isActive());
         }

@@ -546,7 +546,7 @@ public class CreateRuleActivity extends RuleSystemBindingActivity
 
         // TODO if no input actions ( size = 0 ) throw error?
 
-        if (oldInputAction == null){
+        if (oldInputAction == null && isFromExampleRule){
             // IF oldInputAction is null AND is from example rule, just select first option to avoid showing multiple
             //    dialogs at the start! User can change the value afterwards.
             CreateRuleActivity.this.onInputActionClick(inputActions.get(0));
@@ -554,7 +554,7 @@ public class CreateRuleActivity extends RuleSystemBindingActivity
         }
 
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CreateRuleActivity.this);
-        builder.setTitle("Pick an event");
+        builder.setTitle("Pick a(n) "+inputActionEvent.getInputActionType()+":");
         builder.setItems(inputActionNames, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -625,7 +625,7 @@ public class CreateRuleActivity extends RuleSystemBindingActivity
         }
 
         final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CreateRuleActivity.this);
-        builder.setTitle("Pick a location");
+        builder.setTitle("Pick a location:");
         builder.setItems(locationNames, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

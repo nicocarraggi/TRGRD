@@ -10,16 +10,18 @@ package com.example.nicolascarraggi.trgrd.rulesys;
 public class InputActionEvent extends Event {
 
     private InputAction inputAction;
+    private String type;
 
     // SKELETON constructor
-    public InputActionEvent(int id, String name, int iconResource, Device device, EventType eventType) {
+    public InputActionEvent(int id, String name, String type, int iconResource, Device device, EventType eventType) {
         super(id, name, iconResource, device, eventType);
         this.eventValueType = EventValueType.INPUTACTION;
+        this.type = type;
         this.inputAction = null;
     }
 
-    public InputActionEvent(int id, String name, int iconResource, Device device, EventType eventType, InputAction inputAction) {
-        this(id, name, iconResource, device, eventType);
+    public InputActionEvent(int id, String name, String type, int iconResource, Device device, EventType eventType, InputAction inputAction) {
+        this(id, name, type, iconResource, device, eventType);
         this.inputAction = inputAction;
         this.inputAction.setInputActionEvent(this);
         this.isSkeleton=false;
@@ -27,7 +29,7 @@ public class InputActionEvent extends Event {
 
     // copy constructor
     public InputActionEvent(int id, InputActionEvent inputActionEvent, InputAction inputAction){
-        this(id, inputActionEvent.getName(),inputActionEvent.getIconResource(),inputActionEvent.getDevice(),inputActionEvent.getEventType(),inputAction);
+        this(id, inputActionEvent.getName(), inputActionEvent.getInputActionType(), inputActionEvent.getIconResource(),inputActionEvent.getDevice(),inputActionEvent.getEventType(),inputAction);
     }
 
     public InputAction getInputAction() {
@@ -36,5 +38,13 @@ public class InputActionEvent extends Event {
 
     public void setInputAction(InputAction inputAction) {
         this.inputAction = inputAction;
+    }
+
+    public String getInputActionType() {
+        return type;
+    }
+
+    public void setInputActionType(String type) {
+        this.type = type;
     }
 }

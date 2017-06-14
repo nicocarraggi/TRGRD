@@ -5,10 +5,11 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import com.example.nicolascarraggi.trgrd.rulesys.devices.AndroidPhone;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Clock;
-import com.example.nicolascarraggi.trgrd.rulesys.devices.CoffeeMachine;
+import com.example.nicolascarraggi.trgrd.rulesys.devices.HomeCoffeeMachine;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Geofences;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.MyoDevice;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Pebble;
+import com.example.nicolascarraggi.trgrd.rulesys.devices.VubCoffeeMachine;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -71,7 +72,8 @@ public class DeviceManager {
     private Pebble mPebble;
     private Clock mClock;
     private Geofences mGeofences;
-    private CoffeeMachine mCoffeeMachine;
+    private HomeCoffeeMachine mHomeCoffeeMachine;
+    private VubCoffeeMachine mVubCoffeeMachine;
     private MyoDevice mMyoDevice;
 
     public DeviceManager(RuleSystemService ruleSystemService) {
@@ -109,13 +111,15 @@ public class DeviceManager {
         this.mPebble = new Pebble(ruleSystemService, this, evButtonPress, evHeartRateReading, acVibrate, acAlarmDisplay, acTimeDisplay, acNotify);
         this.mClock = new Clock(ruleSystemService, this, evTimeAt, stTimeFromTo);
         this.mGeofences = new Geofences(ruleSystemService, this, evLocationArrivingAt, evLocationLeaving, stLocationCurrentlyAt);
-        this.mCoffeeMachine = new CoffeeMachine(ruleSystemService,this,acStartCoffee);
+        this.mHomeCoffeeMachine = new HomeCoffeeMachine(ruleSystemService,this,acStartCoffee);
+        this.mVubCoffeeMachine = new VubCoffeeMachine(ruleSystemService,this,acStartCoffee);
         this.mMyoDevice = new MyoDevice(ruleSystemService,this,evGesture);
         this.devices.put(mAndroidPhone.getId(),mAndroidPhone);
         this.devices.put(mPebble.getId(),mPebble);
         this.devices.put(mClock.getId(),mClock);
         this.devices.put(mGeofences.getId(),mGeofences);
-        this.devices.put(mCoffeeMachine.getId(),mCoffeeMachine);
+        this.devices.put(mHomeCoffeeMachine.getId(), mHomeCoffeeMachine);
+        this.devices.put(mVubCoffeeMachine.getId(), mVubCoffeeMachine);
         this.devices.put(mMyoDevice.getId(), mMyoDevice);
     }
 
@@ -135,8 +139,12 @@ public class DeviceManager {
         return mGeofences;
     }
 
-    public CoffeeMachine getCoffeeMachine() {
-        return mCoffeeMachine;
+    public HomeCoffeeMachine getHomeCoffeeMachine() {
+        return mHomeCoffeeMachine;
+    }
+
+    public VubCoffeeMachine getVubCoffeeMachine() {
+        return mVubCoffeeMachine;
     }
 
     public HashSet<Device> getDevices() {
@@ -251,7 +259,8 @@ public class DeviceManager {
         mPebble.start();
         mClock.start();
         mGeofences.start();
-        mCoffeeMachine.start();
+        mHomeCoffeeMachine.start();
+        mVubCoffeeMachine.start();
         //mMyoDevice.start(); Manually start in GUI !!
     }
 
@@ -260,7 +269,8 @@ public class DeviceManager {
         mPebble.stop();
         mClock.stop();
         mGeofences.stop();
-        mCoffeeMachine.stop();
+        mHomeCoffeeMachine.stop();
+        mVubCoffeeMachine.stop();
         mMyoDevice.stop();
     }
 

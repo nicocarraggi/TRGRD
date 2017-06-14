@@ -62,15 +62,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:paddingRight="2dp"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="IF"/>
 
                     <ImageView
+                        android:id="@+id/ivRuleEventDevice"
+                        android:layout_width="19dp"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="3dp"
+                        android:src="@drawable/ic_access_time_black_24dp"/>
+
+                    <ImageView
                         android:id="@+id/ivRuleEvent"
-                        android:layout_width="wrap_content"
+                        android:layout_width="18dp"
                         android:layout_height="match_parent"
                         android:paddingRight="3dp"
-                        android:paddingLeft="3dp"
                         android:src="@drawable/ic_access_time_black_24dp"/>
 
                 </LinearLayout>
@@ -85,15 +92,23 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:paddingRight="2dp"
+                        android:paddingLeft="2dp"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="WHILE"/>
 
                     <ImageView
+                        android:id="@+id/ivRuleStateDevice"
+                        android:layout_width="19dp"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="3dp"
+                        android:src="@drawable/ic_access_time_black_24dp"/>
+
+                    <ImageView
                         android:id="@+id/ivRuleState"
-                        android:layout_width="wrap_content"
+                        android:layout_width="19dp"
                         android:layout_height="match_parent"
                         android:paddingRight="3dp"
-                        android:paddingLeft="3dp"
                         android:src="@drawable/ic_access_time_black_24dp"/>
 
                 </LinearLayout>
@@ -108,15 +123,23 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:paddingRight="2dp"
+                        android:paddingLeft="2dp"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text="THEN"/>
 
                     <ImageView
+                        android:id="@+id/ivRuleActionDevice"
+                        android:layout_width="19dp"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="3dp"
+                        android:src="@drawable/ic_access_time_black_24dp"/>
+
+                    <ImageView
                         android:id="@+id/ivRuleAction"
-                        android:layout_width="wrap_content"
+                        android:layout_width="19dp"
                         android:layout_height="match_parent"
                         android:paddingRight="3dp"
-                        android:paddingLeft="3dp"
                         android:src="@drawable/ic_access_time_black_24dp"/>
 
                 </LinearLayout>

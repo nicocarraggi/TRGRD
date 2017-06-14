@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ public class CreateLocationActivity extends RuleSystemBindingActivity {
 
     private EditText etName;
     private TextView tvAddress;
+    private LinearLayout llName, llAddress;
     private Button bPick;
     private boolean isCreate, isPicked;
     private String locationId;
@@ -39,6 +41,8 @@ public class CreateLocationActivity extends RuleSystemBindingActivity {
         this.isCreate = getIntent().getBooleanExtra("iscreate",true);
         this.locationId = getIntent().getStringExtra("locationid");
 
+        llName = (LinearLayout) findViewById(R.id.llCreateLocationName);
+        llAddress = (LinearLayout) findViewById(R.id.llCreateLocationAddress);
         etName = (EditText) findViewById(R.id.etCreateLocationName);
         tvAddress = (TextView) findViewById(R.id.tvCreateLocationAddress);
         bPick = (Button) findViewById(R.id.bCreateLocationPick);
@@ -61,9 +65,14 @@ public class CreateLocationActivity extends RuleSystemBindingActivity {
         ActionBar ab = getSupportActionBar();
         if (isCreate) {
             ab.setTitle("Create location");
-            if(!isPicked) etName.setVisibility(View.INVISIBLE);
+            if(!isPicked){
+                llName.setVisibility(View.GONE);
+                llAddress.setVisibility(View.GONE);
+            }
         } else {
             ab.setTitle("Edit location");
+            this.isPicked = true;
+
             location = ruleSystemService.getLocation(locationId);
             etName.setText(location.getName());
             tvAddress.setText(location.getAddress());
@@ -133,7 +142,9 @@ public class CreateLocationActivity extends RuleSystemBindingActivity {
     private void displayPlace(Intent data) {
         if(data != null) {
             isPicked = true;
-            etName.setVisibility(View.VISIBLE);
+            llName.setVisibility(View.VISIBLE);
+            llAddress.setVisibility(View.VISIBLE);
+            bPick.setText("Pick other place!");
             Place selectedPlace = PlacePicker.getPlace(this, data);
             Log.d("TRGRD","CreateLocationActivity displayPlace place = "+selectedPlace);
             String id = selectedPlace.getId();

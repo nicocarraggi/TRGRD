@@ -399,7 +399,12 @@ public class Geofences extends Device implements GoogleApiClient.ConnectionCallb
         }
         String triggeringGeofencesIdsString = TextUtils.join(", ",  triggeringGeofencesIdsList);
 
-        return geofenceTransitionString + ": " + mGeofenceLocations.get(triggeringGeofencesIdsString).getName();
+        Location location = mGeofenceLocations.get(triggeringGeofencesIdsString);
+
+        if(location == null){
+            return geofenceTransitionString + ": " + "null (from id "+triggeringGeofencesIdsString+")";
+        }
+        return geofenceTransitionString + ": " + location.getName();
     }
 
     /**
