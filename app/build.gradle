@@ -31,9 +31,9 @@ dependencies {
         maven { url 'https://jitpack.io' }
     }
     compile files('libs/native-libs.jar')
-    compile 'com.android.support:appcompat-v7:24.+'
-    compile 'com.android.support:support-v4:24.+'
-    compile 'com.android.support:design:24.+'
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:support-v4:24.2.1'
+    compile 'com.android.support:design:24.2.1'
     compile 'com.getpebble:pebblekit:4.0.0'
     compile 'com.thalmic:myosdk:0.10.+@aar'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'

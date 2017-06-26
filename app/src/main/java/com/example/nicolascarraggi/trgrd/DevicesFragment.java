@@ -143,6 +143,9 @@ public class DevicesFragment extends TrgrdFragment implements MyOnItemClickListe
         switch(view.getId()) {
             case R.id.tvDeviceName:
                 Log.d("TRGRD","DevicesFragment onItemClick tvDeviceName");
+                Intent intent = new Intent(this.getContext(), DeviceDetailsActivity.class);
+                intent.putExtra("deviceid",item.getId());
+                startActivity(intent);
                 break;
         }
     }

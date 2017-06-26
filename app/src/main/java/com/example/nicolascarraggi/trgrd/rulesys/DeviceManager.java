@@ -49,6 +49,7 @@ public class DeviceManager {
     public EventType evLocationArrivingAt = new EventType(getNewId(),"arrived at a location");
     public EventType evLocationLeaving = new EventType(getNewId(),"left a location");
     public EventType evGesture = new EventType(getNewId(),"gesture is made");
+    public EventType evWakesUp = new EventType(getNewId(),"user wakes up"); // TODO change?
 
 
     // StateTypes
@@ -96,6 +97,7 @@ public class DeviceManager {
         this.eventTypes.put(evLocationArrivingAt.getId(),evLocationArrivingAt);
         this.eventTypes.put(evLocationLeaving.getId(),evLocationLeaving);
         this.eventTypes.put(evGesture.getId(),evGesture);
+        this.eventTypes.put(evWakesUp.getId(), evWakesUp);
         this.stateTypes.put(stAlarmGoing.getId(),stAlarmGoing);
         this.stateTypes.put(stCallIncGoing.getId(),stCallIncGoing);
         this.stateTypes.put(stTimeFromTo.getId(),stTimeFromTo);

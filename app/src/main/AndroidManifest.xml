@@ -65,8 +65,10 @@
             android:label="@string/title_activity_add_event_or_state"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ShowExampleRulesActivity" />
-        <activity android:name=".IntroActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".IntroActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".DeviceDetailsActivity"></activity>
     </application>
 
 </manifest>
