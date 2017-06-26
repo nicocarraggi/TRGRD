@@ -19,9 +19,10 @@ public class PebbleCommunicationService extends Service {
 
     // Constants
 
-    public static final String PEBBLE_BUTTON_UP_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.BUTTON_UP";
-    public static final String PEBBLE_BUTTON_SELECT_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.BUTTON_SELECT";
-    public static final String PEBBLE_BUTTON_DOWN_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.BUTTON_DOWN";
+    public static final String PEBBLE_BUTTON_UP_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.PEBBLE_BUTTON_UP";
+    public static final String PEBBLE_BUTTON_SELECT_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.PEBBLE_BUTTON_SELECT";
+    public static final String PEBBLE_BUTTON_DOWN_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.PEBBLE_BUTTON_DOWN";
+    public static final String PEBBLE_SHAKE_EVENT = "com.example.nicolascarraggi.trgrd.rulesys.devices.PEBBLE_SHAKE";
 
     // PebbleCommunicationService Broadcast Receiver
 
@@ -139,6 +140,8 @@ public class PebbleCommunicationService extends Service {
                     if(data.getInteger(KEY_TAP) != null){
                         Log.d("TRGRD", "PebbleCommunication TAP/SHAKE");
                         Toast.makeText(getApplicationContext(), "Pebble tap/shake", Toast.LENGTH_SHORT).show();
+                        Intent newIntent = new Intent(PEBBLE_SHAKE_EVENT);
+                        LocalBroadcastManager.getInstance(PebbleCommunicationService.this).sendBroadcast(newIntent);
                     }
                 }
             };

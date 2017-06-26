@@ -108,7 +108,7 @@ public class DeviceManager {
         this.actionTypes.put(acNotify.getId(),acNotify);
         this.actionTypes.put(acStartCoffee.getId(),acStartCoffee);
         this.mAndroidPhone = new AndroidPhone(ruleSystemService, this, evAlarmAlert, evAlarmSnooze, evAlarmDismiss, evAlarmDone, evCallInc, stAlarmGoing, stCallIncGoing, acAlarmSnooze, acAlarmDismiss,acNotify);
-        this.mPebble = new Pebble(ruleSystemService, this, evButtonPress, evHeartRateReading, acVibrate, acAlarmDisplay, acTimeDisplay, acNotify);
+        this.mPebble = new Pebble(ruleSystemService, this, evButtonPress, evHeartRateReading, evGesture, acVibrate, acAlarmDisplay, acTimeDisplay, acNotify);
         this.mClock = new Clock(ruleSystemService, this, evTimeAt, stTimeFromTo);
         this.mGeofences = new Geofences(ruleSystemService, this, evLocationArrivingAt, evLocationLeaving, stLocationCurrentlyAt);
         this.mHomeCoffeeMachine = new HomeCoffeeMachine(ruleSystemService,this,acStartCoffee);

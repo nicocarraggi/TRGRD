@@ -143,7 +143,7 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
                     }
                 }
             } else {
-                Toast.makeText(CreateRuleFromTemplateActivity.this, "A rule requires a name, 1 or more triggers and 1 or more actions!", Toast.LENGTH_LONG).show();
+                Toast.makeText(CreateRuleFromTemplateActivity.this, "The template should be filled in completely!", Toast.LENGTH_LONG).show();
             }
             return true;
         }
