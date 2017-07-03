@@ -14,7 +14,7 @@ public class RuleAlarmUnitTest {
         Rule ruleAlarmStop = new Rule(0, "testRuleAlarmStop");
         //Rule ruleAlarmSnooze = new Rule("testRuleAlarmSnooze");
         AndroidPhone androidPhone = new AndroidPhone(null, null, null, null, null, null, null, null, null, null, null, null);
-        Pebble pebble = new Pebble(null, null, null, null, null, null, null, null,null);
+        Pebble pebble = new Pebble(null, null, null, null, null, null, null, null, null,null);
 
         // When phone's alarm is going off and user presses button down on pebble, stop alarm!
         ruleAlarmStop.addState(androidPhone.getAlarmGoing());

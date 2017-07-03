@@ -65,8 +65,10 @@ public class DeviceManager {
     public ActionType acVibrate = new ActionType(getNewId(),"vibrate something");
     public ActionType acAlarmDisplay = new ActionType(getNewId(),"display the alarm somewhere");
     public ActionType acTimeDisplay = new ActionType(getNewId(),"display time");
+    public ActionType acSportDisplay = new ActionType(getNewId(),"display sport info");
     public ActionType acNotify = new ActionType(getNewId(),"notify something somewhere");
     public ActionType acStartCoffee = new ActionType(getNewId(),"start making coffee");
+    public ActionType acScoreAdjust = new ActionType(getNewId(),"adjust score");
 
     // Devices
     private AndroidPhone mAndroidPhone;
@@ -107,10 +109,12 @@ public class DeviceManager {
         this.actionTypes.put(acVibrate.getId(),acVibrate);
         this.actionTypes.put(acAlarmDisplay.getId(),acAlarmDisplay);
         this.actionTypes.put(acTimeDisplay.getId(),acTimeDisplay);
+        this.actionTypes.put(acSportDisplay.getId(),acSportDisplay);
         this.actionTypes.put(acNotify.getId(),acNotify);
         this.actionTypes.put(acStartCoffee.getId(),acStartCoffee);
+        this.actionTypes.put(acScoreAdjust.getId(),acScoreAdjust);
         this.mAndroidPhone = new AndroidPhone(ruleSystemService, this, evAlarmAlert, evAlarmSnooze, evAlarmDismiss, evAlarmDone, evCallInc, stAlarmGoing, stCallIncGoing, acAlarmSnooze, acAlarmDismiss,acNotify);
-        this.mPebble = new Pebble(ruleSystemService, this, evButtonPress, evHeartRateReading, evGesture, acVibrate, acAlarmDisplay, acTimeDisplay, acNotify);
+        this.mPebble = new Pebble(ruleSystemService, this, evButtonPress, evHeartRateReading, evGesture, acVibrate, acAlarmDisplay, acTimeDisplay, acSportDisplay, acNotify, acScoreAdjust);
         this.mClock = new Clock(ruleSystemService, this, evTimeAt, stTimeFromTo);
         this.mGeofences = new Geofences(ruleSystemService, this, evLocationArrivingAt, evLocationLeaving, stLocationCurrentlyAt);
         this.mHomeCoffeeMachine = new HomeCoffeeMachine(ruleSystemService,this,acStartCoffee);

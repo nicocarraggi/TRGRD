@@ -10,6 +10,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.nicolascarraggi.trgrd.logging.MyLogger;
 import com.getpebble.android.kit.PebbleKit;
 import com.getpebble.android.kit.util.PebbleDictionary;
 
@@ -38,6 +39,8 @@ public class PebbleCommunicationService extends Service {
                 notifyPebble(intent.getStringExtra("title"),intent.getStringExtra("text"));
             } else if(action.equals(Pebble.PEBBLE_SCREEN_TIME_ACTION)){
                 screenTime();
+            } else if(action.equals(Pebble.PEBBLE_SCREEN_SPORT_ACTION)){
+                screenSport(intent.getStringExtra("score"));
             } else if(action.equals(Pebble.PEBBLE_SCREEN_ALARM_ACTION)){
                 //screenAlarm();
                 screenText("Phone alarm going off!");
@@ -56,6 +59,8 @@ public class PebbleCommunicationService extends Service {
             KEY_TEXT = 2,
             KEY_NOTIF = 3,
             KEY_TAP = 4,
+            KEY_TIME = 5,
+            KEY_SPORT = 6,
             BUTTON_UP = 0,
             BUTTON_SELECT = 1,
             BUTTON_DOWN = 2;
@@ -176,6 +181,7 @@ public class PebbleCommunicationService extends Service {
         IntentFilter filter = new IntentFilter(Pebble.PEBBLE_VIBRATE_ACTION);
         filter.addAction(Pebble.PEBBLE_NOTIFICATION_ACTION);
         filter.addAction(Pebble.PEBBLE_SCREEN_TIME_ACTION);
+        filter.addAction(Pebble.PEBBLE_SCREEN_SPORT_ACTION);
         filter.addAction(Pebble.PEBBLE_SCREEN_ALARM_ACTION);
         filter.addAction(Pebble.PEBBLE_SCREEN_CLEAN_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, filter);
@@ -196,7 +202,17 @@ public class PebbleCommunicationService extends Service {
     }
 
     private void screenTime(){
+        //mTextdict.addString(KEY_TIME," ");
+        //PebbleKit.sendDataToPebble(getApplicationContext(), WATCHAPP_UUID, mTextdict);
+        mVibratedict.addInt32(KEY_TIME, 0);
+        PebbleKit.sendDataToPebble(getApplicationContext(), WATCHAPP_UUID, mVibratedict);
+        MyLogger.debugLog("TRGRD","Pebble Communiation Service Screen Time");
+    }
 
+    private void screenSport(String score){
+        mTextdict.addString(KEY_SPORT,score);
+        PebbleKit.sendDataToPebble(getApplicationContext(), WATCHAPP_UUID, mTextdict);
+        MyLogger.debugLog("TRGRD","Pebble Communiation Service Screen Sport");
     }
 
     private void screenText(String text){

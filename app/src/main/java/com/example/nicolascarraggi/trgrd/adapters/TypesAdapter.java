@@ -21,6 +21,7 @@ import com.example.nicolascarraggi.trgrd.rulesys.InputActionEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.LocationEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.LocationState;
 import com.example.nicolascarraggi.trgrd.rulesys.NotificationAction;
+import com.example.nicolascarraggi.trgrd.rulesys.ScoreValueAction;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
 import com.example.nicolascarraggi.trgrd.rulesys.StateType;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeEvent;
@@ -330,6 +331,17 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
                             showInstanceValueThree();
                             tvTypeInstanceValueThree.setText("Notify:   ");
                             tvTypeInstanceValueThreeValue.setText(notificationAction.getTitle()+" - "+notificationAction.getText());
+                        }
+                    } else if (action.isScoreValueAction()){
+                        ScoreValueAction scoreValueAction = (ScoreValueAction) action;
+                        if (mEdit) {
+                            showInstanceValueZero();
+                            tvTypeInstanceValueZero.setText(scoreValueAction.getName());
+                            bTypeInstanceValueZero.setText(Integer.toString(scoreValueAction.getValue()));
+                        } else {
+                            showInstanceValueThree();
+                            tvTypeInstanceValueThree.setText(scoreValueAction.getName());
+                            tvTypeInstanceValueThreeValue.setText(Integer.toString(scoreValueAction.getValue()));
                         }
                     }
                 }

@@ -110,7 +110,11 @@ public class Action {
         return isSkeleton;
     }
 
+    public boolean isScoreValueAction() {
+        return actionValueType == ActionValueType.SCOREVALUE;
+    }
+
     public enum ActionValueType {
-        NONE, VALUE, NOTIFICATION
+        NONE, VALUE, NOTIFICATION, SCOREVALUE
     }
 }

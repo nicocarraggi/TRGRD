@@ -37,6 +37,7 @@ import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
 import com.example.nicolascarraggi.trgrd.rulesys.RuleSystemService;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
+import com.example.nicolascarraggi.trgrd.rulesys.devices.Pebble;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -185,6 +186,7 @@ public class DeviceDetailsActivity extends RuleSystemBindingActivity implements 
          * number.
          */
         public static PlaceholderFragment newInstance(int sectionNumber, int deviceId) {
+
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
@@ -196,11 +198,30 @@ public class DeviceDetailsActivity extends RuleSystemBindingActivity implements 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_device_details, container, false);
-            rvDeviceDetails = (RecyclerView) rootView.findViewById(R.id.rvDeviceDetails);
+            View rootView = null;
             eventsStatesOrActions = getArguments().getInt(ARG_SECTION_NUMBER);
             deviceId = getArguments().getInt(ARG_DEVICE_ID);
-            fillData();
+            if(eventsStatesOrActions<4){
+                rootView = inflater.inflate(R.layout.fragment_device_details, container, false);
+                rvDeviceDetails = (RecyclerView) rootView.findViewById(R.id.rvDeviceDetails);
+                fillData();
+            } else {
+                rootView = inflater.inflate(R.layout.fragment_device_details_settings, container, false);
+                device = mListener.getDeviceManager().getDevice(deviceId);
+                if (device.getName().equals("Pebble Watch")){
+                    rootView = inflater.inflate(R.layout.fragment_pebble_details_settings, container, false);
+                    final TextView tvScore = (TextView) rootView.findViewById(R.id.tvPebbleSettingsScore);
+                    tvScore.setText(((Pebble) device).getScore().toScoreString());
+                    Button bResetScore = (Button) rootView.findViewById(R.id.bPebbleSettingsResetScore);
+                    bResetScore.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            ((Pebble) device).setScore(0,0);
+                            tvScore.setText(((Pebble) device).getScore().toScoreString());
+                        }
+                    });
+                }
+            }
             return rootView;
         }
 
@@ -255,8 +276,8 @@ public class DeviceDetailsActivity extends RuleSystemBindingActivity implements 
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            // Show 4 total pages.
+            return 4;
         }
 
         @Override
@@ -268,6 +289,8 @@ public class DeviceDetailsActivity extends RuleSystemBindingActivity implements 
                     return "States\n( WHILE ... )";
                 case 2:
                     return "Actions\n( THEN ... )";
+                case 3:
+                    return "Settings\n            ";
             }
             return null;
         }

@@ -10,8 +10,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.nicolascarraggi.trgrd.R;
+import com.example.nicolascarraggi.trgrd.logging.MyLogger;
 import com.example.nicolascarraggi.trgrd.rulesys.Action;
 import com.example.nicolascarraggi.trgrd.rulesys.NotificationAction;
+import com.example.nicolascarraggi.trgrd.rulesys.ScoreValueAction;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -127,6 +129,7 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
         }
 
         public void bind(Action action, MyActionOnItemClickListener listener){
+            MyLogger.debugLog("TRGRD","ActionsAdapter action "+action.getName());
             this.myActionOnItemClickListener = listener;
             this.ivActionDevice.setImageResource(action.getDevice().getIconResource());
             this.ivAction.setImageResource(action.getIconResource());
@@ -150,6 +153,17 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
                     showValueThree();
                     tvActionValueThree.setText("Notify:   ");
                     tvActionValueThreeValue.setText(notificationAction.getTitle()+" - "+notificationAction.getText());
+                }
+            } else if (action.isScoreValueAction()){
+                ScoreValueAction scoreValueAction = (ScoreValueAction) action;
+                if (mEdit) {
+                    showValueZero();
+                    tvActionValueZero.setText(scoreValueAction.getName());
+                    bActionValueZero.setText(Integer.toString(scoreValueAction.getValue()));
+                } else {
+                    showValueThree();
+                    tvActionValueThree.setText(scoreValueAction.getName());
+                    tvActionValueThreeValue.setText(Integer.toString(scoreValueAction.getValue()));
                 }
             }
         }

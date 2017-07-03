@@ -21,7 +21,8 @@ public class NotificationAction extends Action {
     }
 
     public NotificationAction(int id, String name, int iconResource, Device device, ActionType actionType, String title, String text, Callable callable) {
-        super(id, name, iconResource, device, actionType, callable);
+        this(id, name, iconResource, device, actionType);
+        this.callable = callable;
         this.actionValueType = ActionValueType.NOTIFICATION;
         this.notificationActionType = NotificationActionType.NONE;
         this.title = title;

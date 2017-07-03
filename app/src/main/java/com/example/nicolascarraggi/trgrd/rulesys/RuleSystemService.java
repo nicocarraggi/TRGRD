@@ -184,12 +184,18 @@ public class RuleSystemService extends Service {
         rtNotifyButton.addTriggerType(mDeviceManager.evButtonPress);
         rtNotifyButton.addActionType(mDeviceManager.acNotify);
         ruleTemplates.put(rtNotifyButton.getId(),rtNotifyButton);
-        // When at a location and button is pressed,
+        // When at a location and button is pressed, start coffee
         RuleTemplate rtCoffee = new RuleTemplate(getNewId(),"Start making coffee at a location with a button press");
         rtCoffee.addTriggerType(mDeviceManager.evButtonPress);
         rtCoffee.addTriggerType(mDeviceManager.stLocationCurrentlyAt);
         rtCoffee.addActionType(mDeviceManager.acStartCoffee);
         ruleTemplates.put(rtCoffee.getId(),rtCoffee);
+        // When button is pressed, while an alarm is going, dismiss it!
+        RuleTemplate rtDismissAlarmButton = new RuleTemplate(getNewId(),"Dismiss an alarm on a device with a button press");
+        rtDismissAlarmButton.addTriggerType(mDeviceManager.evButtonPress);
+        rtDismissAlarmButton.addTriggerType(mDeviceManager.stAlarmGoing);
+        rtDismissAlarmButton.addActionType(mDeviceManager.acAlarmDismiss);
+        ruleTemplates.put(rtDismissAlarmButton.getId(),rtDismissAlarmButton);
     }
 
     private void testExampleRules(){
@@ -198,7 +204,7 @@ public class RuleSystemService extends Service {
         erCoffeeLocation.addState(mDeviceManager.getGeofences().getLocationCurrentlyAt());
         erCoffeeLocation.addAction(mDeviceManager.getHomeCoffeeMachine().getStartCoffee());
         exampleRules.put(erCoffeeLocation.getId(),erCoffeeLocation);
-        ExampleRule erDisplayAlarm = new ExampleRule(getNewId(),"Display Phone alarm on Pebble watch");
+        ExampleRule erDisplayAlarm = new ExampleRule(getNewId(),"Display Phone alarm alert on Pebble watch");
         erDisplayAlarm.addEvent(mDeviceManager.getAndroidPhone().getAlarmStart());
         erDisplayAlarm.addAction(mDeviceManager.getPebble().getScreenAlarm());
         exampleRules.put(erDisplayAlarm.getId(),erDisplayAlarm);
@@ -206,6 +212,13 @@ public class RuleSystemService extends Service {
         erNotifyButtonPressed.addEvent(mDeviceManager.getPebble().getBtn());
         erNotifyButtonPressed.addAction(mDeviceManager.getAndroidPhone().getNotify());
         exampleRules.put(erNotifyButtonPressed.getId(),erNotifyButtonPressed);
+        //
+        ExampleRule erDismissPhoneAlarmWithPebbleButton = new ExampleRule(getNewId(),"Dismiss Phone alarm with a Pebble watch button press");
+        erDismissPhoneAlarmWithPebbleButton.addEvent(mDeviceManager.getPebble().getBtn());
+        erDismissPhoneAlarmWithPebbleButton.addState(mDeviceManager.getAndroidPhone().getAlarmGoing());
+        erDismissPhoneAlarmWithPebbleButton.addAction(mDeviceManager.getAndroidPhone().getAcAlarmDismiss());
+        exampleRules.put(erDismissPhoneAlarmWithPebbleButton.getId(),erDismissPhoneAlarmWithPebbleButton);
+
     }
 
 }
