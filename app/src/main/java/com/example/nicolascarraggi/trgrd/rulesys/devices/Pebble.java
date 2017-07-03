@@ -247,12 +247,20 @@ public class Pebble extends Wearable implements NotificationDevice, ScoreDevice,
         return mIaEvBtnDown;
     }
 
+    public Event getShake() {
+        return mEvShake;
+    }
+
     public Action getVibrate() {
         return mAcVibrate;
     }
 
     public Action getScreenTime() {
         return mAcScreenTime;
+    }
+
+    public Action getScreenSport() {
+        return mAcScreenSport;
     }
 
     public Action getScreenAlarm() {
@@ -263,6 +271,39 @@ public class Pebble extends Wearable implements NotificationDevice, ScoreDevice,
         return mAcScreenClean;
     }
 
+    public Action getAddScoreOneLeft() {
+        return mAcScoreAddOneLeft;
+    }
+
+    public Action getAddScoreOneRight() {
+        return mAcScoreAddOneRight;
+    }
+
+    public Action getSubtractScoreOneLeft() {
+        return mAcScoreSubtractOneLeft;
+    }
+
+    public Action getSubtractScoreOneRight() {
+        return mAcScoreSubtractOneRight;
+    }
+
+    public Action getAddScoreXLeft() {
+        return mAcScoreAddXLeft;
+    }
+
+    public Action getAddScoreXRight() {
+        return mAcScoreAddXRight;
+    }
+
+    public Action getSubtractScoreXLeft() {
+        return mAcScoreSubtractXLeft;
+    }
+
+    public Action getSubtractScoreXRight() {
+        return mAcScoreSubtractXRight;
+    }
+
+    // simulate ...
     public Action getSimVibrate() {
         Action simVibrate = new Action(0,"Pebble Vibrate",0, this, null, new Callable<String>() {
             @Override

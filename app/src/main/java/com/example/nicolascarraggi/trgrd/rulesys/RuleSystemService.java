@@ -7,7 +7,6 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.example.nicolascarraggi.trgrd.R;
-import com.example.nicolascarraggi.trgrd.logging.MyLogger;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.HashMap;
@@ -24,8 +23,9 @@ public class RuleSystemService extends Service {
 
     private DeviceManager mDeviceManager;
 
-    private Rule mTestRuleAlarmStartPebble,mTestRuleAlarmDismissPebble,mTestRuleAlarmDonePebble;
-
+    // FOR TESTING
+    private Rule mTestRuleAlarmStartPebble,mTestRuleAlarmDismissPebble,mTestRuleAlarmDonePebble,
+                mTestRulePebbleSportMode, mTestRulePebbleTimeMode, mTestRulePebbleAdd1Left, mTestRulePebbleAdd1Right;
     private Location mTestLocationVub, mTestLocationStadium, mTestLocationHome;
 
     private HashMap<Integer,Rule> rules;
@@ -41,18 +41,7 @@ public class RuleSystemService extends Service {
         this.ruleTemplates = new HashMap<>();
         this.ruleTemplateInstances = new HashMap<>();
         this.locations = new HashMap<>();
-        this.mTestRuleAlarmStartPebble = new Rule(0,"Display Phone alarm alert on Pebble watch");
-        this.mTestRuleAlarmDismissPebble = new Rule(1,"Dismiss Phone alarm with a Pebble watch button press");
-        this.mTestRuleAlarmDonePebble = new Rule(2,"Clear Pebble watch screen when Phone alarm is done");
-        this.rules.put(mTestRuleAlarmStartPebble.getId(),mTestRuleAlarmStartPebble);
-        this.rules.put(mTestRuleAlarmDismissPebble.getId(),mTestRuleAlarmDismissPebble);
-        this.rules.put(mTestRuleAlarmDonePebble.getId(),mTestRuleAlarmDonePebble);
-        this.mTestLocationVub = new Location("0", "Vrije Universiteit Brussel","Pleinlaan 9", R.drawable.ic_school_black_24dp, new LatLng(50.8218985, 4.3933034));
-        this.mTestLocationStadium = new Location("1", "Stadium","Sippelberglaan 1", R.drawable.ic_directions_run_black_24dp, new LatLng(50.8597101, 4.3218491));
-        this.mTestLocationHome = new Location("2", "Home","Potaardestraat 161", R.drawable.ic_home_black_24dp, new LatLng(50.862164, 4.282571));
-        this.locations.put(mTestLocationVub.getId(),mTestLocationVub);
-        this.locations.put(mTestLocationStadium.getId(),mTestLocationStadium);
-        this.locations.put(mTestLocationHome.getId(),mTestLocationHome);
+        testCreateLocations();
     }
 
     @Override
@@ -60,7 +49,8 @@ public class RuleSystemService extends Service {
         super.onCreate();
         this.mDeviceManager = new DeviceManager(this);
         mDeviceManager.startDevices();
-        testAlarmPebble();
+        testCreateRulesPebbleAlarm();
+        testCreateRulesPebbleWatchmodes();
         testRuleTemplates();
         testExampleRules();
     }
@@ -155,8 +145,25 @@ public class RuleSystemService extends Service {
         return this.newId++;
     }
 
+    // LOCATIONS TESTS
+    private void testCreateLocations(){
+        this.mTestLocationVub = new Location("0", "Vrije Universiteit Brussel","Pleinlaan 9", R.drawable.ic_school_black_24dp, new LatLng(50.8218985, 4.3933034));
+        this.mTestLocationStadium = new Location("1", "Stadium","Sippelberglaan 1", R.drawable.ic_directions_run_black_24dp, new LatLng(50.8597101, 4.3218491));
+        this.mTestLocationHome = new Location("2", "Home","Potaardestraat 161", R.drawable.ic_home_black_24dp, new LatLng(50.862164, 4.282571));
+        this.locations.put(mTestLocationVub.getId(),mTestLocationVub);
+        this.locations.put(mTestLocationStadium.getId(),mTestLocationStadium);
+        this.locations.put(mTestLocationHome.getId(),mTestLocationHome);
+    }
+
     // RULE TESTS
-    private void testAlarmPebble(){
+    private void testCreateRulesPebbleAlarm(){
+        // create rules
+        this.mTestRuleAlarmStartPebble = new Rule(getNewId(),"Display Phone alarm alert on Pebble watch");
+        this.mTestRuleAlarmDismissPebble = new Rule(getNewId(),"Dismiss Phone alarm with a Pebble watch button press");
+        this.mTestRuleAlarmDonePebble = new Rule(getNewId(),"Clear Pebble watch screen when Phone alarm is done");
+        this.rules.put(mTestRuleAlarmStartPebble.getId(),mTestRuleAlarmStartPebble);
+        this.rules.put(mTestRuleAlarmDismissPebble.getId(),mTestRuleAlarmDismissPebble);
+        this.rules.put(mTestRuleAlarmDonePebble.getId(),mTestRuleAlarmDonePebble);
         // Alarm start! -> Pebble Screen Alarm!
         mTestRuleAlarmStartPebble.addEvent(mDeviceManager.getAndroidPhone().getAlarmStart());
         mTestRuleAlarmStartPebble.addAction(mDeviceManager.getPebble().getScreenAlarm());
@@ -170,6 +177,34 @@ public class RuleSystemService extends Service {
         mTestRuleAlarmDonePebble.addEvent(mDeviceManager.getAndroidPhone().getAlarmDone());
         mTestRuleAlarmDonePebble.addAction(mDeviceManager.getPebble().getScreenClean());
         mTestRuleAlarmDonePebble.setActive(true);
+    }
+
+    private void testCreateRulesPebbleWatchmodes(){
+        // create rules
+        this.mTestRulePebbleSportMode = new Rule(getNewId(),"Show sport mode on Pebble watch with a Pebble watch button press");
+        this.mTestRulePebbleTimeMode = new Rule(getNewId(),"Show time mode on Pebble watch by shaking a Pebble watch");
+        this.mTestRulePebbleAdd1Left = new Rule(getNewId(),"Add 1 to Pebble left score with a Pebble watch button press");
+        this.mTestRulePebbleAdd1Right = new Rule(getNewId(),"Add 1 to Pebble right score with a Pebble watch button press");
+        this.rules.put(mTestRulePebbleSportMode.getId(),mTestRulePebbleSportMode);
+        this.rules.put(mTestRulePebbleTimeMode.getId(),mTestRulePebbleTimeMode);
+        this.rules.put(mTestRulePebbleAdd1Left.getId(), mTestRulePebbleAdd1Left);
+        this.rules.put(mTestRulePebbleAdd1Right.getId(), mTestRulePebbleAdd1Right);
+        // Pebble select button -> Pebble sport mode
+        mTestRulePebbleSportMode.addEvent(mDeviceManager.getPebble().getBtnSelect());
+        mTestRulePebbleSportMode.addAction(mDeviceManager.getPebble().getScreenSport());
+        mTestRulePebbleSportMode.setActive(true);
+        // Pebble shake -> Pebble time mode
+        mTestRulePebbleTimeMode.addEvent(mDeviceManager.getPebble().getShake());
+        mTestRulePebbleTimeMode.addAction(mDeviceManager.getPebble().getScreenTime());
+        mTestRulePebbleTimeMode.setActive(true);
+        // Pebble up button -> Pebble left score + 1
+        mTestRulePebbleAdd1Left.addEvent(mDeviceManager.getPebble().getBtnUp());
+        mTestRulePebbleAdd1Left.addAction(mDeviceManager.getPebble().getAddScoreOneLeft());
+        mTestRulePebbleAdd1Left.setActive(true);
+        // Pebble down button -> Pebble right score + 1
+        mTestRulePebbleAdd1Right.addEvent(mDeviceManager.getPebble().getBtnDown());
+        mTestRulePebbleAdd1Right.addAction(mDeviceManager.getPebble().getAddScoreOneRight());
+        mTestRulePebbleAdd1Right.setActive(true);
     }
 
     // RULE TEMPLATE TESTS
