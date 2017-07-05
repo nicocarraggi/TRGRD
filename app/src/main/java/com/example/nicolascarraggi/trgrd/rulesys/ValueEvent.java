@@ -15,15 +15,15 @@ public class ValueEvent extends Event {
     private int value;
 
     // SKELETON constructor
-    public ValueEvent(int id, String name, int iconResource, Device device, EventType eventType) {
-        super(id, name, iconResource, device, eventType);
+    public ValueEvent(int id, String name, int iconResource, Device device, EventType eventType, RuleEngine ruleEngine) {
+        super(id, name, iconResource, device, eventType, ruleEngine);
         this.eventValueType = EventValueType.VALUE;
         this.value = 0;
         this.valueEventType = null;
     }
 
-    public ValueEvent(int id, String name, int iconResource, Device device, EventType eventType, ValueEventType valueEventType, int value) {
-        this(id, name, iconResource, device, eventType);
+    public ValueEvent(int id, String name, int iconResource, Device device, EventType eventType, ValueEventType valueEventType, int value, RuleEngine ruleEngine) {
+        this(id, name, iconResource, device, eventType, ruleEngine);
         this.isSkeleton = false;
         this.valueEventType = valueEventType;
         this.value = value;

@@ -92,7 +92,7 @@ public class MyoDevice extends Wearable implements InputActionDevice {
         this.inputActions.add(mIaGestDoubleTap);
         //this.inputActions.add(mIaGestFingSpread);
         // INPUT ACTION EVENTS
-        this.mIaEvGest = new InputActionEvent(deviceManager.getNewId(),"MYO armband ... gesture is made","gesture", R.drawable.ic_gesture_black_24dp, this, evGesture);
+        this.mIaEvGest = new InputActionEvent(deviceManager.getNewId(),"MYO armband ... gesture is made","gesture", R.drawable.ic_gesture_black_24dp, this, evGesture, ruleSystemService.getRuleEngine());
         //this.mIaEvGestFist = new InputActionEvent(deviceManager.getNewId(),mIaEvGest,mIaGestFist);
         this.mIaEvGestWaveIn = new InputActionEvent(deviceManager.getNewId(),mIaEvGest,mIaGestWaveIn);
         this.mIaEvGestWaveOut = new InputActionEvent(deviceManager.getNewId(),mIaEvGest,mIaGestWaveOut);

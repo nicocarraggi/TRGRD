@@ -12,15 +12,15 @@ public class TimeState extends State {
     private MyTime timeFrom, timeTo;
 
     // SKELETON constructor
-    public TimeState(int id, String name, int iconResource, Device device, StateType stateType, boolean state) {
-        super(id, name, iconResource, device, stateType, state);
+    public TimeState(int id, String name, int iconResource, Device device, StateType stateType, boolean state, RuleEngine ruleEngine) {
+        super(id, name, iconResource, device, stateType, state, ruleEngine);
         this.stateValueType = StateValueType.TIME;
         this.timeFrom = null;
         this.timeTo = null;
     }
 
-    public TimeState(int id, String name, int iconResource, Device device, StateType stateType, boolean state, MyTime timeFrom, MyTime timeTo) {
-        super(id, name, iconResource, device, stateType, state);
+    public TimeState(int id, String name, int iconResource, Device device, StateType stateType, boolean state, MyTime timeFrom, MyTime timeTo, RuleEngine ruleEngine) {
+        super(id, name, iconResource, device, stateType, state, ruleEngine);
         this.stateValueType = StateValueType.TIME;
         this.timeFrom = timeFrom;
         this.timeTo = timeTo;
@@ -29,7 +29,7 @@ public class TimeState extends State {
 
     // copy constructor
     public TimeState(int id, TimeState timeState, MyTime timeFrom, MyTime timeTo){
-        super(id, timeState.getName(), timeState.getIconResource(), timeState.getDevice(), timeState.getStateType(), timeState.isState());
+        super(id, timeState.getName(), timeState.getIconResource(), timeState.getDevice(), timeState.getStateType(), timeState.isState(), timeState.getRuleEngine());
         this.stateValueType = StateValueType.TIME;
         this.timeFrom = timeFrom;
         this.timeTo = timeTo;

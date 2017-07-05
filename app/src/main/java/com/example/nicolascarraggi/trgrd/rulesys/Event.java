@@ -16,11 +16,12 @@ public class Event {
     protected EventValueType eventValueType;
     protected Device device;
     protected boolean usedInRule;
+    protected RuleEngine ruleEngine;
     private MyTime lastTimeTriggered;
     protected boolean isSkeleton; // for events & states with values...
     protected Set<Rule> rules; // = listeners
 
-    public Event(int id, String name, int iconResource, Device device, EventType eventType) {
+    public Event(int id, String name, int iconResource, Device device, EventType eventType, RuleEngine ruleEngine) {
         this.id = id;
         this.name = name;
         this.iconResource = iconResource;
@@ -28,6 +29,7 @@ public class Event {
         this.eventType = eventType;
         if(eventType != null) eventType.addEvent(this); // eventType = null if this is a State
         this.usedInRule = false;
+        this.ruleEngine = ruleEngine;
         this.eventValueType = EventValueType.NONE;
         this.isSkeleton = true;
         this.rules = new HashSet<Rule>();
@@ -73,6 +75,10 @@ public class Event {
         return rules;
     }
 
+    public RuleEngine getRuleEngine() {
+        return ruleEngine;
+    }
+
     public boolean isUsedInRule() {
         return usedInRule;
     }
@@ -97,9 +103,10 @@ public class Event {
 
     public synchronized void trigger(){
         this.lastTimeTriggered = new MyTime();
-        for (Rule rule : rules){
-            rule.eventTriggered(this);
-        }
+        //for (Rule rule : rules){
+        //    rule.eventTriggered(this);
+        //}
+        ruleEngine.checkRules(rules);
     }
 
     public boolean isNormalEvent(){

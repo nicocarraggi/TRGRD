@@ -12,15 +12,25 @@ import java.util.concurrent.Callable;
 
 import static org.junit.Assert.assertEquals;
 
+/*
+
+    NOT WORKING ANYMORE !!!!
+
+    -> this was BEFORE the rule engine ...
+    -> BEFORE the rule engine, every rule would check itself and execute itself
+    -> this was bad, because of synchronisation problems ...
+
+ */
+
 public class RuleUnitTest {
     @Test
     public void newRule_isCorrect() throws Exception {
         Rule r = new Rule(1,"testRule");
         Device d = null; // not really used in this test case!
-        Event e1 = new Event(1,"testEvent1",0, d, null);
+        Event e1 = new Event(1,"testEvent1",0, d, null, null);
         //Event e2 = new Event("testEvent2", d);
-        State s1 = new State(2,"testState1",0, d, null, false);
-        State s2 = new State(3,"testState2",0, d, null, false);
+        State s1 = new State(2,"testState1",0, d, null, false, null);
+        State s2 = new State(3,"testState2",0, d, null, false, null);
         Action a = new Action(4,"testAction",0, d, null, new Callable() {
             @Override
             public Object call() throws Exception {

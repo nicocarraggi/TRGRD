@@ -57,6 +57,7 @@ public class DeviceManager {
     public StateType stCallIncGoing = new StateType(getNewId(),"an incoming call is going");
     public StateType stTimeFromTo = new StateType(getNewId(),"time is between two times");
     public StateType stLocationCurrentlyAt = new StateType(getNewId(),"currently at a location");
+    public StateType stWatchMode = new StateType(getNewId(),"watch is in a certain mode");
 
 
     // ActionTypes
@@ -64,6 +65,7 @@ public class DeviceManager {
     public ActionType acAlarmDismiss = new ActionType(getNewId(),"dismiss the alarm");
     public ActionType acVibrate = new ActionType(getNewId(),"vibrate something");
     public ActionType acAlarmDisplay = new ActionType(getNewId(),"display the alarm somewhere");
+    public ActionType acWatchMode = new ActionType(getNewId(),"set watch to a certain mode");
     public ActionType acTimeDisplay = new ActionType(getNewId(),"display time");
     public ActionType acSportDisplay = new ActionType(getNewId(),"display sport info");
     public ActionType acNotify = new ActionType(getNewId(),"notify something somewhere");
@@ -88,6 +90,7 @@ public class DeviceManager {
         this.eventTypeInstances = new HashMap<>();
         this.stateTypeInstances = new HashMap<>();
         this.actionTypeInstances = new HashMap<>();
+        // EventTypes
         this.eventTypes.put(evAlarmAlert.getId(),evAlarmAlert);
         this.eventTypes.put(evAlarmSnooze.getId(),evAlarmSnooze);
         this.eventTypes.put(evAlarmDismiss.getId(),evAlarmDismiss);
@@ -100,21 +103,25 @@ public class DeviceManager {
         this.eventTypes.put(evLocationLeaving.getId(),evLocationLeaving);
         this.eventTypes.put(evGesture.getId(),evGesture);
         this.eventTypes.put(evWakesUp.getId(), evWakesUp);
+        // StateTypes
         this.stateTypes.put(stAlarmGoing.getId(),stAlarmGoing);
         this.stateTypes.put(stCallIncGoing.getId(),stCallIncGoing);
         this.stateTypes.put(stTimeFromTo.getId(),stTimeFromTo);
         this.stateTypes.put(stLocationCurrentlyAt.getId(),stLocationCurrentlyAt);
+        this.stateTypes.put(stWatchMode.getId(),stWatchMode);
+        // ActionTypes
         this.actionTypes.put(acAlarmSnooze.getId(),acAlarmSnooze);
         this.actionTypes.put(acAlarmDismiss.getId(),acAlarmDismiss);
         this.actionTypes.put(acVibrate.getId(),acVibrate);
         this.actionTypes.put(acAlarmDisplay.getId(),acAlarmDisplay);
+        this.actionTypes.put(acWatchMode.getId(),acWatchMode);
         this.actionTypes.put(acTimeDisplay.getId(),acTimeDisplay);
         this.actionTypes.put(acSportDisplay.getId(),acSportDisplay);
         this.actionTypes.put(acNotify.getId(),acNotify);
         this.actionTypes.put(acStartCoffee.getId(),acStartCoffee);
         this.actionTypes.put(acScoreAdjust.getId(),acScoreAdjust);
         this.mAndroidPhone = new AndroidPhone(ruleSystemService, this, evAlarmAlert, evAlarmSnooze, evAlarmDismiss, evAlarmDone, evCallInc, stAlarmGoing, stCallIncGoing, acAlarmSnooze, acAlarmDismiss,acNotify);
-        this.mPebble = new Pebble(ruleSystemService, this, evButtonPress, evHeartRateReading, evGesture, acVibrate, acAlarmDisplay, acTimeDisplay, acSportDisplay, acNotify, acScoreAdjust);
+        this.mPebble = new Pebble(ruleSystemService, this, evButtonPress, evHeartRateReading, evGesture, stWatchMode,  acVibrate, acAlarmDisplay, acWatchMode, acTimeDisplay, acSportDisplay, acNotify, acScoreAdjust);
         this.mClock = new Clock(ruleSystemService, this, evTimeAt, stTimeFromTo);
         this.mGeofences = new Geofences(ruleSystemService, this, evLocationArrivingAt, evLocationLeaving, stLocationCurrentlyAt);
         this.mHomeCoffeeMachine = new HomeCoffeeMachine(ruleSystemService,this,acStartCoffee);

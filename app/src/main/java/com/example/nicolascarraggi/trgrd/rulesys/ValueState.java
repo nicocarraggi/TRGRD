@@ -12,15 +12,15 @@ public class ValueState extends State {
     private int valueFrom, valueTo;
 
     // SKELETON constructor
-    public ValueState(int id, String name, int iconResource, Device device, StateType stateType, boolean state) {
-        super(id, name, iconResource, device, stateType, state);
+    public ValueState(int id, String name, int iconResource, Device device, StateType stateType, boolean state, RuleEngine ruleEngine) {
+        super(id, name, iconResource, device, stateType, state, ruleEngine);
         this.stateValueType = StateValueType.VALUE;
         this.valueFrom = 0;
         this.valueTo = 0;
     }
 
-    public ValueState(int id, String name, int iconResource, Device device, StateType stateType, boolean state, int valueFrom, int valueTo) {
-        super(id, name, iconResource, device, stateType, state);
+    public ValueState(int id, String name, int iconResource, Device device, StateType stateType, boolean state, int valueFrom, int valueTo, RuleEngine ruleEngine) {
+        super(id, name, iconResource, device, stateType, state, ruleEngine);
         this.stateValueType = StateValueType.VALUE;
         this.valueFrom = valueFrom;
         this.valueTo = valueTo;

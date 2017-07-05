@@ -1,5 +1,8 @@
 package com.example.nicolascarraggi.trgrd.rulesys;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by nicolascarraggi on 4/04/17.
  */
@@ -10,8 +13,8 @@ public class State extends Event {
     protected boolean state = false;
     protected StateValueType stateValueType;
 
-    public State(int id, String name, int iconResource, Device device, StateType stateType, boolean state) {
-        super(id, name, iconResource, device, null);
+    public State(int id, String name, int iconResource, Device device, StateType stateType, boolean state, RuleEngine ruleEngine) {
+        super(id, name, iconResource, device, null, ruleEngine);
         this.stateType = stateType;
         stateType.addState(this);
         this.state = state;
@@ -34,9 +37,11 @@ public class State extends Event {
     }
 
     private void stateChanged(){
-        for (Rule listener : super.rules){
-            listener.stateChanged(this);
+        Set<Rule> toCheck = new HashSet<>();
+        for (Rule rule : super.rules){
+            if(rule.stateChangedNeedsCheck(this)) toCheck.add(rule);
         }
+        ruleEngine.checkRules(toCheck);
     }
 
     public StateValueType getStateValueType() {

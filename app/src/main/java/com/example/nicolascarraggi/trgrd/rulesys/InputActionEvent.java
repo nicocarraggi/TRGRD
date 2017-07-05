@@ -13,15 +13,15 @@ public class InputActionEvent extends Event {
     private String type;
 
     // SKELETON constructor
-    public InputActionEvent(int id, String name, String type, int iconResource, Device device, EventType eventType) {
-        super(id, name, iconResource, device, eventType);
+    public InputActionEvent(int id, String name, String type, int iconResource, Device device, EventType eventType, RuleEngine ruleEngine) {
+        super(id, name, iconResource, device, eventType, ruleEngine);
         this.eventValueType = EventValueType.INPUTACTION;
         this.type = type;
         this.inputAction = null;
     }
 
-    public InputActionEvent(int id, String name, String type, int iconResource, Device device, EventType eventType, InputAction inputAction) {
-        this(id, name, type, iconResource, device, eventType);
+    public InputActionEvent(int id, String name, String type, int iconResource, Device device, EventType eventType, InputAction inputAction, RuleEngine ruleEngine) {
+        this(id, name, type, iconResource, device, eventType, ruleEngine);
         this.inputAction = inputAction;
         this.inputAction.setInputActionEvent(this);
         this.isSkeleton=false;
@@ -29,7 +29,7 @@ public class InputActionEvent extends Event {
 
     // copy constructor
     public InputActionEvent(int id, InputActionEvent inputActionEvent, InputAction inputAction){
-        this(id, inputActionEvent.getName(), inputActionEvent.getInputActionType(), inputActionEvent.getIconResource(),inputActionEvent.getDevice(),inputActionEvent.getEventType(),inputAction);
+        this(id, inputActionEvent.getName(), inputActionEvent.getInputActionType(), inputActionEvent.getIconResource(),inputActionEvent.getDevice(),inputActionEvent.getEventType(),inputAction, inputActionEvent.getRuleEngine());
     }
 
     public InputAction getInputAction() {

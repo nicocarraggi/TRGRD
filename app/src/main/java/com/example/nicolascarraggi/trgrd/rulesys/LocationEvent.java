@@ -13,22 +13,22 @@ public class LocationEvent extends Event {
     private Location location;
 
     // SKELETON constructor
-    public LocationEvent(int id, String name, int iconResource, Device device, EventType eventType, LocationEventType locationEventType) {
-        super(id, name, iconResource, device, eventType);
+    public LocationEvent(int id, String name, int iconResource, Device device, EventType eventType, LocationEventType locationEventType, RuleEngine ruleEngine) {
+        super(id, name, iconResource, device, eventType, ruleEngine);
         this.eventValueType = EventValueType.LOCATION;
         this.locationEventType = locationEventType;
         this.location = null;
     }
 
-    public LocationEvent(int id, String name, int iconResource, Device device, EventType eventType, LocationEventType locationEventType, Location location) {
-        this(id, name, iconResource, device, eventType, locationEventType);
+    public LocationEvent(int id, String name, int iconResource, Device device, EventType eventType, LocationEventType locationEventType, Location location, RuleEngine ruleEngine) {
+        this(id, name, iconResource, device, eventType, locationEventType, ruleEngine);
         this.location = location;
         this.isSkeleton=false;
     }
 
     // copy constructor
     public LocationEvent(int id, LocationEvent locationEvent, Location location){
-        this(id, locationEvent.getName(),locationEvent.getIconResource(),locationEvent.getDevice(),locationEvent.getEventType(),locationEvent.getLocationEventType(),location);
+        this(id, locationEvent.getName(),locationEvent.getIconResource(),locationEvent.getDevice(),locationEvent.getEventType(),locationEvent.getLocationEventType(),location, locationEvent.getRuleEngine());
     }
 
     public LocationEventType getLocationEventType() {

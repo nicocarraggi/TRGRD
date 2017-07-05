@@ -94,7 +94,7 @@ public class Rule {
         }
     }
 
-    private void executeRule(){
+    public void executeRule(){
         System.out.println("[Rule "+this.name+"] executeRule()");
         if(!actions.isEmpty()) { // TODO error if no actions?
             for(Action a: actions){
@@ -109,7 +109,7 @@ public class Rule {
         }
     }
 
-    public void checkRule(){
+    public boolean checkRule(){
         System.out.println("[Rule "+this.name+"] checkRule()");
         if(active){
             if(!events.isEmpty() && events.size() > 1){
@@ -118,29 +118,30 @@ public class Rule {
                     // If an event is not triggered in the same timespan as now ( didn't happen recently )
                     // Then stop checking rule and return!
                     if ((e.getLastTimeTriggered() == null) || !e.getLastTimeTriggered().isInSameTimeSpan(now,eventsTimeSpan)){
-                        return;
+                        return false;
                     }
                 }
             }
             if(!states.isEmpty()){
                 System.out.println("[Rule "+this.name+"] checkRule() checking states");
                 // If event and states, check if all states are true !
-                boolean isRuleTrue = true;
                 for(State s: states){
                     System.out.println("[Rule "+this.name+"] checkRule() state: "+s.getName()+" isState= "+s.isState());
                     // If 1 state is false, stop the loop!
                     if(!s.isState()){
-                        isRuleTrue = false;
-                        return;
+                        return false;
                     }
                 }
-                executeRule();
+                //executeRule();
+                return true;
             } else {
                 System.out.println("[Rule "+this.name+"] checkRule() no states");
                 // If event and no states, rule is executed !
-                executeRule();
+                //executeRule();
+                return true;
             }
         }
+        return false;
     }
 
     public void eventTriggered(Event e){
@@ -148,10 +149,10 @@ public class Rule {
         checkRule();
     }
 
-    public void stateChanged(State s){
+    public boolean stateChangedNeedsCheck(State s){
         System.out.println("[Rule "+this.name+"] State "+s.getName()+" triggered with state "+s.isState()+"!");
         // If there isn't an event, check rule !
-        if(events.isEmpty()) checkRule();
+        return events.isEmpty();
     }
 
     public void addEvent(Event e){
