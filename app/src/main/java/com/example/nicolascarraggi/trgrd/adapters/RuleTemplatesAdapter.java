@@ -7,11 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.nicolascarraggi.trgrd.R;
 import com.example.nicolascarraggi.trgrd.rulesys.Rule;
 import com.example.nicolascarraggi.trgrd.rulesys.RuleTemplate;
+import com.example.nicolascarraggi.trgrd.rulesys.Type;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,19 +78,38 @@ public class RuleTemplatesAdapter extends RecyclerView.Adapter<RuleTemplatesAdap
     public class RuleTemplateViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private MyOnItemClickListener myOnItemClickListener;
-        private ImageView ivRuleTemplate;
+        private ImageView ivRuleTemplate, ivRuleTemplateEvent, ivRuleTemplateState, ivRuleTemplateAction;
+        private LinearLayout llEvent, llState, llAction;
         private TextView tvRuleTemplateName;
 
         public RuleTemplateViewHolder(View itemView) {
             super(itemView);
             this.ivRuleTemplate = (ImageView) itemView.findViewById(R.id.ivRuleTemplate);
             this.tvRuleTemplateName = (TextView) itemView.findViewById(R.id.tvRuleTemplateName);
+            this.ivRuleTemplateEvent = (ImageView) itemView.findViewById(R.id.ivRuleTemplateEvent);
+            this.ivRuleTemplateState = (ImageView) itemView.findViewById(R.id.ivRuleTemplateState);
+            this.ivRuleTemplateAction = (ImageView) itemView.findViewById(R.id.ivRuleTemplateAction);
+            this.llEvent = (LinearLayout) itemView.findViewById(R.id.llRuleTemplateEvent);
+            this.llState = (LinearLayout) itemView.findViewById(R.id.llRuleTemplateStates);
+            this.llAction = (LinearLayout) itemView.findViewById(R.id.llRuleTemplateActions);
             tvRuleTemplateName.setOnClickListener(this);
         }
 
         public void bind(RuleTemplate rule, MyOnItemClickListener listener){
             this.myOnItemClickListener = listener;
             this.tvRuleTemplateName.setText(rule.getName());
+            for (Type t : rule.getTriggerTypes()){
+                if (t.isEventType()){
+                    ivRuleTemplateEvent.setImageResource(t.getIconResource());
+                } else if(t.isStateType()){
+                    ivRuleTemplateState.setImageResource(t.getIconResource());
+                }
+            }
+            for (Type t : rule.getTriggerTypes()){
+                if (t.isActionType()){
+                    ivRuleTemplateAction.setImageResource(t.getIconResource());
+                }
+            }
         }
 
         @Override

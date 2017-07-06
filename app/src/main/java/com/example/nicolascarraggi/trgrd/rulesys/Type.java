@@ -16,13 +16,15 @@ public class Type {
     protected Set<Device> devices;
     protected boolean isSkeleton;
     protected boolean hasInstanceItem;
+    protected int iconResource;
 
-    public Type(int id, String name, TypeType typeType) {
+    public Type(int id, String name, TypeType typeType, int iconResource) {
         this.id = id;
         this.name = name;
         this.typeType = typeType;
         this.isSkeleton = true;
         this.hasInstanceItem = false;
+        this.iconResource = iconResource;
     }
 
     public int getId() {
@@ -75,6 +77,14 @@ public class Type {
 
     public boolean isHasInstanceItem() {
         return hasInstanceItem;
+    }
+
+    public int getIconResource() {
+        return iconResource;
+    }
+
+    public void setIconResource(int iconResource) {
+        this.iconResource = iconResource;
     }
 
     public enum TypeType {

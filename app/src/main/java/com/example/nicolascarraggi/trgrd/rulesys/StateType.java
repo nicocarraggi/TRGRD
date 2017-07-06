@@ -11,16 +11,17 @@ public class StateType extends Type {
 
     private Set<State> states;
     private State instanceState;
+    protected int iconResource;
 
     // SKELETON constructor
-    public StateType(int id, String name) {
-        super(id, name, TypeType.STATE);
+    public StateType(int id, String name, int iconResource) {
+        super(id, name, TypeType.STATE,iconResource);
         this.states = new HashSet<>();
     }
 
     // INSTANCE constructor
-    public StateType(int id, StateType stateType) {
-        super(id, stateType.getName(), TypeType.STATE);
+    public StateType(int id, StateType stateType, int iconResource) {
+        super(id, stateType.getName(), TypeType.STATE,iconResource);
         this.devices = stateType.getDevices();
         this.states = stateType.getStates();
         this.isSkeleton = false;

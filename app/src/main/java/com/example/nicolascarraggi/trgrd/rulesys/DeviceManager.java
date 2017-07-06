@@ -3,6 +3,7 @@ package com.example.nicolascarraggi.trgrd.rulesys;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
+import com.example.nicolascarraggi.trgrd.R;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.AndroidPhone;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Clock;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.HomeCoffeeMachine;
@@ -38,39 +39,39 @@ public class DeviceManager {
     private HashMap<Integer,ActionType> actionTypeInstances;
 
     // EventTypes
-    public EventType evAlarmAlert = new EventType(getNewId(),"an alarm alert starts");
-    public EventType evAlarmSnooze = new EventType(getNewId(),"an alarm snoozed");
-    public EventType evAlarmDismiss = new EventType(getNewId(),"an alarm dismissed");
-    public EventType evAlarmDone = new EventType(getNewId(),"an alarm stopped");
-    public EventType evCallInc = new EventType(getNewId(),"an incoming call starts or stops");
-    public EventType evButtonPress = new EventType(getNewId(),"a button is pressed"); // change to evOneInput? too restrictive now, could also be a gesture from myo?
-    public EventType evHeartRateReading = new EventType(getNewId(),"a heart rate reading comes in");
-    public EventType evTimeAt = new EventType(getNewId(),"time changes to a certain time"); // TODO other name
-    public EventType evLocationArrivingAt = new EventType(getNewId(),"arrived at a location");
-    public EventType evLocationLeaving = new EventType(getNewId(),"left a location");
-    public EventType evGesture = new EventType(getNewId(),"gesture is made");
-    public EventType evWakesUp = new EventType(getNewId(),"user wakes up"); // TODO change?
+    public EventType evAlarmAlert = new EventType(getNewId(),"an alarm alert starts", R.drawable.ic_alarm_black_24dp);
+    public EventType evAlarmSnooze = new EventType(getNewId(),"an alarm snoozed", R.drawable.ic_alarm_black_24dp);
+    public EventType evAlarmDismiss = new EventType(getNewId(),"an alarm dismissed", R.drawable.ic_alarm_black_24dp);
+    public EventType evAlarmDone = new EventType(getNewId(),"an alarm stopped", R.drawable.ic_alarm_black_24dp);
+    public EventType evCallInc = new EventType(getNewId(),"an incoming call starts or stops", R.drawable.ic_call_black_24dp);
+    public EventType evButtonPress = new EventType(getNewId(),"a button is pressed", R.drawable.ic_adjust_black_24dp); // change to evOneInput? too restrictive now, could also be a gesture from myo?
+    public EventType evHeartRateReading = new EventType(getNewId(),"a heart rate reading comes in", R.drawable.ic_favorite_border_black_24dp);
+    public EventType evTimeAt = new EventType(getNewId(),"time changes to a certain time", R.drawable.ic_access_time_black_24dp); // TODO other name
+    public EventType evLocationArrivingAt = new EventType(getNewId(),"arrived at a location", R.drawable.ic_my_location_black_24dp);
+    public EventType evLocationLeaving = new EventType(getNewId(),"left a location", R.drawable.ic_my_location_black_24dp);
+    public EventType evGesture = new EventType(getNewId(),"gesture is made", R.drawable.ic_gesture_black_24dp);
+    public EventType evWakesUp = new EventType(getNewId(),"user wakes up", R.drawable.ic_directions_run_black_24dp); // TODO change?
 
 
     // StateTypes
-    public StateType stAlarmGoing = new StateType(getNewId(),"an alarm is going");
-    public StateType stCallIncGoing = new StateType(getNewId(),"an incoming call is going");
-    public StateType stTimeFromTo = new StateType(getNewId(),"time is between two times");
-    public StateType stLocationCurrentlyAt = new StateType(getNewId(),"currently at a location");
-    public StateType stWatchMode = new StateType(getNewId(),"watch is in a certain mode");
+    public StateType stAlarmGoing = new StateType(getNewId(),"an alarm is going", R.drawable.ic_alarm_black_24dp);
+    public StateType stCallIncGoing = new StateType(getNewId(),"an incoming call is going", R.drawable.ic_call_black_24dp);
+    public StateType stTimeFromTo = new StateType(getNewId(),"time is between two times", R.drawable.ic_access_time_black_24dp);
+    public StateType stLocationCurrentlyAt = new StateType(getNewId(),"currently at a location", R.drawable.ic_my_location_black_24dp);
+    public StateType stWatchMode = new StateType(getNewId(),"watch is in a certain mode", R.drawable.ic_watch_black_24dp);
 
 
     // ActionTypes
-    public ActionType acAlarmSnooze = new ActionType(getNewId(),"snooze the alarm");
-    public ActionType acAlarmDismiss = new ActionType(getNewId(),"dismiss the alarm");
-    public ActionType acVibrate = new ActionType(getNewId(),"vibrate something");
-    public ActionType acAlarmDisplay = new ActionType(getNewId(),"display the alarm somewhere");
-    public ActionType acWatchMode = new ActionType(getNewId(),"set watch to a certain mode");
-    public ActionType acTimeDisplay = new ActionType(getNewId(),"display time");
-    public ActionType acSportDisplay = new ActionType(getNewId(),"display sport info");
-    public ActionType acNotify = new ActionType(getNewId(),"notify something somewhere");
-    public ActionType acStartCoffee = new ActionType(getNewId(),"start making coffee");
-    public ActionType acScoreAdjust = new ActionType(getNewId(),"adjust score");
+    public ActionType acAlarmSnooze = new ActionType(getNewId(),"snooze the alarm", R.drawable.ic_alarm_black_24dp);
+    public ActionType acAlarmDismiss = new ActionType(getNewId(),"dismiss the alarm", R.drawable.ic_alarm_black_24dp);
+    public ActionType acVibrate = new ActionType(getNewId(),"vibrate something", R.drawable.ic_vibration_black_24dp);
+    public ActionType acAlarmDisplay = new ActionType(getNewId(),"display the alarm somewhere", R.drawable.ic_alarm_black_24dp);
+    public ActionType acWatchMode = new ActionType(getNewId(),"set watch to a certain mode", R.drawable.ic_watch_black_24dp);
+    public ActionType acTimeDisplay = new ActionType(getNewId(),"display time", R.drawable.ic_watch_black_24dp);
+    public ActionType acSportDisplay = new ActionType(getNewId(),"display sport info", R.drawable.ic_watch_black_24dp);
+    public ActionType acNotify = new ActionType(getNewId(),"notify something somewhere", R.drawable.ic_notifications_active_black_24dp);
+    public ActionType acStartCoffee = new ActionType(getNewId(),"start making coffee", R.drawable.ic_local_cafe_black_24dp);
+    public ActionType acScoreAdjust = new ActionType(getNewId(),"adjust score", R.drawable.ic_exposure_plus_1_black_24dp);
 
     // Devices
     private AndroidPhone mAndroidPhone;

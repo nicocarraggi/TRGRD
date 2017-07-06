@@ -43,12 +43,12 @@ public class RuleTemplate {
         for (Type t: ruleTemplate.getTriggerTypes()){
             if (t.isEventType()){
                 EventType et = (EventType) t;
-                EventType instance = new EventType(deviceManager.getNewId(),et);
+                EventType instance = new EventType(deviceManager.getNewId(),et,t.getIconResource());
                 this.triggerTypes.add(instance);
                 deviceManager.addEventTypeInstance(instance);
             } else if (t.isStateType()){
                 StateType st = (StateType) t;
-                StateType instance = new StateType(deviceManager.getNewId(),st);
+                StateType instance = new StateType(deviceManager.getNewId(),st,t.getIconResource());
                 this.triggerTypes.add(instance);
                 deviceManager.addStateTypeInstance(instance);
             }
@@ -56,7 +56,7 @@ public class RuleTemplate {
         for (Type t: ruleTemplate.getActionTypes()){
             if (t.isActionType()){
                 ActionType at = (ActionType) t;
-                ActionType instance = new ActionType(deviceManager.getNewId(),at);
+                ActionType instance = new ActionType(deviceManager.getNewId(),at,t.getIconResource());
                 this.actionTypes.add(instance);
                 deviceManager.addActionTypeInstance(instance);
             }

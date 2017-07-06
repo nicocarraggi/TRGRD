@@ -15,14 +15,14 @@ public class EventType extends Type {
     private Event instanceEvent;
 
     // SKELETON constructor
-    public EventType(int id, String name) {
-        super(id, name, TypeType.EVENT);
+    public EventType(int id, String name, int iconResource) {
+        super(id, name, TypeType.EVENT,iconResource);
         this.events = new HashSet<>();
     }
 
     // INSTANCE constructor
-    public EventType(int id, EventType eventType) {
-        super(id, eventType.getName(), TypeType.EVENT);
+    public EventType(int id, EventType eventType,int iconResource) {
+        super(id, eventType.getName(), TypeType.EVENT,iconResource);
         this.devices = eventType.getDevices();
         this.events = eventType.getEvents();
         this.isSkeleton = false;

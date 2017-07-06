@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="wrap_content"
+    android:minHeight="60dp"
     android:background="@color/colorRule"
     android:paddingTop="5dp"
     android:paddingBottom="5dp"
@@ -20,14 +21,109 @@
             android:layout_height="match_parent"
             app:srcCompat="@drawable/ic_description_black_24dp" />
 
-        <TextView
-            android:id="@+id/tvRuleTemplateName"
-            android:layout_marginLeft="4dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Ruletemplate name"/>
+            android:orientation="vertical"
+            android:weightSum="10">
+
+            <TextView
+                android:id="@+id/tvRuleTemplateName"
+                android:layout_marginLeft="4dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="5"
+                android:gravity="center_vertical"
+                android:paddingBottom="10dp"
+                android:textStyle="bold"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Ruletemplate name"/>
+
+            <LinearLayout
+                android:id="@+id/llRuleTemplateIcons"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="5"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="4dp">
+
+                <LinearLayout
+                    android:id="@+id/llRuleTemplateEvent"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingRight="2dp"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="IF"/>
+
+                    <ImageView
+                        android:id="@+id/ivRuleTemplateEvent"
+                        android:layout_width="19dp"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="3dp"
+                        android:layout_marginRight="3dp"
+                        android:src="@drawable/ic_access_time_black_24dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llRuleTemplateStates"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingRight="2dp"
+                        android:paddingLeft="2dp"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="WHILE"/>
+
+                    <ImageView
+                        android:id="@+id/ivRuleTemplateState"
+                        android:layout_width="19dp"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="3dp"
+                        android:layout_marginRight="3dp"
+                        android:src="@drawable/ic_access_time_black_24dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llRuleTemplateActions"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingRight="2dp"
+                        android:paddingLeft="2dp"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="THEN"/>
+
+                    <ImageView
+                        android:id="@+id/ivRuleTemplateAction"
+                        android:layout_width="19dp"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="3dp"
+                        android:src="@drawable/ic_access_time_black_24dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 

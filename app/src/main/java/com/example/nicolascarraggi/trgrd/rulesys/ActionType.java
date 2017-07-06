@@ -13,14 +13,14 @@ public class ActionType extends Type {
     private Action instanceAction;
 
     // SKELETON constructor
-    public ActionType(int id, String name) {
-        super(id, name, TypeType.ACTION);
+    public ActionType(int id, String name, int iconResource) {
+        super(id, name, TypeType.ACTION,iconResource);
         this.actions = new HashSet<>();
     }
 
     // INSTANCE constructor
-    public ActionType(int id, ActionType actionType) {
-        super(id, actionType.getName(), TypeType.ACTION);
+    public ActionType(int id, ActionType actionType, int iconResource) {
+        super(id, actionType.getName(), TypeType.ACTION,iconResource);
         this.devices = actionType.getDevices();
         this.actions = actionType.getActions();
         this.isSkeleton = false;
