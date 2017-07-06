@@ -1,10 +1,14 @@
 package com.example.nicolascarraggi.trgrd;
 
 import android.content.Intent;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.nicolascarraggi.trgrd.adapters.MyOnItemClickListener;
@@ -14,7 +18,11 @@ import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
 import com.example.nicolascarraggi.trgrd.rulesys.MyTime;
 import com.example.nicolascarraggi.trgrd.rulesys.RuleTemplate;
 
-public class ShowRuleTemplatesActivity extends RuleSystemBindingActivity implements MyOnItemClickListener<RuleTemplate> {
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
+public class ShowRuleTemplatesActivity extends RuleSystemBindingActivity implements MyOnItemClickListener<RuleTemplate>, SearchView.OnQueryTextListener {
 
     public static final int RULETEMPLATE_SELECT_INTENT=1;
 
@@ -42,9 +50,9 @@ public class ShowRuleTemplatesActivity extends RuleSystemBindingActivity impleme
     protected void onBound() {
         super.onBound();
 
-        ruleTemplatesAdapter = new RuleTemplatesAdapter(this, ruleSystemService.getRuleTemplates());
+        this.ruleTemplatesAdapter = new RuleTemplatesAdapter(this, ruleSystemService.getRuleTemplates());
         rvRuleTemplates.setHasFixedSize(true);
-        mLayoutManagerActions = new LinearLayoutManager(this);
+        this.mLayoutManagerActions = new LinearLayoutManager(this);
         rvRuleTemplates.setLayoutManager(mLayoutManagerActions);
         rvRuleTemplates.setAdapter(ruleTemplatesAdapter);
 
@@ -82,4 +90,30 @@ public class ShowRuleTemplatesActivity extends RuleSystemBindingActivity impleme
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_ruletemplates,menu);
+        MenuItem menuItem = menu.findItem(R.id.action_search_ruletemplates);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        searchView.setOnQueryTextListener(this);
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        newText = newText.toLowerCase();
+        Set<RuleTemplate> newRuleTemplates = new HashSet<>();
+        String name;
+        for(RuleTemplate rt : ruleSystemService.getRuleTemplates()){
+            name = rt.getName().toLowerCase();
+            if(name.contains(newText)) newRuleTemplates.add(rt);
+        }
+        ruleTemplatesAdapter.updateData(newRuleTemplates);
+        return true;
+    }
 }

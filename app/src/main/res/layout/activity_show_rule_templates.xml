@@ -5,16 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_marginTop="@dimen/activity_vertical_margin"
-    android:layout_marginBottom="@dimen/activity_vertical_margin"
-    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-    android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:background="#1010"
     tools:context="com.example.nicolascarraggi.trgrd.ShowRuleTemplatesActivity">
 
     <TextView
         android:id="@+id/tvShowRuleTemplates"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_marginBottom="7dp"
         android:text="Select a rule template:"/>
@@ -24,6 +24,8 @@
         android:id="@+id/rvShowRuleTemplates"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:fadeScrollbars="false"
         android:scrollbars="vertical"
         android:layout_marginBottom="20dp" />

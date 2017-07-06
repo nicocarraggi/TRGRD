@@ -1,10 +1,14 @@
 package com.example.nicolascarraggi.trgrd;
 
 import android.content.Intent;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.nicolascarraggi.trgrd.adapters.MyOnItemClickListener;
@@ -14,7 +18,10 @@ import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
 import com.example.nicolascarraggi.trgrd.rulesys.MyTime;
 import com.example.nicolascarraggi.trgrd.rulesys.Rule;
 
-public class ShowExampleRulesActivity extends RuleSystemBindingActivity implements MyOnItemClickListener<Rule> {
+import java.util.HashSet;
+import java.util.Set;
+
+public class ShowExampleRulesActivity extends RuleSystemBindingActivity implements MyOnItemClickListener<Rule>, SearchView.OnQueryTextListener {
 
     public static final int EXAMPLERULE_SELECT_INTENT=1;
 
@@ -69,5 +76,32 @@ public class ShowExampleRulesActivity extends RuleSystemBindingActivity implemen
                 finish();
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_examplerules,menu);
+        MenuItem menuItem = menu.findItem(R.id.action_search_examplerules);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        searchView.setOnQueryTextListener(this);
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        newText = newText.toLowerCase();
+        Set<Rule> newRules = new HashSet<>();
+        String name;
+        for(Rule rule : ruleSystemService.getExampleRules()){
+            name = rule.getName().toLowerCase();
+            if(name.contains(newText)) newRules.add(rule);
+        }
+        rulesAdapter.updateData(newRules);
+        return true;
     }
 }

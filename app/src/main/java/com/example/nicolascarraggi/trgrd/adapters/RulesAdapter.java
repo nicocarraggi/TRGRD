@@ -39,7 +39,7 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
         this.mShowSwitch = showSwitch;
         this.mDataset = new ArrayList<>();
         this.mDataset.addAll(mDataset);
-        //sort();
+        sort();
     }
 
     private void sort(){

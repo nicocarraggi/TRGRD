@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,7 @@ public class TrgrdFragment extends Fragment {
     protected OnFragmentInteractionListener mListener;
     protected boolean isServiceStarted = false;
     protected boolean isServiceBound = false;
+    protected SearchView searchView;
 
     public TrgrdFragment() {
         // Required empty public constructor
