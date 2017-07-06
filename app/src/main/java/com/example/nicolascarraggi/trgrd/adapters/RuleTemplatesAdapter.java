@@ -107,7 +107,11 @@ public class RuleTemplatesAdapter extends RecyclerView.Adapter<RuleTemplatesAdap
                     ivRuleTemplateState.setImageResource(t.getIconResource());
                 }
             }
-            if(!hasStateType) llState.setVisibility(View.GONE);
+            if(hasStateType) {
+                llState.setVisibility(View.VISIBLE);
+            } else {
+                llState.setVisibility(View.GONE);
+            }
             for (Type t : rule.getTriggerTypes()){
                 if (t.isActionType()){
                     ivRuleTemplateAction.setImageResource(t.getIconResource());
