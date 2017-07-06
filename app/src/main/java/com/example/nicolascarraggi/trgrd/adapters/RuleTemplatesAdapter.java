@@ -98,13 +98,16 @@ public class RuleTemplatesAdapter extends RecyclerView.Adapter<RuleTemplatesAdap
         public void bind(RuleTemplate rule, MyOnItemClickListener listener){
             this.myOnItemClickListener = listener;
             this.tvRuleTemplateName.setText(rule.getName());
+            boolean hasStateType = false;
             for (Type t : rule.getTriggerTypes()){
                 if (t.isEventType()){
                     ivRuleTemplateEvent.setImageResource(t.getIconResource());
                 } else if(t.isStateType()){
+                    hasStateType = true;
                     ivRuleTemplateState.setImageResource(t.getIconResource());
                 }
             }
+            if(!hasStateType) llState.setVisibility(View.GONE);
             for (Type t : rule.getTriggerTypes()){
                 if (t.isActionType()){
                     ivRuleTemplateAction.setImageResource(t.getIconResource());

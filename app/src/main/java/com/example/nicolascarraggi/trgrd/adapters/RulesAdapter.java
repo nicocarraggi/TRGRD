@@ -116,7 +116,9 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
             if (rule.getEvents().isEmpty()){
                 llEvent.setVisibility(View.GONE);
             } else {
+                llEvent.setVisibility(View.VISIBLE);
                 for(Event e: rule.getEvents()){
+                    // TODO inflate every other event?
                     ivEvent.setImageResource(e.getIconResource());
                     ivEventDevice.setImageResource(e.getDevice().getIconResource());
                 }
@@ -124,6 +126,7 @@ public class RulesAdapter extends RecyclerView.Adapter<RulesAdapter.RuleViewHold
             if (rule.getStates().isEmpty()){
                 llStates.setVisibility(View.GONE);
             } else {
+                llStates.setVisibility(View.VISIBLE);
                 for(State s: rule.getStates()){
                     // TODO inflate every other state?
                     ivState.setImageResource(s.getIconResource());
