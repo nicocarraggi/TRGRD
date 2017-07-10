@@ -5,11 +5,15 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -22,7 +26,7 @@ import java.util.Set;
 
 import static java.lang.Integer.getInteger;
 
-public class RulesFragment extends TrgrdFragment  implements MyOnItemClickListener<Rule> {
+public class RulesFragment extends TrgrdFragment  implements MyOnItemClickListener<Rule>, SearchView.OnQueryTextListener {
 
     public static final String RULE_METHODOLOGY_CONFIG = "0";
     public static final String RULE_METHODOLOGY_TEMPLATE = "1";
@@ -40,6 +44,7 @@ public class RulesFragment extends TrgrdFragment  implements MyOnItemClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_rules, container, false);
 
@@ -87,6 +92,14 @@ public class RulesFragment extends TrgrdFragment  implements MyOnItemClickListen
         return view;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        MenuItem menuItem = menu.findItem(R.id.action_search_main);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        searchView.setOnQueryTextListener(this);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
     private void showRules(){
         if (mListener.getRuleSystemService() != null && mAdapter != null) {
             this.rules = mListener.getRuleSystemService().getRules();
@@ -122,5 +135,23 @@ public class RulesFragment extends TrgrdFragment  implements MyOnItemClickListen
     public void notifyIsServiceBoundChanged(boolean isServiceBound) {
         super.notifyIsServiceBoundChanged(isServiceBound);
         Log.d("TRGRD","RulesFragment notify isServiceBound = " + isServiceBound);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        newText = newText.toLowerCase();
+        Set<Rule> newRules = new HashSet<>();
+        String name;
+        for(Rule rule : rules){
+            name = rule.getName().toLowerCase();
+            if(name.contains(newText)) newRules.add(rule);
+        }
+        mAdapter.updateData(newRules);
+        return true;
     }
 }

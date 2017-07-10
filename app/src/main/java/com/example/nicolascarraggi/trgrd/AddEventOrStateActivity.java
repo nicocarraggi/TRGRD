@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
@@ -17,6 +19,7 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +36,9 @@ import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
 import com.example.nicolascarraggi.trgrd.rulesys.RuleSystemService;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class AddEventOrStateActivity extends RuleSystemBindingActivity implements TrgrdFragment.OnFragmentInteractionListener {
 
@@ -113,7 +119,7 @@ public class AddEventOrStateActivity extends RuleSystemBindingActivity implement
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends TrgrdFragment implements MyEventOnItemClickListener, MyStateOnItemClickListener {
+    public static class PlaceholderFragment extends TrgrdFragment implements MyEventOnItemClickListener, MyStateOnItemClickListener, SearchView.OnQueryTextListener {
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -128,7 +134,17 @@ public class AddEventOrStateActivity extends RuleSystemBindingActivity implement
         private LinearLayout llAddEventOrStateEvent;
         private Button bAddEventOrStateEventOk;
 
+        int eventsOrStates;
+
         public PlaceholderFragment() {
+        }
+
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            inflater.inflate(R.menu.menu_search,menu);
+            MenuItem menuItem = menu.findItem(R.id.action_search);
+            SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+            searchView.setOnQueryTextListener(this);
         }
 
         /**
@@ -147,11 +163,12 @@ public class AddEventOrStateActivity extends RuleSystemBindingActivity implement
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+            setHasOptionsMenu(true);
             View rootView = inflater.inflate(R.layout.fragment_add_event_or_state, container, false);
             rvTriggers = (RecyclerView) rootView.findViewById(R.id.rvAddEventOrStateTriggers);
             llAddEventOrStateEvent = (LinearLayout) rootView.findViewById(R.id.llAddEventOrStateEvent);
             bAddEventOrStateEventOk = (Button) rootView.findViewById(R.id.bAddEventOrStateEventOk);
-            int eventsOrStates = getArguments().getInt(ARG_SECTION_NUMBER);
+            this.eventsOrStates = getArguments().getInt(ARG_SECTION_NUMBER);
             boolean showEvents = getArguments().getBoolean(ARG_SHOW_EVENTS);
             llAddEventOrStateEvent.setVisibility(View.GONE);
             if(eventsOrStates == 1){
@@ -212,6 +229,33 @@ public class AddEventOrStateActivity extends RuleSystemBindingActivity implement
             intent.putExtra("devid", deviceId);
             intent.putExtra("id", id);
             mListener.finishWithResult(intent);
+        }
+
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            return false;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String newText) {
+            newText = newText.toLowerCase();
+            String name;
+            if(eventsOrStates == 1){
+                Set<Event> newEvents = new HashSet<>();
+                for(Event event : mListener.getDeviceManager().getAllEvents()){
+                    name = event.getName().toLowerCase();
+                    if(name.contains(newText)) newEvents.add(event);
+                }
+                eventsAdapter.updateData(newEvents);
+            } else if (eventsOrStates == 2){
+                Set<State> newStates = new HashSet<>();
+                for(State state : mListener.getDeviceManager().getAllStates()){
+                    name = state.getName().toLowerCase();
+                    if(name.contains(newText)) newStates.add(state);
+                }
+                statesAdapter.updateData(newStates);
+            }
+            return true;
         }
     }
 

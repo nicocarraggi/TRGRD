@@ -1,11 +1,15 @@
 package com.example.nicolascarraggi.trgrd;
 
 import android.content.Intent;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -23,7 +27,10 @@ import com.example.nicolascarraggi.trgrd.rulesys.State;
 import com.example.nicolascarraggi.trgrd.rulesys.StateType;
 import com.example.nicolascarraggi.trgrd.rulesys.Type;
 
-public class AddItemFromTypeActivity extends RuleSystemBindingActivity implements MyActionOnItemClickListener, MyEventOnItemClickListener, MyStateOnItemClickListener {
+import java.util.HashSet;
+import java.util.Set;
+
+public class AddItemFromTypeActivity extends RuleSystemBindingActivity implements MyActionOnItemClickListener, MyEventOnItemClickListener, MyStateOnItemClickListener, SearchView.OnQueryTextListener {
 
     private String typeType;
     private int typeInstanceId;
@@ -82,6 +89,15 @@ public class AddItemFromTypeActivity extends RuleSystemBindingActivity implement
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_examplerules,menu);
+        MenuItem menuItem = menu.findItem(R.id.action_search_examplerules);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        searchView.setOnQueryTextListener(this);
+        return true;
+    }
+
+    @Override
     public void onItemClick(View view, Event item) {
         switch(view.getId()) {
             case R.id.tvEventName:
@@ -121,5 +137,39 @@ public class AddItemFromTypeActivity extends RuleSystemBindingActivity implement
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        newText = newText.toLowerCase();
+        String name;
+        if (typeType.equals("event")){
+            Set<Event> newEvents = new HashSet<>();
+            for(Event event: eventType.getSkeletonEvents()){
+                name = event.getName().toLowerCase();
+                if(name.contains(newText)) newEvents.add(event);
+            }
+            eventsAdapter.updateData(newEvents);
+        } else if(typeType.equals("state")){
+            Set<State> newStates = new HashSet<>();
+            for(State state: stateType.getSkeletonStates()){
+                name = state.getName().toLowerCase();
+                if(name.contains(newText)) newStates.add(state);
+            }
+            statesAdapter.updateData(newStates);
+        } else if(typeType.equals("action")){
+            Set<Action> newActions = new HashSet<>();
+            for(Action action: actionType.getSkeletonActions()){
+                name = action.getName().toLowerCase();
+                if(name.contains(newText)) newActions.add(action);
+            }
+            actionsAdapter.updateData(newActions);
+        }
+        return true;
     }
 }
