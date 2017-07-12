@@ -7,6 +7,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.example.nicolascarraggi.trgrd.R;
+import com.example.nicolascarraggi.trgrd.rulesys.devices.ScoreDevice;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.HashMap;
@@ -213,12 +214,17 @@ public class RuleSystemService extends Service {
         // Pebble up button -> Pebble left score + 1
         mTestRulePebbleAdd1Left.addEvent(mDeviceManager.getPebble().getBtnUp());
         mTestRulePebbleAdd1Left.addState(mDeviceManager.getPebble().getWatchModeSport());
-        mTestRulePebbleAdd1Left.addAction(mDeviceManager.getPebble().getAddScoreOneLeft());
+        ScoreDevice scoreDevice = (ScoreDevice) mDeviceManager.getPebble();
+        ScoreValueAction addXLeft = (ScoreValueAction) mDeviceManager.getPebble().getAddScoreXLeft();
+        Action add1Left = scoreDevice.getScoreValueAction(addXLeft,1);
+        mTestRulePebbleAdd1Left.addAction(add1Left);
         mTestRulePebbleAdd1Left.setActive(true);
         // Pebble down button -> Pebble right score + 1
         mTestRulePebbleAdd1Right.addEvent(mDeviceManager.getPebble().getBtnDown());
         mTestRulePebbleAdd1Right.addState(mDeviceManager.getPebble().getWatchModeSport());
-        mTestRulePebbleAdd1Right.addAction(mDeviceManager.getPebble().getAddScoreOneRight());
+        ScoreValueAction addXRight = (ScoreValueAction) mDeviceManager.getPebble().getAddScoreXRight();
+        Action add1Right = scoreDevice.getScoreValueAction(addXRight,1);
+        mTestRulePebbleAdd1Right.addAction(add1Right);
         mTestRulePebbleAdd1Right.setActive(true);
     }
 
@@ -287,12 +293,12 @@ public class RuleSystemService extends Service {
         exampleRules.put(erDismissPhoneAlarmWithPebbleButton.getId(),erDismissPhoneAlarmWithPebbleButton);
         //
         ExampleRule erWatchmodeSportAtLocation = new ExampleRule(getNewId(),"Set Pebble watch in SPORT mode when arriving at a location");
-        erWatchmodeSportAtLocation.addEvent(mDeviceManager.getGeofences().getLocationCurrentlyAt());
+        erWatchmodeSportAtLocation.addEvent(mDeviceManager.getGeofences().getLocationArrivingAt());
         erWatchmodeSportAtLocation.addAction(mDeviceManager.getPebble().getScreenSport());
         exampleRules.put(erWatchmodeSportAtLocation.getId(),erWatchmodeSportAtLocation);
         //
         ExampleRule erWatchmodeTimeAtLocation = new ExampleRule(getNewId(),"Set Pebble watch in TIME mode when arriving at a location");
-        erWatchmodeTimeAtLocation.addEvent(mDeviceManager.getGeofences().getLocationCurrentlyAt());
+        erWatchmodeTimeAtLocation.addEvent(mDeviceManager.getGeofences().getLocationArrivingAt());
         erWatchmodeTimeAtLocation.addAction(mDeviceManager.getPebble().getScreenTime());
         exampleRules.put(erWatchmodeTimeAtLocation.getId(),erWatchmodeTimeAtLocation);
         //

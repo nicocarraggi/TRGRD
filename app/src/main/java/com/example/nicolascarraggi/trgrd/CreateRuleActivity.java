@@ -754,7 +754,7 @@ public class CreateRuleActivity extends RuleSystemBindingActivity
             // IF oldAction is null AND from example rule, just select 1 to avoid showing multiple
             //    dialogs at the start! User can change the value afterwards.
             ScoreDevice scoreDevice = (ScoreDevice) action.getDevice();
-            ScoreValueAction scoreValueAction = scoreDevice.getScoreValueAction(action,0);
+            ScoreValueAction scoreValueAction = scoreDevice.getScoreValueAction(action,1);
             onScoreValueClick(scoreValueAction);
             return;
         }

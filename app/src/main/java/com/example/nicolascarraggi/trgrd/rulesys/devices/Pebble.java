@@ -165,7 +165,7 @@ public class Pebble extends Wearable implements NotificationDevice, ScoreDevice,
             }
         });
         // SCORE ADJUST
-        this.mAcScoreAddOneLeft = new Action(deviceManager.getNewId(),"+ 1 to Pebble watch score LEFT", R.drawable.ic_exposure_plus_1_black_24dp, this, acScoreAdjust, new Callable<String>() {
+        /*this.mAcScoreAddOneLeft = new Action(deviceManager.getNewId(),"+ 1 to Pebble watch score LEFT", R.drawable.ic_exposure_plus_1_black_24dp, this, acScoreAdjust, new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acScoreAddLeft(1);
@@ -193,16 +193,17 @@ public class Pebble extends Wearable implements NotificationDevice, ScoreDevice,
                 return null;
             }
         });
+        */
         // Callable is null, will be overridden in instance with the correct parameters using getNotifyCallable(...)
         this.mAcNotify = new NotificationAction(deviceManager.getNewId(),"Pebble watch notification",R.drawable.ic_notifications_active_black_24dp,this,acNotify);
         // Callable is null, will be overridden in instance with the correct parameters using getValueActionCallable(...)
-        this.mAcScoreAddXLeft = new ScoreValueAction(deviceManager.getNewId(),"+ ... to Pebble watch score LEFT", R.drawable.ic_exposure_plus_2_black_24dp, this, acScoreAdjust
+        this.mAcScoreAddXLeft = new ScoreValueAction(deviceManager.getNewId(),"+ ... to Pebble watch score LEFT", R.drawable.ic_plus_x_black, this, acScoreAdjust
                 , ScoreValueAction.ScoreSide.LEFT, ScoreValueAction.ScoreValueActionType.ADD);
-        this.mAcScoreAddXRight = new ScoreValueAction(deviceManager.getNewId(),"+ ... to Pebble watch score RIGHT", R.drawable.ic_exposure_plus_2_black_24dp, this, acScoreAdjust
+        this.mAcScoreAddXRight = new ScoreValueAction(deviceManager.getNewId(),"+ ... to Pebble watch score RIGHT", R.drawable.ic_plus_x_black, this, acScoreAdjust
                 , ScoreValueAction.ScoreSide.RIGHT, ScoreValueAction.ScoreValueActionType.ADD);
-        this.mAcScoreSubtractXLeft = new ScoreValueAction(deviceManager.getNewId(),"- ... to Pebble watch score LEFT", R.drawable.ic_exposure_neg_2_black_24dp, this, acScoreAdjust
+        this.mAcScoreSubtractXLeft = new ScoreValueAction(deviceManager.getNewId(),"- ... to Pebble watch score LEFT", R.drawable.ic_minus_x_black, this, acScoreAdjust
                 , ScoreValueAction.ScoreSide.LEFT, ScoreValueAction.ScoreValueActionType.SUBTRACT);
-        this.mAcScoreSubtractXRight = new ScoreValueAction(deviceManager.getNewId(),"- ... to Pebble watch score RIGHT", R.drawable.ic_exposure_neg_2_black_24dp, this, acScoreAdjust
+        this.mAcScoreSubtractXRight = new ScoreValueAction(deviceManager.getNewId(),"- ... to Pebble watch score RIGHT", R.drawable.ic_minus_x_black, this, acScoreAdjust
                 , ScoreValueAction.ScoreSide.RIGHT, ScoreValueAction.ScoreValueActionType.SUBTRACT);
 
         // EVENTS PUT
@@ -222,10 +223,10 @@ public class Pebble extends Wearable implements NotificationDevice, ScoreDevice,
         this.actions.put(mAcScreenAlarm.getId(),mAcScreenAlarm);
         this.actions.put(mAcScreenClean.getId(),mAcScreenClean);
         this.actions.put(mAcNotify.getId(),mAcNotify);
-        this.actions.put(mAcScoreAddOneLeft.getId(), mAcScoreAddOneLeft);
-        this.actions.put(mAcScoreAddOneRight.getId(), mAcScoreAddOneRight);
-        this.actions.put(mAcScoreSubtractOneLeft.getId(), mAcScoreSubtractOneLeft);
-        this.actions.put(mAcScoreSubtractOneRight.getId(), mAcScoreSubtractOneRight);
+        //this.actions.put(mAcScoreAddOneLeft.getId(), mAcScoreAddOneLeft);
+        //this.actions.put(mAcScoreAddOneRight.getId(), mAcScoreAddOneRight);
+        //this.actions.put(mAcScoreSubtractOneLeft.getId(), mAcScoreSubtractOneLeft);
+        //this.actions.put(mAcScoreSubtractOneRight.getId(), mAcScoreSubtractOneRight);
         this.actions.put(mAcScoreAddXLeft.getId(), mAcScoreAddXLeft);
         this.actions.put(mAcScoreAddXRight.getId(), mAcScoreAddXRight);
         this.actions.put(mAcScoreSubtractXLeft.getId(), mAcScoreSubtractXLeft);
