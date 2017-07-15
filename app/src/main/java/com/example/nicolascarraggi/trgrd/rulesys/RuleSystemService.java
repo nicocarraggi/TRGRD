@@ -17,7 +17,7 @@ import java.util.Set;
 public class RuleSystemService extends Service {
 
     // TODO add database for rule system data
-    private int newId = 6;
+    private int newId = 0;
 
     private final IBinder ruleSystemBinder = new RuleSystemBinder();
 
@@ -95,9 +95,9 @@ public class RuleSystemService extends Service {
 
     // LOCATIONS TESTS
     private void testCreateLocations(){
-        this.mTestLocationVub = new Location("0", "Vrije Universiteit Brussel","Pleinlaan 9", R.drawable.ic_school_black_24dp, new LatLng(50.8218985, 4.3933034));
-        this.mTestLocationStadium = new Location("1", "Stadium","Sippelberglaan 1", R.drawable.ic_directions_run_black_24dp, new LatLng(50.8597101, 4.3218491));
-        this.mTestLocationHome = new Location("2", "Home","Potaardestraat 161", R.drawable.ic_home_black_24dp, new LatLng(50.862164, 4.282571));
+        this.mTestLocationVub = new Location(Integer.toString(getNewId()), "Vrije Universiteit Brussel","Pleinlaan 9", R.drawable.ic_school_black_24dp, new LatLng(50.8218985, 4.3933034));
+        this.mTestLocationStadium = new Location(Integer.toString(getNewId()), "Stadium","Sippelberglaan 1", R.drawable.ic_directions_run_black_24dp, new LatLng(50.8597101, 4.3218491));
+        this.mTestLocationHome = new Location(Integer.toString(getNewId()), "Home","Potaardestraat 161", R.drawable.ic_home_black_24dp, new LatLng(50.862164, 4.282571));
         mLocationManager.addLocation(mTestLocationVub);
         mLocationManager.addLocation(mTestLocationStadium);
         mLocationManager.addLocation(mTestLocationHome);
