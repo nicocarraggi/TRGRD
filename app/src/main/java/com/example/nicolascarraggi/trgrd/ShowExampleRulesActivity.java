@@ -45,7 +45,7 @@ public class ShowExampleRulesActivity extends RuleSystemBindingActivity implemen
     @Override
     protected void onBound() {
         super.onBound();
-        rulesAdapter = new RulesAdapter(this, ruleSystemService.getExampleRules(), false);
+        rulesAdapter = new RulesAdapter(this, ruleSystemService.getRuleManager().getExampleRules(), false);
         rvExampleRules.setHasFixedSize(true);
         mLayoutManagerActions = new LinearLayoutManager(this);
         rvExampleRules.setLayoutManager(mLayoutManagerActions);
@@ -97,7 +97,7 @@ public class ShowExampleRulesActivity extends RuleSystemBindingActivity implemen
         newText = newText.toLowerCase();
         Set<Rule> newRules = new HashSet<>();
         String name;
-        for(Rule rule : ruleSystemService.getExampleRules()){
+        for(Rule rule : ruleSystemService.getRuleManager().getExampleRules()){
             name = rule.getName().toLowerCase();
             if(name.contains(newText)) newRules.add(rule);
         }

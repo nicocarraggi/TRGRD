@@ -1,16 +1,33 @@
 package com.example.nicolascarraggi.trgrd.rulesys;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
 /**
  * Created by nicolascarraggi on 4/04/17.
  */
 
-class LocationManager {
-    private static final LocationManager ourInstance = new LocationManager();
+public class LocationManager {
 
-    static LocationManager getInstance() {
-        return ourInstance;
+    private RuleSystemService mRuleSystemService;
+
+    private HashMap<String,Location> locations;
+
+    public LocationManager(RuleSystemService mRuleSystemService) {
+        this.mRuleSystemService = mRuleSystemService;
+        this.locations = new HashMap<>();
     }
 
-    private LocationManager() {
+    public HashSet<Location> getLocations(){
+        return new HashSet(locations.values());
     }
+
+    public Location getLocation(String id){
+        return locations.get(id);
+    }
+
+    public void addLocation(Location location){
+        this.locations.put(location.getId(),location);
+    }
+
 }

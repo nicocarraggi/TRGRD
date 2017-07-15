@@ -16,41 +16,31 @@ import java.util.Set;
 
 public class RuleSystemService extends Service {
 
-    // TODO add rule ID system
+    // TODO add database for rule system data
     private int newId = 6;
-    // TODO get and write rules from and to database?
 
     private final IBinder ruleSystemBinder = new RuleSystemBinder();
 
+    private RuleManager mRuleManager;
     private DeviceManager mDeviceManager;
-    private RuleEngine mRuleEngine;
+    private LocationManager mLocationManager;
 
     // FOR TESTING
     private Rule mTestRuleAlarmStartPebble,mTestRuleAlarmDismissPebble,mTestRuleAlarmDonePebble,
                 mTestRulePebbleSportMode, mTestRulePebbleTimeMode, mTestRulePebbleAdd1Left, mTestRulePebbleAdd1Right;
     private Location mTestLocationVub, mTestLocationStadium, mTestLocationHome;
 
-    private HashMap<Integer,Rule> rules;
-    private HashMap<Integer,Rule> exampleRules;
-    private HashMap<Integer,RuleTemplate> ruleTemplates;
-    private HashMap<Integer,RuleTemplate> ruleTemplateInstances;
-    private HashMap<String,Location> locations;
-
     public RuleSystemService() {
         super();
-        this.mRuleEngine = new RuleEngine();
-        this.rules = new HashMap<>();
-        this.exampleRules = new HashMap<>();
-        this.ruleTemplates = new HashMap<>();
-        this.ruleTemplateInstances = new HashMap<>();
-        this.locations = new HashMap<>();
-        testCreateLocations();
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        this.mRuleManager = new RuleManager(this);
         this.mDeviceManager = new DeviceManager(this);
+        this.mLocationManager = new LocationManager(this);
+        testCreateLocations();
         mDeviceManager.startDevices();
         testCreateRulesPebbleAlarm();
         testCreateRulesPebbleWatchmodes();
@@ -80,86 +70,37 @@ public class RuleSystemService extends Service {
         }
     }
 
+    public RuleManager getRuleManager() {
+        return mRuleManager;
+    }
+
     public DeviceManager getDeviceManager() {
         return mDeviceManager;
     }
 
-    public RuleEngine getRuleEngine() {
-        return mRuleEngine;
-    }
-
-    public Set<Rule> getRules(){
-        return new HashSet(rules.values());
-    }
-
-    public Rule getRule(int id){
-        return rules.get(id);
-    }
-
-    public void addRule(Rule rule){
-        this.rules.put(rule.getId(),rule);
-    }
-
-    public Set<Rule> getExampleRules(){
-        return new HashSet(exampleRules.values());
-    }
-
-    public ExampleRule getExampleRule(int id){
-        return (ExampleRule) exampleRules.get(id);
-    }
-
-    public void addExampleRule(ExampleRule rule){
-        this.exampleRules.put(rule.getId(),rule);
-    }
-
-    public Set<RuleTemplate> getRuleTemplates(){
-        return new HashSet(ruleTemplates.values());
-    }
-
-    public RuleTemplate getRuleTemplate(int id){
-        return ruleTemplates.get(id);
-    }
-
-    public void addRuleTemplate(RuleTemplate ruleTemplate){
-        this.ruleTemplates.put(ruleTemplate.getId(),ruleTemplate);
-    }
-
-    public Set<RuleTemplate> getRuleTemplateInstances(){
-        return new HashSet(ruleTemplateInstances.values());
-    }
-
-    public RuleTemplate getRuleTemplateInstance(int id){
-        return ruleTemplateInstances.get(id);
-    }
-
-    public void addRuleTemplateInstance(RuleTemplate ruleTemplate){
-        this.ruleTemplateInstances.put(ruleTemplate.getId(),ruleTemplate);
-    }
-
-    public HashSet<Location> getLocations(){
-        return new HashSet(locations.values());
-    }
-
-    public Location getLocation(String id){
-        return locations.get(id);
-    }
-
-    public void addLocation(Location location){
-        this.locations.put(location.getId(),location);
+    public LocationManager getLocationManager() {
+        return mLocationManager;
     }
 
     public int getNewId(){
         return this.newId++;
     }
 
+
+    // ------------------------------------
+    //
+    //   DUMMY DATA FOR TESTING PROTOTYPE
+    //
+    // ------------------------------------
+
     // LOCATIONS TESTS
     private void testCreateLocations(){
         this.mTestLocationVub = new Location("0", "Vrije Universiteit Brussel","Pleinlaan 9", R.drawable.ic_school_black_24dp, new LatLng(50.8218985, 4.3933034));
         this.mTestLocationStadium = new Location("1", "Stadium","Sippelberglaan 1", R.drawable.ic_directions_run_black_24dp, new LatLng(50.8597101, 4.3218491));
         this.mTestLocationHome = new Location("2", "Home","Potaardestraat 161", R.drawable.ic_home_black_24dp, new LatLng(50.862164, 4.282571));
-        this.locations.put(mTestLocationVub.getId(),mTestLocationVub);
-        this.locations.put(mTestLocationStadium.getId(),mTestLocationStadium);
-        this.locations.put(mTestLocationHome.getId(),mTestLocationHome);
+        mLocationManager.addLocation(mTestLocationVub);
+        mLocationManager.addLocation(mTestLocationStadium);
+        mLocationManager.addLocation(mTestLocationHome);
     }
 
     // RULE TESTS
@@ -168,9 +109,9 @@ public class RuleSystemService extends Service {
         this.mTestRuleAlarmStartPebble = new Rule(getNewId(),"Display Phone alarm alert on Pebble watch");
         this.mTestRuleAlarmDismissPebble = new Rule(getNewId(),"Dismiss Phone alarm with a Pebble watch button press");
         this.mTestRuleAlarmDonePebble = new Rule(getNewId(),"Clear Pebble watch screen when Phone alarm is done");
-        this.rules.put(mTestRuleAlarmStartPebble.getId(),mTestRuleAlarmStartPebble);
-        this.rules.put(mTestRuleAlarmDismissPebble.getId(),mTestRuleAlarmDismissPebble);
-        this.rules.put(mTestRuleAlarmDonePebble.getId(),mTestRuleAlarmDonePebble);
+        mRuleManager.addRule(mTestRuleAlarmStartPebble);
+        mRuleManager.addRule(mTestRuleAlarmDismissPebble);
+        mRuleManager.addRule(mTestRuleAlarmDonePebble);
         // Alarm start! -> Pebble Screen Alarm!
         mTestRuleAlarmStartPebble.addEvent(mDeviceManager.getAndroidPhone().getAlarmStart());
         mTestRuleAlarmStartPebble.addAction(mDeviceManager.getPebble().getScreenAlarm());
@@ -192,10 +133,10 @@ public class RuleSystemService extends Service {
         this.mTestRulePebbleTimeMode = new Rule(getNewId(),"Set Pebble watch in TIME mode with a Pebble watch button press"); // by shaking a Pebble watch"); //
         this.mTestRulePebbleAdd1Left = new Rule(getNewId(),"Add 1 to Pebble left score with a Pebble watch button press");
         this.mTestRulePebbleAdd1Right = new Rule(getNewId(),"Add 1 to Pebble right score with a Pebble watch button press");
-        this.rules.put(mTestRulePebbleSportMode.getId(),mTestRulePebbleSportMode);
-        this.rules.put(mTestRulePebbleTimeMode.getId(),mTestRulePebbleTimeMode);
-        this.rules.put(mTestRulePebbleAdd1Left.getId(), mTestRulePebbleAdd1Left);
-        this.rules.put(mTestRulePebbleAdd1Right.getId(), mTestRulePebbleAdd1Right);
+        mRuleManager.addRule(mTestRulePebbleSportMode);
+        mRuleManager.addRule(mTestRulePebbleTimeMode);
+        mRuleManager.addRule(mTestRulePebbleAdd1Left);
+        mRuleManager.addRule(mTestRulePebbleAdd1Right);
         // Pebble select button WHILE time mode -> Pebble sport mode
         mTestRulePebbleSportMode.addEvent(mDeviceManager.getPebble().getBtnSelect());
         mTestRulePebbleSportMode.addState(mDeviceManager.getPebble().getWatchModeTime());
@@ -234,41 +175,41 @@ public class RuleSystemService extends Service {
         RuleTemplate rtAlarmStart = new RuleTemplate(getNewId(),"Display a starting alarm on a device");
         rtAlarmStart.addTriggerType(mDeviceManager.evAlarmAlert);
         rtAlarmStart.addActionType(mDeviceManager.acAlarmDisplay);
-        ruleTemplates.put(rtAlarmStart.getId(),rtAlarmStart);
+        mRuleManager.addRuleTemplate(rtAlarmStart);
         // When a button is pressed, notify
         RuleTemplate rtNotifyButton = new RuleTemplate(getNewId(),"Notify on a device that a button is pressed");
         rtNotifyButton.addTriggerType(mDeviceManager.evButtonPress);
         rtNotifyButton.addActionType(mDeviceManager.acNotify);
-        ruleTemplates.put(rtNotifyButton.getId(),rtNotifyButton);
+        mRuleManager.addRuleTemplate(rtNotifyButton);
         // When at a location and button is pressed, start coffee
         RuleTemplate rtCoffee = new RuleTemplate(getNewId(),"Start making coffee at a location with a button press");
         rtCoffee.addTriggerType(mDeviceManager.evButtonPress);
         rtCoffee.addTriggerType(mDeviceManager.stLocationCurrentlyAt);
         rtCoffee.addActionType(mDeviceManager.acStartCoffee);
-        ruleTemplates.put(rtCoffee.getId(),rtCoffee);
+        mRuleManager.addRuleTemplate(rtCoffee);
         // When button is pressed, while an alarm is going, dismiss it!
         RuleTemplate rtDismissAlarmButton = new RuleTemplate(getNewId(),"Dismiss an alarm on a device with a button press");
         rtDismissAlarmButton.addTriggerType(mDeviceManager.evButtonPress);
         rtDismissAlarmButton.addTriggerType(mDeviceManager.stAlarmGoing);
         rtDismissAlarmButton.addActionType(mDeviceManager.acAlarmDismiss);
-        ruleTemplates.put(rtDismissAlarmButton.getId(),rtDismissAlarmButton);
+        mRuleManager.addRuleTemplate(rtDismissAlarmButton);
         // Watch mode when at a location
         RuleTemplate rtWatchModeWhileLocation = new RuleTemplate(getNewId(),"Set a watch mode when arriving at a location");
         rtWatchModeWhileLocation.addTriggerType(mDeviceManager.evLocationArrivingAt);
         rtWatchModeWhileLocation.addActionType(mDeviceManager.acWatchMode);
-        ruleTemplates.put(rtWatchModeWhileLocation.getId(),rtWatchModeWhileLocation);
+        mRuleManager.addRuleTemplate(rtWatchModeWhileLocation);
         // Set Watch mode to another mode if a certain watch mode is actually used.
         RuleTemplate rwWatchModeSwitch = new RuleTemplate(getNewId(),"Switch to other watch mode with a button press");
         rwWatchModeSwitch.addTriggerType(mDeviceManager.evButtonPress);
         rwWatchModeSwitch.addTriggerType(mDeviceManager.stWatchMode);
         rwWatchModeSwitch.addActionType(mDeviceManager.acWatchMode);
-        ruleTemplates.put(rwWatchModeSwitch.getId(),rwWatchModeSwitch);
+        mRuleManager.addRuleTemplate(rwWatchModeSwitch);
         // Add or Subtract score with a button press
         RuleTemplate rwScoreButton = new RuleTemplate(getNewId(),"Add or subtract a score with a button press while watch in SPORT mode");
         rwScoreButton.addTriggerType(mDeviceManager.evButtonPress);
         rwScoreButton.addTriggerType(mDeviceManager.stWatchMode);
         rwScoreButton.addActionType(mDeviceManager.acScoreAdjust);
-        ruleTemplates.put(rwScoreButton.getId(),rwScoreButton);
+        mRuleManager.addRuleTemplate(rwScoreButton);
     }
 
     private void testExampleRules(){
@@ -276,67 +217,67 @@ public class RuleSystemService extends Service {
         erCoffeeLocation.addEvent(mDeviceManager.getPebble().getBtn());
         erCoffeeLocation.addState(mDeviceManager.getGeofences().getLocationCurrentlyAt());
         erCoffeeLocation.addAction(mDeviceManager.getHomeCoffeeMachine().getStartCoffee());
-        exampleRules.put(erCoffeeLocation.getId(),erCoffeeLocation);
+        mRuleManager.addExampleRule(erCoffeeLocation);
         ExampleRule erDisplayAlarm = new ExampleRule(getNewId(),"Display Phone alarm alert on Pebble watch");
         erDisplayAlarm.addEvent(mDeviceManager.getAndroidPhone().getAlarmStart());
         erDisplayAlarm.addAction(mDeviceManager.getPebble().getScreenAlarm());
-        exampleRules.put(erDisplayAlarm.getId(),erDisplayAlarm);
+        mRuleManager.addExampleRule(erDisplayAlarm);
         ExampleRule erNotifyButtonPressed = new ExampleRule(getNewId(),"Notify Phone when Pebble watch button is pressed");
         erNotifyButtonPressed.addEvent(mDeviceManager.getPebble().getBtn());
         erNotifyButtonPressed.addAction(mDeviceManager.getAndroidPhone().getNotify());
-        exampleRules.put(erNotifyButtonPressed.getId(),erNotifyButtonPressed);
+        mRuleManager.addExampleRule(erNotifyButtonPressed);
         //
         ExampleRule erDismissPhoneAlarmWithPebbleButton = new ExampleRule(getNewId(),"Dismiss Phone alarm with a Pebble watch button press");
         erDismissPhoneAlarmWithPebbleButton.addEvent(mDeviceManager.getPebble().getBtn());
         erDismissPhoneAlarmWithPebbleButton.addState(mDeviceManager.getAndroidPhone().getAlarmGoing());
         erDismissPhoneAlarmWithPebbleButton.addAction(mDeviceManager.getAndroidPhone().getAcAlarmDismiss());
-        exampleRules.put(erDismissPhoneAlarmWithPebbleButton.getId(),erDismissPhoneAlarmWithPebbleButton);
+        mRuleManager.addExampleRule(erDismissPhoneAlarmWithPebbleButton);
         //
         ExampleRule erWatchmodeSportAtLocation = new ExampleRule(getNewId(),"Set Pebble watch in SPORT mode when arriving at a location");
         erWatchmodeSportAtLocation.addEvent(mDeviceManager.getGeofences().getLocationArrivingAt());
         erWatchmodeSportAtLocation.addAction(mDeviceManager.getPebble().getScreenSport());
-        exampleRules.put(erWatchmodeSportAtLocation.getId(),erWatchmodeSportAtLocation);
+        mRuleManager.addExampleRule(erWatchmodeSportAtLocation);
         //
         ExampleRule erWatchmodeTimeAtLocation = new ExampleRule(getNewId(),"Set Pebble watch in TIME mode when arriving at a location");
         erWatchmodeTimeAtLocation.addEvent(mDeviceManager.getGeofences().getLocationArrivingAt());
         erWatchmodeTimeAtLocation.addAction(mDeviceManager.getPebble().getScreenTime());
-        exampleRules.put(erWatchmodeTimeAtLocation.getId(),erWatchmodeTimeAtLocation);
+        mRuleManager.addExampleRule(erWatchmodeTimeAtLocation);
         //
         ExampleRule erWatchmodeSportBtn = new ExampleRule(getNewId(),"Set Pebble watch in SPORT mode with a Pebble watch button press while Pebble watch in TIME mode");
         erWatchmodeSportBtn.addEvent(mDeviceManager.getPebble().getBtn());
         erWatchmodeSportBtn.addState(mDeviceManager.getPebble().getWatchModeTime());
         erWatchmodeSportBtn.addAction(mDeviceManager.getPebble().getScreenSport());
-        exampleRules.put(erWatchmodeSportBtn.getId(),erWatchmodeSportBtn);
+        mRuleManager.addExampleRule(erWatchmodeSportBtn);
         //
         ExampleRule erWatchmodeTimeAtBtn = new ExampleRule(getNewId(),"Set Pebble watch in TIME mode with a Pebble watch button press while Pebble watch in SPORT mode");
         erWatchmodeTimeAtBtn.addEvent(mDeviceManager.getPebble().getBtn());
         erWatchmodeTimeAtBtn.addState(mDeviceManager.getPebble().getWatchModeSport());
         erWatchmodeTimeAtBtn.addAction(mDeviceManager.getPebble().getScreenSport());
-        exampleRules.put(erWatchmodeTimeAtBtn.getId(),erWatchmodeTimeAtBtn);
+        mRuleManager.addExampleRule(erWatchmodeTimeAtBtn);
         //
         ExampleRule erScoreButtonAddLeft = new ExampleRule(getNewId(),"Add a LEFT score with a button while Pebble watch in SPORT mode");
         erScoreButtonAddLeft.addEvent(mDeviceManager.getPebble().getBtn());
         erScoreButtonAddLeft.addState(mDeviceManager.getPebble().getWatchModeSport());
         erScoreButtonAddLeft.addAction(mDeviceManager.getPebble().getAddScoreXLeft());
-        exampleRules.put(erScoreButtonAddLeft.getId(),erScoreButtonAddLeft);
+        mRuleManager.addExampleRule(erScoreButtonAddLeft);
         //
         ExampleRule erScoreButtonAddRight = new ExampleRule(getNewId(),"Add a RIGHT score with a Pebble watch button press while Pebble watch in SPORT mode");
         erScoreButtonAddRight.addEvent(mDeviceManager.getPebble().getBtn());
         erScoreButtonAddRight.addState(mDeviceManager.getPebble().getWatchModeSport());
         erScoreButtonAddRight.addAction(mDeviceManager.getPebble().getAddScoreXRight());
-        exampleRules.put(erScoreButtonAddRight.getId(),erScoreButtonAddRight);
+        mRuleManager.addExampleRule(erScoreButtonAddRight);
         //
         ExampleRule erScoreButtonSubtractLeft = new ExampleRule(getNewId(),"Subtract a LEFT score with a button while Pebble watch in SPORT mode");
         erScoreButtonSubtractLeft.addEvent(mDeviceManager.getPebble().getBtn());
         erScoreButtonSubtractLeft.addState(mDeviceManager.getPebble().getWatchModeSport());
         erScoreButtonSubtractLeft.addAction(mDeviceManager.getPebble().getSubtractScoreXLeft());
-        exampleRules.put(erScoreButtonSubtractLeft.getId(),erScoreButtonSubtractLeft);
+        mRuleManager.addExampleRule(erScoreButtonSubtractLeft);
         //
         ExampleRule erScoreButtonSubtractRight = new ExampleRule(getNewId(),"Subtract a RIGHT score with a Pebble watch button press while Pebble watch in SPORT mode");
         erScoreButtonSubtractRight.addEvent(mDeviceManager.getPebble().getBtn());
         erScoreButtonSubtractRight.addState(mDeviceManager.getPebble().getWatchModeSport());
         erScoreButtonSubtractRight.addAction(mDeviceManager.getPebble().getSubtractScoreXRight());
-        exampleRules.put(erScoreButtonSubtractRight.getId(),erScoreButtonSubtractRight);
+        mRuleManager.addExampleRule(erScoreButtonSubtractRight);
     }
 
 }

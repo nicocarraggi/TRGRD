@@ -50,7 +50,7 @@ public class ShowRuleTemplatesActivity extends RuleSystemBindingActivity impleme
     protected void onBound() {
         super.onBound();
 
-        this.ruleTemplatesAdapter = new RuleTemplatesAdapter(this, ruleSystemService.getRuleTemplates());
+        this.ruleTemplatesAdapter = new RuleTemplatesAdapter(this, ruleSystemService.getRuleManager().getRuleTemplates());
         rvRuleTemplates.setHasFixedSize(true);
         this.mLayoutManagerActions = new LinearLayoutManager(this);
         rvRuleTemplates.setLayoutManager(mLayoutManagerActions);
@@ -69,7 +69,7 @@ public class ShowRuleTemplatesActivity extends RuleSystemBindingActivity impleme
                 // create new ruleTemplate instance
                 DeviceManager deviceManager = ruleSystemService.getDeviceManager();
                 RuleTemplate instance = new RuleTemplate(deviceManager.getNewId(),item,deviceManager);
-                ruleSystemService.addRuleTemplateInstance(instance);
+                ruleSystemService.getRuleManager().addRuleTemplateInstance(instance);
                 Intent intent = new Intent(ShowRuleTemplatesActivity.this, CreateRuleFromTemplateActivity.class);
                 intent.putExtra("iscreate",true);
                 intent.putExtra("ruletemplateinstanceid",instance.getId());
@@ -109,7 +109,7 @@ public class ShowRuleTemplatesActivity extends RuleSystemBindingActivity impleme
         newText = newText.toLowerCase();
         Set<RuleTemplate> newRuleTemplates = new HashSet<>();
         String name;
-        for(RuleTemplate rt : ruleSystemService.getRuleTemplates()){
+        for(RuleTemplate rt : ruleSystemService.getRuleManager().getRuleTemplates()){
             name = rt.getName().toLowerCase();
             if(name.contains(newText)) newRuleTemplates.add(rt);
         }

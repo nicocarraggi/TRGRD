@@ -50,7 +50,7 @@ public class LocationsFragment extends TrgrdFragment implements MyOnItemClickLis
         if (mListener != null) {
             Log.d("TRGRD","LocationsFragment test isServiceStarted = "+mListener.getIsServiceStarted());
             if(mListener.getIsServiceStarted() && mListener.getIsServiceBound()){
-                this.locations = mListener.getRuleSystemService().getLocations();
+                this.locations = mListener.getRuleSystemService().getLocationManager().getLocations();
             }
         }
 
@@ -71,7 +71,7 @@ public class LocationsFragment extends TrgrdFragment implements MyOnItemClickLis
 
     private void showLocations(){
         if (mListener.getRuleSystemService() != null && mAdapter != null) {
-            this.locations = mListener.getRuleSystemService().getLocations();
+            this.locations = mListener.getRuleSystemService().getLocationManager().getLocations();
             mAdapter.updateData(locations);
         }
     }

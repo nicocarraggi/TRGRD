@@ -50,8 +50,8 @@ public class Clock extends Device {
         super(ruleSystemService.getNewId(), "Clock", "Google", "Android", R.drawable.ic_access_time_black_24dp, ruleSystemService, deviceManager);
         this.getEventTypes().put(evClockAt.getId(),evClockAt);
         this.getStateTypes().put(stClockFromTo.getId(),stClockFromTo);
-        mEvTimeAt = new TimeEvent(deviceManager.getNewId(),"Time at ...", R.drawable.ic_keyboard_arrow_down_black_24dp, this, evClockAt, ruleSystemService.getRuleEngine());
-        mStTimeFromTo = new TimeState(deviceManager.getNewId(),"Time from ... to ...", R.drawable.ic_code_black_24dp, this, stClockFromTo, false, ruleSystemService.getRuleEngine());
+        mEvTimeAt = new TimeEvent(deviceManager.getNewId(),"Time at ...", R.drawable.ic_keyboard_arrow_down_black_24dp, this, evClockAt, ruleSystemService.getRuleManager().getRuleEngine());
+        mStTimeFromTo = new TimeState(deviceManager.getNewId(),"Time from ... to ...", R.drawable.ic_code_black_24dp, this, stClockFromTo, false, ruleSystemService.getRuleManager().getRuleEngine());
         this.events.put(mEvTimeAt.getId(),mEvTimeAt);
         this.states.put(mStTimeFromTo.getId(),mStTimeFromTo);
     }

@@ -143,7 +143,7 @@ public class CreateRuleActivity extends RuleSystemBindingActivity
                 if(isCreate) {
                     int newId = ruleSystemService.getNewId();
                     this.rule = new Rule(newId, etName.getText().toString(), events, states, actions);
-                    ruleSystemService.addRule(rule);
+                    ruleSystemService.getRuleManager().addRule(rule);
                     this.rule.setActive(true);
                     Intent intent = new Intent(this, RuleDetailsActivity.class);
                     intent.putExtra("ruleid",rule.getId());
@@ -206,7 +206,7 @@ public class CreateRuleActivity extends RuleSystemBindingActivity
                 ab.setTitle("Create rule");
             } else {
                 ab.setTitle("Edit rule");
-                rule = ruleSystemService.getRule(id);
+                rule = ruleSystemService.getRuleManager().getRule(id);
                 this.events.addAll(rule.getEvents());
                 this.states.addAll(rule.getStates());
                 this.actions.addAll(rule.getActions());
@@ -241,7 +241,7 @@ public class CreateRuleActivity extends RuleSystemBindingActivity
             this.isBoundOnce = true;
 
             if(isCreate && isFromExampleRule){
-                ExampleRule exampleRule = ruleSystemService.getExampleRule(id);
+                ExampleRule exampleRule = ruleSystemService.getRuleManager().getExampleRule(id);
                 etName.setText(exampleRule.getName());
                 for (Event e: exampleRule.getEvents()){
                     addEvent(e);
@@ -609,7 +609,7 @@ public class CreateRuleActivity extends RuleSystemBindingActivity
     public void askLocation(final int type, final Event eventOrState, final Location oldLocation){
         Log.d("TRGRD","CreateRuleOpenActivity askLocation "+type+", "+eventOrState.getName()+", "+oldLocation);
         final ArrayList<Location> locations = new ArrayList<>();
-        locations.addAll(ruleSystemService.getLocations());
+        locations.addAll(ruleSystemService.getLocationManager().getLocations());
         CharSequence locationNames[] = new CharSequence[locations.size()];
         for(int i=0; i<locations.size(); i++){
             locationNames[i] = locations.get(i).getName();

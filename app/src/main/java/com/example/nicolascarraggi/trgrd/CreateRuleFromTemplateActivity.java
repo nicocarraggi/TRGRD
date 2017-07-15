@@ -119,7 +119,7 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
                     try {
                         ruleTemplateInstance.setName(etName.getText().toString());
                         Rule rule = new Rule(newId,ruleTemplateInstance);
-                        ruleSystemService.addRule(rule);
+                        ruleSystemService.getRuleManager().addRule(rule);
                         rule.setActive(true);
                         Intent intent = new Intent(this, RuleDetailsActivity.class);
                         intent.putExtra("ruleid",rule.getId());
@@ -174,11 +174,11 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
             ActionBar ab = getSupportActionBar();
             if (isCreate) {
                 ab.setTitle("Create rule");
-                ruleTemplateInstance = ruleSystemService.getRuleTemplateInstance(id);
+                ruleTemplateInstance = ruleSystemService.getRuleManager().getRuleTemplateInstance(id);
                 etName.setText(ruleTemplateInstance.getName());
             } else {
                 ab.setTitle("Edit rule");
-                ruleTemplateInstance = ruleSystemService.getRuleTemplateInstance(id);
+                ruleTemplateInstance = ruleSystemService.getRuleManager().getRuleTemplateInstance(id);
                 etName.setText(ruleTemplateInstance.getName());
             }
 
@@ -514,7 +514,7 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
     public void askLocation(final int type, final Type eventOrStateTypeInstance, final Location oldLocation){
         //Log.d("TRGRD","CreateRuleFromTemplateActivity askLocation "+type+", "+eventOrState.getName()+", "+oldLocation);
         final ArrayList<Location> locations = new ArrayList<>();
-        locations.addAll(ruleSystemService.getLocations());
+        locations.addAll(ruleSystemService.getLocationManager().getLocations());
         CharSequence locationNames[] = new CharSequence[locations.size()];
         for(int i=0; i<locations.size(); i++){
             locationNames[i] = locations.get(i).getName();

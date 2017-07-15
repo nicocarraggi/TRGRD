@@ -110,7 +110,7 @@ public class Pebble extends Wearable implements NotificationDevice, ScoreDevice,
         this.inputActions.add(mIaBtnSelect);
         this.inputActions.add(mIaBtnDown);
         // INPUT ACTION EVENTS
-        this.mIaEvBtn = new InputActionEvent(deviceManager.getNewId(),"Pebble watch ... button is pressed","button", R.drawable.ic_adjust_black_24dp, this, evButtonPress, ruleSystemService.getRuleEngine());
+        this.mIaEvBtn = new InputActionEvent(deviceManager.getNewId(),"Pebble watch ... button is pressed","button", R.drawable.ic_adjust_black_24dp, this, evButtonPress, ruleSystemService.getRuleManager().getRuleEngine());
         this.mIaEvBtnUp = new InputActionEvent(deviceManager.getNewId(),mIaEvBtn,mIaBtnUp);
         this.mIaEvBtnSelect = new InputActionEvent(deviceManager.getNewId(),mIaEvBtn,mIaBtnSelect);
         this.mIaEvBtnDown = new InputActionEvent(deviceManager.getNewId(),mIaEvBtn,mIaBtnDown);
@@ -118,14 +118,14 @@ public class Pebble extends Wearable implements NotificationDevice, ScoreDevice,
         this.inputActionEvents.put(mIaBtnSelect.getId(), mIaEvBtnSelect);
         this.inputActionEvents.put(mIaBtnDown.getId(), mIaEvBtnDown);
         // EVENTS
-        this.mEvShake = new Event(deviceManager.getNewId(),"Pebble shake", R.drawable.ic_gesture_black_24dp, this, evGesture, ruleSystemService.getRuleEngine());
+        this.mEvShake = new Event(deviceManager.getNewId(),"Pebble shake", R.drawable.ic_gesture_black_24dp, this, evGesture, ruleSystemService.getRuleManager().getRuleEngine());
         //this.mEvBtnUp = new Event(deviceManager.getNewId(),"Pebble UP button is pressed", R.drawable.ic_keyboard_arrow_up_black_24dp, this, evButtonPress);
         //this.mEvBtnSelect = new Event(deviceManager.getNewId(),"Pebble SELECT button is pressed", R.drawable.ic_keyboard_arrow_right_black_24dp, this, evButtonPress);
         //this.mEvBtnDown = new Event(deviceManager.getNewId(),"Pebble DOWN button is pressed", R.drawable.ic_keyboard_arrow_down_black_24dp, this, evButtonPress);
         // STATES
-        this.mStWatchModeTime = new State(deviceManager.getNewId(),"Pebble watch is currently in mode TIME", R.drawable.ic_access_time_black_24dp,this,stWatchMode, true, ruleSystemService.getRuleEngine());
-        this.mStWatchModeSport = new State(deviceManager.getNewId(),"Pebble watch is currently in mode SPORT", R.drawable.ic_directions_run_black_24dp,this,stWatchMode, false, ruleSystemService.getRuleEngine());
-        this.mStWatchModePopup = new State(deviceManager.getNewId(),"Pebble watch is currently in mode POPUP", R.drawable.ic_content_copy_black_24dp,this,stWatchMode, false, ruleSystemService.getRuleEngine());
+        this.mStWatchModeTime = new State(deviceManager.getNewId(),"Pebble watch is currently in mode TIME", R.drawable.ic_access_time_black_24dp,this,stWatchMode, true, ruleSystemService.getRuleManager().getRuleEngine());
+        this.mStWatchModeSport = new State(deviceManager.getNewId(),"Pebble watch is currently in mode SPORT", R.drawable.ic_directions_run_black_24dp,this,stWatchMode, false, ruleSystemService.getRuleManager().getRuleEngine());
+        this.mStWatchModePopup = new State(deviceManager.getNewId(),"Pebble watch is currently in mode POPUP", R.drawable.ic_content_copy_black_24dp,this,stWatchMode, false, ruleSystemService.getRuleManager().getRuleEngine());
         // ACTIONS
         this.mAcVibrate = new Action(deviceManager.getNewId(),"Pebble watch vibrate", R.drawable.ic_vibration_black_24dp, this, acAlarmVibrate, new Callable<String>() {
             @Override
