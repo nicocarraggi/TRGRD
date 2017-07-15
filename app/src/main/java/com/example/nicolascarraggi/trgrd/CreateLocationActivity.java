@@ -73,7 +73,7 @@ public class CreateLocationActivity extends RuleSystemBindingActivity {
             ab.setTitle("Edit location");
             this.isPicked = true;
 
-            location = ruleSystemService.getLocation(locationId);
+            location = ruleSystemService.getLocationManager().getLocation(locationId);
             etName.setText(location.getName());
             tvAddress.setText(location.getAddress());
         }
@@ -97,7 +97,7 @@ public class CreateLocationActivity extends RuleSystemBindingActivity {
             if(isLocationValid()) {
                 if(isCreate) {
                     location.setName(etName.getText().toString());
-                    ruleSystemService.addLocation(location);
+                    ruleSystemService.getLocationManager().addLocation(location);
                     Intent intent = new Intent(this, LocationDetailsActivity.class);
                     intent.putExtra("locationid",location.getId());
                     startActivity(intent);

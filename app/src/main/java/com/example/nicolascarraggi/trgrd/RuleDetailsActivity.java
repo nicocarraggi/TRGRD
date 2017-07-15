@@ -65,7 +65,7 @@ public class RuleDetailsActivity extends RuleSystemBindingActivity implements My
     @Override
     protected void onBound(){
         super.onBound();
-        rule = ruleSystemService.getRule(ruleId);
+        rule = ruleSystemService.getRuleManager().getRule(ruleId);
 
         tvRuleDetailsName.setText(rule.getName());
         switchRuleDetailsActive.setChecked(rule.isActive());

@@ -63,7 +63,7 @@ public class RulesFragment extends TrgrdFragment  implements MyOnItemClickListen
         if (mListener != null) {
             Log.d("TRGRD","RulesFragment test isServiceStarted = "+mListener.getIsServiceStarted() + " & isServiceBound = "+isServiceBound);
             if (mListener.getIsServiceStarted() && mListener.getIsServiceBound()){
-                this.rules = mListener.getRuleSystemService().getRules();
+                this.rules = mListener.getRuleSystemService().getRuleManager().getRules();
             }
         }
 
@@ -102,7 +102,7 @@ public class RulesFragment extends TrgrdFragment  implements MyOnItemClickListen
 
     private void showRules(){
         if (mListener.getRuleSystemService() != null && mAdapter != null) {
-            this.rules = mListener.getRuleSystemService().getRules();
+            this.rules = mListener.getRuleSystemService().getRuleManager().getRules();
             mAdapter.updateData(rules);
         }
     }

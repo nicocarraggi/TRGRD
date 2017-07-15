@@ -38,7 +38,7 @@ public class LocationDetailsActivity extends RuleSystemBindingActivity {
     @Override
     protected void onBound() {
         super.onBound();
-        location = ruleSystemService.getLocation(locationId);
+        location = ruleSystemService.getLocationManager().getLocation(locationId);
         tvName.setText(location.getName());
         tvAddress.setText(location.getAddress());
     }

@@ -50,7 +50,7 @@ public class RuleTemplateDetailsActivity extends RuleSystemBindingActivity imple
     @Override
     protected void onBound(){
         super.onBound();
-        ruleTemplate = ruleSystemService.getRuleTemplate(ruleTemplateId);
+        ruleTemplate = ruleSystemService.getRuleManager().getRuleTemplate(ruleTemplateId);
 
         tvName.setText(ruleTemplate.getName());
 
@@ -89,7 +89,7 @@ public class RuleTemplateDetailsActivity extends RuleSystemBindingActivity imple
             // create new ruleTemplate instance
             DeviceManager deviceManager = ruleSystemService.getDeviceManager();
             RuleTemplate instance = new RuleTemplate(deviceManager.getNewId(),ruleTemplate,deviceManager);
-            ruleSystemService.addRuleTemplateInstance(instance);
+            ruleSystemService.getRuleManager().addRuleTemplateInstance(instance);
             Intent intent = new Intent(RuleTemplateDetailsActivity.this, CreateRuleFromTemplateActivity.class);
             intent.putExtra("iscreate",true);
             intent.putExtra("ruletemplateinstanceid",instance.getId());
