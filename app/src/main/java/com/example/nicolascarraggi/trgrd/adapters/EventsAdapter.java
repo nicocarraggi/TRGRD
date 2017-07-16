@@ -158,7 +158,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventViewH
                     bEventValueZero.setText(timeEvent.getTime().toString());
                 } else {
                     showValueThree();
-                    tvEventValueThree.setText("At:   "+timeEvent.getTime().toString());
+                    tvEventValueThree.setText("At:   ");
                     tvEventValueThreeValue.setText(timeEvent.getTime().toString());
                 }
             } else if(event.isInputActionEvent()){

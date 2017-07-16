@@ -222,7 +222,7 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
                             bTypeInstanceValueZero.setText(timeEvent.getTime().toString());
                         } else {
                             showInstanceName();
-                            tvTypeInstanceValueZero.setText("At:   "+timeEvent.getTime().toString());
+                            tvTypeInstanceName.setText("At:   "+timeEvent.getTime().toString());
                         }
                     } else if(event.isInputActionEvent()){
                         InputActionEvent inputActionEvent = (InputActionEvent) event;
