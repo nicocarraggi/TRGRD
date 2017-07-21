@@ -90,14 +90,14 @@ public class Geofences extends Device implements GoogleApiClient.ConnectionCallb
     private LocationEvent mEvLocationArrivingAt, mEvLocationLeaving;
     private LocationState mStLocationCurrentlyAt;
 
-    public Geofences(RuleSystemService ruleSystemService, DeviceManager deviceManager, EventType evLocationArrivingAt, EventType evLocationLeaving, StateType stLocationCurrentlyAt) {
+    public Geofences(RuleSystemService ruleSystemService, DeviceManager deviceManager) {
         super(ruleSystemService.getNewId(), "Locations", "Google", "Android", R.drawable.ic_my_location_black_24dp, ruleSystemService, deviceManager);
-        this.eventTypes.put(evLocationArrivingAt.getId(),evLocationArrivingAt);
-        this.eventTypes.put(evLocationLeaving.getId(),evLocationLeaving);
-        this.stateTypes.put(stLocationCurrentlyAt.getId(),stLocationCurrentlyAt);
-        mEvLocationArrivingAt = new LocationEvent(deviceManager.getNewId(),"Arrived at ...",R.drawable.ic_my_location_black_24dp,this,evLocationArrivingAt, LocationEvent.LocationEventType.ARRIVING, ruleSystemService.getRuleManager().getRuleEngine());
-        mEvLocationLeaving = new LocationEvent(deviceManager.getNewId(),"Left ...",R.drawable.ic_my_location_black_24dp,this,evLocationLeaving, LocationEvent.LocationEventType.LEAVING, ruleSystemService.getRuleManager().getRuleEngine());
-        mStLocationCurrentlyAt = new LocationState(deviceManager.getNewId(),"Currently at ...",R.drawable.ic_my_location_black_24dp,this,stLocationCurrentlyAt,false, ruleSystemService.getRuleManager().getRuleEngine());
+        this.eventTypes.put(deviceManager.getEvLocationArrivingAt().getId(),deviceManager.getEvLocationArrivingAt());
+        this.eventTypes.put(deviceManager.getEvLocationLeaving().getId(),deviceManager.getEvLocationLeaving());
+        this.stateTypes.put(deviceManager.getStLocationCurrentlyAt().getId(),deviceManager.getStLocationCurrentlyAt());
+        mEvLocationArrivingAt = new LocationEvent(deviceManager.getNewId(),"Arrived at ...",R.drawable.ic_my_location_black_24dp,this,deviceManager.getEvLocationArrivingAt(), LocationEvent.LocationEventType.ARRIVING, ruleSystemService.getRuleManager().getRuleEngine());
+        mEvLocationLeaving = new LocationEvent(deviceManager.getNewId(),"Left ...",R.drawable.ic_my_location_black_24dp,this,deviceManager.getEvLocationLeaving(), LocationEvent.LocationEventType.LEAVING, ruleSystemService.getRuleManager().getRuleEngine());
+        mStLocationCurrentlyAt = new LocationState(deviceManager.getNewId(),"Currently at ...",R.drawable.ic_my_location_black_24dp,this,deviceManager.getStLocationCurrentlyAt(),false, ruleSystemService.getRuleManager().getRuleEngine());
         this.events.put(mEvLocationArrivingAt.getId(),mEvLocationArrivingAt);
         this.events.put(mEvLocationLeaving.getId(),mEvLocationLeaving);
         this.states.put(mStLocationCurrentlyAt.getId(),mStLocationCurrentlyAt);

@@ -18,10 +18,10 @@ public class VubCoffeeMachine extends Device {
 
     private Action mAcStartCoffee;
 
-    public VubCoffeeMachine(RuleSystemService ruleSystemService, DeviceManager deviceManager, ActionType acStartCoffee) {
+    public VubCoffeeMachine(RuleSystemService ruleSystemService, DeviceManager deviceManager) {
         super(ruleSystemService.getNewId(), "VUB coffee machine", "Unknown", "Unknown", R.drawable.ic_local_cafe_black_24dp, ruleSystemService, deviceManager);
-        this.actionTypes.put(acStartCoffee.getId(),acStartCoffee);
-        this.mAcStartCoffee = new Action(deviceManager.getNewId(),"VUB coffee machine start", R.drawable.ic_play_arrow_black_24dp, this, acStartCoffee, new Callable<String>() {
+        this.actionTypes.put(deviceManager.getAcStartCoffee().getId(),deviceManager.getAcStartCoffee());
+        this.mAcStartCoffee = new Action(deviceManager.getNewId(),"VUB coffee machine start", R.drawable.ic_play_arrow_black_24dp, this, deviceManager.getAcStartCoffee(), new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acStartCoffee();

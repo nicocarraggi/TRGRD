@@ -75,11 +75,11 @@ public class MyoDevice extends Wearable implements InputActionDevice {
 
     //private Event mEvGestureFist, mEvGestureWaveIn, mEvGestureWaveOut, mEvGestureDoubleTap, mEvGestureFingersSpread;
 
-    public MyoDevice(RuleSystemService ruleSystemService, DeviceManager deviceManager, EventType evGesture){
+    public MyoDevice(RuleSystemService ruleSystemService, DeviceManager deviceManager){
         super(ruleSystemService.getNewId(), "Myo Gesture Armband", "Thalmic Labs", "Myo OS", "Armband", "Arm", R.drawable.ic_pan_tool_black_24dp,ruleSystemService,deviceManager);
         this.inputActions = new ArrayList<>();
         this.inputActionEvents = new HashMap<>();
-        this.eventTypes.put(evGesture.getId(),evGesture);
+        this.eventTypes.put(deviceManager.getEvGesture().getId(),deviceManager.getEvGesture());
         // INPUT ACTIONS
         //this.mIaGestFist = new InputAction(deviceManager.getNewId(),"MYO gesture:","Fist",R.drawable.ic_gesture_black_24dp);
         this.mIaGestWaveIn = new InputAction(deviceManager.getNewId(),"MYO armband gesture:","Wave in",R.drawable.ic_gesture_black_24dp);
@@ -92,7 +92,7 @@ public class MyoDevice extends Wearable implements InputActionDevice {
         this.inputActions.add(mIaGestDoubleTap);
         //this.inputActions.add(mIaGestFingSpread);
         // INPUT ACTION EVENTS
-        this.mIaEvGest = new InputActionEvent(deviceManager.getNewId(),"MYO armband ... gesture is made","gesture", R.drawable.ic_gesture_black_24dp, this, evGesture, ruleSystemService.getRuleManager().getRuleEngine());
+        this.mIaEvGest = new InputActionEvent(deviceManager.getNewId(),"MYO armband ... gesture is made","gesture", R.drawable.ic_gesture_black_24dp, this, deviceManager.getEvGesture(), ruleSystemService.getRuleManager().getRuleEngine());
         //this.mIaEvGestFist = new InputActionEvent(deviceManager.getNewId(),mIaEvGest,mIaGestFist);
         this.mIaEvGestWaveIn = new InputActionEvent(deviceManager.getNewId(),mIaEvGest,mIaGestWaveIn);
         this.mIaEvGestWaveOut = new InputActionEvent(deviceManager.getNewId(),mIaEvGest,mIaGestWaveOut);

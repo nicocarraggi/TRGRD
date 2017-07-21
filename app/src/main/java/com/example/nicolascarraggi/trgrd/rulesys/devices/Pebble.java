@@ -91,25 +91,23 @@ public class Pebble extends Wearable implements NotificationDevice, ScoreDevice,
     private NotificationAction mAcNotify;
     private ScoreValueAction mAcScoreAddXLeft,mAcScoreAddXRight, mAcScoreSubtractXLeft, mAcScoreSubtractXRight;
 
-    public Pebble(RuleSystemService ruleSystemService, DeviceManager deviceManager,
-                  EventType evButtonPress, EventType evHeartRateReading, EventType evGesture,
-                  StateType stWatchMode,
-                  ActionType acAlarmVibrate, ActionType acAlarmDisplay, ActionType acWatchMode, ActionType acTimeDisplay, ActionType acSportDisplay, ActionType acNotify, ActionType acScoreAdjust) {
+    public Pebble(RuleSystemService ruleSystemService, DeviceManager deviceManager) {
         super(ruleSystemService.getNewId(), "Pebble Watch", "Pebble", "Pebble OS", "Watch", "Wrist", R.drawable.ic_watch_black_24dp, ruleSystemService, deviceManager);
         this.inputActions = new ArrayList<>();
         this.inputActionEvents = new HashMap<>();
-        this.eventTypes.put(evButtonPress.getId(),evButtonPress);
-        this.eventTypes.put(evHeartRateReading.getId(),evHeartRateReading);
-        this.eventTypes.put(evGesture.getId(),evGesture);
+        this.eventTypes.put(deviceManager.getEvButtonPress().getId(),deviceManager.getEvButtonPress());
+        this.eventTypes.put(deviceManager.getEvHeartRateReading().getId(),deviceManager.getEvHeartRateReading());
+        this.eventTypes.put(deviceManager.getEvGesture().getId(),deviceManager.getEvGesture());
         this.eventTypes.put(deviceManager.getEvWakesUp().getId(),deviceManager.getEvWakesUp());
         this.eventTypes.put(deviceManager.getEvActivityChange().getId(),deviceManager.getEvActivityChange());
-        this.stateTypes.put(stWatchMode.getId(),stWatchMode);
-        this.actionTypes.put(acAlarmVibrate.getId(),acAlarmVibrate);
-        this.actionTypes.put(acAlarmDisplay.getId(),acAlarmDisplay);
-        this.actionTypes.put(acWatchMode.getId(),acWatchMode);
-        this.actionTypes.put(acTimeDisplay.getId(),acTimeDisplay);
-        this.actionTypes.put(acSportDisplay.getId(),acSportDisplay);
-        this.actionTypes.put(acScoreAdjust.getId(),acScoreAdjust);
+        this.stateTypes.put(deviceManager.getStWatchMode().getId(),deviceManager.getStWatchMode());
+        this.actionTypes.put(deviceManager.getAcVibrate().getId(),deviceManager.getAcVibrate());
+        this.actionTypes.put(deviceManager.getAcAlarmDisplay().getId(),deviceManager.getAcAlarmDisplay());
+        this.actionTypes.put(deviceManager.getAcWatchMode().getId(),deviceManager.getAcWatchMode());
+        this.actionTypes.put(deviceManager.getAcTimeDisplay().getId(),deviceManager.getAcTimeDisplay());
+        this.actionTypes.put(deviceManager.getAcSportDisplay().getId(),deviceManager.getAcSportDisplay());
+        this.actionTypes.put(deviceManager.getAcScoreAdjust().getId(),deviceManager.getAcScoreAdjust());
+        this.actionTypes.put(deviceManager.getAcNotify().getId(),deviceManager.getAcNotify());
         // INPUT ACTIONS
         this.mIaBtnUp = new InputAction(deviceManager.getNewId(),"Pebble watch button:","UP",R.drawable.ic_keyboard_arrow_up_black_24dp);
         this.mIaBtnSelect = new InputAction(deviceManager.getNewId(),"Pebble watch button:","SELECT",R.drawable.ic_keyboard_arrow_right_black_24dp);
@@ -118,7 +116,7 @@ public class Pebble extends Wearable implements NotificationDevice, ScoreDevice,
         this.inputActions.add(mIaBtnSelect);
         this.inputActions.add(mIaBtnDown);
         // INPUT ACTION EVENTS
-        this.mIaEvBtn = new InputActionEvent(deviceManager.getNewId(),"Pebble watch ... button is pressed","button", R.drawable.ic_adjust_black_24dp, this, evButtonPress, ruleSystemService.getRuleManager().getRuleEngine());
+        this.mIaEvBtn = new InputActionEvent(deviceManager.getNewId(),"Pebble watch ... button is pressed","button", R.drawable.ic_adjust_black_24dp, this, deviceManager.getEvButtonPress(), ruleSystemService.getRuleManager().getRuleEngine());
         this.mIaEvBtnUp = new InputActionEvent(deviceManager.getNewId(),mIaEvBtn,mIaBtnUp);
         this.mIaEvBtnSelect = new InputActionEvent(deviceManager.getNewId(),mIaEvBtn,mIaBtnSelect);
         this.mIaEvBtnDown = new InputActionEvent(deviceManager.getNewId(),mIaEvBtn,mIaBtnDown);
@@ -126,7 +124,7 @@ public class Pebble extends Wearable implements NotificationDevice, ScoreDevice,
         this.inputActionEvents.put(mIaBtnSelect.getId(), mIaEvBtnSelect);
         this.inputActionEvents.put(mIaBtnDown.getId(), mIaEvBtnDown);
         // EVENTS
-        this.mEvShake = new Event(deviceManager.getNewId(),"Pebble shake", R.drawable.ic_gesture_black_24dp, this, evGesture, ruleSystemService.getRuleManager().getRuleEngine());
+        this.mEvShake = new Event(deviceManager.getNewId(),"Pebble shake", R.drawable.ic_gesture_black_24dp, this, deviceManager.getEvGesture(), ruleSystemService.getRuleManager().getRuleEngine());
         this.mEvWakesUp = new Event(deviceManager.getNewId(),"Pebble detects wake up",R.drawable.ic_wb_sunny_black_24dp,this,deviceManager.getEvWakesUp(),ruleSystemService.getRuleManager().getRuleEngine());
         this.mEvActivityRest = new Event(deviceManager.getNewId(),"Pebble detects REST activity",R.drawable.ic_person_black_24dp,this,deviceManager.getEvActivityChange(),ruleSystemService.getRuleManager().getRuleEngine());
         this.mEvActivityPhysical = new Event(deviceManager.getNewId(),"Pebble detects PHYSICAL activity",R.drawable.ic_directions_run_black_24dp,this,deviceManager.getEvActivityChange(),ruleSystemService.getRuleManager().getRuleEngine());
@@ -134,11 +132,11 @@ public class Pebble extends Wearable implements NotificationDevice, ScoreDevice,
         //this.mEvBtnSelect = new Event(deviceManager.getNewId(),"Pebble SELECT button is pressed", R.drawable.ic_keyboard_arrow_right_black_24dp, this, evButtonPress);
         //this.mEvBtnDown = new Event(deviceManager.getNewId(),"Pebble DOWN button is pressed", R.drawable.ic_keyboard_arrow_down_black_24dp, this, evButtonPress);
         // STATES
-        this.mStWatchModeTime = new State(deviceManager.getNewId(),"Pebble watch is currently in mode TIME", R.drawable.ic_access_time_black_24dp,this,stWatchMode, true, ruleSystemService.getRuleManager().getRuleEngine());
-        this.mStWatchModeSport = new State(deviceManager.getNewId(),"Pebble watch is currently in mode SPORT", R.drawable.ic_directions_run_black_24dp,this,stWatchMode, false, ruleSystemService.getRuleManager().getRuleEngine());
-        this.mStWatchModePopup = new State(deviceManager.getNewId(),"Pebble watch is currently in mode POPUP", R.drawable.ic_content_copy_black_24dp,this,stWatchMode, false, ruleSystemService.getRuleManager().getRuleEngine());
+        this.mStWatchModeTime = new State(deviceManager.getNewId(),"Pebble watch is currently in mode TIME", R.drawable.ic_access_time_black_24dp,this,deviceManager.getStWatchMode(), true, ruleSystemService.getRuleManager().getRuleEngine());
+        this.mStWatchModeSport = new State(deviceManager.getNewId(),"Pebble watch is currently in mode SPORT", R.drawable.ic_directions_run_black_24dp,this,deviceManager.getStWatchMode(), false, ruleSystemService.getRuleManager().getRuleEngine());
+        this.mStWatchModePopup = new State(deviceManager.getNewId(),"Pebble watch is currently in mode POPUP", R.drawable.ic_content_copy_black_24dp,this,deviceManager.getStWatchMode(), false, ruleSystemService.getRuleManager().getRuleEngine());
         // ACTIONS
-        this.mAcVibrate = new Action(deviceManager.getNewId(),"Pebble watch vibrate", R.drawable.ic_vibration_black_24dp, this, acAlarmVibrate, new Callable<String>() {
+        this.mAcVibrate = new Action(deviceManager.getNewId(),"Pebble watch vibrate", R.drawable.ic_vibration_black_24dp, this, deviceManager.getAcVibrate(), new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acVibrate();
@@ -146,21 +144,21 @@ public class Pebble extends Wearable implements NotificationDevice, ScoreDevice,
             }
         });
         // mAcScreenTime had type acTimeDisplay, now acWatchMode -> TODO allow multiple types
-        this.mAcScreenTime = new Action(deviceManager.getNewId(),"Set Pebble watch in TIME mode", R.drawable.ic_access_time_black_24dp, this, acWatchMode, new Callable<String>() {
+        this.mAcScreenTime = new Action(deviceManager.getNewId(),"Set Pebble watch in TIME mode", R.drawable.ic_access_time_black_24dp, this, deviceManager.getAcWatchMode(), new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acScreenTime();
                 return null;
             }
         });
-        this.mAcScreenSport = new Action(deviceManager.getNewId(),"Set Pebble watch in SPORT mode", R.drawable.ic_directions_run_black_24dp, this, acWatchMode, new Callable<String>() {
+        this.mAcScreenSport = new Action(deviceManager.getNewId(),"Set Pebble watch in SPORT mode", R.drawable.ic_directions_run_black_24dp, this, deviceManager.getAcWatchMode(), new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acScreenSport();
                 return null;
             }
         });
-        this.mAcScreenAlarm = new Action(deviceManager.getNewId(),"Display alarm on Pebble watch", R.drawable.ic_alarm_black_24dp, this, acAlarmDisplay, new Callable<String>() {
+        this.mAcScreenAlarm = new Action(deviceManager.getNewId(),"Display alarm on Pebble watch", R.drawable.ic_alarm_black_24dp, this, deviceManager.getAcAlarmDisplay(), new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acScreenAlarm();
@@ -168,7 +166,7 @@ public class Pebble extends Wearable implements NotificationDevice, ScoreDevice,
             }
         });
         // TODO remove ScreenClean!
-        this.mAcScreenClean = new Action(deviceManager.getNewId(),"Clean Pebble watch display", R.drawable.ic_cancel_black_24dp, this, acTimeDisplay, new Callable<String>() {
+        this.mAcScreenClean = new Action(deviceManager.getNewId(),"Clean Pebble watch display", R.drawable.ic_cancel_black_24dp, this, deviceManager.getAcTimeDisplay(), new Callable<String>() {
             @Override
             public String call() throws Exception {
                 acScreenClean();
@@ -206,15 +204,15 @@ public class Pebble extends Wearable implements NotificationDevice, ScoreDevice,
         });
         */
         // Callable is null, will be overridden in instance with the correct parameters using getNotifyCallable(...)
-        this.mAcNotify = new NotificationAction(deviceManager.getNewId(),"Pebble watch notification",R.drawable.ic_notifications_active_black_24dp,this,acNotify);
+        this.mAcNotify = new NotificationAction(deviceManager.getNewId(),"Pebble watch notification",R.drawable.ic_notifications_active_black_24dp,this,deviceManager.getAcNotify());
         // Callable is null, will be overridden in instance with the correct parameters using getValueActionCallable(...)
-        this.mAcScoreAddXLeft = new ScoreValueAction(deviceManager.getNewId(),"+ ... to Pebble watch score LEFT", R.drawable.ic_plus_x_black, this, acScoreAdjust
+        this.mAcScoreAddXLeft = new ScoreValueAction(deviceManager.getNewId(),"+ ... to Pebble watch score LEFT", R.drawable.ic_plus_x_black, this, deviceManager.getAcScoreAdjust()
                 , ScoreValueAction.ScoreSide.LEFT, ScoreValueAction.ScoreValueActionType.ADD);
-        this.mAcScoreAddXRight = new ScoreValueAction(deviceManager.getNewId(),"+ ... to Pebble watch score RIGHT", R.drawable.ic_plus_x_black, this, acScoreAdjust
+        this.mAcScoreAddXRight = new ScoreValueAction(deviceManager.getNewId(),"+ ... to Pebble watch score RIGHT", R.drawable.ic_plus_x_black, this, deviceManager.getAcScoreAdjust()
                 , ScoreValueAction.ScoreSide.RIGHT, ScoreValueAction.ScoreValueActionType.ADD);
-        this.mAcScoreSubtractXLeft = new ScoreValueAction(deviceManager.getNewId(),"- ... to Pebble watch score LEFT", R.drawable.ic_minus_x_black, this, acScoreAdjust
+        this.mAcScoreSubtractXLeft = new ScoreValueAction(deviceManager.getNewId(),"- ... to Pebble watch score LEFT", R.drawable.ic_minus_x_black, this, deviceManager.getAcScoreAdjust()
                 , ScoreValueAction.ScoreSide.LEFT, ScoreValueAction.ScoreValueActionType.SUBTRACT);
-        this.mAcScoreSubtractXRight = new ScoreValueAction(deviceManager.getNewId(),"- ... to Pebble watch score RIGHT", R.drawable.ic_minus_x_black, this, acScoreAdjust
+        this.mAcScoreSubtractXRight = new ScoreValueAction(deviceManager.getNewId(),"- ... to Pebble watch score RIGHT", R.drawable.ic_minus_x_black, this, deviceManager.getAcScoreAdjust()
                 , ScoreValueAction.ScoreSide.RIGHT, ScoreValueAction.ScoreValueActionType.SUBTRACT);
 
         // EVENTS PUT
