@@ -27,7 +27,9 @@ public class RuleSystemService extends Service {
 
     // FOR TESTING
     private Rule mTestRuleAlarmStartPebble,mTestRuleAlarmDismissPebble,mTestRuleAlarmDonePebble,
-                mTestRulePebbleSportMode, mTestRulePebbleTimeMode, mTestRulePebbleAdd1Left, mTestRulePebbleAdd1Right;
+                mTestRulePebbleSportMode, mTestRulePebbleTimeMode, mTestRulePebbleAdd1Left,
+                mTestRulePebbleAdd1Right, mTestRulePebbleRest, mTestRulePebblePhysical,
+                mTestRulePebbleCoffee;
     private Location mTestLocationVub, mTestLocationStadium, mTestLocationHome;
 
     public RuleSystemService() {
@@ -44,6 +46,8 @@ public class RuleSystemService extends Service {
         mDeviceManager.startDevices();
         testCreateRulesPebbleAlarm();
         testCreateRulesPebbleWatchmodes();
+        testCreateRulesPebbleActivity();
+        testCreateRulesPebbleWakeCoffee();
         testRuleTemplates();
         testExampleRules();
     }
@@ -167,8 +171,30 @@ public class RuleSystemService extends Service {
         Action add1Right = scoreDevice.getScoreValueAction(addXRight,1);
         mTestRulePebbleAdd1Right.addAction(add1Right);
         mTestRulePebbleAdd1Right.setActive(true);
-        // Pebble activity PHYSICAL -> Pebble SPORT mode
+    }
 
+    private void testCreateRulesPebbleActivity(){
+        // Pebble REST activity event -> Pebble TIME mode
+        this.mTestRulePebbleRest = new Rule(getNewId(),"Switch to Pebble watch TIME mode when Pebble detects REST activity.");
+        mTestRulePebbleRest.addEvent(mDeviceManager.getPebble().getRest());
+        mTestRulePebbleRest.addAction(mDeviceManager.getPebble().getScreenTime());
+        mTestRulePebbleRest.setActive(true);
+        // Pebble PHYSICAL activity event -> Pebble SPORT mode
+        this.mTestRulePebblePhysical = new Rule(getNewId(),"Switch to Pebble watch SPORT mode when Pebble detects PHYSICAL activity.");
+        mTestRulePebblePhysical.addEvent(mDeviceManager.getPebble().getPhysical());
+        mTestRulePebblePhysical.addAction(mDeviceManager.getPebble().getScreenSport());
+        mTestRulePebblePhysical.setActive(true);
+        mRuleManager.addRule(mTestRulePebbleRest);
+        mRuleManager.addRule(mTestRulePebblePhysical);
+    }
+
+    private void testCreateRulesPebbleWakeCoffee(){
+        // Pebble Wake Up detect event -> Home coffee start
+        this.mTestRulePebbleCoffee = new Rule(getNewId(),"Start home coffee machine when I wake up!");
+        mTestRulePebbleCoffee.addEvent(mDeviceManager.getPebble().getWakesUp());
+        mTestRulePebbleCoffee.addAction(mDeviceManager.getHomeCoffeeMachine().getStartCoffee());
+        mTestRulePebbleCoffee.setActive(true);
+        mRuleManager.addRule(mTestRulePebbleCoffee);
     }
 
     // RULE TEMPLATE TESTS
@@ -212,6 +238,16 @@ public class RuleSystemService extends Service {
         rwScoreButton.addTriggerType(mDeviceManager.stWatchMode);
         rwScoreButton.addActionType(mDeviceManager.acScoreAdjust);
         mRuleManager.addRuleTemplate(rwScoreButton);
+        // Switch watch mode with activity change
+        RuleTemplate rwWatchModeActivitySwitch = new RuleTemplate(getNewId(),"Switch to other watch mode with a change in physical activity");
+        rwWatchModeActivitySwitch.addTriggerType(mDeviceManager.evActivityChange);
+        rwWatchModeActivitySwitch.addActionType(mDeviceManager.getAcWatchMode());
+        mRuleManager.addRuleTemplate(rwWatchModeActivitySwitch);
+        // Start coffee with waking up
+        RuleTemplate rwCoffeWakeup = new RuleTemplate(getNewId(), "Start making coffee when I wake up");
+        rwCoffeWakeup.addTriggerType(mDeviceManager.evWakesUp);
+        rwCoffeWakeup.addActionType(mDeviceManager.acStartCoffee);
+        mRuleManager.addRuleTemplate(rwCoffeWakeup);
     }
 
     private void testExampleRules(){
@@ -280,6 +316,24 @@ public class RuleSystemService extends Service {
         erScoreButtonSubtractRight.addState(mDeviceManager.getPebble().getWatchModeSport());
         erScoreButtonSubtractRight.addAction(mDeviceManager.getPebble().getSubtractScoreXRight());
         mRuleManager.addExampleRule(erScoreButtonSubtractRight);
+        // Switch watch mode with activity change
+        ExampleRule erRestTime = new ExampleRule(getNewId(),"Set Pebble watch in TIME mode when a Pebble detects REST activity");
+        erRestTime.addEvent(mDeviceManager.getPebble().getRest());
+        erRestTime.addAction(mDeviceManager.getPebble().getScreenTime());
+        mRuleManager.addExampleRule(erRestTime);
+        ExampleRule erPhysicalSport = new ExampleRule(getNewId(),"Set Pebble watch in SPORT mode when a Pebble detects PHYSICAL activity");
+        erPhysicalSport.addEvent(mDeviceManager.getPebble().getPhysical());
+        erPhysicalSport.addAction(mDeviceManager.getPebble().getScreenSport());
+        mRuleManager.addExampleRule(erPhysicalSport);
+        // Start coffee with waking up
+        ExampleRule erCoffeeWakeVub = new ExampleRule(getNewId(),"Start VUB coffee machine when I wake up");
+        erCoffeeWakeVub.addEvent(mDeviceManager.getPebble().getWakesUp());
+        erCoffeeWakeVub.addAction(mDeviceManager.getVubCoffeeMachine().getStartCoffee());
+        mRuleManager.addExampleRule(erCoffeeWakeVub);
+        ExampleRule erCoffeeWakeHome = new ExampleRule(getNewId(),"Start Home coffee machine when I wake up");
+        erCoffeeWakeHome.addEvent(mDeviceManager.getPebble().getWakesUp());
+        erCoffeeWakeHome.addAction(mDeviceManager.getHomeCoffeeMachine().getStartCoffee());
+        mRuleManager.addExampleRule(erCoffeeWakeHome);
     }
 
 }

@@ -282,6 +282,17 @@ public class Pebble extends Wearable implements NotificationDevice, ScoreDevice,
         return mEvShake;
     }
 
+    public Event getWakesUp() {
+        return mEvWakesUp;
+    }
+
+    public Event getRest() {
+        return mEvActivityRest;
+    }
+
+    public Event getPhysical() {
+        return mEvActivityPhysical;
+    }
     // State getters
 
     public State getWatchModeTime() {
