@@ -5,6 +5,7 @@ import com.example.nicolascarraggi.trgrd.rulesys.Action;
 import com.example.nicolascarraggi.trgrd.rulesys.ActionType;
 import com.example.nicolascarraggi.trgrd.rulesys.Device;
 import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
+import com.example.nicolascarraggi.trgrd.rulesys.NotificationAction;
 import com.example.nicolascarraggi.trgrd.rulesys.RuleSystemService;
 
 import java.util.concurrent.Callable;
@@ -38,6 +39,7 @@ public class VubCoffeeMachine extends Device {
 
     private void acStartCoffee() {
         // TODO send HTTP request
+        deviceManager.getAndroidPhone().acNotify("VUB Coffee","Your coffee is being made!", NotificationAction.NotificationActionType.NONE);
     }
 
     @Override

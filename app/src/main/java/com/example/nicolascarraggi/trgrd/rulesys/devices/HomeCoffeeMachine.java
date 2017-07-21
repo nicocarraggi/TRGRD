@@ -6,6 +6,7 @@ import com.example.nicolascarraggi.trgrd.rulesys.ActionType;
 import com.example.nicolascarraggi.trgrd.rulesys.Device;
 import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
 import com.example.nicolascarraggi.trgrd.rulesys.EventType;
+import com.example.nicolascarraggi.trgrd.rulesys.NotificationAction;
 import com.example.nicolascarraggi.trgrd.rulesys.RuleSystemService;
 import com.example.nicolascarraggi.trgrd.rulesys.StateType;
 
@@ -40,6 +41,7 @@ public class HomeCoffeeMachine extends Device {
 
     private void acStartCoffee() {
         // TODO send HTTP request
+        deviceManager.getAndroidPhone().acNotify("Home Coffee","Your coffee is being made!", NotificationAction.NotificationActionType.NONE);
     }
 
     @Override
