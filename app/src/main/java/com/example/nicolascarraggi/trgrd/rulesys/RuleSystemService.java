@@ -167,6 +167,8 @@ public class RuleSystemService extends Service {
         Action add1Right = scoreDevice.getScoreValueAction(addXRight,1);
         mTestRulePebbleAdd1Right.addAction(add1Right);
         mTestRulePebbleAdd1Right.setActive(true);
+        // Pebble activity PHYSICAL -> Pebble SPORT mode
+
     }
 
     // RULE TEMPLATE TESTS

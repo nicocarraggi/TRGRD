@@ -50,7 +50,8 @@ public class DeviceManager {
     public EventType evLocationArrivingAt = new EventType(getNewId(),"arrived at a location", R.drawable.ic_my_location_black_24dp);
     public EventType evLocationLeaving = new EventType(getNewId(),"left a location", R.drawable.ic_my_location_black_24dp);
     public EventType evGesture = new EventType(getNewId(),"gesture is made", R.drawable.ic_gesture_black_24dp);
-    public EventType evWakesUp = new EventType(getNewId(),"user wakes up", R.drawable.ic_directions_run_black_24dp); // TODO change?
+    public EventType evWakesUp = new EventType(getNewId(),"user wakes up", R.drawable.ic_wb_sunny_black_24dp);
+    public EventType evActivityChange = new EventType(getNewId(),"user activity changed", R.drawable.ic_directions_run_black_24dp);
 
 
     // StateTypes
@@ -104,6 +105,7 @@ public class DeviceManager {
         this.eventTypes.put(evLocationLeaving.getId(),evLocationLeaving);
         this.eventTypes.put(evGesture.getId(),evGesture);
         this.eventTypes.put(evWakesUp.getId(), evWakesUp);
+        this.eventTypes.put(evActivityChange.getId(),evActivityChange);
         // StateTypes
         this.stateTypes.put(stAlarmGoing.getId(),stAlarmGoing);
         this.stateTypes.put(stCallIncGoing.getId(),stCallIncGoing);
@@ -136,6 +138,127 @@ public class DeviceManager {
         this.devices.put(mVubCoffeeMachine.getId(), mVubCoffeeMachine);
         this.devices.put(mMyoDevice.getId(), mMyoDevice);
     }
+
+    // ------------
+    // TYPE GETTERS
+    // ------------
+
+    public EventType getEvAlarmAlert() {
+        return evAlarmAlert;
+    }
+
+    public EventType getEvAlarmSnooze() {
+        return evAlarmSnooze;
+    }
+
+    public EventType getEvAlarmDismiss() {
+        return evAlarmDismiss;
+    }
+
+    public EventType getEvAlarmDone() {
+        return evAlarmDone;
+    }
+
+    public EventType getEvCallInc() {
+        return evCallInc;
+    }
+
+    public EventType getEvButtonPress() {
+        return evButtonPress;
+    }
+
+    public EventType getEvHeartRateReading() {
+        return evHeartRateReading;
+    }
+
+    public EventType getEvTimeAt() {
+        return evTimeAt;
+    }
+
+    public EventType getEvLocationArrivingAt() {
+        return evLocationArrivingAt;
+    }
+
+    public EventType getEvLocationLeaving() {
+        return evLocationLeaving;
+    }
+
+    public EventType getEvGesture() {
+        return evGesture;
+    }
+
+    public EventType getEvWakesUp() {
+        return evWakesUp;
+    }
+
+    public EventType getEvActivityChange() {
+        return evActivityChange;
+    }
+
+    public StateType getStAlarmGoing() {
+        return stAlarmGoing;
+    }
+
+    public StateType getStCallIncGoing() {
+        return stCallIncGoing;
+    }
+
+    public StateType getStTimeFromTo() {
+        return stTimeFromTo;
+    }
+
+    public StateType getStLocationCurrentlyAt() {
+        return stLocationCurrentlyAt;
+    }
+
+    public StateType getStWatchMode() {
+        return stWatchMode;
+    }
+
+    public ActionType getAcAlarmSnooze() {
+        return acAlarmSnooze;
+    }
+
+    public ActionType getAcAlarmDismiss() {
+        return acAlarmDismiss;
+    }
+
+    public ActionType getAcVibrate() {
+        return acVibrate;
+    }
+
+    public ActionType getAcAlarmDisplay() {
+        return acAlarmDisplay;
+    }
+
+    public ActionType getAcWatchMode() {
+        return acWatchMode;
+    }
+
+    public ActionType getAcTimeDisplay() {
+        return acTimeDisplay;
+    }
+
+    public ActionType getAcSportDisplay() {
+        return acSportDisplay;
+    }
+
+    public ActionType getAcNotify() {
+        return acNotify;
+    }
+
+    public ActionType getAcStartCoffee() {
+        return acStartCoffee;
+    }
+
+    public ActionType getAcScoreAdjust() {
+        return acScoreAdjust;
+    }
+
+
+    // --------------
+    // DEVICE GETTERS
+    // --------------
 
     public AndroidPhone getAndroidPhone() {
         return mAndroidPhone;

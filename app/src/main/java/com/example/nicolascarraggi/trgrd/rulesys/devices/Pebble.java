@@ -64,6 +64,12 @@ public class Pebble extends Wearable implements NotificationDevice, ScoreDevice,
                 evBtnDown();
             } else if(action.equals(PebbleCommunicationService.PEBBLE_SHAKE_EVENT)) {
                 evShake();
+            } else if(action.equals(PebbleCommunicationService.PEBBLE_WAKEUP_EVENT)) {
+                evWakeup();
+            } else if(action.equals(PebbleCommunicationService.PEBBLE_REST_EVENT)) {
+                evRest();
+            } else if(action.equals(PebbleCommunicationService.PEBBLE_PHYSICAL_EVENT)) {
+                evPhysical();
             }
         }
     };
@@ -78,7 +84,7 @@ public class Pebble extends Wearable implements NotificationDevice, ScoreDevice,
     private HashMap<Integer, InputActionEvent> inputActionEvents;
 
     //private Event mEvBtnUp, mEvBtnSelect, mEvBtnDown;
-    private Event mEvShake;
+    private Event mEvShake, mEvWakesUp, mEvActivityRest, mEvActivityPhysical;
     private State mStWatchModeTime, mStWatchModeSport, mStWatchModePopup;
     private Action mAcVibrate, mAcScreenTime, mAcScreenSport, mAcScreenAlarm, mAcScreenClean,
             mAcScoreAddOneLeft, mAcScoreAddOneRight, mAcScoreSubtractOneLeft, mAcScoreSubtractOneRight;
@@ -95,6 +101,8 @@ public class Pebble extends Wearable implements NotificationDevice, ScoreDevice,
         this.eventTypes.put(evButtonPress.getId(),evButtonPress);
         this.eventTypes.put(evHeartRateReading.getId(),evHeartRateReading);
         this.eventTypes.put(evGesture.getId(),evGesture);
+        this.eventTypes.put(deviceManager.getEvWakesUp().getId(),deviceManager.getEvWakesUp());
+        this.eventTypes.put(deviceManager.getEvActivityChange().getId(),deviceManager.getEvActivityChange());
         this.stateTypes.put(stWatchMode.getId(),stWatchMode);
         this.actionTypes.put(acAlarmVibrate.getId(),acAlarmVibrate);
         this.actionTypes.put(acAlarmDisplay.getId(),acAlarmDisplay);
@@ -119,6 +127,9 @@ public class Pebble extends Wearable implements NotificationDevice, ScoreDevice,
         this.inputActionEvents.put(mIaBtnDown.getId(), mIaEvBtnDown);
         // EVENTS
         this.mEvShake = new Event(deviceManager.getNewId(),"Pebble shake", R.drawable.ic_gesture_black_24dp, this, evGesture, ruleSystemService.getRuleManager().getRuleEngine());
+        this.mEvWakesUp = new Event(deviceManager.getNewId(),"Pebble detects wake up",R.drawable.ic_wb_sunny_black_24dp,this,deviceManager.getEvWakesUp(),ruleSystemService.getRuleManager().getRuleEngine());
+        this.mEvActivityRest = new Event(deviceManager.getNewId(),"Pebble detects REST activity",R.drawable.ic_person_black_24dp,this,deviceManager.getEvActivityChange(),ruleSystemService.getRuleManager().getRuleEngine());
+        this.mEvActivityPhysical = new Event(deviceManager.getNewId(),"Pebble detects PHYSICAL activity",R.drawable.ic_directions_run_black_24dp,this,deviceManager.getEvActivityChange(),ruleSystemService.getRuleManager().getRuleEngine());
         //this.mEvBtnUp = new Event(deviceManager.getNewId(),"Pebble UP button is pressed", R.drawable.ic_keyboard_arrow_up_black_24dp, this, evButtonPress);
         //this.mEvBtnSelect = new Event(deviceManager.getNewId(),"Pebble SELECT button is pressed", R.drawable.ic_keyboard_arrow_right_black_24dp, this, evButtonPress);
         //this.mEvBtnDown = new Event(deviceManager.getNewId(),"Pebble DOWN button is pressed", R.drawable.ic_keyboard_arrow_down_black_24dp, this, evButtonPress);
@@ -212,6 +223,9 @@ public class Pebble extends Wearable implements NotificationDevice, ScoreDevice,
         //this.events.put(mEvBtnDown.getId(),mEvBtnDown);
         this.events.put(mIaEvBtn.getId(),mIaEvBtn);
         this.events.put(mEvShake.getId(),mEvShake);
+        this.events.put(mEvWakesUp.getId(),mEvWakesUp);
+        this.events.put(mEvActivityRest.getId(),mEvActivityRest);
+        this.events.put(mEvActivityPhysical.getId(),mEvActivityPhysical);
         // STATES PUT
         this.states.put(mStWatchModeTime.getId(),mStWatchModeTime);
         this.states.put(mStWatchModeSport.getId(),mStWatchModeSport);
@@ -379,6 +393,18 @@ public class Pebble extends Wearable implements NotificationDevice, ScoreDevice,
         mEvShake.trigger();
     }
 
+    public void evWakeup(){
+        mEvWakesUp.trigger();
+    }
+
+    public void evRest() {
+        mEvActivityRest.trigger();
+    }
+
+    public void evPhysical() {
+        mEvActivityPhysical.trigger();
+    }
+
     public void acVibrate(){
         System.out.println("[Pebble] Vibrates!");
         Intent newIntent = new Intent(PEBBLE_VIBRATE_ACTION);
@@ -537,6 +563,9 @@ public class Pebble extends Wearable implements NotificationDevice, ScoreDevice,
         filter.addAction(PebbleCommunicationService.PEBBLE_BUTTON_SELECT_EVENT);
         filter.addAction(PebbleCommunicationService.PEBBLE_BUTTON_DOWN_EVENT);
         filter.addAction(PebbleCommunicationService.PEBBLE_SHAKE_EVENT);
+        filter.addAction(PebbleCommunicationService.PEBBLE_WAKEUP_EVENT);
+        filter.addAction(PebbleCommunicationService.PEBBLE_REST_EVENT);
+        filter.addAction(PebbleCommunicationService.PEBBLE_PHYSICAL_EVENT);
         LocalBroadcastManager.getInstance(ruleSystemService).registerReceiver(mReceiver, filter);
         Log.d("TRGRD","Pebble mReceiver registered!");
     }
