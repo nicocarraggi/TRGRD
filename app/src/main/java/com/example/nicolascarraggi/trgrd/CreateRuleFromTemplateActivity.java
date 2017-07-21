@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ import com.example.nicolascarraggi.trgrd.rulesys.MyTime;
 import com.example.nicolascarraggi.trgrd.rulesys.NotificationAction;
 import com.example.nicolascarraggi.trgrd.rulesys.Rule;
 import com.example.nicolascarraggi.trgrd.rulesys.RuleTemplate;
+import com.example.nicolascarraggi.trgrd.rulesys.ScoreValueAction;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
 import com.example.nicolascarraggi.trgrd.rulesys.StateType;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeEvent;
@@ -47,6 +49,7 @@ import com.example.nicolascarraggi.trgrd.rulesys.Type;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Clock;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.InputActionDevice;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.NotificationDevice;
+import com.example.nicolascarraggi.trgrd.rulesys.devices.ScoreDevice;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -267,7 +270,9 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
                 } else if(item.isActionType()){
                     Action action = ((ActionType) item).getInstanceAction();
                     if (action.isNotificationAction()){
-                        askNotification((NotificationAction) action,(ActionType)item, (NotificationAction) action);
+                        askNotification((NotificationAction) action,(ActionType) item, (NotificationAction) action);
+                    } else if(action.isScoreValueAction()){
+                        askScoreValue((ScoreValueAction) action, (ActionType) item, (ScoreValueAction) action);
                     }
                 }
                 break;
@@ -336,6 +341,10 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
         Action action = ruleSystemService.getDeviceManager().getDevice(itemDevId).getAction(itemId);
         if (action.isNotificationAction()){
             askNotification((NotificationAction) action, actionTypeInstance, null);
+            // Return because action will be added later!
+            return;
+        }  else if (action.isScoreValueAction()){
+            askScoreValue((ScoreValueAction) action, actionTypeInstance, null);
             // Return because action will be added later!
             return;
         }
@@ -602,5 +611,57 @@ public class CreateRuleFromTemplateActivity extends RuleSystemBindingActivity im
                 });
         builder.show();
     };
+
+    // ----------------------
+    // SCOREVALUE ASKING CODE
+    // ----------------------
+
+    public void onScoreValueClick(ScoreValueAction action, ActionType actionTypeInstance){
+        actionTypeInstance.setInstanceAction(action);
+        actionTypesAdapter.notifyDataSetChanged();
+    }
+
+    public void askScoreValue(final ScoreValueAction action, final ActionType actionTypeInstance, final ScoreValueAction oldAction){
+        AlertDialog.Builder builder = new AlertDialog.Builder(CreateRuleFromTemplateActivity.this);
+        // Get the layout inflater
+        LayoutInflater inflater = CreateRuleFromTemplateActivity.this.getLayoutInflater();
+
+        final View view = inflater.inflate(R.layout.dialog_scorevalue, null);
+
+        final NumberPicker np = (NumberPicker) view.findViewById(R.id.npScoreValue);
+        np.setMaxValue(100);
+        np.setMinValue(1);
+        np.setWrapSelectorWheel(false);
+
+        if(oldAction != null){
+            np.setValue(oldAction.getValue());
+        }
+
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the dialog layout
+        builder.setView(view)
+                .setTitle("Score value")
+                // Add action buttons
+                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        NumberPicker np = (NumberPicker) view.findViewById(R.id.npScoreValue);
+                        ScoreValueAction scoreValueAction = action;
+                        ScoreDevice scoreDevice = (ScoreDevice) action.getDevice();
+                        if(oldAction == null){
+                            scoreValueAction = scoreDevice.getScoreValueAction(action,np.getValue());
+                        } else {
+                            scoreDevice.editScoreValueAction(action,np.getValue());
+                        }
+                        onScoreValueClick(scoreValueAction, actionTypeInstance);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // DO nothing
+                    }
+                });
+        builder.show();
+    }
 
 }

@@ -2,13 +2,8 @@ package com.example.nicolascarraggi.trgrd;
 
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,13 +11,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.nicolascarraggi.trgrd.adapters.ActionsAdapter;
@@ -122,7 +114,7 @@ public class DeviceDetailsActivity extends RuleSystemBindingActivity implements 
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends TrgrdFragment implements MyEventOnItemClickListener, MyStateOnItemClickListener, MyActionOnItemClickListener {
+    public static class DeviceFragment extends TrgrdFragment implements MyEventOnItemClickListener, MyStateOnItemClickListener, MyActionOnItemClickListener {
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -178,16 +170,16 @@ public class DeviceDetailsActivity extends RuleSystemBindingActivity implements 
             }
         }
 
-        public PlaceholderFragment() {
+        public DeviceFragment() {
         }
 
         /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber, int deviceId) {
+        public static DeviceFragment newInstance(int sectionNumber, int deviceId) {
 
-            PlaceholderFragment fragment = new PlaceholderFragment();
+            DeviceFragment fragment = new DeviceFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             args.putInt(ARG_DEVICE_ID, deviceId);
@@ -271,7 +263,7 @@ public class DeviceDetailsActivity extends RuleSystemBindingActivity implements 
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1, deviceId);
+            return DeviceFragment.newInstance(position + 1, deviceId);
         }
 
         @Override

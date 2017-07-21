@@ -2,11 +2,7 @@ package com.example.nicolascarraggi.trgrd;
 
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -26,7 +22,6 @@ import android.view.ViewGroup;
 
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.example.nicolascarraggi.trgrd.adapters.EventsAdapter;
 import com.example.nicolascarraggi.trgrd.adapters.MyEventOnItemClickListener;
@@ -119,7 +114,7 @@ public class AddEventOrStateActivity extends RuleSystemBindingActivity implement
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends TrgrdFragment implements MyEventOnItemClickListener, MyStateOnItemClickListener, SearchView.OnQueryTextListener {
+    public static class EventsOrStatesFragment extends TrgrdFragment implements MyEventOnItemClickListener, MyStateOnItemClickListener, SearchView.OnQueryTextListener {
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -136,7 +131,7 @@ public class AddEventOrStateActivity extends RuleSystemBindingActivity implement
 
         int eventsOrStates;
 
-        public PlaceholderFragment() {
+        public EventsOrStatesFragment() {
         }
 
         @Override
@@ -151,8 +146,8 @@ public class AddEventOrStateActivity extends RuleSystemBindingActivity implement
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber, boolean showEvents) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
+        public static EventsOrStatesFragment newInstance(int sectionNumber, boolean showEvents) {
+            EventsOrStatesFragment fragment = new EventsOrStatesFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             args.putBoolean(ARG_SHOW_EVENTS, showEvents);
@@ -273,7 +268,7 @@ public class AddEventOrStateActivity extends RuleSystemBindingActivity implement
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1, showEvents);
+            return EventsOrStatesFragment.newInstance(position + 1, showEvents);
         }
 
         @Override

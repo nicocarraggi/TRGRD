@@ -30,7 +30,6 @@ public class TrgrdFragment extends Fragment {
     protected OnFragmentInteractionListener mListener;
     protected boolean isServiceStarted = false;
     protected boolean isServiceBound = false;
-    protected SearchView searchView;
 
     public TrgrdFragment() {
         // Required empty public constructor

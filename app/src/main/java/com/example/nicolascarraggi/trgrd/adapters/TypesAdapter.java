@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.nicolascarraggi.trgrd.R;
+import com.example.nicolascarraggi.trgrd.logging.MyLogger;
 import com.example.nicolascarraggi.trgrd.rulesys.Action;
 import com.example.nicolascarraggi.trgrd.rulesys.ActionType;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
@@ -320,6 +321,7 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
                     tvTypeInstanceName.setText(action.getName());
                     setViewHasInstance(true);
                     if(action.isSkeleton()){
+                        MyLogger.debugLog("TRGRD","TypesAdapter action isSkeleton()");
                         showInstanceName();
                     } else if (action.isNotificationAction()){
                         NotificationAction notificationAction = (NotificationAction) action;
@@ -333,6 +335,7 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
                             tvTypeInstanceValueThreeValue.setText(notificationAction.getTitle()+" - "+notificationAction.getText());
                         }
                     } else if (action.isScoreValueAction()){
+                        MyLogger.debugLog("TRGRD","TypesAdapter action isScoreValueAction()");
                         ScoreValueAction scoreValueAction = (ScoreValueAction) action;
                         if (mEdit) {
                             showInstanceValueZero();
