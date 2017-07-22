@@ -42,6 +42,8 @@ import com.example.nicolascarraggi.trgrd.rulesys.MyTime;
 import com.example.nicolascarraggi.trgrd.rulesys.NotificationAction;
 import com.example.nicolascarraggi.trgrd.rulesys.Rule;
 import com.example.nicolascarraggi.trgrd.rulesys.ScoreValueAction;
+import com.example.nicolascarraggi.trgrd.rulesys.SendMessageAction;
+import com.example.nicolascarraggi.trgrd.rulesys.SendMessageCallerAction;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeState;
@@ -49,6 +51,8 @@ import com.example.nicolascarraggi.trgrd.rulesys.devices.Clock;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.InputActionDevice;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.NotificationDevice;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.ScoreDevice;
+import com.example.nicolascarraggi.trgrd.rulesys.devices.SendMessageCallerDevice;
+import com.example.nicolascarraggi.trgrd.rulesys.devices.SendMessageDevice;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -304,6 +308,14 @@ public class CreateRuleActivity extends RuleSystemBindingActivity
             askNotification((NotificationAction) action,null);
             // Return because action will be added later!
             return;
+        } else if (action.isSendMessageAction()){
+            askSendMessage((SendMessageAction) action,null);
+            // Return because action will be added later!
+            return;
+        } else if (action.isSendMessageCallerAction()){
+            askSendMessageCaller((SendMessageCallerAction) action,null);
+            // Return because action will be added later!
+            return;
         } else if (action.isScoreValueAction()){
             askScoreValue((ScoreValueAction) action,null);
             // Return because action will be added later!
@@ -537,6 +549,10 @@ public class CreateRuleActivity extends RuleSystemBindingActivity
                     askNotification((NotificationAction) item, (NotificationAction) item);
                 } else if (item.isScoreValueAction()){
                     askScoreValue((ScoreValueAction) item, (ScoreValueAction) item);
+                } else if (item.isSendMessageAction()){
+                    askSendMessage((SendMessageAction) item,(SendMessageAction) item);
+                } else if (item.isSendMessageCallerAction()){
+                    askSendMessageCaller((SendMessageCallerAction) item,(SendMessageCallerAction) item);
                 }
                 break;
         }
@@ -717,6 +733,130 @@ public class CreateRuleActivity extends RuleSystemBindingActivity
                             ((NotificationDevice) action.getDevice()).editNotifyAction(noAc,title,text);
                         }
                         onNoficationClick(noAc);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // DO nothing
+                    }
+                });
+        builder.show();
+    };
+
+    // ------------------------
+    // SEND MESSAGE ASKING CODE
+    // ------------------------
+
+    public void onSendMessageClick(SendMessageAction action){
+        actions.add(action);
+        actionsAdapter.updateData(actions);
+    }
+
+    public void askSendMessage(final SendMessageAction action, final SendMessageAction oldAction){
+        AlertDialog.Builder builder = new AlertDialog.Builder(CreateRuleActivity.this);
+        // Get the layout inflater
+        LayoutInflater inflater = CreateRuleActivity.this.getLayoutInflater();
+
+        final View view = inflater.inflate(R.layout.dialog_sendmessage, null);
+
+        final EditText etPhonenumber, etMessage;
+        etPhonenumber = (EditText) view.findViewById(R.id.etDialogSendMessagePhonenumber);
+        etMessage = (EditText) view.findViewById(R.id.etDialogSendMessageMessage);
+
+        if(oldAction != null){
+            etPhonenumber.setText(oldAction.getPhonenumber());
+            etMessage.setText(oldAction.getMessage());
+        } else if(isFromExampleRule) {
+            // IF oldAction is null AND from example rule, just select first option to avoid showing multiple
+            //    dialogs at the start! User can change the value afterwards.
+            SendMessageAction sendMessageAction = action;
+            sendMessageAction = ((SendMessageDevice) action.getDevice()).getSendMessageAction("...",
+                    "...");
+            onSendMessageClick(sendMessageAction);
+            return;
+        }
+
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the dialog layout
+        builder.setView(view)
+                .setTitle("Send message")
+                // Add action buttons
+                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        EditText etPhonenumber, etMessage;
+                        etPhonenumber = (EditText) view.findViewById(R.id.etDialogSendMessagePhonenumber);
+                        etMessage = (EditText) view.findViewById(R.id.etDialogSendMessageMessage);
+                        String phonenumber, message;
+                        phonenumber = etPhonenumber.getText().toString();
+                        message = etMessage.getText().toString();
+                        SendMessageAction sendMessageAction = action;
+                        if(oldAction == null){
+                            sendMessageAction = ((SendMessageDevice) action.getDevice()).getSendMessageAction(phonenumber,
+                                    message);
+                        } else {
+                            ((SendMessageDevice) action.getDevice()).editSendMessageAction(sendMessageAction,phonenumber,message);
+                        }
+                        onSendMessageClick(sendMessageAction);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // DO nothing
+                    }
+                });
+        builder.show();
+    };
+
+    // -------------------------------
+    // SEND MESSAGE CALLER ASKING CODE
+    // -------------------------------
+
+    public void onSendMessageCallerClick(SendMessageCallerAction action){
+        actions.add(action);
+        actionsAdapter.updateData(actions);
+    }
+
+    public void askSendMessageCaller(final SendMessageCallerAction action, final SendMessageCallerAction oldAction){
+        AlertDialog.Builder builder = new AlertDialog.Builder(CreateRuleActivity.this);
+        // Get the layout inflater
+        LayoutInflater inflater = CreateRuleActivity.this.getLayoutInflater();
+
+        final View view = inflater.inflate(R.layout.dialog_sendmessagecaller, null);
+
+        final EditText etMessage;
+        etMessage = (EditText) view.findViewById(R.id.etDialogSendMessageCallerMessage);
+
+        if(oldAction != null){
+            etMessage.setText(oldAction.getMessage());
+        } else if(isFromExampleRule) {
+            // IF oldAction is null AND from example rule, just select first option to avoid showing multiple
+            //    dialogs at the start! User can change the value afterwards.
+            SendMessageCallerAction sendMessageCallerAction = action;
+            sendMessageCallerAction = ((SendMessageCallerDevice) action.getDevice()).getSendMessageCallerAction("...");
+            onSendMessageCallerClick(sendMessageCallerAction);
+            return;
+        }
+
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the dialog layout
+        builder.setView(view)
+                .setTitle("Send message to caller")
+                // Add action buttons
+                .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        EditText etMessage;
+                        etMessage = (EditText) view.findViewById(R.id.etDialogSendMessageCallerMessage);
+                        String message;
+                        message = etMessage.getText().toString();
+                        SendMessageCallerAction sendMessageCallerAction = action;
+                        if(oldAction == null){
+                            sendMessageCallerAction = ((SendMessageCallerDevice) action.getDevice()).getSendMessageCallerAction(message);
+                        } else {
+                            ((SendMessageCallerDevice) action.getDevice()).editSendMessageCallerAction(sendMessageCallerAction,message);
+                        }
+                        onSendMessageCallerClick(sendMessageCallerAction);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

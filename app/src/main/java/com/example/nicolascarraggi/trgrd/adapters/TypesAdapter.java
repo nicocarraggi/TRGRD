@@ -1,6 +1,5 @@
 package com.example.nicolascarraggi.trgrd.adapters;
 
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.nicolascarraggi.trgrd.R;
-import com.example.nicolascarraggi.trgrd.logging.MyLogger;
 import com.example.nicolascarraggi.trgrd.rulesys.Action;
 import com.example.nicolascarraggi.trgrd.rulesys.ActionType;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
@@ -21,8 +19,10 @@ import com.example.nicolascarraggi.trgrd.rulesys.EventType;
 import com.example.nicolascarraggi.trgrd.rulesys.InputActionEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.LocationEvent;
 import com.example.nicolascarraggi.trgrd.rulesys.LocationState;
+import com.example.nicolascarraggi.trgrd.rulesys.SendMessageAction;
 import com.example.nicolascarraggi.trgrd.rulesys.NotificationAction;
 import com.example.nicolascarraggi.trgrd.rulesys.ScoreValueAction;
+import com.example.nicolascarraggi.trgrd.rulesys.SendMessageCallerAction;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
 import com.example.nicolascarraggi.trgrd.rulesys.StateType;
 import com.example.nicolascarraggi.trgrd.rulesys.TimeEvent;
@@ -321,7 +321,6 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
                     tvTypeInstanceName.setText(action.getName());
                     setViewHasInstance(true);
                     if(action.isSkeleton()){
-                        MyLogger.debugLog("TRGRD","TypesAdapter action isSkeleton()");
                         showInstanceName();
                     } else if (action.isNotificationAction()){
                         NotificationAction notificationAction = (NotificationAction) action;
@@ -334,8 +333,29 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
                             tvTypeInstanceValueThree.setText("Notify:   ");
                             tvTypeInstanceValueThreeValue.setText(notificationAction.getTitle()+" - "+notificationAction.getText());
                         }
+                    } else if (action.isSendMessageAction()){
+                        SendMessageAction sendMessageAction = (SendMessageAction) action;
+                        if (mEdit) {
+                            showInstanceValueZero();
+                            tvTypeInstanceValueZero.setText("Send message: ");
+                            bTypeInstanceValueZero.setText(sendMessageAction.getPhonenumber()+" - "+sendMessageAction.getMessage());
+                        } else {
+                            showInstanceValueThree();
+                            tvTypeInstanceValueThree.setText("Send message:   ");
+                            tvTypeInstanceValueThreeValue.setText(sendMessageAction.getPhonenumber()+" - "+sendMessageAction.getMessage());
+                        }
+                    } else if (action.isSendMessageCallerAction()){
+                        SendMessageCallerAction sendMessageCallerAction = (SendMessageCallerAction) action;
+                        if (mEdit) {
+                            showInstanceValueZero();
+                            tvTypeInstanceValueZero.setText("Send message to caller: ");
+                            bTypeInstanceValueZero.setText(sendMessageCallerAction.getMessage());
+                        } else {
+                            showInstanceValueThree();
+                            tvTypeInstanceValueThree.setText("Send message to caller:   ");
+                            tvTypeInstanceValueThreeValue.setText(sendMessageCallerAction.getMessage());
+                        }
                     } else if (action.isScoreValueAction()){
-                        MyLogger.debugLog("TRGRD","TypesAdapter action isScoreValueAction()");
                         ScoreValueAction scoreValueAction = (ScoreValueAction) action;
                         if (mEdit) {
                             showInstanceValueZero();

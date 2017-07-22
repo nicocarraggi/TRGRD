@@ -12,8 +12,10 @@ import android.widget.TextView;
 import com.example.nicolascarraggi.trgrd.R;
 import com.example.nicolascarraggi.trgrd.logging.MyLogger;
 import com.example.nicolascarraggi.trgrd.rulesys.Action;
+import com.example.nicolascarraggi.trgrd.rulesys.SendMessageAction;
 import com.example.nicolascarraggi.trgrd.rulesys.NotificationAction;
 import com.example.nicolascarraggi.trgrd.rulesys.ScoreValueAction;
+import com.example.nicolascarraggi.trgrd.rulesys.SendMessageCallerAction;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -153,6 +155,28 @@ public class ActionsAdapter extends RecyclerView.Adapter<ActionsAdapter.ActionVi
                     showValueThree();
                     tvActionValueThree.setText("Notify:   ");
                     tvActionValueThreeValue.setText(notificationAction.getTitle()+" - "+notificationAction.getText());
+                }
+            } else if (action.isSendMessageAction()){
+                SendMessageAction sendMessageAction = (SendMessageAction) action;
+                if (mEdit) {
+                    showValueZero();
+                    tvActionValueZero.setText("Send message: ");
+                    bActionValueZero.setText(sendMessageAction.getPhonenumber()+" - "+sendMessageAction.getMessage());
+                } else {
+                    showValueThree();
+                    tvActionValueThree.setText("Send message:   ");
+                    tvActionValueThreeValue.setText(sendMessageAction.getPhonenumber()+" - "+sendMessageAction.getMessage());
+                }
+            } else if (action.isSendMessageCallerAction()){
+                SendMessageCallerAction sendMessageCallerAction = (SendMessageCallerAction) action;
+                if (mEdit) {
+                    showValueZero();
+                    tvActionValueZero.setText("Send message to caller: ");
+                    bActionValueZero.setText(sendMessageCallerAction.getMessage());
+                } else {
+                    showValueThree();
+                    tvActionValueThree.setText("Send message to caller:   ");
+                    tvActionValueThreeValue.setText(sendMessageCallerAction.getMessage());
                 }
             } else if (action.isScoreValueAction()){
                 ScoreValueAction scoreValueAction = (ScoreValueAction) action;

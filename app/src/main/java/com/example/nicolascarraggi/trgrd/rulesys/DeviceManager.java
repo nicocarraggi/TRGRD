@@ -73,6 +73,7 @@ public class DeviceManager {
     public ActionType acNotify = new ActionType(getNewId(),"notify something somewhere", R.drawable.ic_notifications_active_black_24dp);
     public ActionType acStartCoffee = new ActionType(getNewId(),"start making coffee", R.drawable.ic_local_cafe_black_24dp);
     public ActionType acScoreAdjust = new ActionType(getNewId(),"adjust score", R.drawable.ic_exposure_plus_1_black_24dp);
+    public ActionType acSendMessage = new ActionType(getNewId(),"send message", R.drawable.ic_message_black_24dp);
 
     // Devices
     private AndroidPhone mAndroidPhone;
@@ -123,6 +124,7 @@ public class DeviceManager {
         this.actionTypes.put(acNotify.getId(),acNotify);
         this.actionTypes.put(acStartCoffee.getId(),acStartCoffee);
         this.actionTypes.put(acScoreAdjust.getId(),acScoreAdjust);
+        // Devices
         this.mAndroidPhone = new AndroidPhone(ruleSystemService, this);
         this.mPebble = new Pebble(ruleSystemService, this);
         this.mClock = new Clock(ruleSystemService, this);

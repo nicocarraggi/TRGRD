@@ -23,6 +23,8 @@ import com.example.nicolascarraggi.trgrd.rulesys.Event;
 import com.example.nicolascarraggi.trgrd.rulesys.EventType;
 import com.example.nicolascarraggi.trgrd.rulesys.NotificationAction;
 import com.example.nicolascarraggi.trgrd.rulesys.RuleSystemService;
+import com.example.nicolascarraggi.trgrd.rulesys.SendMessageAction;
+import com.example.nicolascarraggi.trgrd.rulesys.SendMessageCallerAction;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
 import com.example.nicolascarraggi.trgrd.rulesys.StateType;
 
@@ -32,7 +34,7 @@ import java.util.concurrent.Callable;
  * Created by nicolascarraggi on 5/04/17.
  */
 
-public class AndroidPhone extends Device implements NotificationDevice {
+public class AndroidPhone extends Device implements NotificationDevice, SendMessageDevice, SendMessageCallerDevice {
 
     // Constants
 
@@ -74,6 +76,8 @@ public class AndroidPhone extends Device implements NotificationDevice {
     private State mStAlarmGoing, mStCallIncGoing;
     private Action mAcAlarmDismiss, mAcAlarmSnooze;
     private NotificationAction mAcNotify;
+    private SendMessageAction mAcSendMessage;
+    private SendMessageCallerAction mAcSendMessageCaller;
 
     public AndroidPhone(RuleSystemService ruleSystemService, DeviceManager deviceManager) {
         super(ruleSystemService.getNewId(), "Phone", "Google", "Android", R.drawable.ic_phone_android_black_24dp, ruleSystemService,deviceManager);
@@ -86,6 +90,7 @@ public class AndroidPhone extends Device implements NotificationDevice {
         this.stateTypes.put(deviceManager.getStCallIncGoing().getId(),deviceManager.getStCallIncGoing());
         this.actionTypes.put(deviceManager.getAcAlarmSnooze().getId(),deviceManager.getAcAlarmSnooze());
         this.actionTypes.put(deviceManager.getAcAlarmDismiss().getId(),deviceManager.getAcAlarmDismiss());
+        this.actionTypes.put(deviceManager.acSendMessage.getId(),deviceManager.acSendMessage);
         this.mEvAlarmStart = new Event(deviceManager.getNewId(),"Phone alarm starts ringing", R.drawable.ic_alarm_black_24dp, this, deviceManager.getEvAlarmAlert(), ruleSystemService.getRuleManager().getRuleEngine());
         this.mEvAlarmSnooze = new Event(deviceManager.getNewId(),"Phone alarm snoozed", R.drawable.ic_alarm_off_black_24dp, this, deviceManager.getEvAlarmSnooze(), ruleSystemService.getRuleManager().getRuleEngine());
         this.mEvAlarmDismiss = new Event(deviceManager.getNewId(),"Phone alarm dismissed", R.drawable.ic_alarm_off_black_24dp, this, deviceManager.getEvAlarmDismiss(), ruleSystemService.getRuleManager().getRuleEngine());
@@ -110,6 +115,9 @@ public class AndroidPhone extends Device implements NotificationDevice {
         });
         // Callable is null, will be overridden in instance with the correct parameters using getNotifyCallable(...)
         this.mAcNotify = new NotificationAction(deviceManager.getNewId(),"Phone notification",R.drawable.ic_notifications_active_black_24dp,this,deviceManager.getAcNotify());
+        this.mAcSendMessage = new SendMessageAction(deviceManager.getNewId(),"Phone send message", R.drawable.ic_message_black_24dp, this, deviceManager.acSendMessage);
+        this.mAcSendMessageCaller = new SendMessageCallerAction(deviceManager.getNewId(),"Phone send message to caller", R.drawable.ic_message_black_24dp, this, deviceManager.acSendMessage);
+        // Put in hashsets
         this.events.put(mEvAlarmStart.getId(),mEvAlarmStart);
         this.events.put(mEvAlarmSnooze.getId(),mEvAlarmSnooze);
         this.events.put(mEvAlarmDismiss.getId(),mEvAlarmDismiss);
@@ -121,6 +129,8 @@ public class AndroidPhone extends Device implements NotificationDevice {
         this.actions.put(mAcAlarmDismiss.getId(),mAcAlarmDismiss);
         this.actions.put(mAcAlarmSnooze.getId(),mAcAlarmSnooze);
         this.actions.put(mAcNotify.getId(),mAcNotify);
+        this.actions.put(mAcSendMessage.getId(),mAcSendMessage);
+        this.actions.put(mAcSendMessageCaller.getId(),mAcSendMessageCaller);
     }
 
     // These getters only needed for testing!
@@ -167,6 +177,14 @@ public class AndroidPhone extends Device implements NotificationDevice {
 
     public NotificationAction getNotify() {
         return mAcNotify;
+    }
+
+    public SendMessageAction getSendMessage() {
+        return mAcSendMessage;
+    }
+
+    public SendMessageCallerAction getSendMessageCaller() {
+        return mAcSendMessageCaller;
     }
 
     // FOR SIMULATION TESTS:
@@ -296,6 +314,66 @@ public class AndroidPhone extends Device implements NotificationDevice {
         // Issue the notification
         mNotificationManager.notify(0, builder.build());
     }
+
+
+    @Override
+    public SendMessageCallerAction getSendMessageCallerAction(String message) {
+        SendMessageCallerAction instance = new SendMessageCallerAction(deviceManager.getNewId(),mAcSendMessageCaller,message,getSendMessageCallerCallable(message));
+        actionInstances.put(instance.getId(),instance);
+        return instance;
+    }
+
+    @Override
+    public void editSendMessageCallerAction(SendMessageCallerAction sendMessageCallerAction, String message) {
+        sendMessageCallerAction.setMessage(message);
+        sendMessageCallerAction.setCallable(getSendMessageCallerCallable(message));
+    }
+
+    @Override
+    public Callable getSendMessageCallerCallable(final String message) {
+        return new Callable<String>(){
+            @Override
+            public String call() throws Exception {
+                acSendMessageCaller(message);
+                return null;
+            }
+        };
+    }
+
+    @Override
+    public void acSendMessageCaller(String message) {
+
+    }
+
+    @Override
+    public SendMessageAction getSendMessageAction(String phonenumber, String message) {
+        SendMessageAction instance = new SendMessageAction(deviceManager.getNewId(),mAcSendMessage,phonenumber,message,getSendMessageCallable(phonenumber,message));
+        actionInstances.put(instance.getId(),instance);
+        return instance;
+    }
+
+    @Override
+    public void editSendMessageAction(SendMessageAction sendMessageAction, String phonenumber, String message) {
+        sendMessageAction.setPhonenumber(phonenumber);
+        sendMessageAction.setMessage(message);
+        sendMessageAction.setCallable(getSendMessageCallable(phonenumber, message));
+    }
+
+    @Override
+    public Callable getSendMessageCallable(final String phonenumber, final String message) {
+        return new Callable<String>(){
+            @Override
+            public String call() throws Exception {
+                acSendMessage(phonenumber, message);
+                return null;
+            }
+        };
+    }
+
+    @Override
+    public void acSendMessage(String phonenumber, String message) {
+
+    }
     
     // Register & UnRegister Android Phone Broadcast Receiver
 
@@ -326,5 +404,4 @@ public class AndroidPhone extends Device implements NotificationDevice {
         this.started = false;
         //deviceManager.sendRefreshBroadcast();
     }
-
 }

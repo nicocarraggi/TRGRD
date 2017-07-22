@@ -114,7 +114,15 @@ public class Action {
         return actionValueType == ActionValueType.SCOREVALUE;
     }
 
+    public boolean isSendMessageAction() {
+        return actionValueType == ActionValueType.SENDMESSAGE;
+    }
+
+    public boolean isSendMessageCallerAction() {
+        return actionValueType == ActionValueType.SENDMESSAGECALLER;
+    }
+
     public enum ActionValueType {
-        NONE, VALUE, NOTIFICATION, SCOREVALUE
+        NONE, VALUE, NOTIFICATION, SCOREVALUE, SENDMESSAGE, SENDMESSAGECALLER
     }
 }
