@@ -10,11 +10,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.example.nicolascarraggi.trgrd.MainActivity;
 import com.example.nicolascarraggi.trgrd.R;
+import com.example.nicolascarraggi.trgrd.logging.MyLogger;
 import com.example.nicolascarraggi.trgrd.rulesys.Action;
 import com.example.nicolascarraggi.trgrd.rulesys.ActionType;
 import com.example.nicolascarraggi.trgrd.rulesys.Device;
@@ -43,6 +45,13 @@ public class AndroidPhone extends Device implements NotificationDevice, SendMess
     public static final String ALARM_SONY_DISMISS_ACTION = "com.sonyericsson.alarm.ALARM_DISMISS";
     public static final String ALARM_SONY_DONE_ACTION = "com.sonyericsson.alarm.ALARM_DONE";
 
+    // com.samsung.sec.android.clockpackage.alarm.
+
+    public static final String ALARM_SAMSUNG_ALERT_ACTION = "com.samsung.sec.android.clockpackage.alarm.ALARM_ALERT";
+    public static final String ALARM_SAMSUNG_SNOOZE_ACTION = "com.samsung.sec.android.clockpackage.alarm.ALARM_SNOOZE";
+    public static final String ALARM_SAMSUNG_DISMISS_ACTION = "com.samsung.sec.android.clockpackage.alarm.ALARM_DISMISS";
+    public static final String ALARM_SAMSUNG_DONE_ACTION = "com.samsung.sec.android.clockpackage.alarm.ALARM_DONE";
+
     public static final String ALARM_ALERT_ACTION = "com.android.deskclock.ALARM_ALERT";
     public static final String ALARM_SNOOZE_ACTION = "com.android.deskclock.ALARM_SNOOZE";
     public static final String ALARM_DISMISS_ACTION = "com.android.deskclock.ALARM_DISMISS";
@@ -58,13 +67,13 @@ public class AndroidPhone extends Device implements NotificationDevice, SendMess
             String action = intent.getAction();
             Log.d("TRGRD","AndroidPhone mReceiver "+action);
 
-            if(action.equals(ALARM_SONY_ALERT_ACTION)){
+            if(action.equals(ALARM_SONY_ALERT_ACTION) || action.equals(ALARM_SAMSUNG_ALERT_ACTION) || action.equals(ALARM_ALERT_ACTION)){
                 evAlarmStart();
-            } else if(action.equals(ALARM_SONY_SNOOZE_ACTION)){
+            } else if(action.equals(ALARM_SONY_SNOOZE_ACTION) || action.equals(ALARM_SAMSUNG_SNOOZE_ACTION) || action.equals(ALARM_SNOOZE_ACTION)){
                 evAlarmSnooze();
-            } else if(action.equals(ALARM_SONY_DISMISS_ACTION)){
+            } else if(action.equals(ALARM_SONY_DISMISS_ACTION) || action.equals(ALARM_SAMSUNG_DISMISS_ACTION) || action.equals(ALARM_DISMISS_ACTION)){
                 evAlarmDismiss();
-            } else if(action.equals(ALARM_SONY_DONE_ACTION)){
+            } else if(action.equals(ALARM_SONY_DONE_ACTION) || action.equals(ALARM_SAMSUNG_DONE_ACTION) || action.equals(ALARM_DONE_ACTION)){
                 evAlarmDone();
             }
         }
@@ -238,15 +247,23 @@ public class AndroidPhone extends Device implements NotificationDevice, SendMess
     }
 
     public void acAlarmSnooze(){
-        Intent newIntent = new Intent(ALARM_SONY_SNOOZE_ACTION);
-        ruleSystemService.getApplicationContext().sendBroadcast(newIntent);
+        //Intent sonyIntent = new Intent(ALARM_SONY_SNOOZE_ACTION);
+        //ruleSystemService.getApplicationContext().sendBroadcast(sonyIntent);
+        Intent samsungIntent = new Intent(ALARM_SAMSUNG_SNOOZE_ACTION);
+        ruleSystemService.getApplicationContext().sendBroadcast(samsungIntent);
+        //Intent stockIntent = new Intent(ALARM_SNOOZE_ACTION);
+        //ruleSystemService.getApplicationContext().sendBroadcast(stockIntent);
         Toast.makeText(ruleSystemService, "Alarm snoozed by TRGRD", Toast.LENGTH_SHORT).show();
         //evAlarmSnooze(); THIS IS DONE in mReceiver already!
     }
 
     public void acAlarmDismiss(){
-        Intent newIntent = new Intent(ALARM_SONY_DISMISS_ACTION);
-        ruleSystemService.getApplicationContext().sendBroadcast(newIntent);
+        //Intent sonyIntent = new Intent(ALARM_SONY_DISMISS_ACTION);
+        //ruleSystemService.getApplicationContext().sendBroadcast(sonyIntent);
+        Intent samsungIntent = new Intent(ALARM_SAMSUNG_DISMISS_ACTION);
+        ruleSystemService.getApplicationContext().sendBroadcast(samsungIntent);
+        //Intent stockIntent = new Intent(ALARM_DISMISS_ACTION);
+        //ruleSystemService.getApplicationContext().sendBroadcast(stockIntent);
         Toast.makeText(ruleSystemService, "Alarm dismissed by TRGRD", Toast.LENGTH_SHORT).show();
         //evAlarmDismiss(); THIS IS DONE in mReceiver already!
     }
@@ -342,7 +359,7 @@ public class AndroidPhone extends Device implements NotificationDevice, SendMess
 
     @Override
     public void acSendMessageCaller(String message) {
-
+        MyLogger.debugLog("TRGRD","AndroidPhone acSendMessage to ... : "+message);
     }
 
     @Override
@@ -372,16 +389,29 @@ public class AndroidPhone extends Device implements NotificationDevice, SendMess
 
     @Override
     public void acSendMessage(String phonenumber, String message) {
-
+        MyLogger.debugLog("TRGRD","AndroidPhone acSendMessage to "+phonenumber+": "+message);
+        SmsManager smsManager =     SmsManager.getDefault();
+        smsManager.sendTextMessage(phonenumber, null, message, null, null);
     }
     
     // Register & UnRegister Android Phone Broadcast Receiver
 
     public void registerAndroidPhoneReceiver(){
+        // SONY
         IntentFilter filter = new IntentFilter(ALARM_SONY_ALERT_ACTION);
         filter.addAction(ALARM_SONY_SNOOZE_ACTION);
         filter.addAction(ALARM_SONY_DISMISS_ACTION);
         filter.addAction(ALARM_SONY_DONE_ACTION);
+        // SAMSUNG
+        filter.addAction(ALARM_SAMSUNG_ALERT_ACTION);
+        filter.addAction(ALARM_SAMSUNG_SNOOZE_ACTION);
+        filter.addAction(ALARM_SAMSUNG_DISMISS_ACTION);
+        filter.addAction(ALARM_SAMSUNG_DONE_ACTION);
+        // STOCK
+        filter.addAction(ALARM_ALERT_ACTION);
+        filter.addAction(ALARM_SNOOZE_ACTION);
+        filter.addAction(ALARM_DISMISS_ACTION);
+        filter.addAction(ALARM_DONE_ACTION);
         ruleSystemService.registerReceiver(mReceiver, filter);
         Log.d("TRGRD","AndroidPhone mReceiver registered!");
     }
