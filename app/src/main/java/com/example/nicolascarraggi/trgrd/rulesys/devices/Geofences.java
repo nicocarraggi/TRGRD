@@ -355,7 +355,7 @@ public class Geofences extends Device implements GoogleApiClient.ConnectionCallb
             );
 
             // Send notification and log the transition details.
-            // sendNotification(geofenceTransitionDetails);
+            sendNotification(geofenceTransitionDetails);
             Log.i("TRGRD", geofenceTransitionDetails);
 
             for(Geofence g: geofencingEvent.getTriggeringGeofences()){
@@ -453,7 +453,7 @@ public class Geofences extends Device implements GoogleApiClient.ConnectionCallb
                 (NotificationManager) ruleSystemService.getSystemService(Context.NOTIFICATION_SERVICE);
 
         // Issue the notification
-        mNotificationManager.notify(0, builder.build());
+        mNotificationManager.notify(1, builder.build());
     }
 
     /**

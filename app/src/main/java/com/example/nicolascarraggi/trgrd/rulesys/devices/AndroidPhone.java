@@ -138,13 +138,13 @@ public class AndroidPhone extends Device implements NotificationDevice, SendMess
         this.mEvCallIncStop = new Event(deviceManager.getNewId(),"Phone call incoming stops", R.drawable.ic_call_end_black_24dp, this, deviceManager.getEvCallInc(), ruleSystemService.getRuleManager().getRuleEngine());
         this.mEvCallIncFavStart = new Event(deviceManager.getNewId(),"Phone call incoming from FAVORITES starts", R.drawable.ic_call_black_24dp, this, deviceManager.getEvCallInc(), ruleSystemService.getRuleManager().getRuleEngine());
         this.mEvCallIncFavStop = new Event(deviceManager.getNewId(),"Phone call incoming from FAVORITES stops", R.drawable.ic_call_end_black_24dp, this, deviceManager.getEvCallInc(), ruleSystemService.getRuleManager().getRuleEngine());
-        this.mEvCallIncNoFavStart = new Event(deviceManager.getNewId(),"Phone call incoming from NON FAVORITES starts", R.drawable.ic_call_black_24dp, this, deviceManager.getEvCallInc(), ruleSystemService.getRuleManager().getRuleEngine());
-        this.mEvCallIncNoFavStop = new Event(deviceManager.getNewId(),"Phone call incoming from NON FAVORITES stops", R.drawable.ic_call_end_black_24dp, this, deviceManager.getEvCallInc(), ruleSystemService.getRuleManager().getRuleEngine());
+        this.mEvCallIncNoFavStart = new Event(deviceManager.getNewId(),"Phone call incoming from NON-FAVORITES starts", R.drawable.ic_call_black_24dp, this, deviceManager.getEvCallInc(), ruleSystemService.getRuleManager().getRuleEngine());
+        this.mEvCallIncNoFavStop = new Event(deviceManager.getNewId(),"Phone call incoming from NON-FAVORITES stops", R.drawable.ic_call_end_black_24dp, this, deviceManager.getEvCallInc(), ruleSystemService.getRuleManager().getRuleEngine());
         // States
         this.mStAlarmGoing = new State(deviceManager.getNewId(),"Phone alarm is ringing", R.drawable.ic_alarm_black_24dp, this, deviceManager.getStAlarmGoing(), false, ruleSystemService.getRuleManager().getRuleEngine());
         this.mStCallIncGoing = new State(deviceManager.getNewId(),"Phone call incoming going", R.drawable.ic_call_black_24dp, this, deviceManager.getStCallIncGoing(), false, ruleSystemService.getRuleManager().getRuleEngine());
         this.mStCallIncFavGoing = new State(deviceManager.getNewId(),"Phone call incoming from FAVORITES going", R.drawable.ic_call_black_24dp, this, deviceManager.getStCallIncGoing(), false, ruleSystemService.getRuleManager().getRuleEngine());
-        this.mStCallIncNoFavGoing = new State(deviceManager.getNewId(),"Phone call incoming from NON FAVORITES going", R.drawable.ic_call_black_24dp, this, deviceManager.getStCallIncGoing(), false, ruleSystemService.getRuleManager().getRuleEngine());
+        this.mStCallIncNoFavGoing = new State(deviceManager.getNewId(),"Phone call incoming from NON-FAVORITES going", R.drawable.ic_call_black_24dp, this, deviceManager.getStCallIncGoing(), false, ruleSystemService.getRuleManager().getRuleEngine());
         // Actions
         this.mAcAlarmDismiss = new Action(deviceManager.getNewId(),"Phone alarm dismiss", R.drawable.ic_alarm_off_black_24dp, this, deviceManager.getAcAlarmDismiss(), new Callable<String>() {
             @Override
