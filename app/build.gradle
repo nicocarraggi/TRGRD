@@ -40,6 +40,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:10.2.1'
     compile 'com.google.android.gms:play-services-places:10.2.1'
     compile 'com.google.android.gms:play-services:10.2.1'
-    compile 'com.github.apl-devs:appintro:v4.+'
+    compile 'com.github.apl-devs:appintro:v4.2.0'
     testCompile 'junit:junit:4.12'
 }

@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.AudioManager;
+import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.telephony.SmsManager;
@@ -19,17 +21,14 @@ import com.example.nicolascarraggi.trgrd.MainActivity;
 import com.example.nicolascarraggi.trgrd.R;
 import com.example.nicolascarraggi.trgrd.logging.MyLogger;
 import com.example.nicolascarraggi.trgrd.rulesys.Action;
-import com.example.nicolascarraggi.trgrd.rulesys.ActionType;
 import com.example.nicolascarraggi.trgrd.rulesys.Device;
 import com.example.nicolascarraggi.trgrd.rulesys.DeviceManager;
 import com.example.nicolascarraggi.trgrd.rulesys.Event;
-import com.example.nicolascarraggi.trgrd.rulesys.EventType;
 import com.example.nicolascarraggi.trgrd.rulesys.NotificationAction;
 import com.example.nicolascarraggi.trgrd.rulesys.RuleSystemService;
 import com.example.nicolascarraggi.trgrd.rulesys.SendMessageAction;
 import com.example.nicolascarraggi.trgrd.rulesys.SendMessageCallerAction;
 import com.example.nicolascarraggi.trgrd.rulesys.State;
-import com.example.nicolascarraggi.trgrd.rulesys.StateType;
 
 import java.util.concurrent.Callable;
 
@@ -38,6 +37,28 @@ import java.util.concurrent.Callable;
  */
 
 public class AndroidPhone extends Device implements NotificationDevice, SendMessageDevice, SendMessageCallerDevice {
+
+    // TO WAIT 1 SEC BEFORE EXECUTING A REJECT CALL
+
+    private static class MyHandler extends Handler {}
+    private final MyHandler mHandler = new MyHandler();
+
+    public static class CallRejectRunnable implements Runnable {
+
+        private AndroidPhone androidPhone;
+
+        public CallRejectRunnable(AndroidPhone androidPhone) {
+            this.androidPhone = androidPhone;
+        }
+
+        @Override
+        public void run() {
+            // SIMULATE by activating silent mode!
+            androidPhone.acSoundModeSilent();
+        }
+    }
+
+    private CallRejectRunnable mRunnable = new CallRejectRunnable(AndroidPhone.this);
 
     // Constants
 
@@ -109,7 +130,8 @@ public class AndroidPhone extends Device implements NotificationDevice, SendMess
                     mEvCallIncStop, mEvCallIncFavStart, mEvCallIncFavStop, mEvCallIncNoFavStart,
                     mEvCallIncNoFavStop;
     private State mStAlarmGoing, mStCallIncGoing, mStCallIncFavGoing, mStCallIncNoFavGoing;
-    private Action mAcAlarmDismiss, mAcAlarmSnooze;
+    private Action mAcAlarmDismiss, mAcAlarmSnooze, mAcCallReject, mAcAudioNormal, mAcAudioSilent,
+                    mAcAudioVibrate;
     private NotificationAction mAcNotify;
     private SendMessageAction mAcSendMessage;
     private SendMessageCallerAction mAcSendMessageCaller;
@@ -164,6 +186,35 @@ public class AndroidPhone extends Device implements NotificationDevice, SendMess
         this.mAcNotify = new NotificationAction(deviceManager.getNewId(),"Phone notification",R.drawable.ic_notifications_active_black_24dp,this,deviceManager.getAcNotify());
         this.mAcSendMessage = new SendMessageAction(deviceManager.getNewId(),"Phone send message", R.drawable.ic_message_black_24dp, this, deviceManager.acSendMessage);
         this.mAcSendMessageCaller = new SendMessageCallerAction(deviceManager.getNewId(),"Phone send message to caller", R.drawable.ic_message_black_24dp, this, deviceManager.acSendMessage);
+        this.mAcCallReject = new Action(deviceManager.getNewId(), "Phone reject incoming call", R.drawable.ic_call_end_black_24dp, this, deviceManager.acCallIncReject, new Callable() {
+            @Override
+            public Object call() throws Exception {
+                // Execute the Runnable in 4 seconds
+                mHandler.postDelayed(mRunnable, 4000);
+                return null;
+            }
+        });
+        this.mAcAudioNormal = new Action(deviceManager.getNewId(), "Phone set audio mode NORMAL", R.drawable.ic_volume_up_black_24dp, this, deviceManager.acAudioMode, new Callable() {
+            @Override
+            public Object call() throws Exception {
+                acSoundModeNormal();
+                return null;
+            }
+        });
+        this.mAcAudioVibrate = new Action(deviceManager.getNewId(), "Phone set audio mode VIBRATE", R.drawable.ic_vibration_black_24dp, this, deviceManager.acAudioMode, new Callable() {
+            @Override
+            public Object call() throws Exception {
+                acSoundModeVibrate();
+                return null;
+            }
+        });
+        this.mAcAudioSilent = new Action(deviceManager.getNewId(), "Phone set audio mode SILENT", R.drawable.ic_volume_mute_black_24dp, this, deviceManager.acAudioMode, new Callable() {
+            @Override
+            public Object call() throws Exception {
+                acSoundModeSilent();
+                return null;
+            }
+        });
         // Put in hashsets
         this.events.put(mEvAlarmStart.getId(),mEvAlarmStart);
         this.events.put(mEvAlarmSnooze.getId(),mEvAlarmSnooze);
@@ -184,6 +235,10 @@ public class AndroidPhone extends Device implements NotificationDevice, SendMess
         this.actions.put(mAcNotify.getId(),mAcNotify);
         this.actions.put(mAcSendMessage.getId(),mAcSendMessage);
         this.actions.put(mAcSendMessageCaller.getId(),mAcSendMessageCaller);
+        this.actions.put(mAcCallReject.getId(),mAcCallReject);
+        this.actions.put(mAcAudioNormal.getId(),mAcAudioNormal);
+        this.actions.put(mAcAudioVibrate.getId(),mAcAudioVibrate);
+        this.actions.put(mAcAudioSilent.getId(),mAcAudioSilent);
     }
 
     // These getters only needed for testing!
@@ -220,6 +275,30 @@ public class AndroidPhone extends Device implements NotificationDevice, SendMess
         return mStCallIncGoing;
     }
 
+    public Event getCallIncFavStart() {
+        return mEvCallIncFavStart;
+    }
+
+    public Event getCallIncFavStop() {
+        return mEvCallIncFavStop;
+    }
+
+    public Event getCallIncNoFavStart() {
+        return mEvCallIncNoFavStart;
+    }
+
+    public Event getCallIncNoFavStop() {
+        return mEvCallIncNoFavStop;
+    }
+
+    public State getCallIncFavGoing() {
+        return mStCallIncFavGoing;
+    }
+
+    public State getCallIncNoFavGoing() {
+        return mStCallIncNoFavGoing;
+    }
+
     public Action getAcAlarmDismiss() {
         return mAcAlarmDismiss;
     }
@@ -238,6 +317,10 @@ public class AndroidPhone extends Device implements NotificationDevice, SendMess
 
     public SendMessageCallerAction getSendMessageCaller() {
         return mAcSendMessageCaller;
+    }
+
+    public Action getCallReject() {
+        return mAcCallReject;
     }
 
     // FOR SIMULATION TESTS:
@@ -333,6 +416,28 @@ public class AndroidPhone extends Device implements NotificationDevice, SendMess
         Toast.makeText(ruleSystemService, "Alarm dismissed by TRGRD", Toast.LENGTH_SHORT).show();
         //evAlarmDismiss(); THIS IS DONE in mReceiver already!
     }
+
+    public void acSoundModeNormal(){
+        AudioManager am;
+        am= (AudioManager) ruleSystemService.getSystemService(Context.AUDIO_SERVICE);
+        am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+    }
+
+    public void acSoundModeVibrate(){
+        AudioManager am;
+        am= (AudioManager) ruleSystemService.getSystemService(Context.AUDIO_SERVICE);
+        am.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
+    }
+
+    public void acSoundModeSilent(){
+        AudioManager am;
+        am= (AudioManager) ruleSystemService.getSystemService(Context.AUDIO_SERVICE);
+        am.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+    }
+
+
+
+    // SPECIAL ACTIONS
 
     public NotificationAction getNotifyAction(String title, String text, NotificationAction.NotificationActionType type){
         NotificationAction instance = new NotificationAction(deviceManager.getNewId(),mAcNotify,title,text,getNotifyCallable(title,text,type));

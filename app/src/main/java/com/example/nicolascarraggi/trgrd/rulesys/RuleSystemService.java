@@ -10,10 +10,6 @@ import com.example.nicolascarraggi.trgrd.R;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.ScoreDevice;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-
 public class RuleSystemService extends Service {
 
     // TODO add database for rule system data
@@ -238,6 +234,12 @@ public class RuleSystemService extends Service {
         rwScoreButton.addTriggerType(mDeviceManager.stWatchMode);
         rwScoreButton.addActionType(mDeviceManager.acScoreAdjust);
         mRuleManager.addRuleTemplate(rwScoreButton);
+        // Add or Subtract score with a button press
+        RuleTemplate rwScoreGesture = new RuleTemplate(getNewId(),"Add or subtract a score with a gesture while watch in SPORT mode");
+        rwScoreGesture.addTriggerType(mDeviceManager.evGesture);
+        rwScoreGesture.addTriggerType(mDeviceManager.stWatchMode);
+        rwScoreGesture.addActionType(mDeviceManager.acScoreAdjust);
+        mRuleManager.addRuleTemplate(rwScoreGesture);
         // Switch watch mode with activity change
         RuleTemplate rwWatchModeActivitySwitch = new RuleTemplate(getNewId(),"Switch to other watch mode with a change in physical activity");
         rwWatchModeActivitySwitch.addTriggerType(mDeviceManager.evActivityChange);
@@ -248,10 +250,28 @@ public class RuleSystemService extends Service {
         rwCoffeWakeup.addTriggerType(mDeviceManager.evWakesUp);
         rwCoffeWakeup.addActionType(mDeviceManager.acStartCoffee);
         mRuleManager.addRuleTemplate(rwCoffeWakeup);
+        // Start coffee with waking up while at a location
+        RuleTemplate rwCoffeWakeupAtLocation = new RuleTemplate(getNewId(), "Start making coffee when I wake up while at a location");
+        rwCoffeWakeupAtLocation.addTriggerType(mDeviceManager.evWakesUp);
+        rwCoffeWakeupAtLocation.addTriggerType(mDeviceManager.stLocationCurrentlyAt);
+        rwCoffeWakeupAtLocation.addActionType(mDeviceManager.acStartCoffee);
+        mRuleManager.addRuleTemplate(rwCoffeWakeupAtLocation);
+        // Reject incoming call from NON-FAVORITE and send message to caller
+        RuleTemplate rwRejectCallNoFav = new RuleTemplate(getNewId(), "Reject incoming call from NON-FAVORITES and send a message to the caller");
+        rwRejectCallNoFav.addTriggerType(mDeviceManager.evCallInc);
+        rwRejectCallNoFav.addActionType(mDeviceManager.acCallIncReject);
+        rwRejectCallNoFav.addActionType(mDeviceManager.acSendMessage);
+        mRuleManager.addRuleTemplate(rwRejectCallNoFav);
+        // While incoming call and gesture then reject call
+        RuleTemplate rwRejectCall = new RuleTemplate(getNewId(), "Reject incoming call with a gesture");
+        rwRejectCall.addTriggerType(mDeviceManager.evGesture);
+        rwRejectCall.addTriggerType(mDeviceManager.stCallIncGoing);
+        rwRejectCall.addActionType(mDeviceManager.acCallIncReject);
+        mRuleManager.addRuleTemplate(rwRejectCall);
     }
 
     private void testExampleRules(){
-        ExampleRule erCoffeeLocation = new ExampleRule(getNewId(),"Start coffee with Pebble watch button when at a location");
+        ExampleRule erCoffeeLocation = new ExampleRule(getNewId(),"Start home coffee with Pebble watch button when at a location");
         erCoffeeLocation.addEvent(mDeviceManager.getPebble().getBtn());
         erCoffeeLocation.addState(mDeviceManager.getGeofences().getLocationCurrentlyAt());
         erCoffeeLocation.addAction(mDeviceManager.getHomeCoffeeMachine().getStartCoffee());
@@ -293,7 +313,9 @@ public class RuleSystemService extends Service {
         erWatchmodeTimeAtBtn.addAction(mDeviceManager.getPebble().getScreenSport());
         mRuleManager.addExampleRule(erWatchmodeTimeAtBtn);
         //
-        ExampleRule erScoreButtonAddLeft = new ExampleRule(getNewId(),"Add a LEFT score with a button while Pebble watch in SPORT mode");
+        // ADD OR SUBTRACT A SCORE WITH A PEBBLE BUTTON PRESS WHILE IN SPORT MODE
+        //
+        ExampleRule erScoreButtonAddLeft = new ExampleRule(getNewId(),"Add a LEFT score with a Pebble watch button press while Pebble watch in SPORT mode");
         erScoreButtonAddLeft.addEvent(mDeviceManager.getPebble().getBtn());
         erScoreButtonAddLeft.addState(mDeviceManager.getPebble().getWatchModeSport());
         erScoreButtonAddLeft.addAction(mDeviceManager.getPebble().getAddScoreXLeft());
@@ -305,7 +327,7 @@ public class RuleSystemService extends Service {
         erScoreButtonAddRight.addAction(mDeviceManager.getPebble().getAddScoreXRight());
         mRuleManager.addExampleRule(erScoreButtonAddRight);
         //
-        ExampleRule erScoreButtonSubtractLeft = new ExampleRule(getNewId(),"Subtract a LEFT score with a button while Pebble watch in SPORT mode");
+        ExampleRule erScoreButtonSubtractLeft = new ExampleRule(getNewId(),"Subtract a LEFT score with a Pebble watch button press while Pebble watch in SPORT mode");
         erScoreButtonSubtractLeft.addEvent(mDeviceManager.getPebble().getBtn());
         erScoreButtonSubtractLeft.addState(mDeviceManager.getPebble().getWatchModeSport());
         erScoreButtonSubtractLeft.addAction(mDeviceManager.getPebble().getSubtractScoreXLeft());
@@ -316,6 +338,33 @@ public class RuleSystemService extends Service {
         erScoreButtonSubtractRight.addState(mDeviceManager.getPebble().getWatchModeSport());
         erScoreButtonSubtractRight.addAction(mDeviceManager.getPebble().getSubtractScoreXRight());
         mRuleManager.addExampleRule(erScoreButtonSubtractRight);
+        //
+        // ADD OR SUBTRACT A SCORE WITH A MYO GESTURE WHILE IN SPORT MODE
+        //
+        ExampleRule erScoreGestureAddLeft = new ExampleRule(getNewId(),"Add a LEFT score with a MYO gesture while Pebble watch in SPORT mode");
+        erScoreGestureAddLeft.addEvent(mDeviceManager.getMyoDevice().getGest());
+        erScoreGestureAddLeft.addState(mDeviceManager.getPebble().getWatchModeSport());
+        erScoreGestureAddLeft.addAction(mDeviceManager.getPebble().getAddScoreXLeft());
+        mRuleManager.addExampleRule(erScoreGestureAddLeft);
+        //
+        ExampleRule erScoreGestureAddRight = new ExampleRule(getNewId(),"Add a RIGHT score with a MYO gesture while Pebble watch in SPORT mode");
+        erScoreGestureAddRight.addEvent(mDeviceManager.getMyoDevice().getGest());
+        erScoreGestureAddRight.addState(mDeviceManager.getPebble().getWatchModeSport());
+        erScoreGestureAddRight.addAction(mDeviceManager.getPebble().getAddScoreXRight());
+        mRuleManager.addExampleRule(erScoreGestureAddRight);
+        //
+        ExampleRule erScoreGestureSubtractLeft = new ExampleRule(getNewId(),"Subtract a LEFT score with a MYO gesture while Pebble watch in SPORT mode");
+        erScoreGestureSubtractLeft.addEvent(mDeviceManager.getMyoDevice().getGest());
+        erScoreGestureSubtractLeft.addState(mDeviceManager.getPebble().getWatchModeSport());
+        erScoreGestureSubtractLeft.addAction(mDeviceManager.getPebble().getSubtractScoreXLeft());
+        mRuleManager.addExampleRule(erScoreGestureSubtractLeft);
+        //
+        ExampleRule erScoreGestureSubtractRight = new ExampleRule(getNewId(),"Subtract a RIGHT score with a MYO gesture while Pebble watch in SPORT mode");
+        erScoreGestureSubtractRight.addEvent(mDeviceManager.getMyoDevice().getGest());
+        erScoreGestureSubtractRight.addState(mDeviceManager.getPebble().getWatchModeSport());
+        erScoreGestureSubtractRight.addAction(mDeviceManager.getPebble().getSubtractScoreXRight());
+        mRuleManager.addExampleRule(erScoreGestureSubtractRight);
+        //
         // Switch watch mode with activity change
         ExampleRule erRestTime = new ExampleRule(getNewId(),"Set Pebble watch in TIME mode when a Pebble detects REST activity");
         erRestTime.addEvent(mDeviceManager.getPebble().getRest());
@@ -334,6 +383,29 @@ public class RuleSystemService extends Service {
         erCoffeeWakeHome.addEvent(mDeviceManager.getPebble().getWakesUp());
         erCoffeeWakeHome.addAction(mDeviceManager.getHomeCoffeeMachine().getStartCoffee());
         mRuleManager.addExampleRule(erCoffeeWakeHome);
+        // Start coffee with waking up
+        ExampleRule erCoffeeWakeAtVub = new ExampleRule(getNewId(),"Start VUB coffee machine when I wake up while at a location");
+        erCoffeeWakeAtVub.addEvent(mDeviceManager.getPebble().getWakesUp());
+        erCoffeeWakeAtVub.addState(mDeviceManager.getGeofences().getLocationCurrentlyAt());
+        erCoffeeWakeAtVub.addAction(mDeviceManager.getVubCoffeeMachine().getStartCoffee());
+        mRuleManager.addExampleRule(erCoffeeWakeAtVub);
+        ExampleRule erCoffeeWakeAtHome = new ExampleRule(getNewId(),"Start Home coffee machine when I wake up while at a location");
+        erCoffeeWakeAtHome.addEvent(mDeviceManager.getPebble().getWakesUp());
+        erCoffeeWakeAtHome.addState(mDeviceManager.getGeofences().getLocationCurrentlyAt());
+        erCoffeeWakeAtHome.addAction(mDeviceManager.getHomeCoffeeMachine().getStartCoffee());
+        mRuleManager.addExampleRule(erCoffeeWakeAtHome);
+        //
+        ExampleRule erRejectNonFavoritesCall = new ExampleRule(getNewId(),"Reject incoming call from NON-FAVORITES and send a message to the caller");
+        erRejectNonFavoritesCall.addEvent(mDeviceManager.getAndroidPhone().getCallIncNoFavStart());
+        erRejectNonFavoritesCall.addAction(mDeviceManager.getAndroidPhone().getCallReject());
+        erRejectNonFavoritesCall.addAction(mDeviceManager.getAndroidPhone().getSendMessageCaller());
+        mRuleManager.addExampleRule(erRejectNonFavoritesCall);
+        //
+        ExampleRule erRejectCall = new ExampleRule(getNewId(),"Reject incoming call with a MYO gesture");
+        erRejectCall.addState(mDeviceManager.getAndroidPhone().getCallIncGoing());
+        erRejectCall.addEvent(mDeviceManager.getMyoDevice().getGest());
+        erRejectCall.addAction(mDeviceManager.getAndroidPhone().getCallReject());
+        mRuleManager.addExampleRule(erRejectCall);
     }
 
 }

@@ -74,6 +74,8 @@ public class DeviceManager {
     public ActionType acStartCoffee = new ActionType(getNewId(),"start making coffee", R.drawable.ic_local_cafe_black_24dp);
     public ActionType acScoreAdjust = new ActionType(getNewId(),"adjust score", R.drawable.ic_exposure_plus_1_black_24dp);
     public ActionType acSendMessage = new ActionType(getNewId(),"send message", R.drawable.ic_message_black_24dp);
+    public ActionType acAudioMode = new ActionType(getNewId(),"set audio mode", R.drawable.ic_volume_up_black_24dp);
+    public ActionType acCallIncReject = new ActionType(getNewId(),"reject incoming call", R.drawable.ic_call_end_black_24dp);
 
     // Devices
     private AndroidPhone mAndroidPhone;
@@ -124,6 +126,8 @@ public class DeviceManager {
         this.actionTypes.put(acNotify.getId(),acNotify);
         this.actionTypes.put(acStartCoffee.getId(),acStartCoffee);
         this.actionTypes.put(acScoreAdjust.getId(),acScoreAdjust);
+        this.actionTypes.put(acAudioMode.getId(),acAudioMode);
+        this.actionTypes.put(acCallIncReject.getId(),acCallIncReject);
         // Devices
         this.mAndroidPhone = new AndroidPhone(ruleSystemService, this);
         this.mPebble = new Pebble(ruleSystemService, this);
@@ -268,6 +272,10 @@ public class DeviceManager {
 
     public Pebble getPebble() {
         return mPebble;
+    }
+
+    public MyoDevice getMyoDevice() {
+        return mMyoDevice;
     }
 
     public Clock getClock() {
