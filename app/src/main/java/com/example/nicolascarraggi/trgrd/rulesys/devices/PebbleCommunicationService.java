@@ -127,19 +127,19 @@ public class PebbleCommunicationService extends Service {
                         switch (button) {
                             case BUTTON_UP:
                                 Log.d("TRGRD", "PebbleCommunication Button Up");
-                                Toast.makeText(getApplicationContext(), "Pebble up", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getApplicationContext(), "Pebble up", Toast.LENGTH_SHORT).show();
                                 newIntent = new Intent(PEBBLE_BUTTON_UP_EVENT);
                                 LocalBroadcastManager.getInstance(PebbleCommunicationService.this).sendBroadcast(newIntent);
                                 break;
                             case BUTTON_SELECT:
                                 Log.d("TRGRD", "PebbleCommunication Button Select");
-                                Toast.makeText(getApplicationContext(), "Pebble select", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getApplicationContext(), "Pebble select", Toast.LENGTH_SHORT).show();
                                 newIntent = new Intent(PEBBLE_BUTTON_SELECT_EVENT);
                                 LocalBroadcastManager.getInstance(PebbleCommunicationService.this).sendBroadcast(newIntent);
                                 break;
                             case BUTTON_DOWN:
                                 Log.d("TRGRD", "PebbleCommunication Button Down");
-                                Toast.makeText(getApplicationContext(), "Pebble down", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getApplicationContext(), "Pebble down", Toast.LENGTH_SHORT).show();
                                 newIntent = new Intent(PEBBLE_BUTTON_DOWN_EVENT);
                                 LocalBroadcastManager.getInstance(PebbleCommunicationService.this).sendBroadcast(newIntent);
                                 break;
@@ -150,25 +150,25 @@ public class PebbleCommunicationService extends Service {
                     }
                     if(data.getInteger(KEY_TAP) != null){
                         Log.d("TRGRD", "PebbleCommunication TAP/SHAKE");
-                        Toast.makeText(getApplicationContext(), "Pebble tap/shake", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Pebble tap/shake", Toast.LENGTH_SHORT).show();
                         Intent newIntent = new Intent(PEBBLE_SHAKE_EVENT);
                         LocalBroadcastManager.getInstance(PebbleCommunicationService.this).sendBroadcast(newIntent);
                     }
                     if(data.getInteger(KEY_WAKEUP) != null){
                         Log.d("TRGRD", "PebbleCommunication WAKEUP");
-                        Toast.makeText(getApplicationContext(), "Pebble WAKEUP", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Pebble WAKEUP", Toast.LENGTH_SHORT).show();
                         Intent newIntent = new Intent(PEBBLE_WAKEUP_EVENT);
                         LocalBroadcastManager.getInstance(PebbleCommunicationService.this).sendBroadcast(newIntent);
                     }
                     if(data.getInteger(KEY_PHYSICHAL) != null){
                         Log.d("TRGRD", "PebbleCommunication PHYSICHAL");
-                        Toast.makeText(getApplicationContext(), "Pebble PHYSICAL", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Pebble PHYSICAL", Toast.LENGTH_SHORT).show();
                         Intent newIntent = new Intent(PEBBLE_PHYSICAL_EVENT);
                         LocalBroadcastManager.getInstance(PebbleCommunicationService.this).sendBroadcast(newIntent);
                     }
                     if(data.getInteger(KEY_REST) != null){
                         Log.d("TRGRD", "PebbleCommunication REST");
-                        Toast.makeText(getApplicationContext(), "Pebble REST", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Pebble REST", Toast.LENGTH_SHORT).show();
                         Intent newIntent = new Intent(PEBBLE_REST_EVENT);
                         LocalBroadcastManager.getInstance(PebbleCommunicationService.this).sendBroadcast(newIntent);
                     }

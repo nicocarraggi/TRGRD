@@ -233,7 +233,7 @@ public class Pebble extends Wearable implements NotificationDevice, ScoreDevice,
         this.actions.put(mAcScreenTime.getId(),mAcScreenTime);
         this.actions.put(mAcScreenSport.getId(),mAcScreenSport);
         this.actions.put(mAcScreenAlarm.getId(),mAcScreenAlarm);
-        this.actions.put(mAcScreenClean.getId(),mAcScreenClean);
+        //this.actions.put(mAcScreenClean.getId(),mAcScreenClean); TEMPORARY DISABLED!!
         this.actions.put(mAcNotify.getId(),mAcNotify);
         //this.actions.put(mAcScoreAddOneLeft.getId(), mAcScoreAddOneLeft);
         //this.actions.put(mAcScoreAddOneRight.getId(), mAcScoreAddOneRight);

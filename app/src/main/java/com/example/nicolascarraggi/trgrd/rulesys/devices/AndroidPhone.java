@@ -184,7 +184,7 @@ public class AndroidPhone extends Device implements NotificationDevice, SendMess
         });
         // Callable is null, will be overridden in instance with the correct parameters using getNotifyCallable(...)
         this.mAcNotify = new NotificationAction(deviceManager.getNewId(),"Phone notification",R.drawable.ic_notifications_active_black_24dp,this,deviceManager.getAcNotify());
-        this.mAcSendMessage = new SendMessageAction(deviceManager.getNewId(),"Phone send message", R.drawable.ic_message_black_24dp, this, deviceManager.acSendMessage);
+        this.mAcSendMessage = new SendMessageAction(deviceManager.getNewId(),"Phone send message to ...", R.drawable.ic_message_black_24dp, this, deviceManager.acSendMessage);
         this.mAcSendMessageCaller = new SendMessageCallerAction(deviceManager.getNewId(),"Phone send message to caller", R.drawable.ic_message_black_24dp, this, deviceManager.acSendMessage);
         this.mAcCallReject = new Action(deviceManager.getNewId(), "Phone reject incoming call", R.drawable.ic_call_end_black_24dp, this, deviceManager.acCallIncReject, new Callable() {
             @Override

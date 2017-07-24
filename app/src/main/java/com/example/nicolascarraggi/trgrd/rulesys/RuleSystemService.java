@@ -40,10 +40,10 @@ public class RuleSystemService extends Service {
         this.mLocationManager = new LocationManager(this);
         testCreateLocations();
         mDeviceManager.startDevices();
-        testCreateRulesPebbleAlarm();
-        testCreateRulesPebbleWatchmodes();
-        testCreateRulesPebbleActivity();
-        testCreateRulesPebbleWakeCoffee();
+//        testCreateRulesPebbleAlarm();
+//        testCreateRulesPebbleWatchmodes();
+//        testCreateRulesPebbleActivity();
+//        testCreateRulesPebbleWakeCoffee();
         testRuleTemplates();
         testExampleRules();
     }
@@ -245,11 +245,17 @@ public class RuleSystemService extends Service {
         rwWatchModeActivitySwitch.addTriggerType(mDeviceManager.evActivityChange);
         rwWatchModeActivitySwitch.addActionType(mDeviceManager.getAcWatchMode());
         mRuleManager.addRuleTemplate(rwWatchModeActivitySwitch);
+        // Switch watch mode with activity change while between time and time
+        RuleTemplate rwWatchModeActivitySwitchTime = new RuleTemplate(getNewId(),"Switch to other watch mode with a change in physical activity while between two times");
+        rwWatchModeActivitySwitchTime.addTriggerType(mDeviceManager.evActivityChange);
+        rwWatchModeActivitySwitchTime.addTriggerType(mDeviceManager.stTimeFromTo);
+        rwWatchModeActivitySwitchTime.addActionType(mDeviceManager.getAcWatchMode());
+        mRuleManager.addRuleTemplate(rwWatchModeActivitySwitchTime);
         // Start coffee with waking up
-        RuleTemplate rwCoffeWakeup = new RuleTemplate(getNewId(), "Start making coffee when I wake up");
-        rwCoffeWakeup.addTriggerType(mDeviceManager.evWakesUp);
-        rwCoffeWakeup.addActionType(mDeviceManager.acStartCoffee);
-        mRuleManager.addRuleTemplate(rwCoffeWakeup);
+//        RuleTemplate rwCoffeWakeup = new RuleTemplate(getNewId(), "Start making coffee when I wake up");
+//        rwCoffeWakeup.addTriggerType(mDeviceManager.evWakesUp);
+//        rwCoffeWakeup.addActionType(mDeviceManager.acStartCoffee);
+//        mRuleManager.addRuleTemplate(rwCoffeWakeup);
         // Start coffee with waking up while at a location
         RuleTemplate rwCoffeWakeupAtLocation = new RuleTemplate(getNewId(), "Start making coffee when I wake up while at a location");
         rwCoffeWakeupAtLocation.addTriggerType(mDeviceManager.evWakesUp);
@@ -271,11 +277,16 @@ public class RuleSystemService extends Service {
     }
 
     private void testExampleRules(){
-        ExampleRule erCoffeeLocation = new ExampleRule(getNewId(),"Start home coffee with Pebble watch button when at a location");
+        ExampleRule erCoffeeLocation = new ExampleRule(getNewId(),"Start HOME coffee with a Pebble watch button press when at a location");
         erCoffeeLocation.addEvent(mDeviceManager.getPebble().getBtn());
         erCoffeeLocation.addState(mDeviceManager.getGeofences().getLocationCurrentlyAt());
         erCoffeeLocation.addAction(mDeviceManager.getHomeCoffeeMachine().getStartCoffee());
         mRuleManager.addExampleRule(erCoffeeLocation);
+        ExampleRule erCoffeeLocationVUB = new ExampleRule(getNewId(),"Start VUB coffee with a Pebble watch button press when at a location");
+        erCoffeeLocationVUB.addEvent(mDeviceManager.getPebble().getBtn());
+        erCoffeeLocationVUB.addState(mDeviceManager.getGeofences().getLocationCurrentlyAt());
+        erCoffeeLocationVUB.addAction(mDeviceManager.getVubCoffeeMachine().getStartCoffee());
+        mRuleManager.addExampleRule(erCoffeeLocationVUB);
         ExampleRule erDisplayAlarm = new ExampleRule(getNewId(),"Display Phone alarm alert on Pebble watch");
         erDisplayAlarm.addEvent(mDeviceManager.getAndroidPhone().getAlarmStart());
         erDisplayAlarm.addAction(mDeviceManager.getPebble().getScreenAlarm());
@@ -374,15 +385,20 @@ public class RuleSystemService extends Service {
         erPhysicalSport.addEvent(mDeviceManager.getPebble().getPhysical());
         erPhysicalSport.addAction(mDeviceManager.getPebble().getScreenSport());
         mRuleManager.addExampleRule(erPhysicalSport);
+        ExampleRule erPhysicalSportTime = new ExampleRule(getNewId(),"Set Pebble watch in SPORT mode when a Pebble detects PHYSICAL activity while between two times");
+        erPhysicalSportTime.addEvent(mDeviceManager.getPebble().getPhysical());
+        erPhysicalSportTime.addState(mDeviceManager.getClock().getTimeFromTo());
+        erPhysicalSportTime.addAction(mDeviceManager.getPebble().getScreenSport());
+        mRuleManager.addExampleRule(erPhysicalSportTime);
         // Start coffee with waking up
-        ExampleRule erCoffeeWakeVub = new ExampleRule(getNewId(),"Start VUB coffee machine when I wake up");
-        erCoffeeWakeVub.addEvent(mDeviceManager.getPebble().getWakesUp());
-        erCoffeeWakeVub.addAction(mDeviceManager.getVubCoffeeMachine().getStartCoffee());
-        mRuleManager.addExampleRule(erCoffeeWakeVub);
-        ExampleRule erCoffeeWakeHome = new ExampleRule(getNewId(),"Start Home coffee machine when I wake up");
-        erCoffeeWakeHome.addEvent(mDeviceManager.getPebble().getWakesUp());
-        erCoffeeWakeHome.addAction(mDeviceManager.getHomeCoffeeMachine().getStartCoffee());
-        mRuleManager.addExampleRule(erCoffeeWakeHome);
+//        ExampleRule erCoffeeWakeVub = new ExampleRule(getNewId(),"Start VUB coffee machine when I wake up");
+//        erCoffeeWakeVub.addEvent(mDeviceManager.getPebble().getWakesUp());
+//        erCoffeeWakeVub.addAction(mDeviceManager.getVubCoffeeMachine().getStartCoffee());
+//        mRuleManager.addExampleRule(erCoffeeWakeVub);
+//        ExampleRule erCoffeeWakeHome = new ExampleRule(getNewId(),"Start Home coffee machine when I wake up");
+//        erCoffeeWakeHome.addEvent(mDeviceManager.getPebble().getWakesUp());
+//        erCoffeeWakeHome.addAction(mDeviceManager.getHomeCoffeeMachine().getStartCoffee());
+//        mRuleManager.addExampleRule(erCoffeeWakeHome);
         // Start coffee with waking up
         ExampleRule erCoffeeWakeAtVub = new ExampleRule(getNewId(),"Start VUB coffee machine when I wake up while at a location");
         erCoffeeWakeAtVub.addEvent(mDeviceManager.getPebble().getWakesUp());

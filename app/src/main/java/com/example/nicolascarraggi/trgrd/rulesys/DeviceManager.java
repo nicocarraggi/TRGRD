@@ -8,6 +8,7 @@ import com.example.nicolascarraggi.trgrd.rulesys.devices.AndroidPhone;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Clock;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.HomeCoffeeMachine;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Geofences;
+import com.example.nicolascarraggi.trgrd.rulesys.devices.HomeTv;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.MyoDevice;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.Pebble;
 import com.example.nicolascarraggi.trgrd.rulesys.devices.VubCoffeeMachine;
@@ -63,19 +64,20 @@ public class DeviceManager {
 
 
     // ActionTypes
-    public ActionType acAlarmSnooze = new ActionType(getNewId(),"snooze the alarm", R.drawable.ic_alarm_black_24dp);
-    public ActionType acAlarmDismiss = new ActionType(getNewId(),"dismiss the alarm", R.drawable.ic_alarm_black_24dp);
+    public ActionType acAlarmSnooze = new ActionType(getNewId(),"snooze an alarm", R.drawable.ic_alarm_black_24dp);
+    public ActionType acAlarmDismiss = new ActionType(getNewId(),"dismiss an alarm", R.drawable.ic_alarm_black_24dp);
     public ActionType acVibrate = new ActionType(getNewId(),"vibrate something", R.drawable.ic_vibration_black_24dp);
-    public ActionType acAlarmDisplay = new ActionType(getNewId(),"display the alarm somewhere", R.drawable.ic_alarm_black_24dp);
+    public ActionType acAlarmDisplay = new ActionType(getNewId(),"display an alarm somewhere", R.drawable.ic_alarm_black_24dp);
     public ActionType acWatchMode = new ActionType(getNewId(),"set watch to a certain mode", R.drawable.ic_watch_black_24dp);
     public ActionType acTimeDisplay = new ActionType(getNewId(),"display time", R.drawable.ic_watch_black_24dp);
     public ActionType acSportDisplay = new ActionType(getNewId(),"display sport info", R.drawable.ic_watch_black_24dp);
     public ActionType acNotify = new ActionType(getNewId(),"notify something somewhere", R.drawable.ic_notifications_active_black_24dp);
     public ActionType acStartCoffee = new ActionType(getNewId(),"start making coffee", R.drawable.ic_local_cafe_black_24dp);
-    public ActionType acScoreAdjust = new ActionType(getNewId(),"adjust score", R.drawable.ic_exposure_plus_1_black_24dp);
-    public ActionType acSendMessage = new ActionType(getNewId(),"send message", R.drawable.ic_message_black_24dp);
+    public ActionType acScoreAdjust = new ActionType(getNewId(),"adjust a score", R.drawable.ic_exposure_plus_1_black_24dp);
+    public ActionType acSendMessage = new ActionType(getNewId(),"send a message", R.drawable.ic_message_black_24dp);
     public ActionType acAudioMode = new ActionType(getNewId(),"set audio mode", R.drawable.ic_volume_up_black_24dp);
-    public ActionType acCallIncReject = new ActionType(getNewId(),"reject incoming call", R.drawable.ic_call_end_black_24dp);
+    public ActionType acCallIncReject = new ActionType(getNewId(),"reject an incoming call", R.drawable.ic_call_end_black_24dp);
+    public ActionType acTurnOnOffTv = new ActionType(getNewId(),"turn a TV on or off", R.drawable.ic_tv_black_24dp);
 
     // Devices
     private AndroidPhone mAndroidPhone;
@@ -85,6 +87,7 @@ public class DeviceManager {
     private HomeCoffeeMachine mHomeCoffeeMachine;
     private VubCoffeeMachine mVubCoffeeMachine;
     private MyoDevice mMyoDevice;
+    private HomeTv mHomeTv;
 
     public DeviceManager(RuleSystemService ruleSystemService) {
         this.ruleSystemService = ruleSystemService;
@@ -128,6 +131,7 @@ public class DeviceManager {
         this.actionTypes.put(acScoreAdjust.getId(),acScoreAdjust);
         this.actionTypes.put(acAudioMode.getId(),acAudioMode);
         this.actionTypes.put(acCallIncReject.getId(),acCallIncReject);
+        this.actionTypes.put(acTurnOnOffTv.getId(),acTurnOnOffTv);
         // Devices
         this.mAndroidPhone = new AndroidPhone(ruleSystemService, this);
         this.mPebble = new Pebble(ruleSystemService, this);
@@ -136,6 +140,7 @@ public class DeviceManager {
         this.mHomeCoffeeMachine = new HomeCoffeeMachine(ruleSystemService,this);
         this.mVubCoffeeMachine = new VubCoffeeMachine(ruleSystemService,this);
         this.mMyoDevice = new MyoDevice(ruleSystemService,this);
+        this.mHomeTv = new HomeTv(ruleSystemService,this);
         this.devices.put(mAndroidPhone.getId(),mAndroidPhone);
         this.devices.put(mPebble.getId(),mPebble);
         this.devices.put(mClock.getId(),mClock);
@@ -143,6 +148,7 @@ public class DeviceManager {
         this.devices.put(mHomeCoffeeMachine.getId(), mHomeCoffeeMachine);
         this.devices.put(mVubCoffeeMachine.getId(), mVubCoffeeMachine);
         this.devices.put(mMyoDevice.getId(), mMyoDevice);
+        this.devices.put(mHomeTv.getId(), mHomeTv);
     }
 
     // ------------
@@ -409,6 +415,7 @@ public class DeviceManager {
         mHomeCoffeeMachine.start();
         mVubCoffeeMachine.start();
         //mMyoDevice.start(); Manually start in GUI !!
+        mHomeTv.start();
     }
 
     public void stopDevices(){
@@ -419,6 +426,7 @@ public class DeviceManager {
         mHomeCoffeeMachine.stop();
         mVubCoffeeMachine.stop();
         mMyoDevice.stop();
+        mHomeTv.stop();
     }
 
 

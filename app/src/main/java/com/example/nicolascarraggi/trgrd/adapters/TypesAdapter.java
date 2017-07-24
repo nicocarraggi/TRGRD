@@ -49,7 +49,7 @@ public class TypesAdapter extends RecyclerView.Adapter<TypesAdapter.TypeViewHold
         this.mDataset = mDataset;
         this.mEdit = edit;
         this.mShowInstance = showInstance;
-        sort();
+        //sort();
     }
 
     private void sort(){
