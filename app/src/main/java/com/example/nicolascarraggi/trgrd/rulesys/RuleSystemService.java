@@ -41,7 +41,8 @@ public class RuleSystemService extends Service {
         testCreateLocations();
         mDeviceManager.startDevices();
 //        testCreateRulesPebbleAlarm();
-//        testCreateRulesPebbleWatchmodes();
+        testCreateRulesPebbleWatchmodes();
+//        testCreateRulesPebbleWatchScore();
 //        testCreateRulesPebbleActivity();
 //        testCreateRulesPebbleWakeCoffee();
         testRuleTemplates();
@@ -51,9 +52,9 @@ public class RuleSystemService extends Service {
     @Override
     public void onDestroy() {
         Log.d("TRGRD","RuleSystemService onDestroy()");
-        mTestRuleAlarmStartPebble.setActive(false);
-        mTestRuleAlarmDismissPebble.setActive(false);
-        mTestRuleAlarmDonePebble.setActive(false);
+//        mTestRuleAlarmStartPebble.setActive(false);
+//        mTestRuleAlarmDismissPebble.setActive(false);
+//        mTestRuleAlarmDonePebble.setActive(false);
         // TODO deactivate all rules?
         mDeviceManager.stopDevices();
         super.onDestroy();
@@ -131,12 +132,8 @@ public class RuleSystemService extends Service {
         // create rules
         this.mTestRulePebbleSportMode = new Rule(getNewId(),"Set Pebble watch in SPORT mode with a Pebble watch button press");
         this.mTestRulePebbleTimeMode = new Rule(getNewId(),"Set Pebble watch in TIME mode with a Pebble watch button press"); // by shaking a Pebble watch"); //
-        this.mTestRulePebbleAdd1Left = new Rule(getNewId(),"Add 1 to Pebble left score with a Pebble watch button press");
-        this.mTestRulePebbleAdd1Right = new Rule(getNewId(),"Add 1 to Pebble right score with a Pebble watch button press");
         mRuleManager.addRule(mTestRulePebbleSportMode);
         mRuleManager.addRule(mTestRulePebbleTimeMode);
-        mRuleManager.addRule(mTestRulePebbleAdd1Left);
-        mRuleManager.addRule(mTestRulePebbleAdd1Right);
         // Pebble select button WHILE time mode -> Pebble sport mode
         mTestRulePebbleSportMode.addEvent(mDeviceManager.getPebble().getBtnSelect());
         mTestRulePebbleSportMode.addState(mDeviceManager.getPebble().getWatchModeTime());
@@ -153,6 +150,15 @@ public class RuleSystemService extends Service {
         //mTestRulePebbleTimeMode.addAction(mDeviceManager.getPebble().getScreenTime());
         //mTestRulePebbleTimeMode.setActive(true);
         // Pebble up button -> Pebble left score + 1
+    }
+
+    private void testCreateRulesPebbleWatchScore(){
+        // create rules
+        this.mTestRulePebbleAdd1Left = new Rule(getNewId(),"Add 1 to Pebble left score with a Pebble watch button press");
+        this.mTestRulePebbleAdd1Right = new Rule(getNewId(),"Add 1 to Pebble right score with a Pebble watch button press");
+        mRuleManager.addRule(mTestRulePebbleAdd1Left);
+        mRuleManager.addRule(mTestRulePebbleAdd1Right);
+        // Pebble up button -> Pebble left score + 1
         mTestRulePebbleAdd1Left.addEvent(mDeviceManager.getPebble().getBtnUp());
         mTestRulePebbleAdd1Left.addState(mDeviceManager.getPebble().getWatchModeSport());
         ScoreDevice scoreDevice = (ScoreDevice) mDeviceManager.getPebble();
@@ -168,6 +174,7 @@ public class RuleSystemService extends Service {
         mTestRulePebbleAdd1Right.addAction(add1Right);
         mTestRulePebbleAdd1Right.setActive(true);
     }
+
 
     private void testCreateRulesPebbleActivity(){
         // Pebble REST activity event -> Pebble TIME mode
@@ -321,7 +328,7 @@ public class RuleSystemService extends Service {
         ExampleRule erWatchmodeTimeAtBtn = new ExampleRule(getNewId(),"Set Pebble watch in TIME mode with a Pebble watch button press while Pebble watch in SPORT mode");
         erWatchmodeTimeAtBtn.addEvent(mDeviceManager.getPebble().getBtn());
         erWatchmodeTimeAtBtn.addState(mDeviceManager.getPebble().getWatchModeSport());
-        erWatchmodeTimeAtBtn.addAction(mDeviceManager.getPebble().getScreenSport());
+        erWatchmodeTimeAtBtn.addAction(mDeviceManager.getPebble().getScreenTime());
         mRuleManager.addExampleRule(erWatchmodeTimeAtBtn);
         //
         // ADD OR SUBTRACT A SCORE WITH A PEBBLE BUTTON PRESS WHILE IN SPORT MODE
